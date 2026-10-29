@@ -91,3 +91,4 @@ Design and code is completely written by tailwind-admin and development team.
  - Licensed cover under [MIT]
  - Distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
 # Skala-Prioritas
+# Skala-Prioritas
