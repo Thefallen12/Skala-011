@@ -1,0 +1,121 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
+import LogisticsWorkspace from "@/app/components/apps/tickets/LogisticsWorkspace";
+import { PaymentStatus, UserRole } from "@/generated/prisma/enums";
+import { auth } from "../../../../../../auth";
+import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Stok Logistik",
+};
+
+const logisticsRoles: UserRole[] = [
+  UserRole.LOGISTICS,
+  UserRole.DIRECTOR,
+  UserRole.ADMINISTRATIONS,
+];
+
+export default async function LogisticsStockPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ createTicket?: string; purchaseStock?: string }>;
+}) {
+  const session = await auth();
+  if (!session?.user) redirect("/auth/login");
+  if (!logisticsRoles.includes(session.user.role)) redirect("/apps/tickets");
+  const query = await searchParams;
+  const initialAction =
+    query.createTicket === "1"
+      ? "ticket"
+      : query.purchaseStock === "1"
+        ? "stock-purchase"
+        : undefined;
+
+  const [stockItems, projects, vendors, directStockPurchases] = await Promise.all([
+    prisma.stockItem.findMany({
+      orderBy: { name: "asc" },
+    }),
+    prisma.project.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, title: true, kelompokTani: true },
+    }),
+    prisma.vendor.findMany({
+      where: { isApproved: true },
+      orderBy: { name: "asc" },
+      select: {
+        id: true,
+        name: true,
+        bankName: true,
+        bankAccount: true,
+        bankHolder: true,
+      },
+    }),
+    session.user.role === UserRole.MOVER
+      ? Promise.resolve([])
+      : prisma.directStockPurchase.findMany({
+          orderBy: { createdAt: "desc" },
+          take: 50,
+          select: {
+            id: true,
+            purchaseNumber: true,
+            vendorName: true,
+            status: true,
+            isApprovedByDirector: true,
+            totalAmount: true,
+            createdAt: true,
+            receivedAt: true,
+            arrivalPhotoUrl: true,
+            paymentTransactions: {
+              where: { status: PaymentStatus.PAID },
+              select: { proofOfTransferUrl: true },
+            },
+            items: {
+              select: { id: true, itemName: true, quantity: true, unit: true },
+            },
+            receivedBy: { select: { name: true } },
+          },
+        }),
+  ]);
+
+  return (
+    <>
+      <BreadcrumbComp
+        title="Stok Logistik"
+        items={[
+          { to: "/", title: "Beranda" },
+          { to: "/apps/logistics", title: "Logistik Lapangan" },
+          { title: "Stok Logistik" },
+        ]}
+      />
+      <LogisticsWorkspace
+        tickets={[]}
+        projects={projects}
+        role={session.user.role}
+        mode="stock"
+        initialAction={initialAction}
+        vendors={vendors}
+        stockItems={stockItems.map((item) => ({
+          ...item,
+          stockQuantity: item.stockQuantity.toString(),
+          minimumStock: item.minimumStock.toString(),
+          unitPrice: item.unitPrice.toString(),
+          createdAt: item.createdAt.toISOString(),
+        }))}
+        stockPurchases={directStockPurchases.map((purchase) => ({
+          ...purchase,
+          totalAmount: purchase.totalAmount.toString(),
+          hasFinanceProof: purchase.paymentTransactions.some(
+            (payment) => Boolean(payment.proofOfTransferUrl),
+          ),
+          createdAt: purchase.createdAt.toISOString(),
+          receivedAt: purchase.receivedAt?.toISOString() ?? null,
+          items: purchase.items.map((item) => ({
+            ...item,
+            quantity: item.quantity.toString(),
+          })),
+        }))}
+      />
+    </>
+  );
+}

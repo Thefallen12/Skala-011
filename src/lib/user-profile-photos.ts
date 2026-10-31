@@ -1,0 +1,125 @@
+import { join, resolve } from "node:path";
+import {
+  CloudinaryPhotoValidationError,
+  removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import {
+  PrivatePhotoValidationError,
+  readPrivatePhoto,
+  removePrivatePhoto,
+  savePrivatePhoto,
+  type PrivatePhotoMimeType,
+} from "@/lib/private-photos";
+
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+const photoDirectory = process.env.USER_PROFILE_UPLOAD_DIR
+  ? resolve(process.env.USER_PROFILE_UPLOAD_DIR)
+  : join(process.cwd(), ".private-data", "user-profile-photos");
+
+type ProfilePhotoMimeType = PrivatePhotoMimeType;
+
+export class ProfilePhotoValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ProfilePhotoValidationError";
+  }
+}
+
+export type SavedUserProfilePhoto = {
+  url: string;
+  sourceUrl: string;
+};
+
+async function uploadProfileSourceToCloudinary(
+  file: File,
+): Promise<{ url: string; publicId: string }> {
+  const uploaded = await uploadCloudinaryPhoto(
+    file,
+    "skala_prioritas/user_profiles",
+    MAX_PHOTO_BYTES,
+  );
+  return { url: uploaded.secureUrl, publicId: uploaded.publicId };
+}
+
+export async function saveUserProfilePhoto(
+  file: File,
+): Promise<SavedUserProfilePhoto> {
+  let photo: Awaited<ReturnType<typeof savePrivatePhoto>>;
+  try {
+    photo = await savePrivatePhoto(
+      file,
+      photoDirectory,
+      "/api/users/profile-photo",
+      MAX_PHOTO_BYTES,
+    );
+  } catch (error) {
+    if (error instanceof PrivatePhotoValidationError) {
+      throw new ProfilePhotoValidationError(error.message);
+    }
+    throw error;
+  }
+
+  try {
+    const uploaded = await uploadProfileSourceToCloudinary(file);
+    return { url: uploaded.url, sourceUrl: photo.url };
+  } catch (error) {
+    try {
+      await removePrivatePhoto(
+        photo.url,
+        photoDirectory,
+        "/api/users/profile-photo",
+      );
+    } catch (cleanupError) {
+      console.error("Removing profile photo source after upload failure failed:", cleanupError);
+    }
+    if (error instanceof CloudinaryPhotoValidationError) {
+      throw new ProfilePhotoValidationError(error.message);
+    }
+    throw error;
+  }
+}
+
+export async function removeUserProfilePhoto(
+  url: string,
+  sourceUrl?: string,
+): Promise<void> {
+  if (await removeCloudinaryPhoto(url)) {
+    if (sourceUrl) {
+      await removePrivatePhoto(
+        sourceUrl,
+        photoDirectory,
+        "/api/users/profile-photo",
+      );
+    }
+    return;
+  }
+  await removePrivatePhoto(url, photoDirectory, "/api/users/profile-photo");
+}
+
+export async function migrateUserProfilePhotoToCloudinary(
+  url: string,
+): Promise<{ url: string; publicId: string } | null> {
+  let fileName: string;
+  try {
+    const pathname = new URL(url, "http://localhost").pathname;
+    const prefix = "/api/users/profile-photo/";
+    if (!pathname.startsWith(prefix)) return null;
+    fileName = pathname.slice(prefix.length);
+  } catch {
+    return null;
+  }
+
+  const photo = await readPrivatePhoto(fileName, photoDirectory);
+  if (!photo) return null;
+  const bytes = new Uint8Array(photo.bytes.byteLength);
+  bytes.set(photo.bytes);
+  const file = new File([bytes.buffer], fileName, { type: photo.contentType });
+  return uploadProfileSourceToCloudinary(file);
+}
+
+export async function readUserProfilePhoto(
+  fileName: string,
+): Promise<{ bytes: Uint8Array; contentType: ProfilePhotoMimeType } | null> {
+  return readPrivatePhoto(fileName, photoDirectory);
+}

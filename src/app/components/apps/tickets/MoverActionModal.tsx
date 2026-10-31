@@ -1,0 +1,95 @@
+"use client";
+
+import { useState, useTransition, type FormEvent } from "react";
+import { processMoverDelivery } from "@/app/actions/tickets";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+
+export default function MoverActionModal({
+  open,
+  ticketId,
+  onOpenChange,
+  onSuccess,
+}: {
+  open: boolean;
+  ticketId: string;
+  onOpenChange: (open: boolean) => void;
+  onSuccess: () => void;
+}) {
+  const [file, setFile] = useState<File | null>(null);
+  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!file) return;
+    setMessage("");
+    startTransition(async () => {
+      try {
+        const result = await processMoverDelivery(ticketId, file);
+        setMessage(result.message);
+        if (result.success) {
+          setFile(null);
+          onOpenChange(false);
+          onSuccess();
+        }
+      } catch (error) {
+        console.error("Mover ticket action failed:", error);
+        setMessage("Konfirmasi pengiriman gagal. Silakan coba kembali.");
+      }
+    });
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) {
+          setFile(null);
+          setMessage("");
+        }
+        onOpenChange(nextOpen);
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Konfirmasi Barang Tiba</DialogTitle>
+          <DialogDescription>
+            Unggah bukti serah terima barang di lapangan. File PDF, JPG, PNG,
+            atau WEBP maksimal 5 MB.
+          </DialogDescription>
+        </DialogHeader>
+        <form className="space-y-4" onSubmit={submit}>
+          <label className="block space-y-2 text-sm font-medium">
+            Upload Foto Barang Tiba / Bukti DO
+            <Input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              required
+              disabled={isPending}
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+          </label>
+          {message && (
+            <p className="text-sm text-muted-foreground" role="status">
+              {message}
+            </p>
+          )}
+          <DialogFooter>
+            <Button type="submit" disabled={!file || isPending}>
+              {isPending ? "Menyimpan..." : "Selesaikan Tiket"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

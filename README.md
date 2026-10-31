@@ -43,6 +43,11 @@ npx prisma generate
 The connected database has older applied migrations that are not present in
 this repository. Do not run `prisma migrate dev` against it until those
 migration files are restored; Prisma may otherwise request a schema reset.
+The Notes feature stores each user's notes in the additive `UserNote` table.
+The logistics Fleet Management feature adds the `Vehicle` table and vehicle
+assignment fields to delivery orders. Apply and verify schema changes using the
+deployment's approved database change process before enabling these features
+against another environment.
 
 To create the first administrator, set `ADMIN_NAME`, `ADMIN_EMAIL`, and a
 unique `ADMIN_PASSWORD` of at least 12 characters in
@@ -56,6 +61,18 @@ The seed command creates an `ADMINISTRATIONS` account only if that email does
 not already exist. It does not reset an existing account's password or role.
 New accounts and role assignments should be provisioned by an administrator;
 public registration is disabled. Login uses the account email.
+
+## Login
+
+Login uses the registered account's email and password. Login OTP email
+verification is currently disabled, so Resend credentials are not required for
+authentication.
+
+Purchase Order QR codes use the public `/verify/po/<code>` page. In production,
+set `NEXT_PUBLIC_APP_URL` to the canonical HTTPS origin of the deployed app;
+the internal bind address such as `0.0.0.0` must not be used as a public URL.
+Regenerate PDFs that were created before changing this setting so their printed
+QR codes also point to the verification page.
 
 ## Ticket workflow
 
@@ -79,6 +96,36 @@ approval routes material to Logistics and cost/operational requests to
 Finance. Queue actions record actor, action, notes, and timestamp in the audit
 timeline. The request form accepts an optional project and HTTP(S) quotation
 URL, repeatable line items, quantities, units, and estimated unit prices.
+
+For material tickets, Logistics checks live warehouse balances before opening
+the DO confirmation and selects an active Mover. If stock is missing or
+insufficient, the selected pending items can be switched from `WAREHOUSE` to
+`PURCHASE` and continued through the vendor PO flow. DO creation rechecks and
+decrements stock atomically to protect against concurrent inventory changes.
+Finance payments for tickets, purchase orders, and direct stock purchases are
+stored as separate `PaymentTransaction` records. The remaining balance is
+calculated from paid records; a direct purchase receives `paidAt` when its
+balance reaches zero.
+
+Movers can add up to five JPG, PNG, or WEBP delivery-proof photos per upload
+(5 MB each), repeat uploads while a DO is in transit, and complete the delivery
+with or without adding a final set of photos. Proof photos are stored per DO;
+the first photo remains available through the existing single-receipt field for
+backward compatibility.
+
+Vehicle master data includes model and the latest odometer. Existing fleet
+records must have their starting KM initialized by Logistics before Mover can
+select them. Mover departures
+capture the starting odometer, and completing a DO records its ending odometer
+and creates one linked trip log in the same transaction. Fuel is estimated as
+distance divided by 12 km/L, rounded to two decimal places. After Logistics
+assigns a vehicle to an internal DO, the Mover can request fuel funds using
+the SPBU rate (Rp10,000/L) or retail rate (Rp14,000/L), attaching a required
+pre-fill odometer photo. Finance records approval and disbursement; the Mover
+then submits a required post-fill odometer photo and an optional receipt.
+Finance can view trip and fuel requests in the Finance Hub. Logistics can
+also record a non-DO trip, provided its starting KM matches the vehicle's
+latest odometer.
 
 ## Author 
 ```

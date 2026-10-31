@@ -1,0 +1,5 @@
+export const VEHICLE_FUEL_EFFICIENCY_KM_PER_LITER = 12;
+export const VEHICLE_FUEL_PRICE_PER_LITER = {
+  SPBU: 10_000,
+  RETAIL: 14_000,
+} as const;

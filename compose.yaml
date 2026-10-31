@@ -1,0 +1,24 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        DEPLOYMENT_VERSION: ${DEPLOYMENT_VERSION:-}
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      AUTH_TRUST_HOST: "true"
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      CHROME_PATH: /usr/bin/chromium
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - uploads:/app/.private-data
+    init: true
+    restart: unless-stopped
+
+volumes:
+  uploads:

@@ -1,0 +1,101 @@
+import type {
+  TicketPriority,
+  TicketCategoryHint,
+  FulfillmentStatus,
+  TicketFulfillmentStatus,
+  TicketFieldCategory,
+  TicketRequestCategory,
+  TicketStatus,
+  TicketType,
+  UserRole,
+  DOStatus,
+  OperationalDocumentKind,
+  OperationalDocumentStatus,
+  POStatus,
+} from "@/generated/prisma/enums";
+
+export type TicketRow = {
+  id: string;
+  ticketNumber: string;
+  title: string;
+  description: string | null;
+  type: TicketType;
+  requestCategory: TicketRequestCategory | null;
+  fieldCategory: TicketFieldCategory | null;
+  priority: TicketPriority;
+  status: TicketStatus;
+  fulfillmentStatus: TicketFulfillmentStatus;
+  canSubmit: boolean;
+  totalAmount: string | null;
+  paymentTransactions?: {
+    id: string;
+    paymentType: import("@/generated/prisma/enums").PaymentType;
+    amount: number;
+    transferDestination: string;
+    proofOfTransferUrl: string | null;
+    paidAt: string | null;
+  }[];
+  attachmentUrl: string | null;
+  purchaseReceiptUrl: string | null;
+  transferReceiptUrl: string | null;
+  deliveryReceiptUrl: string | null;
+  recipientName: string | null;
+  bankName: string | null;
+  accountNumber: string | null;
+  createdAt: string;
+  requester: { name: string };
+  project: { title: string; kelompokTani: string } | null;
+  items: {
+    id: string;
+    itemName: string;
+    quantity: number;
+    unit: string;
+    estimatedCost: string | null;
+    categoryHint: TicketCategoryHint;
+    expectedDeliveryDate: string | null;
+    status: FulfillmentStatus;
+    poItemId: string | null;
+    doItemId: string | null;
+  }[];
+  auditLogs: {
+    id: string;
+    action: string;
+    notes: string | null;
+    createdAt: string;
+    user: { name: string };
+  }[];
+  operationalDocuments?: {
+    id: string;
+    documentNumber: string;
+    kind: OperationalDocumentKind;
+    status: OperationalDocumentStatus;
+    title: string;
+    signedAt: string;
+    issuedAt: string | null;
+  }[];
+  purchaseOrders?: {
+    publicCode: string;
+    poNumber: string;
+    vendorName: string;
+    paymentBankName?: string | null;
+    paymentAccountNumber?: string | null;
+    paymentAccountName?: string | null;
+    status: POStatus;
+    createdAt: string;
+    paidAt?: string | null;
+  }[];
+  deliveryOrders?: {
+    publicCode: string;
+    doNumber: string;
+    status: DOStatus;
+    createdAt: string;
+  }[];
+};
+
+export type TicketProjectOption = {
+  id: string;
+  title: string;
+  kelompokTani: string;
+};
+
+export type TicketPageRole = UserRole;
