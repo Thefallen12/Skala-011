@@ -73,7 +73,7 @@ function sampleDocument(kind: DocumentKind): UniversalDocumentData {
       ],
       notes: undefined,
       signatures: [
-        { heading: "Dibuat Oleh / Prepared By", name: "Bambang Gunawan", role: "Logistik" },
+        { heading: "Dibuat Oleh / Prepared By", name: "Fachri Maulana Hattami", role: "Koordinator Logistik" },
         { heading: "Diperiksa Oleh / Checked By", name: "Siti Rahmawati", role: "Keuangan" },
         { heading: "Disetujui Oleh / Approved By", name: "Direktur", role: "Direksi" },
       ],
@@ -147,7 +147,7 @@ function sampleDocument(kind: DocumentKind): UniversalDocumentData {
         { label: "Plat Kendaraan", value: "BL 1234 AB" },
         { label: "No. Dokumen Kendaraan", value: "STNK-123456" },
         { label: "No. HP Driver", value: "0812 3456 7890" },
-        { label: "Penerima", value: "Bambang Gunawan" },
+        { label: "Penerima", value: "Fachri Maulana Hattami" },
         { label: "Persetujuan Eksekutif", value: "PO disetujui Direksi" },
       ],
       items: [
@@ -158,7 +158,7 @@ function sampleDocument(kind: DocumentKind): UniversalDocumentData {
       terms: undefined,
       notes: "Material diterima dalam kondisi baik.",
       signatures: [
-        { heading: "Ditandatangani Oleh / Signed By", name: "Bambang Gunawan", role: "Logistik" },
+        { heading: "Ditandatangani Oleh / Signed By", name: "Fachri Maulana Hattami", role: "Koordinator Logistik" },
         { heading: "Diketahui Oleh / Acknowledged By", name: "Siti Rahmawati", role: "Keuangan" },
         { heading: "Diterima Oleh / Received By", name: "Penerima Proyek", role: "Penerima" },
       ],
