@@ -1,21 +1,18 @@
-import { join, resolve } from "node:path";
 import {
+  CloudinaryPhotoValidationError,
   removeCloudinaryPhoto,
   getCloudinaryPublicId,
+  uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
 import { DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/direct-stock-purchase-photo-config";
 import {
-  PrivatePhotoValidationError,
   readPrivatePhoto,
   removePrivatePhoto,
-  savePrivatePhoto,
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
-const photoDirectory = process.env.DIRECT_STOCK_PURCHASE_PHOTO_UPLOAD_DIR
-  ? resolve(process.env.DIRECT_STOCK_PURCHASE_PHOTO_UPLOAD_DIR)
-  : join(process.cwd(), ".private-data", "direct-stock-purchase-photos");
+const photoDirectory = process.env.DIRECT_STOCK_PURCHASE_PHOTO_UPLOAD_DIR;
 
 type PhotoMimeType = PrivatePhotoMimeType;
 
@@ -28,15 +25,14 @@ export class DirectStockPurchasePhotoValidationError extends Error {
 
 export async function saveDirectStockPurchasePhoto(file: File): Promise<string> {
   try {
-    const photo = await savePrivatePhoto(
+    const photo = await uploadCloudinaryPhoto(
       file,
-      photoDirectory,
-      "/api/logistics/direct-stock-purchase-photo",
+      DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER,
       MAX_PHOTO_BYTES,
     );
-    return photo.url;
+    return photo.secureUrl;
   } catch (error) {
-    if (error instanceof PrivatePhotoValidationError) {
+    if (error instanceof CloudinaryPhotoValidationError) {
       throw new DirectStockPurchasePhotoValidationError(error.message);
     }
     throw error;
@@ -45,11 +41,13 @@ export async function saveDirectStockPurchasePhoto(file: File): Promise<string> 
 
 export async function removeDirectStockPurchasePhoto(url: string): Promise<void> {
   if (await removeCloudinaryPhoto(url)) return;
-  await removePrivatePhoto(
-    url,
-    photoDirectory,
-    "/api/logistics/direct-stock-purchase-photo",
-  );
+  if (photoDirectory) {
+    await removePrivatePhoto(
+      url,
+      photoDirectory,
+      "/api/logistics/direct-stock-purchase-photo",
+    );
+  }
 }
 
 export function isDirectStockPurchaseCloudinaryPhotoUrl(url: string): boolean {
@@ -73,5 +71,5 @@ export function isDirectStockPurchaseCloudinaryPhotoUrl(url: string): boolean {
 export async function readDirectStockPurchasePhoto(
   fileName: string,
 ): Promise<{ bytes: Uint8Array; contentType: PhotoMimeType } | null> {
-  return readPrivatePhoto(fileName, photoDirectory);
+  return photoDirectory ? readPrivatePhoto(fileName, photoDirectory) : null;
 }

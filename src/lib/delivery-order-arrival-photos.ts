@@ -1,19 +1,17 @@
-import { join, resolve } from "node:path";
 import {
+  CloudinaryPhotoValidationError,
   removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
+import { DO_ARRIVAL_PHOTO_CLOUDINARY_FOLDER } from "@/lib/delivery-order-arrival-photo-config";
 import {
-  PrivatePhotoValidationError,
   readPrivatePhoto,
   removePrivatePhoto,
-  savePrivatePhoto,
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
-const photoDirectory = process.env.DO_ARRIVAL_PHOTO_UPLOAD_DIR
-  ? resolve(process.env.DO_ARRIVAL_PHOTO_UPLOAD_DIR)
-  : join(process.cwd(), ".private-data", "delivery-order-arrival-photos");
+const photoDirectory = process.env.DO_ARRIVAL_PHOTO_UPLOAD_DIR;
 
 type ArrivalPhotoMimeType = PrivatePhotoMimeType;
 
@@ -28,15 +26,14 @@ export async function saveDeliveryOrderArrivalPhoto(
   file: File,
 ): Promise<string> {
   try {
-    const photo = await savePrivatePhoto(
+    const photo = await uploadCloudinaryPhoto(
       file,
-      photoDirectory,
-      "/api/documents/do/arrival-photo",
+      DO_ARRIVAL_PHOTO_CLOUDINARY_FOLDER,
       MAX_PHOTO_BYTES,
     );
-    return photo.url;
+    return photo.secureUrl;
   } catch (error) {
-    if (error instanceof PrivatePhotoValidationError) {
+    if (error instanceof CloudinaryPhotoValidationError) {
       throw new DeliveryOrderArrivalPhotoValidationError(error.message);
     }
     throw error;
@@ -45,15 +42,17 @@ export async function saveDeliveryOrderArrivalPhoto(
 
 export async function removeDeliveryOrderArrivalPhoto(url: string): Promise<void> {
   if (await removeCloudinaryPhoto(url)) return;
-  await removePrivatePhoto(
-    url,
-    photoDirectory,
-    "/api/documents/do/arrival-photo",
-  );
+  if (photoDirectory) {
+    await removePrivatePhoto(
+      url,
+      photoDirectory,
+      "/api/documents/do/arrival-photo",
+    );
+  }
 }
 
 export async function readDeliveryOrderArrivalPhoto(
   fileName: string,
 ): Promise<{ bytes: Uint8Array; contentType: ArrivalPhotoMimeType } | null> {
-  return readPrivatePhoto(fileName, photoDirectory);
+  return photoDirectory ? readPrivatePhoto(fileName, photoDirectory) : null;
 }

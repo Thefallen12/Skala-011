@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useState, useTransition, type FormEvent } from "react";
 import { reviewPurchaseOrder } from "@/app/actions/orders";
 import {
@@ -25,6 +26,7 @@ import PaymentModal, {
   type PaymentModalTarget,
 } from "@/app/components/apps/finance/PaymentModal";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
+import FinancePaymentProofReplacement from "@/app/components/apps/finance/FinancePaymentProofReplacement";
 import DocumentPdfGenerator, {
   type DocumentTemplateOption,
 } from "@/app/components/apps/documents/DocumentPdfGenerator";
@@ -60,19 +62,34 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
 import {
+  photoDownloadHref,
+  withLocalPhotoPreview,
+} from "@/lib/photo-urls";
+import {
   POPaymentMethod,
   PaymentType,
   UserRole,
 } from "@/generated/prisma/enums";
 import {
+  Download,
+  ExternalLink,
   Eye,
   FileCheck2,
+  FileText,
   Fuel,
   History,
   ReceiptText,
@@ -206,8 +223,13 @@ const currency = (amount: number | string | null) =>
         maximumFractionDigits: 0,
       }).format(Number(amount));
 
-const paymentReceiptHref = (url: string) =>
-  url.startsWith("/api/tickets/receipts/") ? `${url}?preview=1` : url;
+const paymentReceiptHref = withLocalPhotoPreview;
+
+const isImageReceipt = (url: string) =>
+  /\.(?:jpe?g|png|webp)$/i.test(url.split(/[?#]/, 1)[0]);
+
+const isPdfReceipt = (url: string) =>
+  /\.pdf$/i.test(url.split(/[?#]/, 1)[0]);
 
 export default function FinanceHub({
   purchaseOrders,
@@ -267,6 +289,11 @@ export default function FinanceHub({
     kind: FinancePaymentRow["kind"];
     id: string;
   } | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<{
+    label: string;
+    url: string;
+  } | null>(null);
+  const [unavailableProofUrls, setUnavailableProofUrls] = useState<string[]>([]);
   const [selection, setSelection] = useState<Selection>(() => {
     if (!initialOpenSheet) return null;
     if (purchaseOrders.some((order) => order.publicCode === initialOpenSheet)) {
@@ -593,7 +620,7 @@ export default function FinanceHub({
   };
 
   const submitModalPayment = async (
-    proofOfTransferUrl: string,
+    proof: string | File,
     transferDestination: string,
     type: PaymentType,
     amount: number,
@@ -609,7 +636,9 @@ export default function FinanceHub({
           : { kind: "direct-purchase" as const, id: selectedPaymentRow.id };
     return submitPaymentRecord({
       target,
-      proofOfTransferUrl,
+      ...(typeof proof === "string"
+        ? { proofOfTransferUrl: proof }
+        : { file: proof }),
       transferDestination,
       paymentType: type,
       amount,
@@ -667,6 +696,91 @@ export default function FinanceHub({
     });
   };
 
+  const renderPaymentProof = (
+    paymentTransactionId: string,
+    url: string | null,
+    label: string,
+  ) => {
+    if (!url) {
+      return <span className="text-muted-foreground">Tidak ada bukti</span>;
+    }
+
+    if (isImageReceipt(url)) {
+      if (unavailableProofUrls.includes(url)) {
+        return (
+          <div className="flex flex-col items-start gap-2">
+            <span
+              className="inline-flex items-center gap-2 rounded-md border border-dashed px-2 py-2 text-xs text-muted-foreground"
+              role="status"
+            >
+              <FileText className="size-4 shrink-0" aria-hidden="true" />
+              Foto bukti tidak dapat dimuat
+            </span>
+            {url.startsWith("/api/tickets/receipts/") && (
+              <FinancePaymentProofReplacement
+                paymentTransactionId={paymentTransactionId}
+                label={label}
+                onSaved={() => router.refresh()}
+              />
+            )}
+          </div>
+        );
+      }
+
+      return (
+        <button
+          type="button"
+          className="group flex items-center gap-2 rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`Lihat pratinjau ${label}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            setReceiptPreview({ label, url });
+          }}
+        >
+          <Image
+            src={paymentReceiptHref(url)}
+            alt={label}
+            width={64}
+            height={64}
+            className="size-16 rounded-md border object-cover transition-transform group-hover:scale-105"
+            unoptimized
+            onError={() => {
+              setUnavailableProofUrls((current) =>
+                current.includes(url) ? current : [...current, url],
+              );
+            }}
+          />
+          <span className="text-sm font-medium text-primary underline-offset-4 group-hover:underline">
+            Lihat Foto
+          </span>
+        </button>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <Button asChild size="sm" variant="outline">
+          <a
+            href={paymentReceiptHref(url)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <ExternalLink className="mr-2 size-4" aria-hidden="true" />
+            Lihat Bukti Transfer
+          </a>
+        </Button>
+        {url.startsWith("/api/tickets/receipts/") && (
+          <FinancePaymentProofReplacement
+            paymentTransactionId={paymentTransactionId}
+            label={label}
+            onSaved={() => router.refresh()}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-5">
       <ErpHubBrand
@@ -692,25 +806,37 @@ export default function FinanceHub({
         onValueChange={setActiveTab}
         className="space-y-5"
       >
-        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
-          <TabsTrigger value="check" className="gap-2">
-            <FileCheck2 className="size-4" />
-            1. Perlu Diperiksa (PO & Tiket)
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl border border-border/70 bg-muted/40 p-2 min-[480px]:grid-cols-2 xl:grid-cols-4">
+          <TabsTrigger
+            value="check"
+            className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+          >
+            <FileCheck2 className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1">1. Perlu Diperiksa (PO & Tiket)</span>
             <Badge variant="secondary">{purchaseOrders.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="payment" className="gap-2">
-            <ReceiptText className="size-4" />
-            2. Antrean Pembayaran
+          <TabsTrigger
+            value="payment"
+            className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+          >
+            <ReceiptText className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1">2. Antrean Pembayaran</span>
             <Badge variant="secondary">{pendingPaymentCount}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2">
-            <History className="size-4" />
-            3. Riwayat & Bukti Transfer
+          <TabsTrigger
+            value="history"
+            className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+          >
+            <History className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1">3. Riwayat & Bukti Transfer</span>
             <Badge variant="secondary">{paymentHistoryRows.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="operations" className="gap-2">
-            <Fuel className="size-4" />
-            Operasional Lainnya
+          <TabsTrigger
+            value="operations"
+            className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+          >
+            <Fuel className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1">Operasional Lainnya</span>
             <Badge variant="secondary">
               {termyns.length + vehicleTripLogs.length + vehicleFuelRequests.length}
             </Badge>
@@ -978,27 +1104,10 @@ export default function FinanceHub({
                         </TableCell>
                         <TableCell>{currency(payment.amount)}</TableCell>
                         <TableCell>
-                          {payment.proofOfTransferUrl ? (
-                            <Button asChild size="sm" variant="outline">
-                              <a
-                                href={paymentReceiptHref(
-                                  payment.proofOfTransferUrl,
-                                )}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(event) => event.stopPropagation()}
-                              >
-                                <ReceiptText
-                                  className="mr-2 size-4"
-                                  aria-hidden="true"
-                                />
-                                Lihat Bukti Transfer
-                              </a>
-                            </Button>
-                          ) : (
-                            <span className="text-muted-foreground">
-                              Tidak ada bukti
-                            </span>
+                          {renderPaymentProof(
+                            payment.id,
+                            payment.proofOfTransferUrl,
+                            `Bukti transfer ${payment.reference}`,
                           )}
                         </TableCell>
                       </TableRow>
@@ -1251,7 +1360,7 @@ export default function FinanceHub({
                       {request.transferProofUrl && (
                         <a
                           className="font-medium text-primary underline"
-                          href={`${request.transferProofUrl}?preview=1`}
+                          href={photoDownloadHref(request.transferProofUrl)}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -1268,7 +1377,7 @@ export default function FinanceHub({
                   <div className="flex flex-wrap gap-2 text-sm">
                     <a
                       className="font-medium text-primary underline"
-                      href={`${request.beforeFillingPhotoUrl}?preview=1`}
+                      href={photoDownloadHref(request.beforeFillingPhotoUrl)}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -1277,7 +1386,7 @@ export default function FinanceHub({
                     {request.afterFillingPhotoUrl && (
                       <a
                         className="font-medium text-primary underline"
-                        href={`${request.afterFillingPhotoUrl}?preview=1`}
+                        href={photoDownloadHref(request.afterFillingPhotoUrl)}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -1287,7 +1396,7 @@ export default function FinanceHub({
                     {request.receiptPhotoUrl && (
                       <a
                         className="font-medium text-primary underline"
-                        href={`${request.receiptPhotoUrl}?preview=1`}
+                        href={photoDownloadHref(request.receiptPhotoUrl)}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -1510,7 +1619,9 @@ export default function FinanceHub({
                   : "PO ini sudah lunas."}
                 {activeStandaloneOrder.paymentReceiptUrl && (
                   <a
-                    href={activeStandaloneOrder.paymentReceiptUrl}
+                    href={photoDownloadHref(
+                      activeStandaloneOrder.paymentReceiptUrl,
+                    )}
                     target="_blank"
                     rel="noreferrer"
                     className="ml-2 underline"
@@ -1923,24 +2034,10 @@ export default function FinanceHub({
                           <td className="py-2 pr-3">{currency(payment.amount)}</td>
                           <td className="py-2 pr-3">{payment.transferDestination}</td>
                           <td className="py-2">
-                            {payment.proofOfTransferUrl ? (
-                              <Button asChild size="sm" variant="outline">
-                                <a
-                                  href={paymentReceiptHref(
-                                    payment.proofOfTransferUrl,
-                                  )}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  <ReceiptText
-                                    className="mr-2 size-4"
-                                    aria-hidden="true"
-                                  />
-                                  Lihat Bukti Transfer
-                                </a>
-                              </Button>
-                            ) : (
-                              "—"
+                            {renderPaymentProof(
+                              payment.id,
+                              payment.proofOfTransferUrl,
+                              `Bukti transfer ${payment.transferDestination}`,
                             )}
                           </td>
                         </tr>
@@ -1989,6 +2086,76 @@ export default function FinanceHub({
         cloudinaryCloudName={cloudinaryCloudName}
         cloudinaryApiKey={cloudinaryApiKey}
       />
+      <Dialog
+        open={receiptPreview !== null}
+        onOpenChange={(open) => {
+          if (!open) setReceiptPreview(null);
+        }}
+      >
+        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+          {receiptPreview && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{receiptPreview.label}</DialogTitle>
+                <DialogDescription>
+                  Pratinjau bukti transfer. Buka file penuh untuk melihat atau
+                  menyimpan bukti.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex min-h-56 items-center justify-center overflow-hidden rounded-md border bg-muted/30">
+                {isImageReceipt(receiptPreview.url) &&
+                unavailableProofUrls.includes(receiptPreview.url) ? (
+                  <p className="p-8 text-sm text-muted-foreground" role="status">
+                    Foto bukti tidak dapat dimuat. File mungkin sudah tidak
+                    tersedia di penyimpanan.
+                  </p>
+                ) : isImageReceipt(receiptPreview.url) ? (
+                  <Image
+                    src={paymentReceiptHref(receiptPreview.url)}
+                    alt={receiptPreview.label}
+                    width={1200}
+                    height={900}
+                    className="max-h-[65vh] max-w-full object-contain"
+                    unoptimized
+                    onError={() => {
+                      setUnavailableProofUrls((current) =>
+                        current.includes(receiptPreview.url)
+                          ? current
+                          : [...current, receiptPreview.url],
+                      );
+                    }}
+                  />
+                ) : isPdfReceipt(receiptPreview.url) ? (
+                  <iframe
+                    src={paymentReceiptHref(receiptPreview.url)}
+                    title={`Pratinjau ${receiptPreview.label}`}
+                    className="h-[65vh] w-full"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-3 p-8 text-center">
+                    <FileText className="size-12 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">
+                      Pratinjau tidak tersedia untuk jenis file ini.
+                    </p>
+                  </div>
+                )}
+              </div>
+              <DialogFooter>
+                <Button asChild variant="outline">
+                  <a
+                    href={photoDownloadHref(receiptPreview.url)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Download aria-hidden="true" />
+                    Unduh Bukti Transfer
+                  </a>
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

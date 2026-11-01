@@ -61,6 +61,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  photoDownloadHref,
+  photoDownloadLabel,
+  photoDownloadLinkProps,
+  withLocalPhotoPreview,
+} from "@/lib/photo-urls";
 
 const statusLabels: Record<TicketStatus, string> = {
   DRAFT: "Draft",
@@ -849,13 +855,9 @@ export default function TicketListing({
                                 <td className="py-2">
                                   {payment.proofOfTransferUrl ? (
                                     <a
-                                      href={
-                                        payment.proofOfTransferUrl.startsWith(
-                                          "/api/tickets/receipts/",
-                                        )
-                                          ? `${payment.proofOfTransferUrl}?preview=1`
-                                          : payment.proofOfTransferUrl
-                                      }
+                                      href={withLocalPhotoPreview(
+                                        payment.proofOfTransferUrl,
+                                      )}
                                       target="_blank"
                                       rel="noreferrer"
                                       className="text-primary underline"
@@ -1275,13 +1277,13 @@ export default function TicketListing({
               <div className="flex min-h-56 items-center justify-center overflow-hidden rounded-md border bg-muted/30">
                 {/\.(jpe?g|png|webp)$/i.test(selectedReceipt.url.split("?")[0]) ? (
                   <img
-                    src={`${selectedReceipt.url}?preview=1`}
+                    src={withLocalPhotoPreview(selectedReceipt.url)}
                     alt={selectedReceipt.label}
                     className="max-h-[65vh] max-w-full object-contain"
                   />
                 ) : selectedReceipt.url.toLowerCase().endsWith(".pdf") ? (
                   <iframe
-                    src={`${selectedReceipt.url}?preview=1`}
+                    src={withLocalPhotoPreview(selectedReceipt.url)}
                     title={`Pratinjau ${selectedReceipt.label}`}
                     className="h-[65vh] w-full"
                   />
@@ -1296,9 +1298,15 @@ export default function TicketListing({
               </div>
               <DialogFooter>
                 <Button asChild>
-                  <a href={selectedReceipt.url} download>
+                  <a
+                    href={photoDownloadHref(selectedReceipt.url)}
+                    {...photoDownloadLinkProps(selectedReceipt.url)}
+                  >
                     <Download aria-hidden="true" />
-                    Unduh Bukti
+                    {photoDownloadLabel(selectedReceipt.url).replace(
+                      "foto",
+                      "bukti",
+                    )}
                   </a>
                 </Button>
               </DialogFooter>

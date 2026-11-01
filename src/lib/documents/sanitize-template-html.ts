@@ -1,4 +1,5 @@
 import sanitizeHtml from "sanitize-html";
+import { isDocumentTemplateCloudinaryImageUrl } from "@/lib/document-template-images";
 
 const allowedTags = [
   "a", "blockquote", "br", "code", "div", "em", "h1", "h2", "h3", "hr", "img",
@@ -160,9 +161,10 @@ export function sanitizeDocumentTemplateHtml(html: string): string {
           /^\/api\/documents\/template-images\/[A-Za-z0-9._-]{1,180}$/.test(
             src,
           );
+        const safeCloudinaryImage = isDocumentTemplateCloudinaryImageUrl(src);
         return {
           tagName: "img",
-          attribs: safeImage || safeUploadedImage
+          attribs: safeImage || safeUploadedImage || safeCloudinaryImage
             ? {
                 src,
                 alt: attributes.alt ?? "",

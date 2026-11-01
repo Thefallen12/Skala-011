@@ -99,7 +99,7 @@ export async function updateMyProfile(
   } catch (error) {
     if (newPhoto) {
       try {
-        await removeUserProfilePhoto(newPhoto.url, newPhoto.sourceUrl);
+        await removeUserProfilePhoto(newPhoto.url);
       } catch (cleanupError) {
         console.error("Removing unused profile photo failed:", cleanupError);
       }

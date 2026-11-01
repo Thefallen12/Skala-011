@@ -5,6 +5,11 @@ import { Download, Image as ImageIcon } from "lucide-react";
 import type { ProjectDashboardRow } from "@/app/(DashboardLayout)/types/project";
 import { Button } from "@/components/ui/button";
 import {
+  photoDownloadLabel,
+  photoDownloadLinkProps,
+  withLocalPhotoPreview,
+} from "@/lib/photo-urls";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -90,15 +95,15 @@ export default function ProjectProgressHistoryModal({
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={`${photoUrl}?preview=1`}
+                              src={withLocalPhotoPreview(photoUrl)}
                               alt={`Foto progres ${report.reportDate}`}
                               className="h-28 w-full object-cover"
                             />
                           </button>
                           <Button asChild variant="outline" size="sm" className="w-full">
-                            <a href={photoUrl} download>
+                            <a href={photoUrl} {...photoDownloadLinkProps(photoUrl)}>
                               <Download className="mr-2 size-4" aria-hidden="true" />
-                              Unduh foto
+                              {photoDownloadLabel(photoUrl)}
                             </a>
                           </Button>
                         </div>
@@ -137,14 +142,17 @@ export default function ProjectProgressHistoryModal({
             <div className="space-y-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${selectedPhoto}?preview=1`}
+                src={withLocalPhotoPreview(selectedPhoto)}
                 alt={`Foto progres proyek ${project?.title}`}
                 className="max-h-[70vh] w-full rounded-md object-contain"
               />
               <Button asChild variant="outline">
-                <a href={selectedPhoto} download>
+                <a
+                  href={selectedPhoto}
+                  {...photoDownloadLinkProps(selectedPhoto)}
+                >
                   <Download className="mr-2 size-4" aria-hidden="true" />
-                  Unduh foto
+                  {photoDownloadLabel(selectedPhoto)}
                 </a>
               </Button>
             </div>

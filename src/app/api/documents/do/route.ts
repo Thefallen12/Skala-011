@@ -7,6 +7,7 @@ import {
   getDocumentHeaderLogoDataUrl,
 } from "@/lib/documents/qr-code";
 import { projectSiteName as formatProjectSiteName } from "@/lib/documents/project-site-name";
+import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
 import { renderPdf } from "@/lib/documents/render-pdf";
 
 export const runtime = "nodejs";
@@ -97,15 +98,32 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const publicAppUrl = resolvePublicAppUrl();
+  if (!publicAppUrl) {
+    return NextResponse.json(
+      {
+        message:
+          "Atur NEXT_PUBLIC_APP_URL ke URL HTTPS publik aplikasi agar QR verifikasi DO dapat dipindai.",
+      },
+      { status: 500 },
+    );
+  }
+
   try {
     const [qrDataUrl, approvalQrDataUrl, headerLogoDataUrl] = await Promise.all([
-      createBrandedQrDataUrl(request.nextUrl.toString(), 320),
+      createBrandedQrDataUrl(
+        new URL(
+          `/verify/do/${encodeURIComponent(publicCode)}`,
+          publicAppUrl,
+        ).toString(),
+        320,
+      ),
       deliveryOrder.po?.status === POStatus.APPROVED &&
       deliveryOrder.po.publicCode
         ? createBrandedQrDataUrl(
             new URL(
-              `/verify/po/${deliveryOrder.po.publicCode}`,
-              request.nextUrl.origin,
+              `/verify/po/${encodeURIComponent(deliveryOrder.po.publicCode)}`,
+              publicAppUrl,
             ).toString(),
             240,
           )

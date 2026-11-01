@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { TicketActionResult } from "@/app/actions/tickets";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
@@ -57,7 +57,7 @@ export default function PaymentModal({
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
   onPay: (
-    proofOfTransferUrl: string,
+    proof: string | File,
     transferDestination: string,
     paymentType: PaymentType,
     amount: number,
@@ -77,6 +77,8 @@ export default function PaymentModal({
     target?.transferDestination ?? "",
   );
   const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState("");
   const [isMessageError, setIsMessageError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -95,7 +97,8 @@ export default function PaymentModal({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!target || !receiptUrl) {
+    const proof = receiptUrl ?? pdfFile;
+    if (!target || !proof) {
       setMessage("Pilih bukti transfer terlebih dahulu.");
       setIsMessageError(true);
       return;
@@ -125,7 +128,7 @@ export default function PaymentModal({
     setIsPending(true);
     try {
       const result = await onPay(
-        receiptUrl,
+        proof,
         destination.trim(),
         paymentType,
         transferAmount,
@@ -149,6 +152,8 @@ export default function PaymentModal({
       setAmount(String(updatedRemaining));
       setPaymentType(PaymentType.FULL_PAYMENT);
       setReceiptUrl(null);
+      setPdfFile(null);
+      if (pdfInputRef.current) pdfInputRef.current.value = "";
       router.refresh();
     } catch (error) {
       console.error("Finance payment submission failed:", error);
@@ -170,7 +175,18 @@ export default function PaymentModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen && !isPending) {
+          setReceiptUrl(null);
+          setPdfFile(null);
+          setMessage("");
+          if (pdfInputRef.current) pdfInputRef.current.value = "";
+        }
+        onOpenChange(nextOpen);
+      }}
+    >
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Bayar / Transfer</DialogTitle>
@@ -278,13 +294,58 @@ export default function PaymentModal({
                   <Label>Bukti Transfer</Label>
                   <FinancePaymentProofUpload
                     value={receiptUrl}
-                    onChange={setReceiptUrl}
+                    onChange={(url) => {
+                      setReceiptUrl(url);
+                      if (url) {
+                        setPdfFile(null);
+                        if (pdfInputRef.current) pdfInputRef.current.value = "";
+                      }
+                    }}
                     cloudinaryCloudName={cloudinaryCloudName}
                     cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
                   />
+                  <label className="grid gap-2 text-sm">
+                    Atau pilih PDF bukti transfer privat (maksimal 5 MB)
+                    <Input
+                      ref={pdfInputRef}
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      disabled={isPending}
+                      onChange={(event) => {
+                        const selected = event.target.files?.[0] ?? null;
+                        if (
+                          selected &&
+                          (selected.type !== "application/pdf" ||
+                            selected.size > 5 * 1024 * 1024)
+                        ) {
+                          setPdfFile(null);
+                          event.target.value = "";
+                          setMessage(
+                            selected.size > 5 * 1024 * 1024
+                              ? "Ukuran PDF maksimal 5 MB."
+                              : "Format file harus PDF.",
+                          );
+                          setIsMessageError(true);
+                          return;
+                        }
+                        setMessage("");
+                        setIsMessageError(false);
+                        setPdfFile(selected);
+                        if (selected) setReceiptUrl(null);
+                      }}
+                    />
+                    {pdfFile && (
+                      <span className="text-xs text-muted-foreground" role="status">
+                        PDF dipilih: {pdfFile.name}
+                      </span>
+                    )}
+                  </label>
                 </div>
-                <Button type="submit" disabled={isPending || !receiptUrl}>
+                <Button
+                  type="submit"
+                  disabled={isPending || (!receiptUrl && !pdfFile)}
+                >
                   {isPending ? "Memproses..." : "Simpan Pembayaran"}
                 </Button>
               </>

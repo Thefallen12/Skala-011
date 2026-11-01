@@ -1,12 +1,18 @@
 import { join, resolve } from "node:path";
 import {
+  CloudinaryPhotoValidationError,
   deleteCloudinaryPhoto,
   removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
 import {
+  PROJECT_PROGRESS_PHOTO_CLOUDINARY_FOLDER,
+  PROJECT_WORK_POINT_PHOTO_CLOUDINARY_FOLDER,
+} from "@/lib/project-progress-photo-config";
+import {
+  PrivatePhotoValidationError,
   readPrivatePhoto,
   removePrivatePhoto,
-  savePrivatePhoto,
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
 
@@ -23,38 +29,40 @@ export type StoredProjectProgressPhoto = {
   publicId: string | null;
 };
 
-async function saveProjectProgressPhotoToDisk(
+async function saveProjectProgressPhotoToCloudinary(
   file: File,
-  urlPrefix: string,
+  folder: string,
 ): Promise<StoredProjectProgressPhoto> {
-  const photo = await savePrivatePhoto(
-    file,
-    photoDirectory,
-    urlPrefix,
-    MAX_PHOTO_BYTES,
-  );
-  return {
-    url: photo.url,
-    fileUrl: photo.url,
-    publicId: null,
-  };
+  try {
+    const photo = await uploadCloudinaryPhoto(file, folder, MAX_PHOTO_BYTES);
+    return {
+      url: photo.secureUrl,
+      fileUrl: photo.secureUrl,
+      publicId: photo.publicId,
+    };
+  } catch (error) {
+    if (error instanceof CloudinaryPhotoValidationError) {
+      throw new PrivatePhotoValidationError(error.message);
+    }
+    throw error;
+  }
 }
 
 export async function saveProjectProgressPhoto(
   file: File,
 ): Promise<StoredProjectProgressPhoto> {
-  return saveProjectProgressPhotoToDisk(
+  return saveProjectProgressPhotoToCloudinary(
     file,
-    "/api/projects/progress-photos",
+    PROJECT_PROGRESS_PHOTO_CLOUDINARY_FOLDER,
   );
 }
 
 export async function saveProjectWorkPointPhoto(
   file: File,
 ): Promise<StoredProjectProgressPhoto> {
-  return saveProjectProgressPhotoToDisk(
+  return saveProjectProgressPhotoToCloudinary(
     file,
-    "/api/projects/work-point-photos",
+    PROJECT_WORK_POINT_PHOTO_CLOUDINARY_FOLDER,
   );
 }
 

@@ -7,6 +7,10 @@ import {
 } from "@/generated/prisma/enums";
 import { auth } from "@/../auth";
 import { prisma } from "@/lib/prisma";
+import {
+  createCloudinaryPrivatePdfDownloadUrl,
+  isCloudinaryPrivateTicketReceiptPdf,
+} from "@/lib/cloudinary-private-pdfs";
 import { readTicketReceipt } from "@/lib/ticket-receipts";
 
 export async function GET(
@@ -19,7 +23,13 @@ export async function GET(
   }
 
   const { fileName } = await params;
-  const receiptUrl = `/api/tickets/receipts/${fileName}`;
+  const requestUrl = new URL(request.url);
+  const cloudinaryPdfUrl = requestUrl.searchParams.get("url");
+  if (cloudinaryPdfUrl && !isCloudinaryPrivateTicketReceiptPdf(cloudinaryPdfUrl)) {
+    return new Response("Not found", { status: 404 });
+  }
+  const receiptUrl =
+    cloudinaryPdfUrl ?? `/api/tickets/receipts/${fileName}`;
   const [ticket, deliveryOrder, vehicleFuelRequest, payment] = await Promise.all([
     prisma.ticket.findFirst({
       where: {
@@ -184,12 +194,33 @@ export async function GET(
     return new Response("Forbidden", { status: 403 });
   }
 
+  if (cloudinaryPdfUrl) {
+    try {
+      const preview = requestUrl.searchParams.get("preview") === "1";
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: createCloudinaryPrivatePdfDownloadUrl(
+            cloudinaryPdfUrl,
+            !preview,
+          ),
+          "Cache-Control": "private, no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+        },
+      });
+    } catch (error) {
+      console.error("Creating authorized Cloudinary PDF link failed:", error);
+      return new Response("Unable to open receipt", { status: 502 });
+    }
+  }
+
   const receipt = await readTicketReceipt(fileName);
   if (!receipt) {
     return new Response("Not found", { status: 404 });
   }
   const preview =
-    new URL(request.url).searchParams.get("preview") === "1" &&
+    requestUrl.searchParams.get("preview") === "1" &&
     (receipt.contentType.startsWith("image/") ||
       receipt.contentType === "application/pdf");
 

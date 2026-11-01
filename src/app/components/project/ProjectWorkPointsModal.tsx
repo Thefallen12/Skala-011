@@ -16,6 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  photoDownloadLabel,
+  photoDownloadLinkProps,
+  withLocalPhotoPreview,
+} from "@/lib/photo-urls";
 
 const formatCurrency = (value: string) =>
   new Intl.NumberFormat("id-ID", {
@@ -581,7 +586,7 @@ export default function ProjectWorkPointsModal({
                                 >
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
                                   <img
-                                    src={`${photoUrl}?preview=1`}
+                                    src={withLocalPhotoPreview(photoUrl)}
                                     alt={`Foto progres ${point.title} ${report.reportDate}`}
                                     className="size-20 object-cover"
                                   />
@@ -634,13 +639,16 @@ export default function ProjectWorkPointsModal({
             <div className="space-y-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${selectedPhoto}?preview=1`}
+                src={withLocalPhotoPreview(selectedPhoto)}
                 alt={`Foto progres titik proyek ${project?.title}`}
                 className="max-h-[70vh] w-full rounded-md object-contain"
               />
               <Button asChild variant="outline">
-                <a href={selectedPhoto} download>
-                  Unduh foto
+                <a
+                  href={selectedPhoto}
+                  {...photoDownloadLinkProps(selectedPhoto)}
+                >
+                  {photoDownloadLabel(selectedPhoto)}
                 </a>
               </Button>
             </div>

@@ -37,6 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeliveryOrderTemplate from "@/components/documents/DeliveryOrderTemplate";
+import { withLocalPhotoPreview } from "@/lib/photo-urls";
 
 type DeliveryTicketOption = {
   id: string;
@@ -622,7 +623,7 @@ export default function DOEditForm({
                 {arrivalPhotoUrl && (
                   <div className="grid gap-3 sm:grid-cols-[minmax(0,320px)_1fr] sm:items-start">
                     <Image
-                      src={`${arrivalPhotoUrl}?preview=1`}
+                      src={withLocalPhotoPreview(arrivalPhotoUrl)}
                       alt="Bukti foto material tiba di gudang"
                       width={640}
                       height={480}

@@ -6,10 +6,8 @@ import {
   uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
 import {
-  PrivatePhotoValidationError,
   readPrivatePhoto,
   removePrivatePhoto,
-  savePrivatePhoto,
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
 import { USER_PROFILE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/user-profile-photo-config";
@@ -30,7 +28,6 @@ export class ProfilePhotoValidationError extends Error {
 
 export type SavedUserProfilePhoto = {
   url: string;
-  sourceUrl: string;
 };
 
 async function uploadProfileSourceToCloudinary(
@@ -70,34 +67,10 @@ export function isManagedUserProfilePhotoUrl(value: string): boolean {
 export async function saveUserProfilePhoto(
   file: File,
 ): Promise<SavedUserProfilePhoto> {
-  let photo: Awaited<ReturnType<typeof savePrivatePhoto>>;
-  try {
-    photo = await savePrivatePhoto(
-      file,
-      photoDirectory,
-      "/api/users/profile-photo",
-      MAX_PHOTO_BYTES,
-    );
-  } catch (error) {
-    if (error instanceof PrivatePhotoValidationError) {
-      throw new ProfilePhotoValidationError(error.message);
-    }
-    throw error;
-  }
-
   try {
     const uploaded = await uploadProfileSourceToCloudinary(file);
-    return { url: uploaded.url, sourceUrl: photo.url };
+    return { url: uploaded.url };
   } catch (error) {
-    try {
-      await removePrivatePhoto(
-        photo.url,
-        photoDirectory,
-        "/api/users/profile-photo",
-      );
-    } catch (cleanupError) {
-      console.error("Removing profile photo source after upload failure failed:", cleanupError);
-    }
     if (error instanceof CloudinaryPhotoValidationError) {
       throw new ProfilePhotoValidationError(error.message);
     }

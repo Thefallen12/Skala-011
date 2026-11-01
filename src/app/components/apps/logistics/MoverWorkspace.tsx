@@ -17,6 +17,10 @@ import {
   VEHICLE_FUEL_PRICE_PER_LITER,
 } from "@/lib/vehicle-fuel";
 import type { VehicleFuelRequestView } from "@/lib/vehicle-fuel-types";
+import {
+  photoDownloadHref,
+  withLocalPhotoPreview,
+} from "@/lib/photo-urls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -470,21 +474,21 @@ export default function MoverWorkspace({
                       </p>
                     )}
                     <div className="flex flex-wrap gap-3">
-                      <a className="font-medium text-primary underline" href={`${request.beforeFillingPhotoUrl}?preview=1`} target="_blank" rel="noreferrer">
+                      <a className="font-medium text-primary underline" href={photoDownloadHref(request.beforeFillingPhotoUrl)} target="_blank" rel="noreferrer">
                         Speedometer sebelum isi
                       </a>
                       {request.afterFillingPhotoUrl && (
-                        <a className="font-medium text-primary underline" href={`${request.afterFillingPhotoUrl}?preview=1`} target="_blank" rel="noreferrer">
+                        <a className="font-medium text-primary underline" href={photoDownloadHref(request.afterFillingPhotoUrl)} target="_blank" rel="noreferrer">
                           Speedometer setelah isi
                         </a>
                       )}
                       {request.receiptPhotoUrl && (
-                        <a className="font-medium text-primary underline" href={`${request.receiptPhotoUrl}?preview=1`} target="_blank" rel="noreferrer">
+                        <a className="font-medium text-primary underline" href={photoDownloadHref(request.receiptPhotoUrl)} target="_blank" rel="noreferrer">
                           Bon BBM
                         </a>
                       )}
                       {request.transferProofUrl && (
-                        <a className="font-medium text-primary underline" href={`${request.transferProofUrl}?preview=1`} target="_blank" rel="noreferrer">
+                        <a className="font-medium text-primary underline" href={photoDownloadHref(request.transferProofUrl)} target="_blank" rel="noreferrer">
                           Bukti transfer Keuangan
                         </a>
                       )}
@@ -763,7 +767,7 @@ export default function MoverWorkspace({
                         <a
                           key={receiptUrl}
                           className="text-sm font-medium text-primary underline"
-                          href={`${receiptUrl}?preview=1`}
+                          href={photoDownloadHref(receiptUrl)}
                           target="_blank"
                           rel="noreferrer"
                         >

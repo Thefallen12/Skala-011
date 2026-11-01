@@ -41,10 +41,16 @@ import {
 } from "@/lib/direct-stock-purchase-photos";
 import { MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS } from "@/lib/direct-stock-purchase-photo-config";
 import {
+  CloudinaryPhotoValidationError,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import { CloudinaryPrivatePdfValidationError } from "@/lib/cloudinary-private-pdfs";
+import {
   removeTicketReceipt,
   saveTicketReceipt,
 } from "@/lib/ticket-receipts";
 import { isFinancePaymentProofUrl } from "@/lib/finance-payment-proofs";
+import { FINANCE_PAYMENT_PROOF_CLOUDINARY_FOLDER } from "@/lib/finance-payment-proof-config";
 
 async function storeFinancePaymentProof(proof: File | string): Promise<string> {
   if (typeof proof === "string") {
@@ -53,7 +59,17 @@ async function storeFinancePaymentProof(proof: File | string): Promise<string> {
     }
     return proof;
   }
-  return saveTicketReceipt(proof);
+  if (proof.type === "application/pdf") {
+    return saveTicketReceipt(proof);
+  }
+  const uploaded = await uploadCloudinaryPhoto(
+    proof,
+    FINANCE_PAYMENT_PROOF_CLOUDINARY_FOLDER,
+  );
+  if (!isFinancePaymentProofUrl(uploaded.secureUrl)) {
+    throw new Error("Cloudinary mengembalikan URL foto bukti yang tidak valid.");
+  }
+  return uploaded.secureUrl;
 }
 
 type TicketItemInput = {
@@ -3397,6 +3413,75 @@ export async function submitPaymentRecord(input: {
     );
   }
   return actionFailure("Jenis tagihan tidak valid.");
+}
+
+export async function replaceFinancePaymentProof(
+  paymentTransactionId: string,
+  file: File,
+): Promise<TicketActionResult> {
+  const session = await auth();
+  if (!session?.user?.id || session.user.role !== UserRole.FINANCE) {
+    return actionFailure("Hanya Keuangan yang dapat mengganti bukti transfer.");
+  }
+  if (
+    !isBoundedText(paymentTransactionId, 191) ||
+    !paymentTransactionId.trim() ||
+    !(file instanceof File) ||
+    file.size < 1 ||
+    file.size > 5 * 1024 * 1024
+  ) {
+    return actionFailure("Pilih file bukti (PDF/JPG/PNG/WEBP) maksimal 5 MB.");
+  }
+
+  let uploadedProofUrl: string | null = null;
+  try {
+    uploadedProofUrl = await storeFinancePaymentProof(file);
+    if (!isFinancePaymentProofUrl(uploadedProofUrl)) {
+      throw new Error("Cloudinary mengembalikan URL bukti yang tidak valid.");
+    }
+
+    const updated = await prisma.paymentTransaction.updateMany({
+      where: {
+        id: paymentTransactionId.trim(),
+        status: PaymentStatus.PAID,
+        proofOfTransferUrl: { startsWith: "/api/tickets/receipts/" },
+      },
+      data: { proofOfTransferUrl: uploadedProofUrl },
+    });
+    if (updated.count !== 1) {
+      await removeTicketReceipt(uploadedProofUrl);
+      return actionFailure(
+        "Transaksi tidak ditemukan atau bukti transfernya sudah diperbarui.",
+      );
+    }
+  } catch (error) {
+    if (uploadedProofUrl) {
+      try {
+        await removeTicketReceipt(uploadedProofUrl);
+      } catch (cleanupError) {
+        console.error(
+          "Failed to remove an unreferenced replacement payment proof:",
+          cleanupError,
+        );
+      }
+    }
+    console.error("Finance payment proof replacement failed:", error);
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryPrivatePdfValidationError
+    ) {
+      return actionFailure(error.message);
+    }
+    return actionFailure("Bukti transfer gagal diperbarui. Silakan coba kembali.");
+  }
+
+  revalidatePath("/apps/finance");
+  revalidatePath("/apps/tickets");
+  revalidatePath("/apps/orders");
+  return {
+    success: true,
+    message: "Bukti transfer berhasil diperbarui.",
+  };
 }
 
 export async function processMoverDelivery(

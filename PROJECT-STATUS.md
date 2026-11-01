@@ -15,6 +15,16 @@ Model `ProjectProgressPhoto` dan relasinya sudah ditambahkan ke skema, dan Prism
 
 ## Pekerjaan yang sudah dilakukan
 
+### Audit unggah dan review foto Cloudinary
+
+- Jalur unggah baru untuk foto bukti tiket/keuangan, progres proyek dan titik kerja, foto profil, gambar template dokumen, foto penerimaan DO, serta bukti pembelian langsung kini menyimpan URL Cloudinary; tidak ada writer foto aktif yang menyimpan foto baru ke disk lokal.
+- Upload server-side menggunakan Cloudinary API dan memvalidasi ukuran, MIME, serta signature foto. Alur widget langsung ke Cloudinary menggunakan endpoint tanda tangan server yang dibatasi role dan folder upload.
+- Foto baru memakai URL Cloudinary langsung. PDF bukti transaksi baru diunggah sebagai aset `raw/authenticated` Cloudinary; route aplikasi memeriksa autentikasi dan hak akses transaksi sebelum membuat tautan unduh/pratinjau bertanda tangan yang berlaku singkat. PDF bukti lokal yang lama tetap dapat dibaca melalui endpoint legacy.
+- PDF PO/DO yang dihasilkan tetap dibuat saat diminta, sedangkan blueprint/CAD tetap disimpan lokal; keduanya bukan bukti unggahan yang sedang dimigrasikan.
+- Endpoint foto lokal yang tersisa hanya untuk membaca atau menghapus data legacy. URL lama belum dimigrasikan otomatis dan tetap membutuhkan volume penyimpanan asal.
+- Jika transaksi database gagal setelah unggah, aksi yang mengelola transaksi menghapus aset Cloudinary yang belum terpakai. Aset yatim masih mungkin tertinggal bila proses host berhenti di antara upload dan penyimpanan database.
+- TypeScript, ESLint terarah, dan `git diff --check` lulus. Uji unggah Cloudinary dengan file nyata belum dilakukan; foto Cloudinary saat ini menggunakan URL delivery langsung, sehingga aturan privasi folder/akun Cloudinary perlu dipastikan sesuai sensitivitas bukti keuangan dan foto proyek.
+
 ### Data proyek dan dashboard
 
 - Memeriksa workbook `D:\apps\data rehap sedang.xlsx` dan mengimpor 38 proyek yang valid.
@@ -35,8 +45,7 @@ Model `ProjectProgressPhoto` dan relasinya sudah ditambahkan ke skema, dan Prism
 - Menambahkan relasi `ProjectProgressPhoto` pada `DailyReport`.
 - Menambahkan unggah opsional maksimal 5 foto per laporan, maksimal 5 MB per foto.
 - Membatasi format JPG, PNG, dan WEBP serta memeriksa signature file di server.
-- Menyimpan file di direktori privat `.private-data/project-progress-photos` secara default; direktori dapat dikonfigurasi dengan `PROJECT_PROGRESS_UPLOAD_DIR`.
-- Menambahkan endpoint privat yang membutuhkan autentikasi dan mencocokkan URL foto dengan rekaman database.
+- Foto baru diunggah langsung ke Cloudinary; endpoint privat lama tetap menjadi fallback baca untuk URL foto yang tersimpan sebelum migrasi.
 - Menambahkan riwayat laporan, pratinjau, dan unduh foto dari menu aksi proyek.
 - Memperbesar batas body Server Actions menjadi 27 MB untuk mengakomodasi unggahan sampai 25 MB beserta overhead multipart.
 - Menghapus file unggahan baru bila transaksi database gagal sebelum commit.
@@ -159,9 +168,9 @@ Validasi terakhir: `prisma format`, `prisma validate`, `prisma generate`, `prism
 - Dynamic import client-only dipakai untuk ApexCharts agar tidak mengakses `window` pada SSR. Form tambah tugas diuji berhasil membuat dan menghapus tugas uji melalui UI; batasan durasi 24 jam dihapus agar tugas lintas hari dapat disimpan. Perubahan kalender melewati Prisma format/validate/generate/db push; type-check dan lint terbaru lulus. Build produksi setelah penambahan tampilan periode, penanda hari ini, dan kolom proyek sticky juga lulus.
 - Peringatan gambar/smooth-scroll yang berasal dari layout global tidak terkait modul Habit dan tidak diubah.
 - `src/app/actions/project.ts` — validasi akses dan penyimpanan progres/foto.
-- `src/lib/project-progress-photos.ts` — validasi signature dan penyimpanan file privat.
-- `src/app/api/projects/progress-photos/[fileName]/route.ts` — preview/unduh privat.
-- `src/app/api/projects/work-point-photos/[fileName]/route.ts` — preview/unduh foto progres per titik.
+- `src/lib/project-progress-photos.ts` — unggah Cloudinary, hapus foto, dan baca fallback file lokal lama.
+- `src/app/api/projects/progress-photos/[fileName]/route.ts` — endpoint terautentikasi untuk foto lokal lama.
+- `src/app/api/projects/work-point-photos/[fileName]/route.ts` — endpoint terautentikasi untuk foto titik lokal lama.
 - `src/app/components/project/ProjectWorkPointsModal.tsx` — daftar titik, usulan/persetujuan upah, progres, dan foto.
 - `src/app/(DashboardLayout)/apps/project/page.tsx` — query riwayat laporan dan URL foto.
 - `src/app/(DashboardLayout)/types/project.ts` — tipe data dashboard dan laporan.
@@ -178,10 +187,10 @@ Validasi terakhir: `prisma format`, `prisma validate`, `prisma generate`, `prism
 2. Uji simpan progres tanpa foto, lalu uji unggah dan tampilkan foto JPG/PNG/WEBP.
 3. Uji batas validasi: lebih dari 5 foto, file lebih dari 5 MB, format lain, dan file dengan MIME yang tidak cocok dengan signature-nya.
 4. Pastikan laporan pada tanggal yang sama menambahkan foto yang sudah ada dan menolak jumlah gabungan di atas 5 foto.
-5. Uji pratinjau dan unduh foto, serta pastikan request tanpa login ditolak.
-6. Untuk deployment, gunakan penyimpanan persisten bersama seperti object storage atau volume persisten. Filesystem lokal/serverless tidak selalu bertahan setelah restart atau tersedia di setiap instance.
+5. Uji preview foto baru melalui URL Cloudinary dan pastikan route lokal legacy tetap menolak request tanpa login.
+6. Foto baru memerlukan konfigurasi Cloudinary; file foto lama tetap memerlukan volume lokal asal sampai dimigrasikan.
 7. Verifikasi batas body request dari reverse proxy/hosting; batas aplikasi 27 MB tidak menaikkan batas proxy secara otomatis.
-8. Pertimbangkan pembersihan foto yatim lama apabila proses host berhenti di tengah unggah sebelum transaksi database selesai.
+8. Pertimbangkan pembersihan foto yatim Cloudinary apabila proses host berhenti di tengah unggah sebelum transaksi database selesai.
 9. Uji alur dengan akun Team Lapangan yang ditunjuk, akun Team Lapangan lain yang tidak ditunjuk, Admin, dan Direktur; pastikan proposal/upah mengikuti aturan akses.
 10. Uji tambah titik, persetujuan/updating nilai, dan foto progres per titik di browser dengan sesi autentikasi.
 11. Pertimbangkan riwayat audit perubahan nilai upah agar nilai usulan, persetujuan, dan koreksi Admin/Direktur dapat ditelusuri.
@@ -206,10 +215,10 @@ Skenario berikut dapat dijalankan dari `http://localhost:3000/apps/project`; beb
 4. **Mengirim progres dan foto per titik**
    - Locator: tombol **Kirim progres & foto titik** → **Tanggal progres**, **Progres kumulatif (%)**, **Catatan pekerjaan**, **Foto progres titik (opsional)**.
    - Aksi: sebagai PIC, kirim progres tanpa foto dan dengan foto JPG/PNG/WEBP (maksimal 5 foto, 5 MB per foto).
-   - Harapan: progres/tanggal/catatan tersimpan di titik yang benar; foto dapat dibuka pada preview dan diunduh melalui endpoint privat.
+   - Harapan: progres/tanggal/catatan tersimpan di titik yang benar; foto baru tersimpan di Cloudinary dan dapat dibuka langsung.
 5. **Validasi akses dan unggahan**
    - Aksi: coba ubah titik sebagai user Team Lapangan yang bukan PIC; akses endpoint foto tanpa login; kirim lebih dari 5 foto, file lebih dari 5 MB, atau format MIME yang tak didukung.
-   - Harapan: user yang bukan PIC ditolak; tanpa login endpoint memberi `401`; input foto yang melanggar batas/format ditolak dengan pesan yang jelas.
+   - Harapan: user yang bukan PIC ditolak; route foto lokal lama memberi `401` tanpa login; input foto yang melanggar batas/format ditolak dengan pesan yang jelas.
 
 ## Logistik, Tiket Material, PO/DO, dan Dokumen
 
@@ -456,7 +465,7 @@ Pembaruan 22 Oktober 2026:
 
 - DO ekspedisi menyimpan waktu tiba, akun penerima Logistik, dan URL foto bukti secara terpisah.
 - Saat status DO ekspedisi diubah menjadi **Terkirim**, hanya role Logistik yang dapat menyelesaikannya dan foto JPG/PNG/WEBP maksimal 5 MB wajib diunggah. Waktu dicatat server, penerima dicatat dari akun Logistik, lalu nama penerima diperbarui pada DO.
-- Foto disimpan di `.private-data/delivery-order-arrival-photos` (dapat dikonfigurasi melalui `DO_ARRIVAL_PHOTO_UPLOAD_DIR`) dan diakses melalui endpoint terautentikasi yang hanya menghidangkan file yang terhubung ke DO.
+- Foto baru diunggah langsung ke Cloudinary. Endpoint privat lama tetap tersedia untuk membaca foto penerimaan DO yang tersimpan secara lokal.
 - Pratinjau/cetak DO dan PDF menampilkan nama penerima Logistik dan waktu kedatangan setelah penerimaan tercatat; halaman DO menampilkan foto bukti.
 - Metode pengiriman dikunci setelah DO diterbitkan agar pengiriman ekspedisi tidak dapat dialihkan menjadi Mover internal untuk melewati persyaratan bukti penerimaan.
 - Skema baru diformat, divalidasi, digenerate, dan disinkronkan ke PostgreSQL. TypeScript, ESLint terarah, dan production build lulus. Upload foto end-to-end belum diuji dengan file nyata.
@@ -466,7 +475,7 @@ Pembaruan 22 Oktober 2026:
 - Formulir pembelian langsung menggunakan struktur PO: vendor dari katalog, rincian beberapa barang, jumlah desimal, harga satuan, referensi, catatan, dan PPN. Data bank/metode bayar diambil dari vendor terpilih.
 - Pembelian langsung berstatus **Menunggu penerimaan** dan tidak mengubah saldo persediaan saat dibuat.
 - Bagian Logistik atau Administrasi dapat menekan **Terima Barang** dan wajib mengunggah foto JPG/PNG/WEBP maksimal 5 MB. Saldo stok, harga rata-rata, pergerakan `IN`, waktu penerimaan, penerima, dan URL foto disimpan atomik; penerimaan ulang diblokir.
-- Foto disimpan privat di `.private-data/direct-stock-purchase-photos` (dapat dikonfigurasi melalui `DIRECT_STOCK_PURCHASE_PHOTO_UPLOAD_DIR`) dan hanya bisa dibaca pengguna berwenang untuk pembelian yang memiliki foto terkait.
+- Foto baru diunggah langsung ke Cloudinary; endpoint privat lama tetap menjadi fallback baca untuk foto pembelian langsung yang tersimpan secara lokal.
 - Formulir bersama digunakan dari tab Stok Gudang di Command Hub maupun halaman Stok Logistik. Kartu ringkasan logistik kini mengatur filter status, termasuk tiket yang sedang dikirim.
 - Validasi terakhir: Prisma format/validate/generate, `prisma db push`, TypeScript, ESLint terarah, dan production build berhasil. Uji penerimaan foto dengan file nyata belum dilakukan.
 
