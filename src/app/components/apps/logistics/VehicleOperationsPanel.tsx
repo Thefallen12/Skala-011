@@ -10,13 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import VehicleTripLogTable from "@/app/components/apps/logistics/VehicleTripLogTable";
 
 type ProjectOption = { id: string; title: string; kelompokTani: string };
@@ -215,15 +216,15 @@ export default function VehicleOperationsPanel({
         </section>
       </CardContent>
 
-      <Dialog open={masterOpen} onOpenChange={(open) => !isPending && setMasterOpen(open)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Daftarkan Master Kendaraan</DialogTitle>
-            <DialogDescription>
+      <Sheet open={masterOpen} onOpenChange={(open) => !isPending && setMasterOpen(open)}>
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
+          <SheetHeader className="pr-8">
+            <SheetTitle>Daftarkan Master Kendaraan</SheetTitle>
+            <SheetDescription>
               KM awal akan menjadi acuan odometer untuk log perjalanan berikutnya.
-            </DialogDescription>
-          </DialogHeader>
-          <form id="vehicle-master-form" className="space-y-3" onSubmit={submitVehicle}>
+            </SheetDescription>
+          </SheetHeader>
+          <form id="vehicle-master-form" className="mt-6 space-y-3" onSubmit={submitVehicle}>
             <label className="grid gap-1 text-sm">
               Nomor plat
               <Input name="plateNumber" required maxLength={20} placeholder="BL 1234 AB" />
@@ -244,27 +245,29 @@ export default function VehicleOperationsPanel({
               KM awal
               <Input name="initialKilometer" type="number" min="0" step="0.01" required defaultValue="0" />
             </label>
+            <SheetFooter>
+              <SheetClose asChild>
+                <Button type="button" variant="outline" disabled={isPending}>
+                  Batal
+                </Button>
+              </SheetClose>
+              <Button type="submit" form="vehicle-master-form" disabled={isPending}>
+                {isPending ? "Menyimpan..." : "Daftarkan"}
+              </Button>
+            </SheetFooter>
           </form>
-          <DialogFooter>
-            <Button type="submit" form="vehicle-master-form" disabled={isPending}>
-              {isPending ? "Menyimpan..." : "Daftarkan"}
-            </Button>
-            <Button type="button" variant="outline" disabled={isPending} onClick={() => setMasterOpen(false)}>
-              Batal
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
 
-      <Dialog open={logOpen} onOpenChange={(open) => !isPending && setLogOpen(open)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Catat Log Perjalanan & BBM</DialogTitle>
-            <DialogDescription>
+      <Sheet open={logOpen} onOpenChange={(open) => !isPending && setLogOpen(open)}>
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
+          <SheetHeader className="pr-8">
+            <SheetTitle>Catat Log Perjalanan & BBM</SheetTitle>
+            <SheetDescription>
               Jarak dihitung dari odometer dan liter estimasi = jarak ÷ 15.
-            </DialogDescription>
-          </DialogHeader>
-          <form id="vehicle-trip-form" className="space-y-3" onSubmit={submitTripLog}>
+            </SheetDescription>
+          </SheetHeader>
+          <form id="vehicle-trip-form" className="mt-6 space-y-3" onSubmit={submitTripLog}>
             <label className="grid gap-1 text-sm">
               Kendaraan
               <select
@@ -320,17 +323,23 @@ export default function VehicleOperationsPanel({
                 <Input name="kilometerEnd" type="number" min="0" step="0.01" required />
               </label>
             </div>
+            <SheetFooter>
+              <SheetClose asChild>
+                <Button type="button" variant="outline" disabled={isPending}>
+                  Batal
+                </Button>
+              </SheetClose>
+              <Button
+                type="submit"
+                form="vehicle-trip-form"
+                disabled={isPending || !selectedVehicleId}
+              >
+                {isPending ? "Menyimpan..." : "Simpan Log"}
+              </Button>
+            </SheetFooter>
           </form>
-          <DialogFooter>
-            <Button type="submit" form="vehicle-trip-form" disabled={isPending || !selectedVehicleId}>
-              {isPending ? "Menyimpan..." : "Simpan Log"}
-            </Button>
-            <Button type="button" variant="outline" disabled={isPending} onClick={() => setLogOpen(false)}>
-              Batal
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
     </Card>
   );
 }

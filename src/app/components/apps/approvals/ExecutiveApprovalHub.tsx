@@ -472,10 +472,9 @@ export default function ExecutiveApprovalHub({
     const [kind, id] = key.split(":", 2);
     setMessage("");
     setSignedPo(null);
-    if (
-      kind === "ticket" ||
-      kind === "direct-purchase"
-    ) {
+    if (kind === "purchase") {
+      setSelection({ kind: "direct-purchase", id });
+    } else if (kind === "ticket") {
       setSelection({ kind, id });
     }
   };

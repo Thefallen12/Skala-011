@@ -21,13 +21,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 const statusLabels: Record<VehicleStatus, string> = {
   AVAILABLE: "Tersedia",
@@ -261,22 +262,22 @@ export default function VehicleFleetPanel({
         </CardContent>
       </Card>
 
-      {canManage && <Dialog
+      {canManage && <Sheet
         open={dialogOpen}
         onOpenChange={(open) => {
           if (!isPending) setDialogOpen(open);
         }}
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
+          <SheetHeader className="pr-8">
+            <SheetTitle>
               {editingVehicle ? "Edit Kendaraan" : "Tambah Kendaraan"}
-            </DialogTitle>
-            <DialogDescription>
+            </SheetTitle>
+            <SheetDescription>
               Masukkan data armada untuk digunakan pada pengiriman internal.
-            </DialogDescription>
-          </DialogHeader>
-          <form id="vehicle-form" className="space-y-4" onSubmit={submitVehicle}>
+            </SheetDescription>
+          </SheetHeader>
+          <form id="vehicle-form" className="mt-6 space-y-4" onSubmit={submitVehicle}>
             <label className="grid gap-1.5 text-sm font-medium">
               Nomor plat
               <Input
@@ -344,26 +345,19 @@ export default function VehicleFleetPanel({
                 </select>
               </label>
             )}
+            <SheetFooter>
+              <SheetClose asChild>
+                <Button type="button" variant="outline" disabled={isPending}>
+                  Batal
+                </Button>
+              </SheetClose>
+              <Button type="submit" form="vehicle-form" disabled={isPending}>
+                {isPending ? "Menyimpan..." : "Simpan"}
+              </Button>
+            </SheetFooter>
           </form>
-          <DialogFooter>
-            <Button
-              type="submit"
-              form="vehicle-form"
-              disabled={isPending}
-            >
-              {isPending ? "Menyimpan..." : "Simpan"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isPending}
-              onClick={() => setDialogOpen(false)}
-            >
-              Batal
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>}
+        </SheetContent>
+      </Sheet>}
     </>
   );
 }
