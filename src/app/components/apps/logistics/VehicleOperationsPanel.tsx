@@ -9,15 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import VehicleTripLogTable from "@/app/components/apps/logistics/VehicleTripLogTable";
 
 type ProjectOption = { id: string; title: string; kelompokTani: string };
@@ -216,14 +208,15 @@ export default function VehicleOperationsPanel({
         </section>
       </CardContent>
 
-      <Sheet open={masterOpen} onOpenChange={(open) => !isPending && setMasterOpen(open)}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>Daftarkan Master Kendaraan</SheetTitle>
-            <SheetDescription>
-              KM awal akan menjadi acuan odometer untuk log perjalanan berikutnya.
-            </SheetDescription>
-          </SheetHeader>
+      <GlobalModal
+        isOpen={masterOpen}
+        onClose={() => {
+          if (!isPending) setMasterOpen(false);
+        }}
+        title="Daftarkan Master Kendaraan"
+        description="KM awal akan menjadi acuan odometer untuk log perjalanan berikutnya."
+        className="sm:max-w-xl"
+      >
           <form id="vehicle-master-form" className="mt-6 space-y-3" onSubmit={submitVehicle}>
             <label className="grid gap-1 text-sm">
               Nomor plat
@@ -245,28 +238,31 @@ export default function VehicleOperationsPanel({
               KM awal
               <Input name="initialKilometer" type="number" min="0" step="0.01" required defaultValue="0" />
             </label>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="button" variant="outline" disabled={isPending}>
-                  Batal
-                </Button>
-              </SheetClose>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isPending}
+                onClick={() => setMasterOpen(false)}
+              >
+                Batal
+              </Button>
               <Button type="submit" form="vehicle-master-form" disabled={isPending}>
                 {isPending ? "Menyimpan..." : "Daftarkan"}
               </Button>
-            </SheetFooter>
+            </div>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
 
-      <Sheet open={logOpen} onOpenChange={(open) => !isPending && setLogOpen(open)}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>Catat Log Perjalanan & BBM</SheetTitle>
-            <SheetDescription>
-              Jarak dihitung dari odometer dan liter estimasi = jarak ÷ 15.
-            </SheetDescription>
-          </SheetHeader>
+      <GlobalModal
+        isOpen={logOpen}
+        onClose={() => {
+          if (!isPending) setLogOpen(false);
+        }}
+        title="Catat Log Perjalanan & BBM"
+        description="Jarak dihitung dari odometer dan liter estimasi = jarak ÷ 15."
+        className="sm:max-w-xl"
+      >
           <form id="vehicle-trip-form" className="mt-6 space-y-3" onSubmit={submitTripLog}>
             <label className="grid gap-1 text-sm">
               Kendaraan
@@ -323,12 +319,15 @@ export default function VehicleOperationsPanel({
                 <Input name="kilometerEnd" type="number" min="0" step="0.01" required />
               </label>
             </div>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="button" variant="outline" disabled={isPending}>
-                  Batal
-                </Button>
-              </SheetClose>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isPending}
+                onClick={() => setLogOpen(false)}
+              >
+                Batal
+              </Button>
               <Button
                 type="submit"
                 form="vehicle-trip-form"
@@ -336,10 +335,9 @@ export default function VehicleOperationsPanel({
               >
                 {isPending ? "Menyimpan..." : "Simpan Log"}
               </Button>
-            </SheetFooter>
+            </div>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
     </Card>
   );
 }

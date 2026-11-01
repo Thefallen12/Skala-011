@@ -46,13 +46,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   dateFromKey,
   formatJakartaTime,
@@ -542,19 +538,16 @@ export default function ProjectSchedule({
         </CardBox>
       </div>
 
-      <Dialog
-        open={isDialogOpen}
-        onOpenChange={(open) => {
-          setIsDialogOpen(open);
-          if (!open) setAllDay(false);
+      <GlobalModal
+        isOpen={isDialogOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setAllDay(false);
         }}
+        title="Create schedule"
+        description="Buat jadwal proyek atau agenda pribadi, atur peserta, dan simpan preferensi pengingat."
+        className="sm:max-w-lg"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-          <DialogHeader className="pr-8">
-            <DialogTitle>Create schedule</DialogTitle>
-            <DialogDescription>
-              Buat jadwal proyek atau agenda pribadi, atur peserta, dan simpan preferensi pengingat.
-            </DialogDescription>
             {message && (
               <p
                 role={message.success ? "status" : "alert"}
@@ -567,7 +560,6 @@ export default function ProjectSchedule({
                 {message.message}
               </p>
             )}
-          </DialogHeader>
           <form
             className="space-y-4"
             onSubmit={(event) => {
@@ -798,8 +790,7 @@ export default function ProjectSchedule({
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

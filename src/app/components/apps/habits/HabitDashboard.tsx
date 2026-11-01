@@ -22,14 +22,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Progress } from "@/components/ui/progress";
 import {
   createHabit,
@@ -532,14 +526,13 @@ export default function HabitDashboard({
         </div>
       </CardBox>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Tambah kebiasaan</DialogTitle>
-            <DialogDescription>
-              Buat target yang ingin Anda lakukan secara konsisten.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Tambah kebiasaan"
+        description="Buat target yang ingin Anda lakukan secara konsisten."
+        className="sm:max-w-lg"
+      >
           <form
             className="space-y-4"
             onSubmit={(event) => {
@@ -600,23 +593,16 @@ export default function HabitDashboard({
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
 
-      <Dialog
-        open={deleteTarget !== null}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
+      <GlobalModal
+        isOpen={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        title="Hapus kebiasaan?"
+        description={`“${deleteTarget?.title ?? ""}” dan riwayat centangnya akan dihapus. Tindakan ini tidak dapat dibatalkan.`}
+        className="sm:max-w-md"
+        footerNote="Tindakan ini tidak dapat dibatalkan."
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Hapus kebiasaan?</DialogTitle>
-            <DialogDescription>
-              “{deleteTarget?.title}” dan riwayat centangnya akan dihapus.
-              Tindakan ini tidak dapat dibatalkan.
-            </DialogDescription>
-          </DialogHeader>
           <DialogFooter>
             <Button
               type="button"
@@ -635,8 +621,7 @@ export default function HabitDashboard({
               {isPending ? "Menghapus..." : "Hapus"}
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

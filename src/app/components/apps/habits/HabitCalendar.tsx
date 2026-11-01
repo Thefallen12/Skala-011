@@ -27,14 +27,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   createWorkspaceTask,
   type WorkspaceActionResult,
@@ -1127,24 +1121,21 @@ export default function HabitCalendar({
           </div>
         </CardBox>
       </div>
-      <Dialog
-        open={taskSlot !== null}
-        onOpenChange={(open) => {
-          if (!open && !isSavingTask) {
-            setTaskSlot(null);
-            setTaskMessage(null);
-          }
+      <GlobalModal
+        isOpen={taskSlot !== null}
+        onClose={() => {
+          if (isSavingTask) return;
+          setTaskSlot(null);
+          setTaskMessage(null);
         }}
+        title="Tambah tugas dari kalender"
+        description={
+          taskSlot
+            ? `${format(dateFromKey(taskSlot.date), "EEEE, d MMMM yyyy", { locale: id })} · ${String(taskSlot.hour).padStart(2, "0")}.00 WIB`
+            : "Isi detail tugas yang akan dijadwalkan."
+        }
+        className="sm:max-w-xl"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Tambah tugas dari kalender</DialogTitle>
-            <DialogDescription>
-              {taskSlot
-                ? `${format(dateFromKey(taskSlot.date), "EEEE, d MMMM yyyy", { locale: id })} · ${String(taskSlot.hour).padStart(2, "0")}.00 WIB`
-                : "Isi detail tugas yang akan dijadwalkan."}
-            </DialogDescription>
-          </DialogHeader>
           {taskMessage && (
             <p
               role={taskMessage.success ? "status" : "alert"}
@@ -1313,8 +1304,7 @@ export default function HabitCalendar({
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

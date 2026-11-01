@@ -4744,12 +4744,22 @@ export const FieldSurveyScalarFieldEnum = {
   locationName: 'locationName',
   responsibleName: 'responsibleName',
   surveyorId: 'surveyorId',
+  surveyName: 'surveyName',
+  projectCode: 'projectCode',
+  objectCategory: 'objectCategory',
+  vegetationType: 'vegetationType',
+  topography: 'topography',
+  landOwnership: 'landOwnership',
+  documentationUrls: 'documentationUrls',
+  geometryType: 'geometryType',
+  centerCoordinate: 'centerCoordinate',
   geoJsonData: 'geoJsonData',
   areaSqm: 'areaSqm',
   lengthM: 'lengthM',
   perimeterM: 'perimeterM',
   notes: 'notes',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]

@@ -36,14 +36,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Tabs,
   TabsContent,
@@ -793,14 +787,13 @@ export default function UserProfile({ profile }: { profile: UserProfileData }) {
         </TabsContent>
       </Tabs>
     </div>
-    <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Edit profil</DialogTitle>
-          <DialogDescription>
-            Perbarui informasi profil, rekening, atau foto profil Anda.
-          </DialogDescription>
-        </DialogHeader>
+    <GlobalModal
+      isOpen={editOpen}
+      onClose={() => setEditOpen(false)}
+      title="Edit profil"
+      description="Perbarui informasi profil, rekening, atau foto profil Anda."
+      className="sm:max-w-xl"
+    >
         <form className="space-y-4" onSubmit={submitProfile}>
           <div className="flex items-center gap-4">
             <Avatar className="size-16 border border-border">
@@ -901,8 +894,7 @@ export default function UserProfile({ profile }: { profile: UserProfileData }) {
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
     </>
   );
 }

@@ -35,15 +35,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -896,14 +889,13 @@ export default function DocumentWorkspace({
         )}
       </Tabs>
 
-      <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{templateDraft.id ? "Edit Template" : "Template Dokumen Custom"}</DialogTitle>
-            <DialogDescription>
-              Token yang tersedia: {"{{ticketNumber}}"}, {"{{ticketTitle}}"}, {"{{requester}}"}, {"{{project}}"}, {"{{amount}}"}, {"{{items}}"}.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={templateDialogOpen}
+        onClose={() => setTemplateDialogOpen(false)}
+        title={templateDraft.id ? "Edit Template" : "Template Dokumen Custom"}
+        description={`Token yang tersedia: {{ticketNumber}}, {{ticketTitle}}, {{requester}}, {{project}}, {{amount}}, {{items}}.`}
+        className="sm:max-w-2xl"
+      >
           <form className="space-y-4" onSubmit={submitTemplate}>
             <div className="space-y-2">
               <Label htmlFor="template-name">Nama template</Label>
@@ -966,27 +958,25 @@ export default function DocumentWorkspace({
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
 
-      <Dialog
-        open={selectedDocument !== null}
-        onOpenChange={(open) => {
-        if (!open) {
+      <GlobalModal
+        isOpen={selectedDocument !== null}
+        onClose={() => {
           setSelectedDocument(null);
           setDetailMessage("");
         }
-        }}
+        }
+        title={selectedDocument?.title ?? "Detail dokumen"}
+        description={
+          selectedDocument
+            ? `${selectedDocument.documentNumber} · ${kindLabels[selectedDocument.kind]} · Tiket ${selectedDocument.ticket.ticketNumber}`
+            : ""
+        }
+        className="sm:max-w-3xl"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
           {selectedDocument && (
             <>
-              <DialogHeader>
-                <DialogTitle>{selectedDocument.title}</DialogTitle>
-                <DialogDescription>
-                  {selectedDocument.documentNumber} · {kindLabels[selectedDocument.kind]} · Tiket {selectedDocument.ticket.ticketNumber}
-                </DialogDescription>
-              </DialogHeader>
               <div className="space-y-4 rounded-md border p-5">
                 <p className="whitespace-pre-wrap text-sm">{selectedDocument.content}</p>
                 <div className="border-t pt-4">
@@ -1025,8 +1015,7 @@ export default function DocumentWorkspace({
               </DialogFooter>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

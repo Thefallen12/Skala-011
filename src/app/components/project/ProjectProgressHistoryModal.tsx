@@ -9,13 +9,7 @@ import {
   photoDownloadLinkProps,
   withLocalPhotoPreview,
 } from "@/lib/photo-urls";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 
 export default function ProjectProgressHistoryModal({
   project,
@@ -30,21 +24,16 @@ export default function ProjectProgressHistoryModal({
 
   return (
     <>
-      <Dialog
-        open={open}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) setSelectedPhoto(null);
-          onOpenChange(nextOpen);
+      <GlobalModal
+        isOpen={open}
+        onClose={() => {
+          setSelectedPhoto(null);
+          onOpenChange(false);
         }}
+        title="Riwayat Progres & Foto"
+        description={`${project?.title ?? "Proyek"}. Foto dokumentasi laporan progres untuk pemeriksaan pekerjaan.`}
+        className="sm:max-w-3xl"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Riwayat Progres & Foto</DialogTitle>
-            <DialogDescription>
-              {project?.title}. Foto dokumentasi laporan progres untuk
-              pemeriksaan pekerjaan.
-            </DialogDescription>
-          </DialogHeader>
 
           {project?.progressReports.length ? (
             <div className="space-y-5">
@@ -123,21 +112,14 @@ export default function ProjectProgressHistoryModal({
               Belum ada laporan progres untuk proyek ini.
             </p>
           )}
-        </DialogContent>
-      </Dialog>
-      <Dialog
-        open={selectedPhoto !== null}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) setSelectedPhoto(null);
-        }}
+      </GlobalModal>
+      <GlobalModal
+        isOpen={selectedPhoto !== null}
+        onClose={() => setSelectedPhoto(null)}
+        title="Pratinjau foto progres"
+        description={`Dokumentasi privat proyek ${project?.code ?? ""}.`}
+        className="max-w-5xl"
       >
-        <DialogContent className="max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>Pratinjau foto progres</DialogTitle>
-            <DialogDescription>
-              Dokumentasi privat proyek {project?.code}.
-            </DialogDescription>
-          </DialogHeader>
           {selectedPhoto && (
             <div className="space-y-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -157,8 +139,7 @@ export default function ProjectProgressHistoryModal({
               </Button>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </>
   );
 }

@@ -11,14 +11,7 @@ import {
 } from "@/app/actions/project";
 import { ProjectPriority } from "@/generated/prisma/enums";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -139,18 +132,29 @@ export default function ProjectFormModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {project ? "Edit proyek" : "Tambah proyek"}
-          </DialogTitle>
-          <DialogDescription>
-            Lengkapi informasi proyek. Kolom bertanda wajib harus diisi.
-          </DialogDescription>
-        </DialogHeader>
-
-        <form className="space-y-5" onSubmit={submit}>
+    <GlobalModal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={project ? "Edit proyek" : "Tambah proyek"}
+      description="Lengkapi informasi proyek. Kolom bertanda wajib harus diisi."
+      className="max-w-3xl"
+      footer={
+        <>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isPending}
+            onClick={() => onOpenChange(false)}
+          >
+            Batal
+          </Button>
+          <Button type="submit" form="project-form" disabled={isPending}>
+            {isPending ? "Menyimpan..." : "Simpan proyek"}
+          </Button>
+        </>
+      }
+    >
+        <form id="project-form" className="space-y-5" onSubmit={submit}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="project-code">Kode proyek *</Label>
@@ -407,21 +411,7 @@ export default function ProjectFormModal({
             </p>
           )}
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Batal
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Menyimpan..." : "Simpan proyek"}
-            </Button>
-          </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

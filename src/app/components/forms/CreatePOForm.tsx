@@ -28,13 +28,9 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Table,
   TableBody,
@@ -540,16 +536,12 @@ export default function CreatePOForm({
           {isPending ? "Membuat PO..." : "Buat Purchase Order"}
         </Button>
       </div>
-      <Dialog open={newItemDialogOpen} onOpenChange={setNewItemDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Tambah Jenis Barang</DialogTitle>
-            <DialogDescription>
-              Barang akan disimpan di katalog dengan stok awal nol. SKU dibuat
-              otomatis; jika nama dan satuannya sudah ada, data katalog yang
-              lama akan digunakan.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={newItemDialogOpen}
+        onClose={() => setNewItemDialogOpen(false)}
+        title="Tambah Jenis Barang"
+        description="Barang akan disimpan di katalog dengan stok awal nol. SKU dibuat otomatis; jika nama dan satuannya sudah ada, data katalog yang lama akan digunakan."
+      >
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="create-po-new-item-name">Nama barang</Label>
@@ -594,8 +586,7 @@ export default function CreatePOForm({
               Simpan Barang
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

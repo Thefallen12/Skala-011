@@ -4,14 +4,8 @@ import { useState, useTransition, type FormEvent } from "react";
 import { receiveExpeditionDeliveryOrder } from "@/app/actions/orders";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 
 export default function ExpeditionArrivalModal({
   open,
@@ -56,24 +50,16 @@ export default function ExpeditionArrivalModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          setPhoto(null);
-          setMessage("");
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setPhoto(null);
+        setMessage("");
+        onOpenChange(false);
       }}
+      title="Terima Material dan Selesaikan Tiket"
+      description={`Tiket ${ticketNumber} · DO ${doNumber}. Unggah foto saat material tiba di gudang. Status DO dan tiket akan diselesaikan bersama.`}
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Terima Material dan Selesaikan Tiket</DialogTitle>
-          <DialogDescription>
-            Tiket {ticketNumber} · DO {doNumber}. Unggah foto saat material tiba
-            di gudang. Status DO dan tiket akan diselesaikan bersama.
-          </DialogDescription>
-        </DialogHeader>
         <form className="space-y-4" onSubmit={submit}>
           <label className="block space-y-2 text-sm font-medium">
             Foto bukti material tiba
@@ -99,7 +85,6 @@ export default function ExpeditionArrivalModal({
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

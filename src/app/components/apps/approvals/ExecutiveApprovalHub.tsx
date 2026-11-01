@@ -21,14 +21,7 @@ import PurchaseOrderTemplate from "@/components/documents/PurchaseOrderTemplate"
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Tabs,
   TabsContent,
@@ -616,34 +609,38 @@ export default function ExecutiveApprovalHub({
         </Card>
       )}
 
-      <Sheet
-        open={selection !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelection(null);
-            setMessage("");
-          }
+      <GlobalModal
+        isOpen={selection !== null}
+        onClose={() => {
+          setSelection(null);
+          setMessage("");
         }}
+        title={
+          selectedPo?.poNumber ??
+          selectedTicket?.ticketNumber ??
+          selectedDirectPurchase?.purchaseNumber ??
+          selectedWage?.title ??
+          (selectedTermyn
+            ? `${selectedTermyn.contractNumber} · Termin ${selectedTermyn.termynNumber}`
+            : undefined) ??
+          selectedContract?.contractNumber ??
+          selectedAddendum?.addendumNumber ??
+          selectedBast?.bastNumber ??
+          "Detail persetujuan"
+        }
+        description="Tinjau detail dan pastikan data sebelum memberikan persetujuan."
+        className="sm:max-w-2xl"
+        footerNote=""
+        footer={
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => setSelection(null)}
+          >
+            Tutup
+          </Button>
+        }
       >
-        <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>
-              {selectedPo?.poNumber ??
-                selectedTicket?.ticketNumber ??
-                selectedDirectPurchase?.purchaseNumber ??
-                selectedWage?.title ??
-                (selectedTermyn
-                  ? `${selectedTermyn.contractNumber} · Termin ${selectedTermyn.termynNumber}`
-                  : undefined) ??
-                selectedContract?.contractNumber ??
-                selectedAddendum?.addendumNumber ??
-                selectedBast?.bastNumber ??
-                "Detail persetujuan"}
-            </SheetTitle>
-            <SheetDescription>
-              Tinjau detail dan pastikan data sebelum memberikan persetujuan.
-            </SheetDescription>
-          </SheetHeader>
 
           <div className="mt-6 space-y-4">
             {selectedPo && (
@@ -970,17 +967,7 @@ export default function ExecutiveApprovalHub({
               </div>
             )}
           </div>
-          <SheetFooter className="mt-6">
-            <Button
-              variant="outline"
-              type="button"
-              onClick={() => setSelection(null)}
-            >
-              Tutup
-            </Button>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
     </div>
   );
 }

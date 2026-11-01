@@ -11,14 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 
 type ProjectOption = { id: string; code: string; name: string };
 type MemberOption = { id: string; name: string; email: string };
@@ -98,26 +91,17 @@ export default function CalendarEventSheet({
   };
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={(nextOpen) => {
-        onOpenChange(nextOpen);
-        if (!nextOpen) {
-          setMessage("");
-          setAllDay(false);
-        }
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        onOpenChange(false);
+        setMessage("");
+        setAllDay(false);
       }}
+      title="Tambah jadwal atau rapat"
+      description="Jadwal akan tampil bersama agenda proyek dan tugas pada kalender."
+      className="sm:max-w-xl"
     >
-      <SheetContent
-        side="right"
-        className="w-full overflow-y-auto sm:max-w-xl"
-      >
-        <SheetHeader>
-          <SheetTitle>Tambah jadwal atau rapat</SheetTitle>
-          <SheetDescription>
-            Jadwal akan tampil bersama agenda proyek dan tugas pada kalender.
-          </SheetDescription>
-        </SheetHeader>
         <form
           className="space-y-4 px-4 pb-4"
           onSubmit={submit}
@@ -318,11 +302,15 @@ export default function CalendarEventSheet({
               {message}
             </p>
           )}
-          <SheetFooter className="px-0">
+          <div className="flex justify-end gap-2">
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => {
+                onOpenChange(false);
+                setMessage("");
+                setAllDay(false);
+              }}
               disabled={isPending}
             >
               Batal
@@ -330,9 +318,8 @@ export default function CalendarEventSheet({
             <Button type="submit" disabled={isPending}>
               {isPending ? "Menyimpan..." : "Simpan jadwal"}
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+    </GlobalModal>
   );
 }

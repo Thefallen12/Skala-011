@@ -3,15 +3,8 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { submitPaymentRecord } from "@/app/actions/tickets";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { PaymentType } from "@/generated/prisma/enums";
 import type { TicketRow } from "@/app/(DashboardLayout)/types/ticket";
@@ -103,26 +96,18 @@ export default function FinanceActionModal({
         : "";
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          setFile(null);
-          setPaymentAmount("");
-          setPaymentType(PaymentType.FULL_PAYMENT);
-          setMessage("");
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setFile(null);
+        setPaymentAmount("");
+        setPaymentType(PaymentType.FULL_PAYMENT);
+        setMessage("");
+        onOpenChange(false);
       }}
+      title="Konfirmasi Pembayaran"
+      description="Periksa nilai dan tujuan dana berikut, lalu unggah bukti transfer. File PDF, JPG, PNG, atau WEBP maksimal 5 MB."
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Konfirmasi Pembayaran</DialogTitle>
-          <DialogDescription>
-            Periksa nilai dan tujuan dana berikut, lalu unggah bukti transfer.
-            File PDF, JPG, PNG, atau WEBP maksimal 5 MB.
-          </DialogDescription>
-        </DialogHeader>
         <form className="space-y-4" onSubmit={submit}>
           <section className="space-y-2 rounded-md border p-4 text-sm">
             <p className="font-semibold">
@@ -239,7 +224,6 @@ export default function FinanceActionModal({
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

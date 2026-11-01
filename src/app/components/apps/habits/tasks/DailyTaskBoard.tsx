@@ -30,13 +30,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   formatJakartaTime,
   getJakartaDateKey,
@@ -773,13 +769,13 @@ export default function DailyTaskBoard({
         </div>
       </CardBox>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Tambah tugas proyek</DialogTitle>
-            <DialogDescription>
-              Jadwalkan pekerjaan, tentukan proyek, dan tugaskan ke anggota tim aktif.
-            </DialogDescription>
+      <GlobalModal
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Tambah tugas proyek"
+        description="Jadwalkan pekerjaan, tentukan proyek, dan tugaskan ke anggota tim aktif."
+        className="sm:max-w-xl"
+      >
             {message && (
               <p
                 role={message.success ? "status" : "alert"}
@@ -792,7 +788,6 @@ export default function DailyTaskBoard({
                 {message.message}
               </p>
             )}
-          </DialogHeader>
           <form
             className="grid gap-4 sm:grid-cols-2"
             onSubmit={(event) => {
@@ -875,8 +870,7 @@ export default function DailyTaskBoard({
               <Button type="submit" disabled={isPending || !projects.length}>{isPending ? "Menyimpan..." : "Simpan tugas"}</Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
+import { center } from "@turf/turf";
 import {
   isSurveyGeoJSON,
   isSurveyGeoJSONWithinLimit,
@@ -27,7 +28,7 @@ const restrictedProjectRoles: UserRole[] = [
 ];
 
 const saveSurveySchema = z.object({
-  projectId: z.string().trim().min(1).max(100),
+  projectId: z.string().trim().max(100).nullable().optional(),
   locationName: z.string().trim().min(2, "Nama lokasi minimal 2 karakter.").max(160),
   responsibleName: z
     .string()
@@ -35,6 +36,28 @@ const saveSurveySchema = z.object({
     .min(2, "Nama penanggung jawab minimal 2 karakter.")
     .max(120),
   notes: z.string().trim().max(5000, "Catatan maksimal 5.000 karakter."),
+  surveyName: z.string().trim().min(2).max(160).optional(),
+  objectCategory: z
+    .enum([
+      "Batas Area Proyek (Polygon)",
+      "Jalur Logistik (Line)",
+      "Titik Hambatan/Temuan (Point)",
+    ])
+    .optional(),
+  vegetationType: z.string().trim().max(120).optional(),
+  topography: z.string().trim().max(120).optional(),
+  landOwnership: z.string().trim().max(120).optional(),
+  documentationUrls: z
+    .array(
+      z
+        .string()
+        .url()
+        .refine((value) => {
+          return value.startsWith("https://res.cloudinary.com/");
+        }, "URL dokumentasi harus berasal dari Cloudinary."),
+    )
+    .max(10)
+    .optional(),
   geoJsonData: z.unknown(),
 });
 
@@ -51,10 +74,16 @@ async function getActiveSurveyor() {
 }
 
 export type SaveFieldSurveyInput = {
-  projectId: string;
+  projectId: string | null;
   locationName: string;
   responsibleName: string;
   notes: string;
+  surveyName?: string;
+  objectCategory?: string;
+  vegetationType?: string;
+  topography?: string;
+  landOwnership?: string;
+  documentationUrls?: string[];
   geoJsonData: SurveyGeoJSON;
 };
 
@@ -75,8 +104,18 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
     };
   }
 
-  const { projectId, locationName, responsibleName, notes, geoJsonData } =
-    parsed.data;
+  const {
+    projectId,
+    locationName,
+    notes,
+    geoJsonData,
+    surveyName,
+    objectCategory,
+    vegetationType,
+    topography,
+    landOwnership,
+    documentationUrls,
+  } = parsed.data;
   if (!isSurveyGeoJSON(geoJsonData)) {
     return {
       success: false,
@@ -90,17 +129,19 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
     };
   }
 
-  const project = await prisma.project.findFirst({
-    where: {
-      id: projectId,
-      isDeleted: false,
-      ...(restrictedProjectRoles.includes(surveyor.role)
-        ? { fieldPicId: surveyor.id }
-        : {}),
-    },
-    select: { id: true, title: true, name: true },
-  });
-  if (!project) {
+  const project = projectId
+    ? await prisma.project.findFirst({
+        where: {
+          id: projectId,
+          isDeleted: false,
+          ...(restrictedProjectRoles.includes(surveyor.role)
+            ? { fieldPicId: surveyor.id }
+            : {}),
+        },
+        select: { id: true, title: true, name: true, code: true },
+      })
+    : null;
+  if (projectId && !project) {
     return {
       success: false,
       message: "Proyek tidak ditemukan atau Anda tidak ditugaskan pada proyek ini.",
@@ -108,6 +149,26 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
   }
 
   const measurements = measureSurveyGeoJSON(geoJsonData);
+  const featuresWithGeometry = geoJsonData.features.filter(
+    (feature) => feature.geometry,
+  );
+  if (featuresWithGeometry.length === 0) {
+    return {
+      success: false,
+      message: "GeoJSON harus berisi minimal satu geometri yang valid.",
+    };
+  }
+  const geometryTypes = [
+    ...new Set(
+      featuresWithGeometry.flatMap((feature) =>
+        feature.geometry ? [feature.geometry.type] : [],
+      ),
+    ),
+  ];
+  const [longitude, latitude] = center({
+    type: "FeatureCollection",
+    features: featuresWithGeometry,
+  }).geometry.coordinates;
   if (
     !Number.isFinite(measurements.areaSqm) ||
     !Number.isFinite(measurements.lengthM) ||
@@ -122,11 +183,23 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
   try {
     await prisma.fieldSurvey.create({
       data: {
-        projectId: project.id,
-        projectName: project.title || project.name,
+        projectId: project?.id ?? null,
+        projectName: project
+          ? project.title || project.name
+          : "Survei Pra-Proyek",
         locationName,
-        responsibleName,
+        responsibleName: surveyor.name,
         surveyorId: surveyor.id,
+        surveyName: surveyName || locationName,
+        projectCode: project?.code ?? null,
+        objectCategory:
+          objectCategory ?? "Batas Area Proyek (Polygon)",
+        vegetationType: vegetationType || null,
+        topography: topography || null,
+        landOwnership: landOwnership || null,
+        documentationUrls: documentationUrls ?? [],
+        geometryType: geometryTypes.join(", "),
+        centerCoordinate: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`,
         geoJsonData: geoJsonData as object,
         areaSqm: measurements.areaSqm,
         lengthM: measurements.lengthM,
@@ -135,7 +208,7 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
       },
     });
 
-    revalidatePath("/apps/projects/map");
+    revalidatePath("/apps/projects");
     return { success: true, message: "Data survei berhasil disimpan." };
   } catch (error) {
     console.error("Saving field survey failed:", error);
@@ -161,12 +234,17 @@ export async function loadFieldSurveyGeoJSON(
     const survey = await prisma.fieldSurvey.findFirst({
       where: {
         id: surveyId,
-        project: {
-          isDeleted: false,
-          ...(restrictedProjectRoles.includes(surveyor.role)
-            ? { fieldPicId: surveyor.id }
-            : {}),
-        },
+        OR: restrictedProjectRoles.includes(surveyor.role)
+          ? [
+              {
+                project: {
+                  isDeleted: false,
+                  fieldPicId: surveyor.id,
+                },
+              },
+              { projectId: null, surveyorId: surveyor.id },
+            ]
+          : [{ project: { isDeleted: false } }, { projectId: null }],
       },
       select: { geoJsonData: true },
     });

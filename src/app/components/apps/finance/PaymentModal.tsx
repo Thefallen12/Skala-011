@@ -6,13 +6,7 @@ import type { TicketActionResult } from "@/app/actions/tickets";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -175,27 +169,24 @@ export default function PaymentModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen && !isPending) {
-          setReceiptUrl(null);
-          setPdfFile(null);
-          setMessage("");
-          if (pdfInputRef.current) pdfInputRef.current.value = "";
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        if (isPending) return;
+        setReceiptUrl(null);
+        setPdfFile(null);
+        setMessage("");
+        if (pdfInputRef.current) pdfInputRef.current.value = "";
+        onOpenChange(false);
       }}
+      title="Bayar / Transfer"
+      description={
+        target
+          ? `${target.reference} · ${target.title}`
+          : "Pilih tagihan yang akan dibayar."
+      }
+      className="sm:max-w-xl"
     >
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Bayar / Transfer</DialogTitle>
-          <DialogDescription>
-            {target
-              ? `${target.reference} · ${target.title}`
-              : "Pilih tagihan yang akan dibayar."}
-          </DialogDescription>
-        </DialogHeader>
         {target && (
           <form className="space-y-4" onSubmit={submit}>
             <section className="grid gap-2 rounded-lg border p-4 text-sm sm:grid-cols-3">
@@ -375,7 +366,6 @@ export default function PaymentModal({
             )}
           </form>
         )}
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

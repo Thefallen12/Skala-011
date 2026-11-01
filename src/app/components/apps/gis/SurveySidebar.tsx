@@ -1,29 +1,24 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertCircle,
   Check,
   Clock3,
   FileUp,
-  Layers3,
   MapPinned,
+  MapPin,
+  Pencil,
+  Pentagon,
+  Route,
   Ruler,
   Save,
   Trash2,
   Upload,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -45,20 +40,29 @@ import {
   type SurveyGeoJSON,
 } from "@/lib/field-survey-geojson";
 import { readSpatialUpload } from "./geojson-upload";
-import type { SurveyLayerVisibility } from "./ProjectMapLoader";
+import type { SurveyDrawTool } from "./ProjectMapLoader";
 
 export type SurveyProjectOption = {
   id: string;
+  code: string;
   title: string;
+  vendor: string;
 };
 
 export type FieldSurveySummary = {
   id: string;
-  projectId: string;
+  projectId: string | null;
   projectName: string;
   locationName: string;
   responsibleName: string;
   surveyorName: string;
+  surveyName?: string;
+  projectCode?: string | null;
+  objectCategory?: string;
+  vegetationType?: string | null;
+  topography?: string | null;
+  landOwnership?: string | null;
+  documentationUrls?: string[];
   areaSqm: number | null;
   lengthM: number | null;
   perimeterM: number | null;
@@ -100,8 +104,10 @@ export default function SurveySidebar({
   onProjectChange,
   onImportedDataChange,
   onDrawnDataChange,
-  visibility,
-  onVisibilityChange,
+  onDrawToolSelect,
+  onEditFeatureMetadata,
+  onEditFeaturePosition,
+  newSurveyRequest,
 }: {
   projects: SurveyProjectOption[];
   surveys: FieldSurveySummary[];
@@ -112,8 +118,10 @@ export default function SurveySidebar({
   onProjectChange: (projectId: string) => void;
   onImportedDataChange: (data: SurveyGeoJSON | null) => void;
   onDrawnDataChange: (data: SurveyGeoJSON) => void;
-  visibility: SurveyLayerVisibility;
-  onVisibilityChange: (visibility: SurveyLayerVisibility) => void;
+  onDrawToolSelect: (tool: SurveyDrawTool) => void;
+  onEditFeatureMetadata: (featureId: string) => void;
+  onEditFeaturePosition: (featureId: string) => void;
+  newSurveyRequest: number;
 }) {
   const router = useRouter();
   const [projectId, setProjectId] = useState(initialProjectId);
@@ -124,6 +132,16 @@ export default function SurveySidebar({
   const [uploadName, setUploadName] = useState("");
   const [loadingSurveyId, setLoadingSurveyId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const locationNameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (newSurveyRequest === 0) return;
+    locationNameInputRef.current?.focus();
+    locationNameInputRef.current?.scrollIntoView({
+      block: "center",
+      behavior: "smooth",
+    });
+  }, [newSurveyRequest]);
 
   const combinedData = useMemo(
     () => mergeSurveyData(importedData, drawnData),
@@ -174,8 +192,8 @@ export default function SurveySidebar({
         setMessage({ type: "error", text: result.message });
         return;
       }
-      onProjectChange(survey.projectId);
-      setProjectId(survey.projectId);
+      onProjectChange(survey.projectId ?? "");
+      setProjectId(survey.projectId ?? "");
       onDrawnDataChange({ type: "FeatureCollection", features: [] });
       onImportedDataChange(result.data);
       setLocationName(survey.locationName);
@@ -208,7 +226,7 @@ export default function SurveySidebar({
 
     startTransition(async () => {
       const result = await saveFieldSurvey({
-        projectId,
+        projectId: projectId || null,
         locationName,
         responsibleName,
         notes,
@@ -226,71 +244,64 @@ export default function SurveySidebar({
     });
   };
 
-  const handleVisibility = (
-    type: keyof SurveyLayerVisibility,
-    checked: boolean,
-  ) => {
-    onVisibilityChange({ ...visibility, [type]: checked });
-  };
-
+  const projectName = projects.find((project) => project.id === projectId)?.title ?? "—";
+  const objectTypes = [
+    measurements && measurements.polygonCount > 0 ? "POLYGON" : null,
+    measurements && measurements.lineCount > 0 ? "LINE" : null,
+    measurements && measurements.pointCount > 0 ? "POINT" : null,
+  ].filter(Boolean);
+  const distance =
+    measurements && measurements.lengthM > 0
+      ? formatDistance(measurements.lengthM)
+      : "—";
+  const perimeter =
+    measurements && measurements.perimeterM > 0
+      ? formatDistance(measurements.perimeterM)
+      : "—";
   return (
-    <Card className="flex h-[min(74vh,720px)] min-h-[480px] flex-col overflow-hidden p-0 xl:h-full xl:min-h-0">
-      <CardHeader className="gap-1 border-b border-border p-3 sm:p-4">
-        <div className="flex items-center justify-between gap-2">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Layers3 className="size-4 text-secondary" aria-hidden="true" />
-            Alat Pemetaan
-          </CardTitle>
-          <Badge variant="secondary">{surveys.length} survei</Badge>
-        </div>
-        <CardDescription>Draw tools, layer proyek, dan kalkulator GIS.</CardDescription>
-      </CardHeader>
-
+    <Card className="flex h-[min(74vh,720px)] min-h-[480px] flex-col overflow-hidden border-border/85 bg-card/55 p-0 xl:h-full xl:min-h-0">
       <ScrollArea className="min-h-0 flex-1">
-        <div className="space-y-4 p-3 sm:p-4">
-          <section className="space-y-2" aria-labelledby="survey-tools-label">
-            <h2 id="survey-tools-label" className="text-sm font-semibold">
+        <div className="flex min-h-full flex-col gap-5 p-4">
+          <section className="space-y-2">
+            <h2 className="text-xs font-bold text-foreground">
               Alat Pemetaan (Draw Tools)
             </h2>
-            <p className="rounded-md border border-border bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
-              Pilih ikon Point, Line, Polygon, Edit, atau Hapus pada toolbar di atas peta.
-            </p>
+            <div className="grid grid-cols-4 gap-1.5">
+              {(
+                [
+                  ["point", "Point", MapPin],
+                  ["line", "Line", Route],
+                  ["polygon", "Polygon", Pentagon],
+                  ["ruler", "Penggaris", Ruler],
+                ] as const
+              ).map(([tool, label, Icon]) => (
+                <Button
+                  key={tool}
+                  type="button"
+                  variant="outline"
+                  className="h-auto min-w-0 flex-col gap-1 px-1 py-2 text-[10px] font-medium"
+                  onClick={() => onDrawToolSelect(tool)}
+                >
+                  <Icon className="size-4 text-secondary" aria-hidden="true" />
+                  {label}
+                </Button>
+              ))}
+            </div>
           </section>
 
-          <section className="space-y-2 border-t border-border pt-4" aria-labelledby="survey-project-label">
-            <Label id="survey-project-label" htmlFor="survey-project">
-              Proyek
-            </Label>
-            <Select value={projectId} onValueChange={changeProject}>
-              <SelectTrigger id="survey-project" className="w-full">
-                <SelectValue placeholder="Pilih proyek" />
-              </SelectTrigger>
-              <SelectContent>
-                {projects.map((project) => (
-                  <SelectItem key={project.id} value={project.id}>
-                    {project.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {projects.length === 0 && (
-              <p className="text-xs text-muted-foreground">
-                Belum ada proyek yang dapat dipetakan untuk akun ini.
-              </p>
-            )}
-          </section>
-
-          <section className="space-y-2">
-            <h2 className="text-sm font-semibold">Unggah SHP / GeoJSON</h2>
+          <section className="space-y-2 border-t border-border pt-4">
+            <h2 className="text-xs font-bold text-foreground">
+              Unggah File SHP/GeoJSON
+            </h2>
             <Label
               htmlFor="survey-spatial-file"
-              className="flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border bg-muted/50 px-3 py-4 text-center transition hover:border-primary hover:bg-accent"
+              className="flex min-h-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border bg-background/30 px-3 py-3 text-center transition hover:border-secondary/60 hover:bg-muted/50"
             >
               <FileUp className="size-5 text-secondary" aria-hidden="true" />
-              <span className="text-xs font-medium">
+              <span className="text-[10px] font-bold text-foreground">
                 {uploadName || "Pilih ZIP Shapefile atau GeoJSON"}
               </span>
-              <span className="text-[11px] text-muted-foreground">
+              <span className="text-[9px] text-muted-foreground">
                 ZIP maks. 25 MB · sistem koordinat WGS84
               </span>
               <Input
@@ -323,79 +334,84 @@ export default function SurveySidebar({
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold">Daftar Layer Proyek</h2>
-            <div className="space-y-2 rounded-lg border border-border p-3">
-              {(
-                [
-                  ["polygon", "Batas area / Polygon", "text-orange-600 dark:text-orange-400"],
-                  ["line", "Jalur survei / Line", "text-sky-600 dark:text-sky-400"],
-                  ["point", "Titik survei / Point", "text-secondary"],
-                ] as const
-              ).map(([type, label, colorClass]) => (
-                <Label key={type} className="flex cursor-pointer items-center gap-2 text-sm">
-                  <Checkbox
-                    checked={visibility[type]}
-                    onCheckedChange={(checked) =>
-                      handleVisibility(type, checked === true)
-                    }
-                  />
-                  <span className={`size-2 rounded-full ${colorClass.replace("text-", "bg-")}`} />
-                  {label}
-                </Label>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-2">
-            <h2 className="flex items-center gap-2 text-sm font-semibold">
-              <Ruler className="size-4 text-secondary" aria-hidden="true" />
-              Kalkulator GIS
+            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Estimasi Luasan & Jarak (Kalkulator GIS)
             </h2>
-            <div className="divide-y divide-border rounded-lg border border-border px-3">
-              <div className="flex items-center justify-between gap-3 py-2">
-                <p className="text-xs text-muted-foreground">Luas estimasi</p>
-                <p className="text-right text-xs font-semibold">
+            <div className="space-y-2 rounded-xl border border-border bg-background/70 p-3">
+              <div>
+                <span className="block text-[10px] font-semibold text-muted-foreground">
+                  TIPE OBJEK
+                </span>
+                <span className="text-xs font-bold text-secondary">
+                  {objectTypes.length > 0 ? objectTypes.join(" · ") : "—"}
+                </span>
+              </div>
+              <div>
+                <span className="block text-[10px] font-semibold text-muted-foreground">
+                  ESTIMASI LUAS
+                </span>
+                <span className="text-sm font-black text-foreground">
                   {measurements && measurements.areaSqm > 0
                     ? formatArea(measurements.areaSqm)
                     : "—"}
-                </p>
+                </span>
               </div>
-              <div className="flex items-center justify-between gap-3 py-2">
-                <p className="text-xs text-muted-foreground">Panjang jalur</p>
-                <p className="text-right text-xs font-semibold">
-                  {measurements && measurements.lengthM > 0
-                    ? formatDistance(measurements.lengthM)
-                    : "—"}
-                </p>
+              <div>
+                <span className="block text-[10px] font-semibold text-muted-foreground">
+                  PANJANG JALUR
+                </span>
+                <span className="text-xs font-bold text-foreground">{distance}</span>
               </div>
-              <div className="flex items-center justify-between gap-3 py-2">
-                <p className="text-xs text-muted-foreground">Keliling polygon</p>
-                <p className="text-right text-xs font-semibold">
-                  {measurements && measurements.perimeterM > 0
-                    ? formatDistance(measurements.perimeterM)
-                    : "—"}
-                </p>
+              <div>
+                <span className="block text-[10px] font-semibold text-muted-foreground">
+                  KELILING POLYGON
+                </span>
+                <span className="text-xs font-bold text-foreground">{perimeter}</span>
               </div>
-              <div className="flex items-center justify-between gap-3 py-2">
-                <p className="text-xs text-muted-foreground">Objek terukur</p>
-                <p className="text-right text-xs font-semibold">
-                  {measurements
-                    ? `${measurements.polygonCount} area · ${measurements.lineCount} jalur · ${measurements.pointCount} titik`
-                    : "—"}
-                </p>
+              <div className="border-t border-border pt-2 text-[10px] text-muted-foreground">
+                {projectName} · {measurements?.polygonCount ?? 0} area ·{" "}
+                {measurements?.lineCount ?? 0} jalur · {measurements?.pointCount ?? 0} titik
               </div>
             </div>
           </section>
 
-          <form onSubmit={submitSurvey} className="space-y-3">
+          <form onSubmit={submitSurvey} className="flex flex-1 flex-col space-y-3 border-t border-border pt-4">
             <div className="flex items-center gap-2">
               <MapPinned className="size-4 text-secondary" aria-hidden="true" />
-              <h2 className="text-sm font-semibold">Metadata Survei</h2>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Atribut & Form Data Survei
+              </h2>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="survey-location-name">Nama lokasi</Label>
+              <Label htmlFor="survey-project" className="text-[10px] font-bold uppercase text-muted-foreground">
+                Proyek
+              </Label>
+              <Select value={projectId} onValueChange={changeProject}>
+                <SelectTrigger id="survey-project" className="h-9 w-full bg-background text-xs">
+                  <SelectValue placeholder="Pilih proyek" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projects.map((project) => (
+                    <SelectItem key={project.id} value={project.id}>
+                      {project.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {projects.length === 0 && (
+                <p className="text-xs text-muted-foreground">
+                  Belum ada proyek yang dapat dipetakan untuk akun ini.
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="survey-location-name" className="text-[10px] font-bold uppercase text-muted-foreground">
+                Nama lokasi / proyek
+              </Label>
               <Input
                 id="survey-location-name"
+                ref={locationNameInputRef}
+                className="h-9 bg-background text-xs"
                 value={locationName}
                 onChange={(event) => setLocationName(event.target.value)}
                 placeholder="Contoh: Area proyek Bintang Kejora"
@@ -404,9 +420,12 @@ export default function SurveySidebar({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="survey-responsible">Penanggung jawab</Label>
+              <Label htmlFor="survey-responsible" className="text-[10px] font-bold uppercase text-muted-foreground">
+                Penanggung jawab
+              </Label>
               <Input
                 id="survey-responsible"
+                className="h-9 bg-background text-xs"
                 value={responsibleName}
                 onChange={(event) => setResponsibleName(event.target.value)}
                 placeholder="Nama penanggung jawab survei"
@@ -415,9 +434,12 @@ export default function SurveySidebar({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="survey-notes">Catatan lapangan</Label>
+              <Label htmlFor="survey-notes" className="text-[10px] font-bold uppercase text-muted-foreground">
+                Catatan lapangan / keterangan
+              </Label>
               <Textarea
                 id="survey-notes"
+                className="resize-none bg-background text-xs"
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
                 placeholder="Kondisi medan, akses, patok, atau informasi lapangan..."
@@ -444,7 +466,7 @@ export default function SurveySidebar({
             )}
             <Button
               type="submit"
-              className="w-full"
+              className="mt-auto w-full bg-orange-600 text-white hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600"
               disabled={
                 isPending ||
                 !projectId ||
@@ -454,9 +476,76 @@ export default function SurveySidebar({
               }
             >
               <Save className="mr-2 size-4" />
-              {isPending ? "Menyimpan..." : "Simpan Data Survei"}
+              {isPending ? "Menyimpan..." : "Simpan Atribut Data"}
             </Button>
           </form>
+
+          {drawnData.features.length > 0 && (
+            <section className="space-y-2 border-t border-border pt-4">
+              <h2 className="text-sm font-semibold">Fitur Survei</h2>
+              <ul className="space-y-2">
+                {drawnData.features.map((feature, index) => {
+                  const properties = feature.properties;
+                  const featureId = properties?.__surveyLayerId;
+                  const id = typeof featureId === "string" ? featureId : null;
+                  const title =
+                    typeof properties?.title === "string" &&
+                    properties.title.trim()
+                      ? properties.title
+                      : `Fitur ${index + 1}`;
+                  const geometryType = feature.geometry?.type ?? "Geometry";
+                  const label =
+                    geometryType.includes("Polygon")
+                      ? "Polygon"
+                      : geometryType.includes("Line")
+                        ? "Line"
+                        : "Point";
+
+                  return (
+                    <li
+                      key={id ?? index}
+                      className="flex items-center gap-2 rounded-lg border border-border bg-background/60 p-2"
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-xs font-semibold">
+                          {title}
+                        </span>
+                        <span className="block text-[10px] text-muted-foreground">
+                          {label}
+                        </span>
+                      </span>
+                      {id && (
+                        <>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[10px]"
+                            aria-label={`Edit data ${title}`}
+                            onClick={() => onEditFeatureMetadata(id)}
+                          >
+                            <Pencil className="mr-1 size-3" aria-hidden="true" />
+                            Data
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[10px]"
+                            aria-label={`Edit posisi ${title}`}
+                            onClick={() => onEditFeaturePosition(id)}
+                          >
+                            <MapPin className="mr-1 size-3" aria-hidden="true" />
+                            Posisi
+                          </Button>
+                        </>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
 
           <section className="space-y-2 border-t border-border pt-4">
             <h2 className="flex items-center gap-2 text-sm font-semibold">

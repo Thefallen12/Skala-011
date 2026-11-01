@@ -3,14 +3,8 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { processMoverDelivery } from "@/app/actions/tickets";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 
 export default function MoverActionModal({
@@ -49,24 +43,16 @@ export default function MoverActionModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          setFile(null);
-          setMessage("");
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setFile(null);
+        setMessage("");
+        onOpenChange(false);
       }}
+      title="Konfirmasi Barang Tiba"
+      description="Unggah bukti serah terima barang di lapangan. File PDF, JPG, PNG, atau WEBP maksimal 5 MB."
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Konfirmasi Barang Tiba</DialogTitle>
-          <DialogDescription>
-            Unggah bukti serah terima barang di lapangan. File PDF, JPG, PNG,
-            atau WEBP maksimal 5 MB.
-          </DialogDescription>
-        </DialogHeader>
         <form className="space-y-4" onSubmit={submit}>
           <label className="block space-y-2 text-sm font-medium">
             Upload Foto Barang Tiba / Bukti DO
@@ -89,7 +75,6 @@ export default function MoverActionModal({
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

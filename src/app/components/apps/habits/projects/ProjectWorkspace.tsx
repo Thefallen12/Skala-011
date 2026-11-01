@@ -26,13 +26,9 @@ import CardBox from "@/app/components/shared/CardBox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   formatJakartaTime,
   getJakartaDateKey,
@@ -903,19 +899,13 @@ export default function ProjectWorkspace({
           </Link>
         </CardBox>
       </div>
-      <Dialog
-        open={selectedTask !== null}
-        onOpenChange={(open) => {
-          if (!open) setSelectedTask(null);
-        }}
+      <GlobalModal
+        isOpen={selectedTask !== null}
+        onClose={() => setSelectedTask(null)}
+        title={selectedTask?.title ?? "Detail tugas"}
+        description="Informasi jadwal tugas pada proyek terkait."
+        className="sm:max-w-md"
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{selectedTask?.title ?? "Detail tugas"}</DialogTitle>
-            <DialogDescription>
-              Informasi jadwal tugas pada proyek terkait.
-            </DialogDescription>
-          </DialogHeader>
           {selectedTask && (
             <>
               <div className="flex items-center justify-between gap-3">
@@ -974,8 +964,7 @@ export default function ProjectWorkspace({
               </DialogFooter>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

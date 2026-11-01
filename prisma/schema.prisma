@@ -606,20 +606,30 @@ model Project {
 }
 
 model FieldSurvey {
-  id              String   @id @default(cuid())
-  projectId       String
-  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectName     String
-  locationName    String
-  responsibleName String
-  surveyorId      String
-  surveyor        User     @relation("FieldSurveyor", fields: [surveyorId], references: [id], onDelete: Restrict)
-  geoJsonData     Json
-  areaSqm         Float?
-  lengthM         Float?
-  perimeterM      Float?
-  notes           String?  @db.Text
-  createdAt       DateTime @default(now())
+  id                String   @id @default(cuid())
+  projectId         String?
+  project           Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectName       String
+  locationName      String
+  responsibleName   String
+  surveyorId        String
+  surveyor          User     @relation("FieldSurveyor", fields: [surveyorId], references: [id], onDelete: Restrict)
+  surveyName        String   @default("Survei Lapangan")
+  projectCode       String?
+  objectCategory    String   @default("Batas Area Proyek (Polygon)")
+  vegetationType    String?
+  topography        String?
+  landOwnership     String?
+  documentationUrls String[] @default([])
+  geometryType      String?
+  centerCoordinate  String?
+  geoJsonData       Json
+  areaSqm           Float?
+  lengthM           Float?
+  perimeterM        Float?
+  notes             String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
 
   @@index([projectId, createdAt])
   @@index([surveyorId, createdAt])

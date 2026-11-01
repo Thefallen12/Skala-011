@@ -36,13 +36,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import FinanceActionModal from "./FinanceActionModal";
 import LogisticsActionModal from "./LogisticsActionModal";
 import MoverActionModal from "./MoverActionModal";
@@ -54,13 +50,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import {
   photoDownloadHref,
   photoDownloadLabel,
@@ -667,31 +656,29 @@ export default function TicketListing({
         </Table>
       </div>
 
-      <Sheet
-        open={selectedTicket !== null}
-        onOpenChange={(open) => {
-          if (!open) closeTicketSheet();
-        }}
+      <GlobalModal
+        isOpen={selectedTicket !== null}
+        onClose={closeTicketSheet}
+        title={
+          selectedTicket
+            ? `${selectedTicket.ticketNumber} · ${selectedTicket.title}`
+            : "Detail tiket"
+        }
+        description={
+          selectedTicket
+            ? `${typeLabels[selectedTicket.type]} · ${statusLabels[selectedTicket.status]} · Prioritas ${priorityLabels[selectedTicket.priority]} · Pemenuhan ${
+                selectedTicket.fulfillmentStatus === "COMPLETED"
+                  ? "Selesai"
+                  : selectedTicket.fulfillmentStatus === "PARTIALLY_FULFILLED"
+                    ? "Sebagian"
+                    : "Menunggu"
+              }`
+            : ""
+        }
+        className="max-w-2xl"
       >
-        <SheetContent className="w-[min(42rem,calc(100vw-1rem))] overflow-y-auto p-6">
           {selectedTicket && (
             <>
-              <SheetHeader className="pr-8 text-left">
-                <SheetTitle>
-                  {selectedTicket.ticketNumber} · {selectedTicket.title}
-                </SheetTitle>
-                <SheetDescription>
-                  {typeLabels[selectedTicket.type]} ·{" "}
-                  {statusLabels[selectedTicket.status]} · Prioritas{" "}
-                  {priorityLabels[selectedTicket.priority]} · Pemenuhan{" "}
-                  {selectedTicket.fulfillmentStatus === "COMPLETED"
-                    ? "Selesai"
-                    : selectedTicket.fulfillmentStatus ===
-                        "PARTIALLY_FULFILLED"
-                      ? "Sebagian"
-                      : "Menunggu"}
-                </SheetDescription>
-              </SheetHeader>
 
               <div className="mt-6 space-y-6">
                 <section className="space-y-2">
@@ -1093,29 +1080,23 @@ export default function TicketListing({
               </div>
             </>
           )}
-        </SheetContent>
-      </Sheet>
-      <Dialog
-        open={doDialogOpen}
-        onOpenChange={(open) => {
-          setDoDialogOpen(open);
-          if (!open) {
-            setFulfillmentMessage("");
-            setStockFallbackRequired(false);
-          }
+      </GlobalModal>
+      <GlobalModal
+        isOpen={doDialogOpen}
+        onClose={() => {
+          setDoDialogOpen(false);
+          setFulfillmentMessage("");
+          setStockFallbackRequired(false);
         }}
+        title="Konfirmasi pemenuhan dari stok"
+        description={
+          stockFallbackRequired
+            ? warehouseInsufficientMessage
+            : fulfillmentMessage
+              ? "Periksa kembali saldo atau data sebelum membuat DO."
+              : "Saldo gudang sudah diperiksa. Buat DO hanya untuk item yang dipilih; stok berkurang setelah DO berhasil dibuat."
+        }
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Konfirmasi pemenuhan dari stok</DialogTitle>
-            <DialogDescription>
-              {stockFallbackRequired
-                ? warehouseInsufficientMessage
-                : fulfillmentMessage
-                  ? "Periksa kembali saldo atau data sebelum membuat DO."
-                  : "Saldo gudang sudah diperiksa. Buat DO hanya untuk item yang dipilih; stok berkurang setelah DO berhasil dibuat."}
-            </DialogDescription>
-          </DialogHeader>
           <ul className="space-y-2 rounded-md border p-3 text-sm">
             {selectedWarehouseItems.map((item) => (
               <li key={item.id}>
@@ -1212,23 +1193,17 @@ export default function TicketListing({
               </Button>
             )}
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog
-        open={poDialogOpen}
-        onOpenChange={(open) => {
-          setPoDialogOpen(open);
-          if (!open) setFulfillmentMessage("");
+      </GlobalModal>
+      <GlobalModal
+        isOpen={poDialogOpen}
+        onClose={() => {
+          setPoDialogOpen(false);
+          setFulfillmentMessage("");
         }}
+        title="Beli item melalui vendor (PO)"
+        description="Item yang dipilih akan diprefill ke PO. Setelah PO tersimpan, item terkait ditandai sebagai diproses via PO."
+        className="sm:max-w-5xl"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>Beli item melalui vendor (PO)</DialogTitle>
-            <DialogDescription>
-              Item yang dipilih akan diprefill ke PO. Setelah PO tersimpan,
-              item terkait ditandai sebagai diproses via PO.
-            </DialogDescription>
-          </DialogHeader>
           {selectedTicket && selectedTicketItems.length > 0 && (
             <CreatePOForm
               key={`${selectedTicket.id}:${selectedTicketItems
@@ -1257,23 +1232,16 @@ export default function TicketListing({
               }}
             />
           )}
-        </DialogContent>
-      </Dialog>
-      <Dialog
-        open={selectedReceipt !== null}
-        onOpenChange={(open) => {
-          if (!open) setSelectedReceipt(null);
-        }}
+      </GlobalModal>
+      <GlobalModal
+        isOpen={selectedReceipt !== null}
+        onClose={() => setSelectedReceipt(null)}
+        title={selectedReceipt?.label ?? "Pratinjau bukti"}
+        description="Pratinjau bukti terunggah. Unduh file untuk menyimpan salinannya."
+        className="max-w-4xl"
       >
-        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
           {selectedReceipt && (
             <>
-              <DialogHeader>
-                <DialogTitle>{selectedReceipt.label}</DialogTitle>
-                <DialogDescription>
-                  Pratinjau bukti terunggah. Unduh file untuk menyimpan salinannya.
-                </DialogDescription>
-              </DialogHeader>
               <div className="flex min-h-56 items-center justify-center overflow-hidden rounded-md border bg-muted/30">
                 {/\.(jpe?g|png|webp)$/i.test(selectedReceipt.url.split("?")[0]) ? (
                   <img
@@ -1312,8 +1280,7 @@ export default function TicketListing({
               </DialogFooter>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
       {workflowTicket && (
         <>
           {workflowFor(role, workflowTicket) === "EXPEDITION_RECEIPT" &&

@@ -15,14 +15,8 @@ import CardBox from "@/app/components/shared/CardBox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { getWeekDateKeys, shiftDateKey } from "@/lib/habit-date";
 
 type ProjectOption = { id: string; code: string; name: string };
@@ -412,14 +406,13 @@ export default function ProjectTimesheet({
         </div>
       </CardBox>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Catat jam kerja</DialogTitle>
-            <DialogDescription>
-              Durasi dicatat untuk akun Anda sendiri dan dapat dihapus oleh Anda.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Catat jam kerja"
+        description="Durasi dicatat untuk akun Anda sendiri dan dapat dihapus oleh Anda."
+        className="sm:max-w-lg"
+      >
           <form
             className="space-y-4"
             onSubmit={(event) => {
@@ -456,8 +449,7 @@ export default function ProjectTimesheet({
               <Button type="submit" disabled={isPending}>{isPending ? "Menyimpan..." : "Simpan jam kerja"}</Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

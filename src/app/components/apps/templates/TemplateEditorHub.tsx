@@ -22,14 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Table,
   TableBody,
@@ -224,33 +217,21 @@ export default function TemplateEditorHub({
         </Table>
       </div>
 
-      <Sheet
-        open={sheetOpen}
-        onOpenChange={(open) => {
-          setSheetOpen(open);
-          if (!open) {
-            const params = new URLSearchParams(window.location.search);
-            params.delete("edit");
-            router.replace(
-              params.size ? `/apps/templates?${params}` : "/apps/templates",
-              { scroll: false },
-            );
-          }
+      <GlobalModal
+        isOpen={sheetOpen}
+        onClose={() => {
+          setSheetOpen(false);
+          const params = new URLSearchParams(window.location.search);
+          params.delete("edit");
+          router.replace(
+            params.size ? `/apps/templates?${params}` : "/apps/templates",
+            { scroll: false },
+          );
         }}
+        title={draft.id ? "Edit Template Dokumen" : "Buat Template Dokumen"}
+        description="Susun dokumen di halaman kiri dan pantau pratinjau cetak A4 di sebelah kanan."
+        className="!w-[96vw] !max-w-[96vw]"
       >
-        <SheetContent
-          side="right"
-          className="!w-[96vw] !max-w-[96vw] overflow-y-auto"
-        >
-          <SheetHeader className="pr-10">
-            <SheetTitle>
-              {draft.id ? "Edit Template Dokumen" : "Buat Template Dokumen"}
-            </SheetTitle>
-            <SheetDescription>
-              Susun dokumen di halaman kiri dan pantau pratinjau cetak A4 di
-              sebelah kanan.
-            </SheetDescription>
-          </SheetHeader>
           <form
             className="mt-5 space-y-4"
             onSubmit={saveTemplate}
@@ -313,11 +294,19 @@ export default function TemplateEditorHub({
               </p>
             )}
 
-            <SheetFooter className="sticky bottom-0 z-10 border-t bg-background/95 py-3 backdrop-blur">
+            <div className="sticky bottom-0 z-10 flex justify-end gap-2 border-t border-slate-700 bg-[#0F172A]/95 py-3 backdrop-blur">
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setSheetOpen(false)}
+                onClick={() => {
+                  setSheetOpen(false);
+                  const params = new URLSearchParams(window.location.search);
+                  params.delete("edit");
+                  router.replace(
+                    params.size ? `/apps/templates?${params}` : "/apps/templates",
+                    { scroll: false },
+                  );
+                }}
                 disabled={isPending}
               >
                 Batal
@@ -325,10 +314,9 @@ export default function TemplateEditorHub({
               <Button type="submit" disabled={isPending}>
                 {isPending ? "Menyimpan..." : "Simpan Template"}
               </Button>
-            </SheetFooter>
+            </div>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
     </div>
   );
 }

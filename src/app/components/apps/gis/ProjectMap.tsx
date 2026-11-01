@@ -3,7 +3,14 @@
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+  type RefObject,
+} from "react";
 import L, {
   type FeatureGroup as LeafletFeatureGroup,
   type Layer,
@@ -14,15 +21,53 @@ import {
   FeatureGroup,
   GeoJSON,
   MapContainer,
+  ScaleControl,
   TileLayer,
   useMap,
+  ZoomControl,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
-import type { SurveyGeoJSON } from "@/lib/field-survey-geojson";
-import type { SurveyLayerVisibility } from "./ProjectMapLoader";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+  Compass,
+  Check,
+  Layers3,
+  Map as MapIcon,
+  MapPin,
+  MousePointer2,
+  Pentagon,
+  Pencil,
+  Route,
+  Ruler,
+  Trash2,
+  X,
+} from "lucide-react";
+import {
+  measureSurveyGeoJSON,
+  type SurveyGeoJSON,
+} from "@/lib/field-survey-geojson";
+import type {
+  SurveyDrawRequest,
+  SurveyDrawTool,
+  SurveyLayerVisibility,
+} from "./ProjectMapLoader";
 import styles from "./ProjectMap.module.css";
 
-type Basemap = "streets" | "dark" | "satellite" | "google-satellite";
+type Basemap =
+  | "streets"
+  | "dark"
+  | "satellite"
+  | "terrain"
+  | "google-satellite"
+  | "google-earth"
+  | "google-hybrid";
+type ActiveMapTool = SurveyDrawTool;
+type ActiveDrawHandler = {
+  disable: () => void;
+  save?: () => void;
+  completeShape?: () => void;
+};
 type FeatureWithLocalId = Feature<Geometry, GeoJsonProperties> & {
   properties: Record<string, unknown> | null;
 };
@@ -92,6 +137,16 @@ function geometryStyle(feature?: Feature<Geometry, GeoJsonProperties>): PathOpti
   return { color: "#38bdf8", weight: 4, opacity: 0.9 };
 }
 
+function formatDistance(value: number) {
+  return value >= 1_000
+    ? `${new Intl.NumberFormat("id-ID", { maximumFractionDigits: 2 }).format(value / 1_000)} km`
+    : `${new Intl.NumberFormat("id-ID", { maximumFractionDigits: 1 }).format(value)} m`;
+}
+
+function formatCoordinates(lat: number, lng: number) {
+  return `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+}
+
 function googleApiErrorMessage(result: unknown): string | null {
   if (
     typeof result !== "object" ||
@@ -125,6 +180,147 @@ function MapViewport({ data }: { data: SurveyGeoJSON | null }) {
   }, [data, map]);
 
   return null;
+}
+
+function DrawToolController({
+  request,
+  featureGroupRef,
+  activeToolRef,
+  measurementLayerRef,
+  mapRef,
+  activeHandlerRef,
+}: {
+  request: SurveyDrawRequest | null;
+  featureGroupRef: RefObject<LeafletFeatureGroup | null>;
+  activeToolRef: MutableRefObject<ActiveMapTool | null>;
+  measurementLayerRef: MutableRefObject<Layer | null>;
+  mapRef: MutableRefObject<L.Map | null>;
+  activeHandlerRef: MutableRefObject<ActiveDrawHandler | null>;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    mapRef.current = map;
+    return () => {
+      mapRef.current = null;
+    };
+  }, [map, mapRef]);
+
+  useEffect(() => {
+    if (!request) return;
+    activeHandlerRef.current?.disable();
+    activeHandlerRef.current = null;
+    activeToolRef.current = request.tool;
+    if (request.tool !== "select") {
+      measurementLayerRef.current?.remove();
+      measurementLayerRef.current = null;
+    }
+
+    if (request.tool === "select" || request.tool === "clear") return;
+    const drawMap = map as L.DrawMap;
+    const featureGroup = featureGroupRef.current;
+    if (
+      (request.tool === "edit" || request.tool === "delete") &&
+      !featureGroup
+    ) {
+      activeToolRef.current = null;
+      return;
+    }
+
+    let handler:
+      | L.Draw.Marker
+      | L.Draw.Polygon
+      | L.Draw.Polyline
+      | L.EditToolbar.Edit
+      | L.EditToolbar.Delete;
+    if (request.tool === "point") {
+      handler = new L.Draw.Marker(drawMap, { icon: drawMarkerIcon });
+    } else if (request.tool === "polygon") {
+      handler = new L.Draw.Polygon(drawMap, {
+        allowIntersection: false,
+        showArea: true,
+        shapeOptions: { color: "#f97316", fillOpacity: 0.22 },
+      });
+    } else if (request.tool === "line" || request.tool === "ruler") {
+      handler = new L.Draw.Polyline(drawMap, {
+        shapeOptions: {
+          color: request.tool === "ruler" ? "#facc15" : "#38bdf8",
+          weight: 4,
+          dashArray: request.tool === "ruler" ? "7 6" : undefined,
+        },
+      });
+    } else if (request.tool === "edit") {
+      if (!featureGroup) return;
+      let editableFeatureGroup = featureGroup;
+      if (request.featureId) {
+        editableFeatureGroup = new L.FeatureGroup();
+        featureGroup.eachLayer((layer) => {
+          if (getLocalId(layer) === request.featureId) {
+            editableFeatureGroup.addLayer(layer);
+          }
+        });
+        if (editableFeatureGroup.getLayers().length === 0) return;
+      }
+      handler = new L.EditToolbar.Edit(drawMap, {
+        featureGroup: editableFeatureGroup,
+      });
+    } else {
+      if (!featureGroup) return;
+      handler = new L.EditToolbar.Delete(drawMap, { featureGroup });
+    }
+
+    const handlerController = {
+      disable: () => handler.disable(),
+      save: "save" in handler ? () => handler.save() : undefined,
+    };
+    activeHandlerRef.current = {
+      ...handlerController,
+      completeShape:
+        "completeShape" in handler ? () => handler.completeShape() : undefined,
+    };
+    handler.enable();
+    return () => {
+      if (request.tool === "edit" || request.tool === "delete") {
+        handlerController.save?.();
+      }
+      handlerController.disable();
+      activeHandlerRef.current = null;
+      activeToolRef.current = null;
+    };
+  }, [activeHandlerRef, activeToolRef, featureGroupRef, map, measurementLayerRef, request]);
+
+  return null;
+}
+
+function MapCoordinates() {
+  const map = useMap();
+  const [coordinates, setCoordinates] = useState(() =>
+    formatCoordinates(map.getCenter().lat, map.getCenter().lng),
+  );
+
+  useEffect(() => {
+    const updateCenterCoordinates = () => {
+      const position = map.getCenter();
+      setCoordinates(formatCoordinates(position.lat, position.lng));
+    };
+    const updateMouseCoordinates = (event: L.LeafletMouseEvent) => {
+      const position = event.latlng;
+      setCoordinates(formatCoordinates(position.lat, position.lng));
+    };
+    updateCenterCoordinates();
+    map.on("mousemove", updateMouseCoordinates);
+    map.on("moveend", updateCenterCoordinates);
+    return () => {
+      map.off("mousemove", updateMouseCoordinates);
+      map.off("moveend", updateCenterCoordinates);
+    };
+  }, [map]);
+
+  return (
+    <div className="pointer-events-none absolute bottom-7 right-2 z-[1000] rounded border border-border bg-card/90 px-2 py-1 font-mono text-[9px] text-card-foreground shadow">
+      Lat/Lng: {coordinates}
+    </div>
+  );
 }
 
 function GoogleMapAttribution({
@@ -215,15 +411,27 @@ export default function ProjectMap({
   importedDataVersion,
   drawnData,
   visibility,
+  drawRequest,
+  onVisibilityChange,
   onDrawnDataChange,
+  onDrawToolSelect,
+  onFeatureCreated,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
   drawnData: SurveyGeoJSON;
   visibility: SurveyLayerVisibility;
+  drawRequest: SurveyDrawRequest | null;
+  onVisibilityChange: (visibility: SurveyLayerVisibility) => void;
   onDrawnDataChange: (data: SurveyGeoJSON) => void;
+  onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
+  onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
 }) {
   const featureGroupRef = useRef<LeafletFeatureGroup>(null);
+  const activeToolRef = useRef<ActiveMapTool | null>(null);
+  const measurementLayerRef = useRef<Layer | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const activeHandlerRef = useRef<ActiveDrawHandler | null>(null);
   const [basemap, setBasemap] = useState<Basemap>("satellite");
   const [googleSession, setGoogleSession] = useState<string | null>(null);
   const [googleCopyright, setGoogleCopyright] = useState("");
@@ -297,7 +505,16 @@ export default function ProjectMap({
       return;
     }
     featureGroupRef.current?.eachLayer((layer) => {
-      const feature = (layer as Layer & { feature?: Feature<Geometry> }).feature;
+      const localId = getLocalId(layer);
+      const currentFeature = drawnData.features.find(
+        (candidate) =>
+          candidate.properties?.__surveyLayerId === localId,
+      ) as FeatureWithLocalId | undefined;
+      if (currentFeature) {
+        (layer as Layer & { feature?: FeatureWithLocalId }).feature =
+          currentFeature;
+      }
+      const feature = currentFeature ?? (layer as Layer & { feature?: Feature<Geometry> }).feature;
       const visible =
         feature?.geometry !== null &&
         feature?.geometry !== undefined &&
@@ -311,6 +528,12 @@ export default function ProjectMap({
       }
     });
   }, [drawnData, visibility]);
+
+  useEffect(() => {
+    if (importedData?.features.length || drawnData.features.length) return;
+    measurementLayerRef.current?.remove();
+    measurementLayerRef.current = null;
+  }, [drawnData.features.length, importedData]);
 
   const updateDrawnFeature = (layer: Layer) => {
     const feature = layerToFeature(layer);
@@ -337,10 +560,18 @@ export default function ProjectMap({
     : "Google Maps";
 
   return (
-    <div className={`${styles.mapCanvas} relative h-full min-h-[420px] w-full overflow-hidden rounded-xl border border-border`}>
+    <div
+      className={`${styles.mapCanvas} ${
+        basemap === "satellite" || basemap === "google-satellite"
+          ? styles.satelliteCanvas
+          : ""
+      } relative isolate z-0 h-full min-h-[420px] w-full overflow-hidden rounded-xl border border-border`}
+    >
       <MapContainer
         center={[4.625, 96.84]}
         zoom={12}
+        maxZoom={24}
+        zoomControl={false}
         scrollWheelZoom
         className="h-full min-h-[420px] w-full"
       >
@@ -353,9 +584,32 @@ export default function ProjectMap({
         )}
         {basemap === "dark" && (
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            maxZoom={20}
+            attribution="Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors"
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+            maxZoom={16}
+          />
+        )}
+        {basemap === "terrain" && (
+          <TileLayer
+            attribution="Tiles &copy; Esri &mdash; Sources: Esri, Garmin, USGS, NOAA"
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+            maxZoom={19}
+          />
+        )}
+        {basemap === "google-earth" && (
+          <TileLayer
+            attribution="&copy; Google Maps"
+            url="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+            maxNativeZoom={21}
+            maxZoom={24}
+          />
+        )}
+        {basemap === "google-hybrid" && (
+          <TileLayer
+            attribution="&copy; Google Maps"
+            url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+            maxNativeZoom={21}
+            maxZoom={24}
           />
         )}
         {(basemap === "satellite" ||
@@ -412,6 +666,24 @@ export default function ProjectMap({
             onCreated={(event) => {
               const layer = event.layer;
               const feature = layerToFeature(layer);
+              if (activeToolRef.current === "ruler" && layer instanceof L.Polyline) {
+                featureGroupRef.current?.removeLayer(layer);
+                measurementLayerRef.current?.remove();
+                const measurement = measureSurveyGeoJSON({
+                  type: "FeatureCollection",
+                  features: [feature],
+                });
+                layer.setStyle({ color: "#facc15", weight: 3, dashArray: "7 6" });
+                layer.bindTooltip(`Panjang: ${formatDistance(measurement.lengthM)}`, {
+                  permanent: true,
+                  direction: "center",
+                  className: styles.measurementTooltip,
+                });
+                mapRef.current?.addLayer(layer);
+                measurementLayerRef.current = layer;
+                onDrawToolSelect("select");
+                return;
+              }
               const localId = crypto.randomUUID();
               feature.properties = {
                 ...(feature.properties ?? {}),
@@ -424,6 +696,8 @@ export default function ProjectMap({
                   feature,
                 ]),
               );
+              onFeatureCreated(feature);
+              onDrawToolSelect("select");
             }}
             onEdited={(event) => {
               const updates = new Map<string, FeatureWithLocalId>();
@@ -458,45 +732,159 @@ export default function ProjectMap({
               );
             }}
             draw={{
-              polygon: {
-                allowIntersection: false,
-                showArea: true,
-                shapeOptions: { color: "#f97316", fillOpacity: 0.22 },
-              },
-              polyline: { shapeOptions: { color: "#38bdf8", weight: 4 } },
-              marker: { icon: drawMarkerIcon },
+              polygon: false,
+              polyline: false,
+              marker: false,
               rectangle: false,
               circle: false,
               circlemarker: false,
             }}
-            edit={{ edit: {}, remove: true }}
+            edit={{ edit: false, remove: false }}
           />
         </FeatureGroup>
+        <DrawToolController
+          request={drawRequest}
+          featureGroupRef={featureGroupRef}
+          activeToolRef={activeToolRef}
+          measurementLayerRef={measurementLayerRef}
+          mapRef={mapRef}
+          activeHandlerRef={activeHandlerRef}
+        />
+        <ZoomControl position="bottomleft" />
+        <ScaleControl position="bottomright" metric imperial={false} />
         <MapViewport data={importedData} />
+        <MapCoordinates />
       </MapContainer>
 
-      <label className="absolute right-3 top-3 z-[1000] flex items-center gap-2 rounded-lg border border-border bg-card/95 px-3 py-2 text-xs font-medium text-card-foreground shadow-md backdrop-blur">
-        <span className="hidden sm:inline">Basemap</span>
-        <select
-          aria-label="Pilih basemap"
-          value={basemap}
-          onChange={(event) => {
-            const nextBasemap = event.target.value as Basemap;
-            if (nextBasemap === "google-satellite") {
-              setGoogleMapRequestError(null);
-              setGoogleSession(null);
-              setGoogleCopyright("");
+      <div className="absolute left-3 top-3 z-[1000] flex max-w-[calc(100%-1.5rem)] items-center overflow-x-auto rounded-lg border border-border bg-card/95 p-1 shadow-lg backdrop-blur">
+        {(
+          [
+            ["select", "Pilih / Batalkan", MousePointer2],
+            ["point", "Tambah titik", MapPin],
+            ["line", "Gambar jalur", Route],
+            ["polygon", "Gambar polygon", Pentagon],
+            ["ruler", "Ukur jarak", Ruler],
+            ["edit", "Edit fitur gambar", Pencil],
+            ["delete", "Hapus fitur gambar", Trash2],
+          ] as const
+        ).map(([tool, title, Icon]) => (
+          <button
+            key={tool}
+            type="button"
+            title={title}
+            aria-label={title}
+            aria-pressed={
+              (drawRequest?.tool === "clear" ? "select" : drawRequest?.tool ?? "select") ===
+              tool
             }
-            setBasemap(nextBasemap);
-          }}
-          className="rounded border-0 bg-transparent py-0.5 text-xs text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => onDrawToolSelect(tool)}
+            className={`grid size-8 shrink-0 place-items-center rounded-md transition-colors ${
+              (drawRequest?.tool === "clear" ? "select" : drawRequest?.tool ?? "select") ===
+              tool
+                ? "bg-orange-500/20 text-orange-300"
+                : "text-card-foreground hover:bg-accent hover:text-accent-foreground"
+            }`}
+          >
+            <Icon className="size-4" aria-hidden="true" />
+          </button>
+        ))}
+        {(drawRequest?.tool === "line" ||
+          drawRequest?.tool === "polygon" ||
+          drawRequest?.tool === "ruler") && (
+          <>
+            <span className="mx-1 h-5 w-px shrink-0 bg-border" />
+            <button
+              type="button"
+              title="Selesaikan gambar"
+              aria-label="Selesaikan gambar"
+              onClick={() => activeHandlerRef.current?.completeShape?.()}
+              className="grid size-8 shrink-0 place-items-center rounded-md text-emerald-600 transition-colors hover:bg-emerald-500/15 dark:text-emerald-300"
+            >
+              <Check className="size-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              title="Batalkan gambar"
+              aria-label="Batalkan gambar"
+              onClick={() => onDrawToolSelect("select")}
+              className="grid size-8 shrink-0 place-items-center rounded-md text-rose-600 transition-colors hover:bg-rose-500/15 dark:text-rose-300"
+            >
+              <X className="size-4" aria-hidden="true" />
+            </button>
+          </>
+        )}
+      </div>
+
+      <div className="absolute right-3 top-3 z-[1000] flex max-w-[calc(100%-1.5rem)] items-start gap-2">
+        <details className="group relative">
+          <summary className="flex h-9 cursor-pointer list-none items-center gap-2 rounded-lg border border-border bg-card/95 px-3 text-xs font-medium text-card-foreground shadow-lg backdrop-blur [&::-webkit-details-marker]:hidden">
+            <Layers3 className="size-4 text-muted-foreground" aria-hidden="true" />
+            Layers
+          </summary>
+          <div className="absolute right-0 top-11 flex min-w-32 flex-col gap-2 rounded-lg border border-border bg-card p-3 text-xs text-card-foreground shadow-lg">
+            {(
+              [
+                ["polygon", "Area"],
+                ["line", "Jalur"],
+                ["point", "Titik"],
+              ] as const
+            ).map(([type, label]) => (
+              <Label
+                key={type}
+                className="flex cursor-pointer items-center gap-2 text-xs"
+              >
+                <Checkbox
+                  checked={visibility[type]}
+                  onCheckedChange={(checked) =>
+                    onVisibilityChange({
+                      ...visibility,
+                      [type]: checked === true,
+                    })
+                  }
+                  aria-label={`Tampilkan layer ${label}`}
+                  className="size-3.5"
+                />
+                {label}
+              </Label>
+            ))}
+          </div>
+        </details>
+        <label className="flex h-9 items-center gap-2 rounded-lg border border-border bg-card/95 px-3 text-xs font-medium text-card-foreground shadow-lg backdrop-blur">
+          <MapIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+          <span className="hidden sm:inline">Basemap</span>
+          <select
+            aria-label="Pilih basemap"
+            value={basemap}
+            onChange={(event) => {
+              const nextBasemap = event.target.value as Basemap;
+              if (nextBasemap === "google-satellite") {
+                setGoogleMapRequestError(null);
+                setGoogleSession(null);
+                setGoogleCopyright("");
+              }
+              setBasemap(nextBasemap);
+            }}
+            className="max-w-28 rounded border-0 bg-transparent py-0.5 text-xs text-card-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="satellite">Satelit</option>
+            <option value="terrain">Terrain</option>
+            <option value="dark">Gelap</option>
+            <option value="google-earth">Google Earth (High Res)</option>
+            <option value="google-hybrid">
+              Google Hybrid (Satelit + Label Jalan)
+            </option>
+            <option value="google-satellite">Google Satellite (API Key)</option>
+            <option value="streets">OpenStreetMap</option>
+          </select>
+        </label>
+        <div
+          aria-label="Arah utara"
+          title="Utara"
+          className="absolute right-0 top-12 grid size-9 place-items-center rounded-full border border-border bg-card/90 text-secondary shadow-lg backdrop-blur"
         >
-          <option value="satellite">Satelit</option>
-          <option value="google-satellite">Google Satellite</option>
-          <option value="streets">OpenStreetMap</option>
-          <option value="dark">Gelap</option>
-        </select>
-      </label>
+          <Compass className="size-5" aria-hidden="true" />
+        </div>
+      </div>
 
       <div className="absolute bottom-3 left-3 z-[1000] rounded-md border border-border bg-card/90 px-2.5 py-1.5 text-[10px] text-muted-foreground shadow-sm backdrop-blur">
         {drawnData.features.length + (importedData?.features.length ?? 0)} fitur

@@ -1,14 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+import { DialogFooter } from '@/components/ui/dialog'
+import { GlobalModal } from '@/components/ui/global-modal'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { TbCheck } from 'react-icons/tb'
@@ -52,15 +46,13 @@ const AddNotes = ({ colors, addNote }: Props) => {
 
   return (
     <>
-      <Dialog open={openNoteModal} onOpenChange={setOpenNoteModal}>
-        <DialogTrigger asChild>
-          <Button className='rounded-md'>Add Note</Button>
-        </DialogTrigger>
-        <DialogContent className='sm:max-w-lg'>
-          <DialogHeader>
-            <DialogTitle>Add New Note</DialogTitle>
-          </DialogHeader>
-
+      <Button className='rounded-md' onClick={() => setOpenNoteModal(true)}>Add Note</Button>
+      <GlobalModal
+        isOpen={openNoteModal}
+        onClose={() => setOpenNoteModal(false)}
+        title='Add New Note'
+        className='sm:max-w-lg'
+      >
           <div className='space-y-2'>
             <Textarea
               rows={5}
@@ -98,8 +90,7 @@ const AddNotes = ({ colors, addNote }: Props) => {
               Close
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </>
   )
 }

@@ -4,13 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CreatePOForm from "@/app/components/forms/CreatePOForm";
 import DirectStockPurchaseForm from "@/app/components/forms/DirectStockPurchaseForm";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -75,15 +69,13 @@ export default function CreatePurchaseModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={changeOpen}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>Tambah Pembelian</DialogTitle>
-          <DialogDescription>
-            Pilih skema pembelian. Pembelian langsung wajib mendapat persetujuan
-            Direktur sebelum masuk antrean pembayaran.
-          </DialogDescription>
-        </DialogHeader>
+    <GlobalModal
+      isOpen={open}
+      onClose={() => changeOpen(false)}
+      title="Tambah Pembelian"
+      description="Pilih skema pembelian. Pembelian langsung wajib mendapat persetujuan Direktur sebelum masuk antrean pembayaran."
+      className="sm:max-w-3xl"
+    >
         <RadioGroup
           value={purchaseType}
           onValueChange={(value) =>
@@ -140,7 +132,6 @@ export default function CreatePurchaseModal({
             onCreated={handleCreated}
           />
         )}
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

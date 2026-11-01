@@ -3,6 +3,10 @@ import { redirect } from "next/navigation";
 import ProjectWorkstationMaster, {
   type ProjectWorkstationMasterData,
 } from "@/app/components/apps/projects/ProjectWorkstationMaster";
+import type {
+  FieldSurveySummary,
+  SurveyProjectOption,
+} from "@/app/components/apps/gis/SurveySidebar";
 import {
   TicketFieldCategory,
   TicketRequestCategory,
@@ -25,7 +29,15 @@ const projectRoles: UserRole[] = [
   UserRole.DRAFTER,
 ];
 
-export default async function ProjectsWorkstationPage() {
+export default async function ProjectsWorkstationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    section?: string;
+    projectId?: string;
+  }>;
+}) {
+  const { section, projectId: requestedProjectId } = await searchParams;
   const session = await auth();
   if (!session?.user) redirect("/auth/login");
   if (!projectRoles.includes(session.user.role)) redirect("/");
@@ -188,6 +200,66 @@ export default async function ProjectsWorkstationPage() {
       },
     },
   });
+  const surveyProjects: SurveyProjectOption[] = projects.map((project) => ({
+    id: project.id,
+    code: project.code,
+    title: project.title || project.name,
+    vendor: project.vendor ?? "",
+  }));
+  const projectIds = projects.map((project) => project.id);
+  const savedSurveys = await prisma.fieldSurvey.findMany({
+    where: {
+      OR: [
+        { projectId: { in: projectIds } },
+        {
+          projectId: null,
+          ...(isFieldRole ? { surveyorId: session.user.id } : {}),
+        },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+    select: {
+      id: true,
+      projectId: true,
+      projectName: true,
+      locationName: true,
+      responsibleName: true,
+      surveyor: { select: { name: true } },
+      surveyName: true,
+      projectCode: true,
+      objectCategory: true,
+      vegetationType: true,
+      topography: true,
+      landOwnership: true,
+      documentationUrls: true,
+      areaSqm: true,
+      lengthM: true,
+      perimeterM: true,
+      notes: true,
+      createdAt: true,
+    },
+  });
+  const surveys: FieldSurveySummary[] = savedSurveys.map((survey) => ({
+    id: survey.id,
+    projectId: survey.projectId,
+    projectName: survey.projectName,
+    locationName: survey.locationName,
+    responsibleName: survey.responsibleName,
+    surveyorName: survey.surveyor.name,
+    surveyName: survey.surveyName,
+    projectCode: survey.projectCode,
+    objectCategory: survey.objectCategory,
+    vegetationType: survey.vegetationType,
+    topography: survey.topography,
+    landOwnership: survey.landOwnership,
+    documentationUrls: survey.documentationUrls,
+    areaSqm: survey.areaSqm,
+    lengthM: survey.lengthM,
+    perimeterM: survey.perimeterM,
+    notes: survey.notes,
+    createdAt: survey.createdAt.toISOString(),
+  }));
   const fieldTeamUsers =
     isDirector || session.user.role === UserRole.ADMINISTRATIONS
       ? await prisma.user.findMany({
@@ -199,7 +271,6 @@ export default async function ProjectsWorkstationPage() {
           select: { id: true, name: true, email: true, profilePhotoUrl: true },
         })
     : [];
-  const projectIds = projects.map((project) => project.id);
   const realizedMap = isDirector
     ? await getPaidProjectTicketRealization(projectIds)
     : null;
@@ -316,6 +387,27 @@ export default async function ProjectsWorkstationPage() {
       fieldTeamUsers={fieldTeamUsers}
       currentUserId={session.user.id}
       currentUserRole={session.user.role}
+      surveyProjects={surveyProjects}
+      surveys={surveys}
+      surveyorName={session.user.name ?? "Pengguna"}
+      captureTime={
+        new Date().toLocaleString("id-ID", {
+          timeZone: "Asia/Jakarta",
+          dateStyle: "medium",
+          timeStyle: "short",
+        }) + " WIB"
+      }
+      cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+      cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
+      initialSurveyProjectId={
+        requestedProjectId === "none"
+          ? ""
+          : surveyProjects.some((project) => project.id === requestedProjectId)
+          ? requestedProjectId ?? null
+          : section === "surveys"
+            ? surveyProjects[0]?.id ?? ""
+            : null
+      }
     />
   );
 }

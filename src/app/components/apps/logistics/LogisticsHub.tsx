@@ -30,15 +30,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Table,
   TableBody,
@@ -625,22 +617,16 @@ export default function LogisticsHub({
         </div>
       </TabsContent>
 
-      <Sheet
-        open={vendorSheetOpen}
-        onOpenChange={(open) => {
-          setVendorSheetOpen(open);
-          if (!open) setEditingVendor(null);
+      <GlobalModal
+        isOpen={vendorSheetOpen}
+        onClose={() => {
+          setVendorSheetOpen(false);
+          setEditingVendor(null);
         }}
+        title={editingVendor ? "Edit Vendor" : "Tambah Vendor Baru"}
+        description="Data rekening vendor akan digunakan otomatis saat membuat PO."
+        className="sm:max-w-xl"
       >
-        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>
-              {editingVendor ? "Edit Vendor" : "Tambah Vendor Baru"}
-            </SheetTitle>
-            <SheetDescription>
-              Data rekening vendor akan digunakan otomatis saat membuat PO.
-            </SheetDescription>
-          </SheetHeader>
           <form
             key={editingVendor?.id ?? "new-vendor"}
             className="mt-6 space-y-4"
@@ -685,12 +671,18 @@ export default function LogisticsHub({
                 {vendorMessage}
               </p>
             )}
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="button" variant="outline" disabled={isPending}>
-                  Tutup
-                </Button>
-              </SheetClose>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isPending}
+                onClick={() => {
+                  setVendorSheetOpen(false);
+                  setEditingVendor(null);
+                }}
+              >
+                Tutup
+              </Button>
               <Button type="submit" disabled={isPending}>
                 {isPending
                   ? "Menyimpan..."
@@ -698,28 +690,21 @@ export default function LogisticsHub({
                     ? "Simpan Perubahan"
                     : "Simpan Vendor"}
               </Button>
-            </SheetFooter>
+            </div>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
 
-      <Sheet
-        open={selection !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelection(null);
-          }
-        }}
+      <GlobalModal
+        isOpen={selection !== null}
+        onClose={() => setSelection(null)}
+        title={selection?.number ?? "Preview dokumen"}
+        description={
+          selection
+            ? `${selection.executiveApproval} · Dokumen resmi`
+            : "Pratinjau dokumen resmi PO/DO."
+        }
+        className="sm:max-w-3xl"
       >
-        <SheetContent className="w-full overflow-y-auto sm:max-w-3xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>{selection?.number ?? "Preview dokumen"}</SheetTitle>
-            <SheetDescription>
-              {selection
-                ? `${selection.executiveApproval} · Dokumen resmi`
-                : "Pratinjau dokumen resmi PO/DO."}
-            </SheetDescription>
-          </SheetHeader>
           {selection && (
             <>
               <p className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
@@ -738,18 +723,15 @@ export default function LogisticsHub({
               </div>
             </>
           )}
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
 
-      <Sheet open={equipmentSheetOpen} onOpenChange={setEquipmentSheetOpen}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
-          <SheetHeader>
-            <SheetTitle>Log Alat Berat & BBM</SheetTitle>
-            <SheetDescription>
-              HM master diperbarui atomik bila alat dipilih. HM awal harus sama
-              dengan pembacaan terakhir master.
-            </SheetDescription>
-          </SheetHeader>
+      <GlobalModal
+        isOpen={equipmentSheetOpen}
+        onClose={() => setEquipmentSheetOpen(false)}
+        title="Log Alat Berat & BBM"
+        description="HM master diperbarui atomik bila alat dipilih. HM awal harus sama dengan pembacaan terakhir master."
+        className="sm:max-w-xl"
+      >
           <form className="mt-6 space-y-4" onSubmit={submitEquipmentLog}>
             <label className="block space-y-1 text-sm">
               Proyek
@@ -812,17 +794,15 @@ export default function LogisticsHub({
               {isPending ? "Menyimpan..." : "Simpan Log"}
             </Button>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
 
-      <Sheet open={equipmentMasterSheetOpen} onOpenChange={setEquipmentMasterSheetOpen}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle>Daftarkan Master Alat</SheetTitle>
-            <SheetDescription>
-              Nomor alat dibuat otomatis; HM awal digunakan sebagai dasar log berikutnya.
-            </SheetDescription>
-          </SheetHeader>
+      <GlobalModal
+        isOpen={equipmentMasterSheetOpen}
+        onClose={() => setEquipmentMasterSheetOpen(false)}
+        title="Daftarkan Master Alat"
+        description="Nomor alat dibuat otomatis; HM awal digunakan sebagai dasar log berikutnya."
+        className="sm:max-w-lg"
+      >
           <form className="mt-6 space-y-4" onSubmit={submitEquipmentMaster}>
             <label className="block space-y-1 text-sm">
               Nama alat
@@ -851,8 +831,7 @@ export default function LogisticsHub({
               {isPending ? "Menyimpan..." : "Simpan Master Alat"}
             </Button>
           </form>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
     </Tabs>
   );
 }

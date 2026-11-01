@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import {
   addProjectProgress,
@@ -20,6 +20,11 @@ import {
 } from "@/app/actions/construction";
 import ProjectFormModal from "@/app/components/project/ProjectFormModal";
 import ImportProjectModal from "./ImportProjectModal";
+import GISWorkspace from "@/app/components/apps/gis/GISWorkspace";
+import type {
+  FieldSurveySummary,
+  SurveyProjectOption,
+} from "@/app/components/apps/gis/SurveySidebar";
 import CreateTicketModal from "@/app/components/apps/tickets/CreateTicketModal";
 import type { TicketProjectOption } from "@/app/(DashboardLayout)/types/ticket";
 import type { FieldTeamOption } from "@/app/(DashboardLayout)/types/project";
@@ -58,13 +63,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -92,6 +91,7 @@ import {
   ChevronLeft,
   ChevronRight,
   MapPin,
+  MapPinned,
   Search,
   Upload,
   Pencil,
@@ -373,14 +373,38 @@ export default function ProjectWorkstationMaster({
   fieldTeamUsers,
   currentUserId,
   currentUserRole,
+  surveyProjects,
+  surveys,
+  surveyorName,
+  captureTime,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
+  initialSurveyProjectId,
 }: {
   projects: ProjectWorkstationMasterData[];
   fieldTeamUsers: FieldTeamOption[];
   currentUserId: string;
   currentUserRole: UserRole;
+  surveyProjects: SurveyProjectOption[];
+  surveys: FieldSurveySummary[];
+  surveyorName: string;
+  captureTime: string;
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
+  initialSurveyProjectId: string | null;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const sectionParam = searchParams.get("section");
+  const viewParam = searchParams.get("view");
+  const projectParam = searchParams.get("projectId");
+  const activeSection = sectionParam === "surveys" ? "surveys" : "projects";
+  const surveyView = viewParam === "details" ? "details" : "map";
+  const surveyProjectId =
+    projectParam === "none"
+      ? ""
+      : projectParam ?? initialSurveyProjectId ?? surveyProjects[0]?.id ?? "";
   const [editingProject, setEditingProject] =
     useState<ProjectDashboardRow | null>(null);
   const [pendingDeleteProjectId, setPendingDeleteProjectId] = useState<
@@ -607,6 +631,7 @@ export default function ProjectWorkstationMaster({
 
   return (
     <div className="space-y-5">
+      {activeSection === "projects" && (
       <header className="overflow-hidden rounded-2xl border border-border bg-gradient-to-r from-card to-muted p-5 text-foreground shadow-lg sm:p-6">
         <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
           <div className="flex min-w-0 items-center gap-4">
@@ -652,7 +677,41 @@ export default function ProjectWorkstationMaster({
           </div>
         </div>
       </header>
+      )}
 
+      <nav
+        aria-label="Submenu Project Workstation"
+        className="flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2 shadow-sm"
+      >
+        <Button
+          type="button"
+          variant={activeSection === "projects" ? "default" : "ghost"}
+          onClick={() => {
+            router.replace("/apps/projects", { scroll: false });
+          }}
+          className="gap-2"
+        >
+          <BriefcaseBusiness className="size-4" aria-hidden="true" />
+          Daftar Proyek
+        </Button>
+        <Button
+          type="button"
+          variant={activeSection === "surveys" ? "default" : "ghost"}
+          onClick={() => {
+            const projectId = surveyProjectId || surveyProjects[0]?.id || "none";
+            router.replace(
+              `/apps/projects?section=surveys&view=map&projectId=${encodeURIComponent(projectId)}`,
+              { scroll: false },
+            );
+          }}
+          className="gap-2"
+        >
+          <MapPinned className="size-4" aria-hidden="true" />
+          Peta & Survei Lapangan
+        </Button>
+      </nav>
+
+      {activeSection === "projects" && (
       <Card className="border-border bg-card text-card-foreground shadow-md">
         <CardHeader className="flex flex-col gap-4 pb-4 xl:flex-row xl:items-center xl:justify-between">
           <div className="min-w-0">
@@ -900,6 +959,22 @@ export default function ProjectWorkstationMaster({
                       onKeyDown={(event) => event.stopPropagation()}
                     >
                       <div className="flex items-center justify-center gap-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Buka peta survei untuk ${project.title}`}
+                          title="Buka peta dan survei proyek"
+                          className="size-9 text-sky-600 hover:bg-sky-50 hover:text-sky-700 dark:text-sky-300 dark:hover:bg-sky-500/10"
+                          onClick={() => {
+                            router.replace(
+                              `/apps/projects?section=surveys&view=map&projectId=${encodeURIComponent(project.id)}`,
+                              { scroll: false },
+                            );
+                          }}
+                        >
+                          <MapPinned className="size-4" aria-hidden="true" />
+                        </Button>
                         {isProjectManager && (
                           <Button
                             variant="ghost"
@@ -988,6 +1063,36 @@ export default function ProjectWorkstationMaster({
           </div>
         </CardContent>
       </Card>
+      )}
+
+      {activeSection === "surveys" && (
+        <section>
+          <GISWorkspace
+            projects={surveyProjects}
+            surveys={surveys}
+            surveyorName={surveyorName}
+            captureTime={captureTime}
+            cloudinaryCloudName={cloudinaryCloudName}
+            cloudinaryApiKey={cloudinaryApiKey}
+            initialProjectId={surveyProjectId}
+            initialView={surveyView}
+            onViewChange={(view) => {
+              const projectQuery =
+                surveyProjectId || surveyProjects[0]?.id || "none";
+              router.replace(
+                `/apps/projects?section=surveys&view=${view}&projectId=${encodeURIComponent(projectQuery || "none")}`,
+                { scroll: false },
+              );
+            }}
+            onProjectChange={(projectId) => {
+              router.replace(
+                `/apps/projects?section=surveys&view=${surveyView}&projectId=${encodeURIComponent(projectId || "none")}`,
+                { scroll: false },
+              );
+            }}
+          />
+        </section>
+      )}
 
       <ProjectFormModal
         key={editingProject?.id ?? (newProjectOpen ? "new-project" : "closed")}
@@ -1008,45 +1113,35 @@ export default function ProjectWorkstationMaster({
       />
       <ImportProjectModal open={importOpen} onOpenChange={setImportOpen} />
 
-      <Dialog
-        open={activeProject !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setActiveProjectId(null);
-            setNotice("");
-          }
+      <GlobalModal
+        isOpen={activeProject !== null}
+        onClose={() => {
+          setActiveProjectId(null);
+          setNotice("");
         }}
+        title={activeProject?.title ?? "Detail Proyek"}
+        description={
+          activeProject
+            ? `${activeProject.code} · ${activeProject.location || activeProject.address}`
+            : "Informasi dan aktivitas proyek."
+        }
+        className="max-w-5xl"
       >
-        <DialogContent
-          className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-5xl overflow-y-auto p-5 sm:p-6"
-        >
-          <DialogHeader className="space-y-3 pr-8 text-left">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <DialogTitle className="text-xl text-primary">
-                  {activeProject?.title ?? "Detail Proyek"}
-                </DialogTitle>
-                <DialogDescription className="mt-1">
-                  {activeProject
-                    ? `${activeProject.code} · ${activeProject.location || activeProject.address}`
-                    : "Informasi dan aktivitas proyek."}
-                </DialogDescription>
-              </div>
-              {activeProject && currentUserRole === UserRole.DIRECTOR && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => {
-                    setPendingDeleteProjectId(activeProject.id);
-                    setConfirmArchiveOpen(true);
-                  }}
-                >
-                  <Archive className="mr-2 size-4" />
-                  Hapus Proyek
-                </Button>
-              )}
+          {activeProject && currentUserRole === UserRole.DIRECTOR && (
+            <div className="mb-4 flex justify-end">
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => {
+                  setPendingDeleteProjectId(activeProject.id);
+                  setConfirmArchiveOpen(true);
+                }}
+              >
+                <Archive className="mr-2 size-4" />
+                Hapus Proyek
+              </Button>
             </div>
-          </DialogHeader>
+          )}
 
           {activeProject && (
             <div className="mt-6 space-y-5">
@@ -1708,8 +1803,7 @@ export default function ProjectWorkstationMaster({
               </Tabs>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
 
       <AlertDialog
         open={confirmArchiveOpen}

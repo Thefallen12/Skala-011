@@ -14,13 +14,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DialogClose,
-  Dialog,
-  DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -151,34 +147,29 @@ export default function LogisticsActionModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          setFile(null);
-          setSelectedVehicleId("");
-          setMessage("");
-          setExternalDelivery({
-            vehicleDocumentNumber: "",
-            vehiclePlate: "",
-            driverName: "",
-            driverIdentityNumber: "",
-            driverPhone: "",
-          });
-          setActionType("READY_WAREHOUSE");
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setFile(null);
+        setSelectedVehicleId("");
+        setMessage("");
+        setExternalDelivery({
+          vehicleDocumentNumber: "",
+          vehiclePlate: "",
+          driverName: "",
+          driverIdentityNumber: "",
+          driverPhone: "",
+        });
+        setActionType("READY_WAREHOUSE");
+        onOpenChange(false);
       }}
+      title="Proses Material"
+      description={
+        existingDeliveryOrder
+          ? "Tiket ini sudah memiliki Surat Jalan. Lanjutkan dengan dokumen yang ada tanpa menerbitkan DO atau mengurangi stok lagi."
+          : "Pilih sumber material sekali. Jika stok tersedia, sistem membuat DO dan mencadangkan stok. Jika stok kurang, buat PO lalu kirim invoice ke Keuangan setelah PO disetujui."
+      }
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Proses Material</DialogTitle>
-          <DialogDescription>
-            {existingDeliveryOrder
-              ? "Tiket ini sudah memiliki Surat Jalan. Lanjutkan dengan dokumen yang ada tanpa menerbitkan DO atau mengurangi stok lagi."
-              : "Pilih sumber material sekali. Jika stok tersedia, sistem membuat DO dan mencadangkan stok. Jika stok kurang, buat PO lalu kirim invoice ke Keuangan setelah PO disetujui."}
-          </DialogDescription>
-        </DialogHeader>
         <form className="space-y-4" onSubmit={submit}>
           {existingDeliveryOrder ? (
             <section className="space-y-3 rounded-md border p-3">
@@ -486,7 +477,6 @@ export default function LogisticsActionModal({
             ) : null}
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

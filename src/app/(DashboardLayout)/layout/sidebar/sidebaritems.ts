@@ -39,12 +39,6 @@ const SidebarContent: MenuItem[] = [
         requiresProjects: true,
       },
       {
-        name: 'Lokasi Proyek & Survei Lapangan',
-        icon: 'solar:map-point-wave-linear',
-        url: '/apps/projects/map',
-        requiresProjects: true,
-      },
-      {
         name: 'Gambar Kerja',
         icon: 'solar:ruler-pen-linear',
         url: '/apps/blueprints',

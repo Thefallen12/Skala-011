@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import { addProjectProgress } from "@/app/actions/project";
 import type { ProjectDashboardRow } from "@/app/(DashboardLayout)/types/project";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -93,23 +86,31 @@ export default function ProjectProgressModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) setErrorMessage("");
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setErrorMessage("");
+        onOpenChange(false);
       }}
+      title="Tambah Progres Proyek"
+      description={`${project?.title ?? "Proyek"}. Progres yang disimpan menjadi nilai terkini proyek dan catatan harian pada tanggal yang dipilih.`}
+      footer={
+        <>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isPending}
+            onClick={() => onOpenChange(false)}
+          >
+            Batal
+          </Button>
+          <Button type="submit" form="project-progress-form" disabled={isPending || !project}>
+            {isPending ? "Menyimpan..." : "Simpan progres"}
+          </Button>
+        </>
+      }
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Tambah Progres Proyek</DialogTitle>
-          <DialogDescription>
-            {project?.title}. Progres yang disimpan menjadi nilai terkini proyek
-            dan catatan harian pada tanggal yang dipilih.
-          </DialogDescription>
-        </DialogHeader>
-
-        <form className="space-y-5" onSubmit={submit}>
+        <form id="project-progress-form" className="space-y-5" onSubmit={submit}>
           <div className="space-y-2">
             <Label htmlFor="project-report-date">Tanggal laporan</Label>
             <Input
@@ -262,21 +263,7 @@ export default function ProjectProgressModal({
             </p>
           )}
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Batal
-            </Button>
-            <Button type="submit" disabled={isPending || !project}>
-              {isPending ? "Menyimpan..." : "Simpan progres"}
-            </Button>
-          </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

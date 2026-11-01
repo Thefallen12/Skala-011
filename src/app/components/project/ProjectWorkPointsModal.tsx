@@ -6,13 +6,7 @@ import { addProjectWorkPointProgress, approveProjectWorkPointWage, createProject
 import type { ProjectDashboardRow } from "@/app/(DashboardLayout)/types/project";
 import { UserRole } from "@/generated/prisma/enums";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -181,25 +175,17 @@ export default function ProjectWorkPointsModal({
 
   return (
     <>
-      <Dialog
-        open={open}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) {
-            setProgressPointId(null);
-            setMessage("");
-          }
-          onOpenChange(nextOpen);
+      <GlobalModal
+        isOpen={open}
+        onClose={() => {
+          setProgressPointId(null);
+          setMessage("");
+          onOpenChange(false);
         }}
+        title="Titik Pekerjaan & Upah Tukang"
+        description={`${project?.title ?? "Proyek"}. PIC Team Lapangan mengelola tugas per titik, mengirim foto progres, dan mengajukan total upah hasil negosiasi. Direktur menyetujui nilai total.`}
+        className="sm:max-w-4xl"
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>Titik Pekerjaan & Upah Tukang</DialogTitle>
-            <DialogDescription>
-              {project?.title}. PIC Team Lapangan mengelola tugas per titik,
-              mengirim foto progres, dan mengajukan total upah hasil negosiasi.
-              Direktur menyetujui nilai total.
-            </DialogDescription>
-          </DialogHeader>
 
           <div className="rounded-md border bg-muted/30 p-3 text-sm">
             <span className="font-medium">PIC Team Lapangan: </span>
@@ -619,22 +605,15 @@ export default function ProjectWorkPointsModal({
               {message}
             </p>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
 
-      <Dialog
-        open={selectedPhoto !== null}
-        onOpenChange={(nextOpen) => {
-          if (!nextOpen) setSelectedPhoto(null);
-        }}
+      <GlobalModal
+        isOpen={selectedPhoto !== null}
+        onClose={() => setSelectedPhoto(null)}
+        title="Foto progres titik pekerjaan"
+        description="Bukti progres privat yang diunggah PIC Team Lapangan."
+        className="max-w-5xl"
       >
-        <DialogContent className="max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>Foto progres titik pekerjaan</DialogTitle>
-            <DialogDescription>
-              Bukti progres privat yang diunggah PIC Team Lapangan.
-            </DialogDescription>
-          </DialogHeader>
           {selectedPhoto && (
             <div className="space-y-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -653,8 +632,7 @@ export default function ProjectWorkPointsModal({
               </Button>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </>
   );
 }

@@ -5,14 +5,8 @@ import { createVendor } from "@/app/actions/vendors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 
 export type PurchaseVendorOption = {
   id: string;
@@ -72,15 +66,13 @@ export default function CreateVendorInline({
       >
         Tambah Vendor
       </Button>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Tambah Vendor</DialogTitle>
-            <DialogDescription>
-              Vendor yang disimpan dapat langsung dipilih untuk pengajuan
-              pembelian.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Tambah Vendor"
+        description="Vendor yang disimpan dapat langsung dipilih untuk pengajuan pembelian."
+        className="sm:max-w-lg"
+      >
           <form className="space-y-4" onSubmit={submit}>
             <div className="space-y-2">
               <Label htmlFor={`${formId}-name`}>Nama vendor</Label>
@@ -157,8 +149,7 @@ export default function CreateVendorInline({
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </>
   );
 }

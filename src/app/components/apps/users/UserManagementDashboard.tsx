@@ -28,14 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -858,29 +851,38 @@ export default function UserManagementDashboard({
         </Table>
       </CardBox>
 
-      <Dialog
-        open={accountDialogOpen}
-        onOpenChange={(open) => {
-          setAccountDialogOpen(open);
-          if (!open) {
-            setEditingUser(null);
-            setProfilePhotoUrl(null);
-            setPhotoUploadError(null);
-          }
+      <GlobalModal
+        isOpen={accountDialogOpen}
+        onClose={() => {
+          setAccountDialogOpen(false);
+          setEditingUser(null);
+          setProfilePhotoUrl(null);
+          setPhotoUploadError(null);
         }}
+        title={editingUser ? "Ubah pengguna" : "Tambah pengguna"}
+        description={
+          editingUser
+            ? "Perbarui informasi, role, dan status akun."
+            : "Tambahkan pengguna baru dan tentukan akses akunnya."
+        }
+        className="sm:max-w-[600px]"
+        footer={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setAccountDialogOpen(false)}
+            >
+              Batal
+            </Button>
+            <Button type="submit" form="managed-user-form" disabled={isSavingAccount}>
+              {isSavingAccount ? "Menyimpan..." : "Simpan pengguna"}
+            </Button>
+          </>
+        }
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingUser ? "Ubah pengguna" : "Tambah pengguna"}
-            </DialogTitle>
-            <DialogDescription>
-              {editingUser
-                ? "Perbarui informasi, role, dan status akun."
-                : "Tambahkan pengguna baru dan tentukan akses akunnya."}
-            </DialogDescription>
-          </DialogHeader>
           <form
+            id="managed-user-form"
             key={editingUser?.id ?? "new-user"}
             className="space-y-3"
             onSubmit={(event) => {
@@ -1099,39 +1101,18 @@ export default function UserManagementDashboard({
                 </p>
               </div>
             )}
-            <DialogFooter className="pt-1">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setAccountDialogOpen(false)}
-              >
-                Batal
-              </Button>
-              <Button type="submit" disabled={isSavingAccount}>
-                {isSavingAccount
-                  ? "Menyimpan..."
-                  : "Simpan pengguna"}
-              </Button>
-            </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
 
-      <Dialog
-        open={Boolean(deleteTarget)}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Hapus pengguna</DialogTitle>
-            <DialogDescription>
-              Hapus akun {deleteTarget?.name}? Tindakan ini tidak dapat dibatalkan.
-              Akun yang masih terkait dengan data operasional harus dinonaktifkan.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
+      <GlobalModal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        title="Hapus pengguna"
+        description={`Hapus akun ${deleteTarget?.name ?? ""}? Tindakan ini tidak dapat dibatalkan. Akun yang masih terkait dengan data operasional harus dinonaktifkan.`}
+        className="sm:max-w-md"
+        footerNote="Tindakan ini tidak dapat dibatalkan."
+        footer={
+          <>
             <Button
               type="button"
               variant="outline"
@@ -1168,9 +1149,14 @@ export default function UserManagementDashboard({
             >
               {isPending ? "Menghapus..." : "Hapus pengguna"}
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </>
+        }
+      >
+        <p className="text-sm text-slate-400">
+          Periksa terlebih dahulu bahwa akun yang dipilih memang sudah tidak
+          diperlukan.
+        </p>
+      </GlobalModal>
 
       <div className="sr-only" aria-live="polite">
         {message?.message}

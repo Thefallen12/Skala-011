@@ -7,13 +7,7 @@ import { getProjectFinancialBreakdown } from "@/app/actions/project";
 import type { ProjectFinancialBreakdown as FinancialResult } from "@/app/actions/project";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 
 type ProjectSummary = {
   id: string;
@@ -85,17 +79,13 @@ export default function ProjectFinancialModal({
           : { label: "Aman", variant: "lightSuccess" as const };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full overflow-y-auto p-6 sm:max-w-xl">
-        <SheetHeader className="pr-8 text-left">
-          <SheetTitle>
-            Laporan Realisasi Anggaran - {project?.title ?? ""}
-          </SheetTitle>
-          <SheetDescription>
-            Ringkasan pagu dan tiket yang sudah masuk tahap pemrosesan atau
-            selesai.
-          </SheetDescription>
-        </SheetHeader>
+    <GlobalModal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={`Laporan Realisasi Anggaran - ${project?.title ?? ""}`}
+      description="Ringkasan pagu dan tiket yang sudah masuk tahap pemrosesan atau selesai."
+      className="sm:max-w-xl"
+    >
 
         {isLoading && (
           <div
@@ -187,7 +177,6 @@ export default function ProjectFinancialModal({
             </section>
           </div>
         )}
-      </SheetContent>
-    </Sheet>
+    </GlobalModal>
   );
 }

@@ -53,22 +53,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  GlobalModal,
+} from "@/components/ui/global-modal";
 import {
   Tabs,
   TabsContent,
@@ -1798,33 +1784,45 @@ export default function FinanceHub({
         </p>
       )}
 
-      <Sheet
-        open={selection !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelection(null);
-            setReceiptUrl(null);
-            setPaymentAmount("");
-            setPaymentType(PaymentType.FULL_PAYMENT);
-            setMessage("");
-            if (initialOpenSheet) {
-              router.replace(`/apps/finance?tab=${activeTab}`, { scroll: false });
-            }
+      <GlobalModal
+        isOpen={selection !== null}
+        onClose={() => {
+          setSelection(null);
+          setReceiptUrl(null);
+          setPaymentAmount("");
+          setPaymentType(PaymentType.FULL_PAYMENT);
+          setMessage("");
+          if (initialOpenSheet) {
+            router.replace(`/apps/finance?tab=${activeTab}`, { scroll: false });
           }
         }}
+        title={
+          previewOrder?.poNumber ??
+          activeDirectPurchase?.purchaseNumber ??
+          activeTicket?.ticketNumber ??
+          "Detail Finance"
+        }
+        description="Pemeriksaan dokumen dan transaksi tersimpan di satu panel."
+        className="sm:max-w-2xl"
+        footer={
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => {
+              setSelection(null);
+              setReceiptUrl(null);
+              setPaymentAmount("");
+              setPaymentType(PaymentType.FULL_PAYMENT);
+              setMessage("");
+              if (initialOpenSheet) {
+                router.replace(`/apps/finance?tab=${activeTab}`, { scroll: false });
+              }
+            }}
+          >
+            Tutup
+          </Button>
+        }
       >
-        <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
-          <SheetHeader className="pr-8">
-            <SheetTitle>
-              {previewOrder?.poNumber ??
-                activeDirectPurchase?.purchaseNumber ??
-                activeTicket?.ticketNumber ??
-                "Detail Finance"}
-            </SheetTitle>
-            <SheetDescription>
-              Pemeriksaan dokumen dan transaksi tersimpan di satu panel.
-            </SheetDescription>
-          </SheetHeader>
           <div className="mt-6 space-y-4">
             {previewOrder && (
               <>
@@ -2309,13 +2307,7 @@ export default function FinanceHub({
               </p>
             )}
           </div>
-          <SheetFooter className="mt-6">
-            <SheetClose asChild>
-              <Button variant="outline" type="button">Tutup</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+      </GlobalModal>
       <PaymentModal
         key={
           selectedPaymentRow
@@ -2331,22 +2323,29 @@ export default function FinanceHub({
         cloudinaryCloudName={cloudinaryCloudName}
         cloudinaryApiKey={cloudinaryApiKey}
       />
-      <Dialog
-        open={receiptPreview !== null}
-        onOpenChange={(open) => {
-          if (!open) setReceiptPreview(null);
-        }}
+      <GlobalModal
+        isOpen={receiptPreview !== null}
+        onClose={() => setReceiptPreview(null)}
+        title={receiptPreview?.label ?? "Pratinjau bukti transfer"}
+        description="Pratinjau bukti transfer. Buka file penuh untuk melihat atau menyimpan bukti."
+        className="max-w-4xl"
+        footer={
+          receiptPreview ? (
+            <Button asChild variant="outline">
+              <a
+                href={photoDownloadHref(receiptPreview.url)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Download aria-hidden="true" />
+                Unduh Bukti Transfer
+              </a>
+            </Button>
+          ) : null
+        }
       >
-        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
           {receiptPreview && (
             <>
-              <DialogHeader>
-                <DialogTitle>{receiptPreview.label}</DialogTitle>
-                <DialogDescription>
-                  Pratinjau bukti transfer. Buka file penuh untuk melihat atau
-                  menyimpan bukti.
-                </DialogDescription>
-              </DialogHeader>
               <div className="flex min-h-56 items-center justify-center overflow-hidden rounded-md border bg-muted/30">
                 {isImageReceipt(receiptPreview.url) &&
                 unavailableProofUrls.includes(receiptPreview.url) ? (
@@ -2385,22 +2384,9 @@ export default function FinanceHub({
                   </div>
                 )}
               </div>
-              <DialogFooter>
-                <Button asChild variant="outline">
-                  <a
-                    href={photoDownloadHref(receiptPreview.url)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Download aria-hidden="true" />
-                    Unduh Bukti Transfer
-                  </a>
-                </Button>
-              </DialogFooter>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

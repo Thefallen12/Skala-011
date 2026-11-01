@@ -4,13 +4,7 @@ import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -89,15 +83,13 @@ export default function TicketStatisticsModal({
         {trigger}
       </span>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Statistik Tiket</DialogTitle>
-            <DialogDescription>
-              Tren nilai dan jumlah tiket berdasarkan tanggal dibuat. Statistik
-              mengikuti tiket yang tersedia pada daftar Anda.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Statistik Tiket"
+        description="Tren nilai dan jumlah tiket berdasarkan tanggal dibuat. Statistik mengikuti tiket yang tersedia pada daftar Anda."
+        className="max-w-5xl"
+      >
 
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="grid flex-1 gap-3 sm:grid-cols-2">
@@ -157,8 +149,7 @@ export default function TicketStatisticsModal({
             months={statistics.months}
             categoryLabel={selectedCategoryLabel}
           />
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </>
   );
 }

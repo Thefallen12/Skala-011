@@ -6,14 +6,7 @@ import ExcelJS from "exceljs";
 import Papa from "papaparse";
 import { importProjects } from "@/app/actions/project";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -169,24 +162,26 @@ export default function ImportProjectModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        if (!nextOpen) {
-          setRows([]);
-          setMessage("");
-        }
-        onOpenChange(nextOpen);
+    <GlobalModal
+      isOpen={open}
+      onClose={() => {
+        setRows([]);
+        setMessage("");
+        onOpenChange(false);
       }}
+      title="Import Proyek"
+      description="Unggah berkas Excel atau CSV dengan header sesuai template. Maksimal 500 baris; kode proyek yang sudah terdaftar akan dilewati."
+      className="sm:max-w-2xl"
+      footer={
+        <Button
+          type="button"
+          disabled={isPending || rows.length === 0}
+          onClick={submitImport}
+        >
+          {isPending ? "Mengimpor..." : `Impor ${rows.length || ""} Proyek`}
+        </Button>
+      }
     >
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Import Proyek</DialogTitle>
-          <DialogDescription>
-            Unggah berkas Excel atau CSV dengan header sesuai template. Maksimal
-            500 baris; kode proyek yang sudah terdaftar akan dilewati.
-          </DialogDescription>
-        </DialogHeader>
         <div className="space-y-3">
           <Label htmlFor="project-import-file">File proyek (.xlsx, .xls, .csv)</Label>
           <Input
@@ -214,16 +209,6 @@ export default function ImportProjectModal({
             </p>
           )}
         </div>
-        <DialogFooter>
-          <Button
-            type="button"
-            disabled={isPending || rows.length === 0}
-            onClick={submitImport}
-          >
-            {isPending ? "Mengimpor..." : `Impor ${rows.length || ""} Proyek`}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    </GlobalModal>
   );
 }

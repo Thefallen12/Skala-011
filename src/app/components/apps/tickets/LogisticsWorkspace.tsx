@@ -56,13 +56,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -1399,22 +1393,16 @@ export default function LogisticsWorkspace({
         </CardBox>
 
         {canCreatePurchaseOrder && (
-          <Dialog
-            open={stockDialogOpen}
-            onOpenChange={(open) => {
-              setStockDialogOpen(open);
-              if (open) setStockFormError("");
+          <GlobalModal
+            isOpen={stockDialogOpen}
+            onClose={() => {
+              setStockDialogOpen(false);
+              setStockFormError("");
             }}
+            title={editingStockId ? "Edit Barang Persediaan" : "Tambah Barang Persediaan"}
+            description="Perbarui katalog material dan saldo stok yang tercatat."
+            className="sm:max-w-xl"
           >
-            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingStockId ? "Edit Barang Persediaan" : "Tambah Barang Persediaan"}
-                </DialogTitle>
-                <DialogDescription>
-                  Perbarui katalog material dan saldo stok yang tercatat.
-                </DialogDescription>
-              </DialogHeader>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="stock-item-name">Nama barang</Label>
@@ -1539,22 +1527,15 @@ export default function LogisticsWorkspace({
                   {stockSubmitting ? "Menyimpan..." : "Simpan Barang"}
                 </Button>
               </div>
-            </DialogContent>
-          </Dialog>
+          </GlobalModal>
         )}
-        <Dialog
-          open={stockDetail !== null}
-          onOpenChange={(open) => {
-            if (!open) setStockDetail(null);
-          }}
+        <GlobalModal
+          isOpen={stockDetail !== null}
+          onClose={() => setStockDetail(null)}
+          title="Detail Barang"
+          description="Informasi katalog dan posisi stok material."
+          className="sm:max-w-md"
         >
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Detail Barang</DialogTitle>
-              <DialogDescription>
-                Informasi katalog dan posisi stok material.
-              </DialogDescription>
-            </DialogHeader>
             {stockDetail && (
               <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
                 <dt className="text-muted-foreground">Nama Barang</dt>
@@ -1603,26 +1584,19 @@ export default function LogisticsWorkspace({
                 Tutup
               </Button>
             </div>
-          </DialogContent>
-        </Dialog>
-        <Dialog
-          open={stockDeleteTarget !== null}
-          onOpenChange={(open) => {
-            if (!open && !stockDeleteSubmitting) {
-              setStockDeleteTarget(null);
-              setStockDeleteError("");
-            }
+        </GlobalModal>
+        <GlobalModal
+          isOpen={stockDeleteTarget !== null}
+          onClose={() => {
+            if (stockDeleteSubmitting) return;
+            setStockDeleteTarget(null);
+            setStockDeleteError("");
           }}
+          title="Hapus Barang Persediaan?"
+          description="Barang ini akan dihapus permanen dari katalog dan tidak dapat dipilih untuk PO baru. Riwayat tiket yang sudah dibuat tidak terhapus."
+          className="sm:max-w-md"
+          footerNote="Tindakan ini tidak dapat dibatalkan."
         >
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Hapus Barang Persediaan?</DialogTitle>
-              <DialogDescription>
-                Barang ini akan dihapus permanen dari katalog dan tidak dapat
-                dipilih untuk PO baru. Riwayat tiket yang sudah dibuat tidak
-                terhapus.
-              </DialogDescription>
-            </DialogHeader>
             {stockDeleteTarget && (
               <div className="rounded-md border border-border bg-muted p-3 text-sm">
                 <p className="font-medium">{stockDeleteTarget.name}</p>
@@ -1654,27 +1628,23 @@ export default function LogisticsWorkspace({
                 {stockDeleteSubmitting ? "Menghapus..." : "Hapus Permanen"}
               </Button>
             </div>
-          </DialogContent>
-        </Dialog>
-        <Dialog
-          open={receivingPurchase !== null}
-          onOpenChange={(open) => {
-            if (!open && !receivingPurchaseSubmitting) {
-              setReceivingPurchase(null);
-              setReceivingPurchaseError("");
-              setReceivingPhotos([]);
-            }
+        </GlobalModal>
+        <GlobalModal
+          isOpen={receivingPurchase !== null}
+          onClose={() => {
+            if (receivingPurchaseSubmitting) return;
+            setReceivingPurchase(null);
+            setReceivingPurchaseError("");
+            setReceivingPhotos([]);
           }}
+          title="Terima Pembelian Stok"
+          description={
+            receivingPurchase
+              ? `${receivingPurchase.purchaseNumber} · ${receivingPurchase.vendorName}. Stok bertambah setelah penerimaan ini tersimpan.`
+              : "Unggah foto sebagai bukti barang telah tiba di gudang."
+          }
+          className="sm:max-w-lg"
         >
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <DialogTitle>Terima Pembelian Stok</DialogTitle>
-              <DialogDescription>
-                {receivingPurchase
-                  ? `${receivingPurchase.purchaseNumber} · ${receivingPurchase.vendorName}. Stok bertambah setelah penerimaan ini tersimpan.`
-                  : "Unggah foto sebagai bukti barang telah tiba di gudang."}
-              </DialogDescription>
-            </DialogHeader>
             {receivingPurchase && (
               <form
                 className="space-y-4"
@@ -1829,26 +1799,17 @@ export default function LogisticsWorkspace({
                 </div>
               </form>
             )}
-          </DialogContent>
-        </Dialog>
-        <Dialog
-          open={stockReceiptPreview !== null}
-          onOpenChange={(open) => {
-            if (!open) {
-              setStockReceiptPreview(null);
-              setStockReceiptPreviewFailed(false);
-            }
+        </GlobalModal>
+        <GlobalModal
+          isOpen={stockReceiptPreview !== null}
+          onClose={() => {
+            setStockReceiptPreview(null);
+            setStockReceiptPreviewFailed(false);
           }}
+          title={stockReceiptPreview?.label ?? "Bukti penerimaan"}
+          description="Pratinjau foto bukti penerimaan barang."
+          className="sm:max-w-5xl"
         >
-          <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-5xl">
-            <DialogHeader>
-              <DialogTitle>
-                {stockReceiptPreview?.label ?? "Bukti penerimaan"}
-              </DialogTitle>
-              <DialogDescription>
-                Pratinjau foto bukti penerimaan barang.
-              </DialogDescription>
-            </DialogHeader>
             {stockReceiptPreview && (
               <>
                 <div className="relative flex min-h-64 items-center justify-center overflow-hidden rounded-lg border bg-muted/30 sm:min-h-[60vh]">
@@ -1873,8 +1834,7 @@ export default function LogisticsWorkspace({
                 </div>
               </>
             )}
-          </DialogContent>
-        </Dialog>
+        </GlobalModal>
       </div>
     );
   }

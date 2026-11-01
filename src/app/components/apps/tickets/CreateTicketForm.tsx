@@ -16,14 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -136,24 +129,23 @@ export default function CreateTicketForm({
   });
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        setOpen(nextOpen);
-        if (nextOpen) setError("");
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button>Buat tiket</Button>
-      </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Buat pengajuan baru</DialogTitle>
-          <DialogDescription>
-            Isi permintaan dan rincian item. Tiket akan disimpan sebagai draft
-            sebelum diajukan untuk persetujuan Direktur.
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Button
+        type="button"
+        onClick={() => {
+          setError("");
+          setOpen(true);
+        }}
+      >
+        Buat tiket
+      </Button>
+      <GlobalModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Buat pengajuan baru"
+        description="Isi permintaan dan rincian item. Tiket akan disimpan sebagai draft sebelum diajukan untuk persetujuan Direktur."
+        className="max-w-3xl"
+      >
 
         <form onSubmit={submit} className="space-y-5">
           <div className="grid gap-4 md:grid-cols-2">
@@ -444,7 +436,7 @@ export default function CreateTicketForm({
             </Button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </GlobalModal>
+    </>
   );
 }

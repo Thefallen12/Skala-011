@@ -22,18 +22,52 @@ export type SurveyLayerVisibility = {
   point: boolean;
 };
 
+export type SurveyDrawTool =
+  | "select"
+  | "point"
+  | "line"
+  | "polygon"
+  | "ruler"
+  | "edit"
+  | "delete"
+  | "clear";
+export type SurveyDrawRequest = {
+  tool: SurveyDrawTool;
+  requestId: number;
+  featureId?: string;
+};
+
+export type SurveyFeatureMetadata = {
+  title: string;
+  projectTitle: string;
+  desa: string;
+  kecamatan: string;
+  kabupaten: string;
+  vendor: string;
+  surveyorName: string;
+  description: string;
+};
+
 export default function ProjectMapLoader({
   importedData,
   importedDataVersion,
   drawnData,
   visibility,
+  drawRequest,
+  onVisibilityChange,
   onDrawnDataChange,
+  onDrawToolSelect,
+  onFeatureCreated,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
   drawnData: SurveyGeoJSON;
   visibility: SurveyLayerVisibility;
+  drawRequest: SurveyDrawRequest | null;
+  onVisibilityChange: (visibility: SurveyLayerVisibility) => void;
   onDrawnDataChange: (data: SurveyGeoJSON) => void;
+  onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
+  onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
 }) {
   return (
     <ProjectMap
@@ -41,7 +75,11 @@ export default function ProjectMapLoader({
       importedDataVersion={importedDataVersion}
       drawnData={drawnData}
       visibility={visibility}
+      drawRequest={drawRequest}
+      onVisibilityChange={onVisibilityChange}
       onDrawnDataChange={onDrawnDataChange}
+      onDrawToolSelect={onDrawToolSelect}
+      onFeatureCreated={onFeatureCreated}
     />
   );
 }

@@ -20,14 +20,7 @@ import type { TicketProjectOption } from "@/app/(DashboardLayout)/types/ticket";
 import { createTicket } from "@/app/actions/tickets";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -492,27 +485,24 @@ export default function CreateTicketModal({
   });
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        setOpen(nextOpen);
-        if (nextOpen) setError("");
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button>
+    <>
+        <Button
+          type="button"
+          onClick={() => {
+            setError("");
+            setOpen(true);
+          }}
+        >
           <Plus aria-hidden="true" />
           {triggerLabel}
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Tambah tiket ERP</DialogTitle>
-          <DialogDescription>
-            Isi proyek, jenis permintaan, data penerima atau rincian item,
-            prioritas, dan tanggal kebutuhan.
-          </DialogDescription>
-        </DialogHeader>
+      <GlobalModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="Tambah tiket ERP"
+        description="Isi proyek, jenis permintaan, data penerima atau rincian item, prioritas, dan tanggal kebutuhan."
+        className="max-w-4xl"
+      >
         {error && (
           <p
             className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
@@ -1289,7 +1279,7 @@ export default function CreateTicketModal({
             </Button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </GlobalModal>
+    </>
   );
 }
