@@ -673,7 +673,7 @@ export default function GISWorkspace({
         description="Laporan mengikuti template A4. Gunakan cetak untuk menyimpan sebagai PDF."
         className="z-[2100] max-w-[calc(210mm+3rem)]"
         overlayClassName="z-[2099]"
-        bodyClassName="bg-slate-950/30 p-0"
+        bodyClassName="overflow-auto bg-slate-950/30 p-3 sm:p-4"
         footer={
           <>
             <Button
@@ -690,16 +690,18 @@ export default function GISWorkspace({
           </>
         }
       >
-        <iframe
-          ref={reportFrameRef}
-          title="Laporan survei"
-          src={
-            reportSurveyId
-              ? `/report/${encodeURIComponent(reportSurveyId)}`
-              : undefined
-          }
-          className="h-[70vh] w-full rounded-lg bg-white"
-        />
+        <div className="flex min-h-0 min-w-0 justify-center overflow-auto">
+          <iframe
+            ref={reportFrameRef}
+            title="Laporan survei A4"
+            src={
+              reportSurveyId
+                ? `/report/${encodeURIComponent(reportSurveyId)}`
+                : undefined
+            }
+            className="h-[297mm] w-[210mm] max-w-none shrink-0 rounded-sm bg-white shadow-xl"
+          />
+        </div>
       </GlobalModal>
       <GlobalModal
         isOpen={featureEditorOpen}
