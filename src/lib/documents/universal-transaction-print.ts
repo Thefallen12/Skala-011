@@ -125,6 +125,10 @@ export function renderUniversalTransactionDocument(
           @page { size: A4 portrait; margin: 12mm; }
           * { box-sizing: border-box; }
           html, body { margin: 0; color: #172b45; font: 9pt Arial, sans-serif; }
+          @media screen {
+            html, body { width: 210mm; min-height: 297mm; background: #fff; }
+            .transaction-document { width: 210mm; min-height: 297mm; padding: 12mm; }
+          }
           .transaction-document { width: 100%; }
           .doc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
           .doc-logo { display: block; width: 47%; max-width: 325px; height: auto; object-fit: contain; object-position: left top; }

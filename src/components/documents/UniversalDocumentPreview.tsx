@@ -124,7 +124,8 @@ export default function UniversalDocumentPreview({
           <iframe
             title={title}
             src={src}
-            className="block h-full w-full border-0 bg-white"
+            scrolling="no"
+            className="block h-full w-full overflow-hidden border-0 bg-white"
           />
         </div>
       </div>
