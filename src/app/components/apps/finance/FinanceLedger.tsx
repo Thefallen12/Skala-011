@@ -25,7 +25,6 @@ import {
   ArrowDownLeft,
   ArrowLeftRight,
   ArrowUpRight,
-  ExternalLink,
   Plus,
   Wallet,
 } from "lucide-react";
@@ -88,6 +87,7 @@ export default function FinanceLedger({
   onFundModeChange,
   typeFilter,
   onTypeFilterChange,
+  onPreviewProof,
 }: {
   accounts: FinanceAccountOption[];
   cashflows: FinanceCashflowRow[];
@@ -100,6 +100,7 @@ export default function FinanceLedger({
   onFundModeChange: (mode: "incoming" | "transfer" | null) => void;
   typeFilter: "IN" | "OUT" | null;
   onTypeFilterChange: (type: "IN" | "OUT" | null) => void;
+  onPreviewProof: (url: string, label: string) => void;
 }) {
   const router = useRouter();
   const [accountModalOpen, setAccountModalOpen] = useState(false);
@@ -418,22 +419,18 @@ export default function FinanceLedger({
                         <td className="px-3 py-3">
                           {payment.proofUrl ? (
                             <Button
-                              asChild
+                              type="button"
                               size="sm"
                               variant="link"
                               className="h-auto p-0"
+                              onClick={() =>
+                                onPreviewProof(
+                                  payment.proofUrl!,
+                                  `Bukti transfer ${payment.sourceDesc}`,
+                                )
+                              }
                             >
-                              <a
-                                href={payment.proofUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <ExternalLink
-                                  className="mr-1 size-3"
-                                  aria-hidden="true"
-                                />
-                                Lihat Bukti
-                              </a>
+                              Lihat Bukti
                             </Button>
                           ) : (
                             <span className="text-xs text-muted-foreground">
@@ -535,22 +532,18 @@ export default function FinanceLedger({
                       <td className="px-3 py-3">
                         {cashflow.proofUrl ? (
                           <Button
-                            asChild
+                            type="button"
                             size="sm"
                             variant="link"
                             className="h-auto p-0"
+                            onClick={() =>
+                              onPreviewProof(
+                                cashflow.proofUrl!,
+                                `Bukti transaksi ${cashflow.sourceDesc}`,
+                              )
+                            }
                           >
-                            <a
-                              href={cashflow.proofUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLink
-                                className="mr-1 size-3"
-                                aria-hidden="true"
-                              />
-                              Lihat Bukti
-                            </a>
+                            Lihat Bukti
                           </Button>
                         ) : (
                           <span className="text-xs text-muted-foreground">

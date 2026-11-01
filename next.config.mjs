@@ -3,6 +3,7 @@ const nextConfig = {
     output: "standalone",
     deploymentId: process.env.DEPLOYMENT_VERSION,
     reactStrictMode: false,
+    serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
     images: {
         unoptimized: true,
         remotePatterns: [

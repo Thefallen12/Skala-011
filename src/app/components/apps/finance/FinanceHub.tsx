@@ -1128,6 +1128,7 @@ export default function FinanceHub({
               onFundModeChange={setLedgerFundMode}
               typeFilter={ledgerTypeFilter}
               onTypeFilterChange={setLedgerTypeFilter}
+              onPreviewProof={(url, label) => setReceiptPreview({ url, label })}
             />
           </TabsContent>
         </div>

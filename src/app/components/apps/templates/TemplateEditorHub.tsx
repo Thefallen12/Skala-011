@@ -148,22 +148,6 @@ export default function TemplateEditorHub({
 
   return (
     <div className="space-y-5">
-      <section className="flex flex-wrap items-end justify-between gap-4 rounded-2xl border bg-gradient-to-br from-card to-primary/[0.07] p-5">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            Unified Template Hub
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold">Document Generator</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Kelola template SPK, PO, DO, Invoice, dan BAST dalam satu workspace.
-          </p>
-        </div>
-        <Button onClick={openNewTemplate}>
-          <Plus className="mr-2 size-4" />
-          Buat Template
-        </Button>
-      </section>
-
       <section className="space-y-4 rounded-xl border bg-card p-4 sm:p-5">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="space-y-1">
@@ -199,6 +183,12 @@ export default function TemplateEditorHub({
         <UniversalDocumentPreview
           title={`Contoh desain ${previewKind}`}
           src={`/api/documents/transactions?preview=1&kind=${previewKind}`}
+          documentNumber={`${
+            previewKind === "PO"
+              ? "PO"
+              : previewKind
+          }-CONTOH-2026`}
+          onCreateTemplate={openNewTemplate}
         />
       </section>
 
