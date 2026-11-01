@@ -116,13 +116,17 @@ export default function UniversalDocumentPreview({
           <span className="sm:hidden">Cetak</span>
         </Button>
       </div>
-      <div className="flex min-h-[480px] justify-center overflow-auto p-3 sm:p-4">
-        <iframe
-          title={title}
-          src={src}
-          className="h-[70vh] min-h-[480px] w-full max-w-[900px] origin-top bg-white shadow-2xl transition-transform"
-          style={{ transform: `scale(${zoom / 90})` }}
-        />
+      <div className="flex min-h-[620px] justify-center overflow-auto p-6 sm:p-8">
+        <div
+          className="relative h-[297mm] w-[210mm] shrink-0 origin-top bg-white shadow-2xl transition-transform"
+          style={{ transform: `scale(${zoom / 100})` }}
+        >
+          <iframe
+            title={title}
+            src={src}
+            className="block h-full w-full border-0 bg-white"
+          />
+        </div>
       </div>
     </div>
   );
