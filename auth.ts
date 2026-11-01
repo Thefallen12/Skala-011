@@ -48,6 +48,7 @@ const {
             passwordHash: true,
             isActive: true,
             role: true,
+            profilePhotoUrl: true,
           },
         });
         if (
@@ -68,6 +69,7 @@ const {
           name: user.name,
           email: user.email,
           role: user.role,
+          image: user.profilePhotoUrl,
         };
       },
     }),
@@ -78,6 +80,7 @@ const {
         token.id = user.id;
         token.sub = user.id;
         token.role = user.role;
+        token.picture = user.image ?? null;
       }
       return token;
     },
@@ -94,6 +97,8 @@ const {
       if (typeof token.role === "string" && isUserRole(token.role)) {
         session.user.role = token.role;
       }
+      session.user.image =
+        typeof token.picture === "string" ? token.picture : null;
 
       return session;
     },
@@ -111,7 +116,7 @@ export async function auth() {
 
   const account = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true, isActive: true },
+    select: { role: true, isActive: true, profilePhotoUrl: true },
   });
   if (!account?.isActive) {
     return null;
@@ -122,6 +127,7 @@ export async function auth() {
     user: {
       ...session.user,
       role: account.role,
+      image: account.profilePhotoUrl,
     },
   };
 }

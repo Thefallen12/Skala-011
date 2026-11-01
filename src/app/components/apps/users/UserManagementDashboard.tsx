@@ -5,10 +5,10 @@ import dynamic from "next/dynamic";
 import {
   Activity,
   ArrowDownToLine,
+  Camera,
   CheckCircle2,
   FileDown,
   FileUp,
-  Eye,
   MoreHorizontal,
   Pencil,
   Search,
@@ -20,8 +20,10 @@ import {
 import { format, formatDistanceToNowStrict, isAfter, subDays } from "date-fns";
 import { id } from "date-fns/locale";
 import { UserRole } from "@/generated/prisma/enums";
+import { CldUploadWidget } from "next-cloudinary";
 import type { UserChartRecord } from "./UserManagementCharts";
 import CardBox from "@/app/components/shared/CardBox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,11 +58,11 @@ import {
   type AccountActionResult,
 } from "@/app/actions/users";
 import { createAccount, type RegisterState } from "@/app/auth/register/actions";
+import { USER_PROFILE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/user-profile-photo-config";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -79,6 +81,7 @@ export type ManagedUser = UserChartRecord & {
   name: string;
   email: string;
   phone: string | null;
+  profilePhotoUrl: string | null;
   isActive: boolean;
   lastLoginAt: string | null;
 };
@@ -96,6 +99,31 @@ const roleOptions: { value: UserRole; label: string }[] = [
 ];
 
 const initialRegisterState: RegisterState = { status: "idle", message: "" };
+
+const roleBadgeClasses: Record<UserRole, string> = {
+  [UserRole.DIRECTOR]: "border-rose-400/30 bg-rose-500/10 text-rose-300",
+  [UserRole.DEPUTY_DIRECTOR]: "border-orange-400/30 bg-orange-500/10 text-orange-300",
+  [UserRole.DRAFTER]: "border-sky-400/30 bg-sky-500/10 text-sky-300",
+  [UserRole.FINANCE]: "border-violet-400/30 bg-violet-500/10 text-violet-300",
+  [UserRole.LOGISTICS]: "border-cyan-400/30 bg-cyan-500/10 text-cyan-300",
+  [UserRole.KOORDINATOR]: "border-amber-400/30 bg-amber-500/10 text-amber-300",
+  [UserRole.FIELD_TEAM]: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+  [UserRole.MOVER]: "border-teal-400/30 bg-teal-500/10 text-teal-300",
+  [UserRole.ADMINISTRATIONS]: "border-indigo-400/30 bg-indigo-500/10 text-indigo-300",
+};
+
+function getInitials(name: string): string {
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "?"
+  );
+}
 
 function csvEscape(value: string): string {
   return `"${(/^[\s]*[=+\-@]/.test(value) ? `'${value}` : value).replace(
@@ -124,7 +152,7 @@ function toReportRows(users: ManagedUser[]): string[][] {
       "Nama",
       "Email",
       "Telepon",
-      "Role",
+      "Peran",
       "Status akun",
       "Dibuat pada",
       "Login terakhir",
@@ -151,9 +179,13 @@ function isRecentLogin(lastLoginAt: string | null): boolean {
 
 export default function UserManagementDashboard({
   currentUserId,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
   users,
 }: {
   currentUserId: string;
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
   users: ManagedUser[];
 }) {
   const [query, setQuery] = useState("");
@@ -161,7 +193,8 @@ export default function UserManagementDashboard({
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [accountDialogOpen, setAccountDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<ManagedUser | null>(null);
-  const [profileUser, setProfileUser] = useState<ManagedUser | null>(null);
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null);
+  const [photoUploadError, setPhotoUploadError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ManagedUser | null>(null);
   const [message, setMessage] = useState<AccountActionResult | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -180,6 +213,7 @@ export default function UserManagementDashboard({
             name: String(formData.get("name")),
             email: String(formData.get("email")),
             phone: String(formData.get("phone") ?? ""),
+            profilePhotoUrl: String(formData.get("profilePhotoUrl") ?? ""),
             role: String(formData.get("role")),
             isActive: formData.get("isActive") === "true",
           })
@@ -191,6 +225,7 @@ export default function UserManagementDashboard({
       if (result.success) {
         setAccountDialogOpen(false);
         setEditingUser(null);
+        setProfilePhotoUrl(null);
       }
     } catch (error) {
       console.error("User account save request failed:", error);
@@ -201,6 +236,20 @@ export default function UserManagementDashboard({
     } finally {
       setIsSavingAccount(false);
     }
+  };
+
+  const openNewAccount = () => {
+    setEditingUser(null);
+    setProfilePhotoUrl(null);
+    setPhotoUploadError(null);
+    setAccountDialogOpen(true);
+  };
+
+  const openEditAccount = (user: ManagedUser) => {
+    setEditingUser(user);
+    setProfilePhotoUrl(user.profilePhotoUrl);
+    setPhotoUploadError(null);
+    setAccountDialogOpen(true);
   };
 
   const filteredUsers = useMemo(() => {
@@ -233,9 +282,12 @@ export default function UserManagementDashboard({
   const recentLoginCount = users.filter(
     (user) => user.isActive && isRecentLogin(user.lastLoginAt),
   ).length;
-  const activeRate = users.length
-    ? Math.round((recentLoginCount / users.length) * 100)
+  const activeRate = activeCount
+    ? Math.round((recentLoginCount / activeCount) * 100)
     : 0;
+  const attentionCount = users.filter(
+    (user) => !user.isActive || !user.lastLoginAt,
+  ).length;
   const recentActivity = users
     .filter((user) => user.lastLoginAt)
     .sort(
@@ -320,9 +372,9 @@ export default function UserManagementDashboard({
       background: "bg-lightinfo",
     },
     {
-      label: "Aktif 30 hari",
+      label: "Login 30 hari",
       value: `${activeRate}%`,
-      detail: `${recentLoginCount} pengguna login`,
+      detail: `${recentLoginCount} dari ${activeCount} akun aktif`,
       icon: Activity,
       color: "text-warning",
       background: "bg-lightwarning",
@@ -347,7 +399,7 @@ export default function UserManagementDashboard({
           onClick={() => fileInput.current?.click()}
         >
           <FileUp className="mr-2 size-4" aria-hidden="true" />
-          Import Users
+          Impor pengguna
         </Button>
         <Button
           type="button"
@@ -357,17 +409,7 @@ export default function UserManagementDashboard({
           }
         >
           <ArrowDownToLine className="mr-2 size-4" aria-hidden="true" />
-          Export
-        </Button>
-        <Button
-          type="button"
-          onClick={() => {
-            setEditingUser(null);
-            setAccountDialogOpen(true);
-          }}
-        >
-          <UserPlus className="mr-2 size-4" aria-hidden="true" />
-          Add User
+          Ekspor
         </Button>
       </div>
       <p className="text-right text-xs text-muted-foreground">
@@ -472,13 +514,13 @@ export default function UserManagementDashboard({
           <CardBox className="overflow-hidden">
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <div>
-                <h2 className="font-semibold">System Alerts</h2>
+                <h2 className="font-semibold">Peringatan akun</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Akun nonaktif atau belum pernah login
                 </p>
               </div>
-              <Badge variant={alerts.length ? "lightWarning" : "lightSuccess"}>
-                {alerts.length}
+              <Badge variant={attentionCount ? "lightWarning" : "lightSuccess"}>
+                {attentionCount}
               </Badge>
             </div>
             <div className="divide-y divide-border">
@@ -513,15 +555,18 @@ export default function UserManagementDashboard({
                   Tidak ada peringatan akun saat ini.
                 </p>
               )}
-              {users.filter((user) => !user.isActive || !user.lastLoginAt).length >
-                alerts.length && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full rounded-none"
-                  onClick={() => setStatusFilter("ATTENTION")}
-                >
-                  Lihat semua akun yang memerlukan perhatian
+              {attentionCount > alerts.length && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full rounded-none"
+                onClick={() => {
+                  setQuery("");
+                  setRoleFilter("ALL");
+                  setStatusFilter("ATTENTION");
+                }}
+              >
+                Lihat semua akun yang memerlukan perhatian
                 </Button>
               )}
             </div>
@@ -529,7 +574,7 @@ export default function UserManagementDashboard({
 
           <CardBox className="overflow-hidden">
             <div className="border-b border-border px-5 py-4">
-              <h2 className="font-semibold">Quick Actions</h2>
+              <h2 className="font-semibold">Aksi cepat</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Kelola akun dan buat laporan pengguna
               </p>
@@ -539,13 +584,10 @@ export default function UserManagementDashboard({
                 type="button"
                 variant="outline"
                 className="h-auto min-h-10 w-full min-w-0 justify-start whitespace-normal py-2 text-left leading-snug"
-                onClick={() => {
-                  setEditingUser(null);
-                  setAccountDialogOpen(true);
-                }}
+                onClick={openNewAccount}
               >
                 <UserPlus className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                <span className="min-w-0 whitespace-normal text-left">Add User</span>
+                <span className="min-w-0 whitespace-normal text-left">Tambah pengguna</span>
               </Button>
               <Button
                 type="button"
@@ -555,7 +597,7 @@ export default function UserManagementDashboard({
               >
                 <FileUp className="size-4 shrink-0 text-info" aria-hidden="true" />
                 <span className="min-w-0 whitespace-normal text-left">
-                  Import Users
+                  Impor pengguna
                 </span>
               </Button>
               <Button
@@ -568,7 +610,7 @@ export default function UserManagementDashboard({
                   className="size-4 shrink-0 text-success"
                   aria-hidden="true"
                 />
-                <span className="min-w-0 whitespace-normal text-left">Export</span>
+                <span className="min-w-0 whitespace-normal text-left">Ekspor</span>
               </Button>
               <Button
                 type="button"
@@ -603,7 +645,7 @@ export default function UserManagementDashboard({
                   aria-hidden="true"
                 />
                 <span className="min-w-0 whitespace-normal text-left">
-                  Generate Report ({filteredUsers.length} pengguna)
+                  Buat laporan ({filteredUsers.length} pengguna)
                 </span>
               </Button>
             </div>
@@ -614,7 +656,7 @@ export default function UserManagementDashboard({
       <CardBox className="overflow-hidden">
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
           <div>
-            <h2 className="font-semibold">Users Directory</h2>
+            <h2 className="font-semibold">Daftar pengguna</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Cari pengguna, perbarui role, dan kelola status akun
             </p>
@@ -624,8 +666,8 @@ export default function UserManagementDashboard({
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 border-b border-border p-4">
-          <div className="relative min-w-52 flex-1">
+        <div className="flex flex-col gap-3 border-b border-border p-4 sm:flex-row sm:items-center">
+          <div className="relative min-w-0 flex-1">
             <Search
               className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
               aria-hidden="true"
@@ -639,23 +681,34 @@ export default function UserManagementDashboard({
               onChange={(event) => setQuery(event.target.value)}
             />
           </div>
+          <Button
+            type="button"
+            className="shrink-0 bg-[#E67E22] text-white hover:bg-[#cf6e18]"
+            onClick={openNewAccount}
+          >
+            <UserPlus className="mr-2 size-4" aria-hidden="true" />
+            Tambah Pengguna
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 border-b border-border p-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger aria-label="Filter status akun" className="w-40">
+            <SelectTrigger aria-label="Filter status akun" className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">Semua Status</SelectItem>
+              <SelectItem value="ALL">Semua status</SelectItem>
               <SelectItem value="ACTIVE">Aktif</SelectItem>
               <SelectItem value="INACTIVE">Nonaktif</SelectItem>
               <SelectItem value="ATTENTION">Perlu perhatian</SelectItem>
             </SelectContent>
           </Select>
           <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger aria-label="Filter role pengguna" className="w-52">
+            <SelectTrigger aria-label="Filter peran pengguna" className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">Semua Role</SelectItem>
+              <SelectItem value="ALL">Semua peran</SelectItem>
               {roleOptions.map((role) => (
                 <SelectItem key={role.value} value={role.value}>
                   {role.label}
@@ -665,104 +718,126 @@ export default function UserManagementDashboard({
           </Select>
         </div>
 
-        <div className="overflow-x-auto">
-          <Table>
+        <Table
+          className="w-full"
+          style={{ tableLayout: "fixed", width: "100%" }}
+        >
+          <colgroup>
+            <col style={{ width: "44%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "24%" }} />
+            <col style={{ width: "12%" }} />
+          </colgroup>
             <TableHeader>
               <TableRow>
-                <TableHead>Nama</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Login terakhir</TableHead>
-                <TableHead>Dibuat</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="whitespace-normal px-3">
+                  Pengguna
+                </TableHead>
+                <TableHead className="whitespace-normal px-2">
+                  Peran
+                </TableHead>
+                <TableHead className="whitespace-normal px-2">
+                  Status
+                </TableHead>
+                <TableHead className="px-0 text-right">
+                  <span className="sr-only">Tindakan</span>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredUsers.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="min-w-48">
-                    <div className="flex items-center gap-3">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lightprimary text-sm font-semibold text-primary">
-                        {user.name
-                          .split(/\s+/)
-                          .slice(0, 2)
-                          .map((part) => part[0])
-                          .join("")
-                          .toUpperCase()}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block truncate font-medium">
+                  <TableCell className="min-w-0 whitespace-normal px-3 py-3">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <Avatar className="size-10 border border-white/10">
+                        <AvatarImage
+                          src={user.profilePhotoUrl ?? undefined}
+                          alt={user.name}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="bg-[#102A4D] text-white">
+                          {getInitials(user.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-foreground">
                           {user.name}
-                        </span>
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {user.email}
+                        </p>
                         {user.id === currentUserId && (
-                          <span className="text-xs text-muted-foreground">
+                          <span className="block truncate text-[11px] text-primary">
                             Akun Anda
                           </span>
                         )}
-                      </span>
+                      </div>
                     </div>
                   </TableCell>
-                  <TableCell className="whitespace-nowrap">{user.email}</TableCell>
-                  <TableCell className="min-w-48">
-                    {roleOptions.find((role) => role.value === user.role)?.label ??
-                      user.role}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={user.isActive ? "lightSuccess" : "lightError"}>
-                      {user.isActive ? "Aktif" : "Nonaktif"}
+                  <TableCell className="min-w-0 whitespace-normal px-2 py-3">
+                    <Badge
+                      variant="outline"
+                      title={
+                        roleOptions.find((role) => role.value === user.role)
+                          ?.label ?? user.role
+                      }
+                      className={`min-w-0 max-w-full overflow-hidden whitespace-nowrap px-1.5 py-1 text-[10px] ${roleBadgeClasses[user.role]}`}
+                    >
+                      <span className="min-w-0 truncate">
+                        {roleOptions.find((role) => role.value === user.role)
+                          ?.label ?? user.role}
+                      </span>
                     </Badge>
                   </TableCell>
-                  <TableCell className="min-w-40 text-sm text-muted-foreground">
-                    {user.lastLoginAt
-                      ? formatDistanceToNowStrict(new Date(user.lastLoginAt), {
-                          addSuffix: true,
-                          locale: id,
-                        })
-                      : "Belum pernah"}
+                  <TableCell className="whitespace-normal px-1 py-3">
+                    <Badge
+                      variant="outline"
+                      className={`min-w-0 max-w-full gap-1 whitespace-nowrap px-0.5 py-1 text-[9px] ${
+                        user.isActive
+                          ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300"
+                          : "border-slate-400/30 bg-slate-500/10 text-slate-300"
+                      }`}
+                    >
+                      <span
+                        className={`size-1.5 shrink-0 rounded-full ${
+                          user.isActive ? "bg-emerald-400" : "bg-slate-400"
+                        }`}
+                        aria-hidden="true"
+                      />
+                      <span className="min-w-0 truncate">
+                        {user.isActive ? "Aktif" : "Nonaktif"}
+                      </span>
+                    </Badge>
                   </TableCell>
-                  <TableCell className="whitespace-nowrap text-sm">
-                    {format(new Date(user.createdAt), "d MMM yyyy", {
-                      locale: id,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="whitespace-normal p-0 text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
                           type="button"
                           variant="outline"
-                          size="sm"
-                          aria-label={`Actions ${user.name}`}
+                          size="icon"
+                          aria-label={`Tindakan untuk ${user.name}`}
                           disabled={isPending}
-                          className="h-8 min-w-12"
+                          className="h-7 w-7"
                         >
                           <MoreHorizontal className="size-4" aria-hidden="true" />
-                          <span className="sr-only">Actions</span>
+                          <span className="sr-only">Tindakan</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-40">
                         <DropdownMenuItem
-                          onSelect={() => {
-                            setEditingUser(user);
-                            setAccountDialogOpen(true);
-                          }}
+                          onSelect={() => openEditAccount(user)}
                         >
                           <Pencil className="text-primary" aria-hidden="true" />
-                          Edit
+                          Ubah
                         </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => setProfileUser(user)}>
-                          <Eye className="text-info" aria-hidden="true" />
-                          View Profile
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           disabled={user.id === currentUserId}
                           className="text-destructive focus:text-destructive"
                           onSelect={() => setDeleteTarget(user)}
                         >
                           <Trash2 aria-hidden="true" />
-                          Delete
+                          Hapus
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -772,7 +847,7 @@ export default function UserManagementDashboard({
               {filteredUsers.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={7}
+                    colSpan={4}
                     className="py-10 text-center text-muted-foreground"
                   >
                     Tidak ada pengguna yang cocok dengan filter.
@@ -780,20 +855,25 @@ export default function UserManagementDashboard({
                 </TableRow>
               )}
             </TableBody>
-          </Table>
-        </div>
+        </Table>
       </CardBox>
 
       <Dialog
         open={accountDialogOpen}
         onOpenChange={(open) => {
           setAccountDialogOpen(open);
-          if (!open) setEditingUser(null);
+          if (!open) {
+            setEditingUser(null);
+            setProfilePhotoUrl(null);
+            setPhotoUploadError(null);
+          }
         }}
       >
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>{editingUser ? "Edit User" : "Add New User"}</DialogTitle>
+            <DialogTitle>
+              {editingUser ? "Ubah pengguna" : "Tambah pengguna"}
+            </DialogTitle>
             <DialogDescription>
               {editingUser
                 ? "Perbarui informasi, role, dan status akun."
@@ -818,9 +898,101 @@ export default function UserManagementDashboard({
                 />
               </>
             )}
+            <input
+              type="hidden"
+              name="profilePhotoUrl"
+              value={profilePhotoUrl ?? ""}
+            />
+            <div className="flex flex-col items-center gap-3 rounded-lg border border-border p-4">
+              {cloudinaryCloudName && cloudinaryApiKey ? (
+                <CldUploadWidget
+                  config={{
+                    cloud: {
+                      cloudName: cloudinaryCloudName,
+                      apiKey: cloudinaryApiKey,
+                    },
+                  }}
+                  signatureEndpoint="/api/cloudinary/profile-photo-signature"
+                  options={{
+                    folder: USER_PROFILE_PHOTO_CLOUDINARY_FOLDER,
+                    resourceType: "image",
+                    sources: ["local", "camera"],
+                    multiple: false,
+                    maxFiles: 1,
+                    maxFileSize: 5 * 1024 * 1024,
+                    clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
+                    cropping: true,
+                    croppingAspectRatio: 1,
+                    showPoweredBy: false,
+                  }}
+                  onSuccess={(results) => {
+                    if (
+                      results.event === "success" &&
+                      typeof results.info === "object" &&
+                      results.info !== null &&
+                      typeof results.info.secure_url === "string"
+                    ) {
+                      setProfilePhotoUrl(results.info.secure_url);
+                      setPhotoUploadError(null);
+                    }
+                  }}
+                  onError={(error) => {
+                    console.error("Profile photo upload failed:", error);
+                    setPhotoUploadError(
+                      "Foto gagal diunggah. Silakan coba kembali.",
+                    );
+                  }}
+                >
+                  {({ open }) => (
+                    <>
+                      <button
+                        type="button"
+                        aria-label="Pilih foto profil"
+                        onClick={() => open()}
+                        className="rounded-full transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      >
+                        <Avatar className="size-24 border border-border">
+                          <AvatarImage
+                            src={profilePhotoUrl ?? undefined}
+                            alt="Pratinjau foto profil"
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="bg-[#102A4D] text-white">
+                            {profilePhotoUrl
+                              ? "Foto"
+                              : editingUser
+                                ? getInitials(editingUser.name)
+                                : "Upload"}
+                          </AvatarFallback>
+                        </Avatar>
+                      </button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => open()}
+                      >
+                        <Camera className="size-4" aria-hidden="true" />
+                        Ubah Foto Profil
+                      </Button>
+                    </>
+                  )}
+                </CldUploadWidget>
+              ) : (
+                <p role="alert" className="text-center text-sm text-destructive">
+                  Upload foto belum tersedia. Periksa konfigurasi Cloudinary di
+                  server.
+                </p>
+              )}
+              {photoUploadError && (
+                <p role="alert" className="text-sm text-destructive">
+                  {photoUploadError}
+                </p>
+              )}
+            </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <Label htmlFor="user-first-name">First Name</Label>
+                <Label htmlFor="user-first-name">Nama depan</Label>
                 <Input
                   id="user-first-name"
                   name="firstName"
@@ -832,7 +1004,7 @@ export default function UserManagementDashboard({
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="user-last-name">Last Name</Label>
+                <Label htmlFor="user-last-name">Nama belakang</Label>
                 <Input
                   id="user-last-name"
                   name="lastName"
@@ -861,7 +1033,7 @@ export default function UserManagementDashboard({
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <Label htmlFor="user-role">Role</Label>
+                <Label htmlFor="user-role">Peran</Label>
                 <Select
                   name="role"
                   defaultValue={editingUser?.role ?? UserRole.FIELD_TEAM}
@@ -890,14 +1062,14 @@ export default function UserManagementDashboard({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="true">Active</SelectItem>
-                    <SelectItem value="false">Inactive</SelectItem>
+                    <SelectItem value="true">Aktif</SelectItem>
+                    <SelectItem value="false">Nonaktif</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="user-phone">Phone</Label>
+              <Label htmlFor="user-phone">Telepon</Label>
               <Input
                 id="user-phone"
                 name="phone"
@@ -933,62 +1105,15 @@ export default function UserManagementDashboard({
                 variant="outline"
                 onClick={() => setAccountDialogOpen(false)}
               >
-                Cancel
+                Batal
               </Button>
               <Button type="submit" disabled={isSavingAccount}>
                 {isSavingAccount
-                  ? "Saving..."
-                  : "Save User"}
+                  ? "Menyimpan..."
+                  : "Simpan pengguna"}
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        open={Boolean(profileUser)}
-        onOpenChange={(open) => {
-          if (!open) setProfileUser(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>User Profile</DialogTitle>
-            <DialogDescription>Informasi akun pengguna.</DialogDescription>
-          </DialogHeader>
-          {profileUser && (
-            <dl className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-sm text-muted-foreground">Name</dt>
-                <dd className="font-medium">{profileUser.name}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted-foreground">Email</dt>
-                <dd className="break-all font-medium">{profileUser.email}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted-foreground">Role</dt>
-                <dd className="font-medium">
-                  {roleOptions.find((role) => role.value === profileUser.role)
-                    ?.label ?? profileUser.role}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted-foreground">Status</dt>
-                <dd>
-                  <Badge
-                    variant={profileUser.isActive ? "lightSuccess" : "lightError"}
-                  >
-                    {profileUser.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted-foreground">Phone</dt>
-                <dd className="font-medium">{profileUser.phone || "—"}</dd>
-              </div>
-            </dl>
-          )}
         </DialogContent>
       </Dialog>
 
@@ -1000,7 +1125,7 @@ export default function UserManagementDashboard({
       >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete User</DialogTitle>
+            <DialogTitle>Hapus pengguna</DialogTitle>
             <DialogDescription>
               Hapus akun {deleteTarget?.name}? Tindakan ini tidak dapat dibatalkan.
               Akun yang masih terkait dengan data operasional harus dinonaktifkan.
@@ -1013,7 +1138,7 @@ export default function UserManagementDashboard({
               onClick={() => setDeleteTarget(null)}
               disabled={isPending}
             >
-              Cancel
+              Batal
             </Button>
             <Button
               type="button"
@@ -1041,7 +1166,7 @@ export default function UserManagementDashboard({
                 })();
               }}
             >
-              {isPending ? "Deleting..." : "Delete User"}
+              {isPending ? "Menghapus..." : "Hapus pengguna"}
             </Button>
           </DialogFooter>
         </DialogContent>

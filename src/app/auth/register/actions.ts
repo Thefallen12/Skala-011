@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { canManageUsers } from "@/lib/user-access";
 import { prisma } from "@/lib/prisma";
+import { isManagedUserProfilePhotoUrl } from "@/lib/user-profile-photos";
 import { auth } from "../../../../auth";
 
 export type RegisterState = {
@@ -43,12 +44,14 @@ export async function createAccount(
   const password = formData.get("password");
   const role = formData.get("role");
   const phoneValue = formData.get("phone");
+  const profilePhotoValue = formData.get("profilePhotoUrl");
 
   if (
     typeof name !== "string" ||
     typeof email !== "string" ||
     typeof password !== "string" ||
-    typeof role !== "string"
+    typeof role !== "string" ||
+    (profilePhotoValue !== null && typeof profilePhotoValue !== "string")
   ) {
     return { status: "error", message: "Data formulir tidak valid." };
   }
@@ -88,6 +91,14 @@ export async function createAccount(
   ) {
     return { status: "error", message: "Nomor telepon tidak valid." };
   }
+  const profilePhotoUrl =
+    typeof profilePhotoValue === "string" ? profilePhotoValue.trim() : "";
+  if (
+    profilePhotoUrl.length > 2048 ||
+    (profilePhotoUrl && !isManagedUserProfilePhotoUrl(profilePhotoUrl))
+  ) {
+    return { status: "error", message: "Foto profil Cloudinary tidak valid." };
+  }
 
   try {
     await prisma.user.create({
@@ -96,6 +107,7 @@ export async function createAccount(
         name: normalizedName,
         email: normalizedEmail,
         phone: phone || null,
+        profilePhotoUrl: profilePhotoUrl || null,
         passwordHash: await hash(password, 12),
         role,
         isActive: formData.get("isActive") === "false" ? false : true,
@@ -119,6 +131,7 @@ export async function createAccount(
 
   revalidatePath("/auth/register");
   revalidatePath("/apps/users");
+  revalidatePath("/(DashboardLayout)", "layout");
   return {
     status: "success",
     message: `Akun ${normalizedEmail} berhasil dibuat dengan role ${role}.`,

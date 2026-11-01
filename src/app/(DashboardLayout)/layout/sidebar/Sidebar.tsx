@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import SidebarContent from "./sidebaritems";
 import SimpleBar from "simplebar-react";
 import { Icon } from "@iconify/react";
@@ -34,6 +35,10 @@ interface SidebarItemType {
   requiresNonMover?: boolean;
   notificationCount?: number;
 }
+
+const subscribeToMount = () => () => {};
+const getClientMountSnapshot = () => true;
+const getServerMountSnapshot = () => false;
 
 const renderSidebarItems = (
   items: SidebarItemType[],
@@ -151,6 +156,12 @@ const SidebarLayout = ({
 }) => {
   const pathname = usePathname();
   const { theme } = useTheme();
+  const isMounted = useSyncExternalStore(
+    subscribeToMount,
+    getClientMountSnapshot,
+    getServerMountSnapshot,
+  );
+
   const withNotificationCount = (
     item: SidebarItemType,
   ): SidebarItemType | null => {
@@ -193,7 +204,8 @@ const SidebarLayout = ({
   })).filter((section) => section.children?.length);
 
   // Only allow "light" or "dark" for AMSidebar
-  const sidebarMode = theme === "light" || theme === "dark" ? theme : undefined;
+  const sidebarMode =
+    isMounted && (theme === "light" || theme === "dark") ? theme : undefined;
 
   return (
     <AMSidebar

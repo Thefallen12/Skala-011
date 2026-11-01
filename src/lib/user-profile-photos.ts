@@ -1,5 +1,6 @@
 import { join, resolve } from "node:path";
 import {
+  getCloudinaryPublicId,
   CloudinaryPhotoValidationError,
   removeCloudinaryPhoto,
   uploadCloudinaryPhoto,
@@ -11,6 +12,7 @@ import {
   savePrivatePhoto,
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
+import { USER_PROFILE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/user-profile-photo-config";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 const photoDirectory = process.env.USER_PROFILE_UPLOAD_DIR
@@ -36,10 +38,33 @@ async function uploadProfileSourceToCloudinary(
 ): Promise<{ url: string; publicId: string }> {
   const uploaded = await uploadCloudinaryPhoto(
     file,
-    "skala_prioritas/user_profiles",
+    USER_PROFILE_PHOTO_CLOUDINARY_FOLDER,
     MAX_PHOTO_BYTES,
   );
   return { url: uploaded.secureUrl, publicId: uploaded.publicId };
+}
+
+export function isManagedUserProfilePhotoUrl(value: string): boolean {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const publicId = getCloudinaryPublicId(value);
+  if (!cloudName || !publicId) return false;
+
+  try {
+    const parsed = new URL(value);
+    const [urlCloudName, resourceType, deliveryType] = parsed.pathname
+      .split("/")
+      .filter(Boolean);
+    return (
+      parsed.protocol === "https:" &&
+      parsed.hostname === "res.cloudinary.com" &&
+      urlCloudName === cloudName &&
+      resourceType === "image" &&
+      deliveryType === "upload" &&
+      publicId.startsWith(`${USER_PROFILE_PHOTO_CLOUDINARY_FOLDER}/`)
+    );
+  } catch {
+    return false;
+  }
 }
 
 export async function saveUserProfilePhoto(

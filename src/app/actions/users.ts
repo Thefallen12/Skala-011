@@ -7,6 +7,10 @@ import { UserRole } from "@/generated/prisma/enums";
 import { canManageUsers, userManagerRoles } from "@/lib/user-access";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import {
+  isManagedUserProfilePhotoUrl,
+  removeUserProfilePhoto,
+} from "@/lib/user-profile-photos";
 
 export type AccountActionResult = {
   success: boolean;
@@ -111,6 +115,7 @@ export async function updateUserDetails(
     name: string;
     email: string;
     phone: string;
+    profilePhotoUrl: string;
     role: string;
     isActive: boolean;
   },
@@ -126,6 +131,7 @@ export async function updateUserDetails(
     typeof details.name !== "string" ||
     typeof details.email !== "string" ||
     typeof details.phone !== "string" ||
+    typeof details.profilePhotoUrl !== "string" ||
     typeof details.role !== "string" ||
     typeof details.isActive !== "boolean"
   ) {
@@ -134,6 +140,7 @@ export async function updateUserDetails(
   const name = details.name.trim();
   const email = details.email.trim().toLowerCase();
   const phone = details.phone.trim();
+  const profilePhotoUrl = details.profilePhotoUrl.trim() || null;
   if (
     !userId ||
     name.length < 2 ||
@@ -142,6 +149,7 @@ export async function updateUserDetails(
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
     phone.length > 32 ||
     (phone.length > 0 && !/^[+()\d\s.-]+$/.test(phone)) ||
+    (profilePhotoUrl !== null && profilePhotoUrl.length > 2048) ||
     !isUserRole(details.role)
   ) {
     return { success: false, message: "Data akun tidak valid." };
@@ -155,10 +163,23 @@ export async function updateUserDetails(
 
   const target = await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, role: true, isActive: true },
+    select: {
+      id: true,
+      role: true,
+      isActive: true,
+      profilePhotoUrl: true,
+    },
   });
   if (!target) {
     return { success: false, message: "Akun tidak ditemukan." };
+  }
+  const profilePhotoChanged = profilePhotoUrl !== target.profilePhotoUrl;
+  if (
+    profilePhotoChanged &&
+    profilePhotoUrl &&
+    !isManagedUserProfilePhotoUrl(profilePhotoUrl)
+  ) {
+    return { success: false, message: "Foto profil Cloudinary tidak valid." };
   }
   if (
     target.isActive &&
@@ -189,6 +210,7 @@ export async function updateUserDetails(
         phone: phone || null,
         role: details.role,
         isActive: details.isActive,
+        profilePhotoUrl,
       },
     });
   } catch (error) {
@@ -199,8 +221,20 @@ export async function updateUserDetails(
     return { success: false, message: "Data akun gagal diperbarui." };
   }
 
+  let successMessage = "Data akun berhasil diperbarui.";
+  if (profilePhotoChanged && target.profilePhotoUrl) {
+    try {
+      await removeUserProfilePhoto(target.profilePhotoUrl);
+    } catch (error) {
+      console.error("Previous managed user photo cleanup failed:", error);
+      successMessage =
+        "Data akun diperbarui, tetapi foto profil lama gagal dibersihkan.";
+    }
+  }
+
   revalidatePath("/apps/users");
-  return { success: true, message: "Data akun berhasil diperbarui." };
+  revalidatePath("/(DashboardLayout)", "layout");
+  return { success: true, message: successMessage };
 }
 
 export async function deleteUser(

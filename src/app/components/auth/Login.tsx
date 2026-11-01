@@ -40,7 +40,7 @@ export const Login = () => {
       router.refresh()
     } catch (error) {
       console.error('Password login request failed:', error)
-      setError('Login belum berhasil. Periksa kembali email dan kata sandi Anda.')
+      setError('Server login tidak merespons. Muat ulang halaman atau hubungi administrator.')
     }
   })
 
