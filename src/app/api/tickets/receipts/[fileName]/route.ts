@@ -156,7 +156,9 @@ export async function GET(
     (deliveryOrder?.ticket?.requesterId === session.user.id) ||
     paymentTicket?.requesterId === session.user.id ||
     payment?.directStockPurchase?.createdById === session.user.id ||
-    ((role === UserRole.DIRECTOR || role === UserRole.ADMINISTRATIONS) &&
+    ((role === UserRole.DIRECTOR ||
+      role === UserRole.DEPUTY_DIRECTOR ||
+      role === UserRole.ADMINISTRATIONS) &&
       Boolean(ticket || deliveryOrder || vehicleFuelRequest || payment)) ||
     (role === UserRole.FINANCE && Boolean(payment)) ||
     (role === UserRole.LOGISTICS && Boolean(payment?.directStockPurchase)) ||

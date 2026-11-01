@@ -27,6 +27,8 @@ export const metadata: Metadata = {
 const financeRoles: UserRole[] = [
   UserRole.FINANCE,
   UserRole.ADMINISTRATIONS,
+  UserRole.DIRECTOR,
+  UserRole.DEPUTY_DIRECTOR,
 ];
 
 export default async function FinancePage({

@@ -161,7 +161,9 @@ export default async function Layout({
       }
       canAccessFinance={
         session.user.role === UserRole.FINANCE ||
-        session.user.role === UserRole.ADMINISTRATIONS
+        session.user.role === UserRole.ADMINISTRATIONS ||
+        session.user.role === UserRole.DIRECTOR ||
+        session.user.role === UserRole.DEPUTY_DIRECTOR
       }
       canAccessProjects={
         session.user.role === UserRole.ADMINISTRATIONS ||
