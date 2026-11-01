@@ -365,6 +365,7 @@ export type ProjectWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   fieldPic?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   dailyReports?: Prisma.DailyReportListRelationFilter
   workPoints?: Prisma.ProjectWorkPointListRelationFilter
   wageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
@@ -406,6 +407,7 @@ export type ProjectOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   fieldPic?: Prisma.UserOrderByWithRelationInput
+  fieldSurveys?: Prisma.FieldSurveyOrderByRelationAggregateInput
   dailyReports?: Prisma.DailyReportOrderByRelationAggregateInput
   workPoints?: Prisma.ProjectWorkPointOrderByRelationAggregateInput
   wageDisbursements?: Prisma.ProjectWageDisbursementOrderByRelationAggregateInput
@@ -450,6 +452,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   fieldPic?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   dailyReports?: Prisma.DailyReportListRelationFilter
   workPoints?: Prisma.ProjectWorkPointListRelationFilter
   wageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
@@ -548,6 +551,7 @@ export type ProjectCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -588,6 +592,7 @@ export type ProjectUncheckedCreateInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -628,6 +633,7 @@ export type ProjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -668,6 +674,7 @@ export type ProjectUncheckedUpdateInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -978,6 +985,20 @@ export type EnumProjectStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProjectStatus
 }
 
+export type ProjectCreateNestedOneWithoutFieldSurveysInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutFieldSurveysInput, Prisma.ProjectUncheckedCreateWithoutFieldSurveysInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutFieldSurveysInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutFieldSurveysNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutFieldSurveysInput, Prisma.ProjectUncheckedCreateWithoutFieldSurveysInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutFieldSurveysInput
+  upsert?: Prisma.ProjectUpsertWithoutFieldSurveysInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutFieldSurveysInput, Prisma.ProjectUpdateWithoutFieldSurveysInput>, Prisma.ProjectUncheckedUpdateWithoutFieldSurveysInput>
+}
+
 export type ProjectCreateNestedOneWithoutDailyReportsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutDailyReportsInput, Prisma.ProjectUncheckedCreateWithoutDailyReportsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutDailyReportsInput
@@ -1176,6 +1197,7 @@ export type ProjectCreateWithoutFieldPicInput = {
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1215,6 +1237,7 @@ export type ProjectUncheckedCreateWithoutFieldPicInput = {
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1309,6 +1332,7 @@ export type ProjectCreateWithoutCalendarEventsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1348,6 +1372,7 @@ export type ProjectUncheckedCreateWithoutCalendarEventsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1403,6 +1428,7 @@ export type ProjectUpdateWithoutCalendarEventsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1442,6 +1468,7 @@ export type ProjectUncheckedUpdateWithoutCalendarEventsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1481,6 +1508,7 @@ export type ProjectCreateWithoutWorkTasksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1520,6 +1548,7 @@ export type ProjectUncheckedCreateWithoutWorkTasksInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1575,6 +1604,7 @@ export type ProjectUpdateWithoutWorkTasksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1614,6 +1644,7 @@ export type ProjectUncheckedUpdateWithoutWorkTasksInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1653,6 +1684,7 @@ export type ProjectCreateWithoutTimesheetEntriesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1692,6 +1724,7 @@ export type ProjectUncheckedCreateWithoutTimesheetEntriesInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1747,6 +1780,7 @@ export type ProjectUpdateWithoutTimesheetEntriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1786,6 +1820,7 @@ export type ProjectUncheckedUpdateWithoutTimesheetEntriesInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1793,6 +1828,182 @@ export type ProjectUncheckedUpdateWithoutTimesheetEntriesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
   calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
   workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutFieldSurveysInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutFieldSurveysInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutFieldSurveysInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutFieldSurveysInput, Prisma.ProjectUncheckedCreateWithoutFieldSurveysInput>
+}
+
+export type ProjectUpsertWithoutFieldSurveysInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutFieldSurveysInput, Prisma.ProjectUncheckedUpdateWithoutFieldSurveysInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutFieldSurveysInput, Prisma.ProjectUncheckedCreateWithoutFieldSurveysInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutFieldSurveysInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutFieldSurveysInput, Prisma.ProjectUncheckedUpdateWithoutFieldSurveysInput>
+}
+
+export type ProjectUpdateWithoutFieldSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutFieldSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
@@ -1825,6 +2036,7 @@ export type ProjectCreateWithoutDailyReportsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -1864,6 +2076,7 @@ export type ProjectUncheckedCreateWithoutDailyReportsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -1919,6 +2132,7 @@ export type ProjectUpdateWithoutDailyReportsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -1958,6 +2172,7 @@ export type ProjectUncheckedUpdateWithoutDailyReportsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1997,6 +2212,7 @@ export type ProjectCreateWithoutWorkPointsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -2036,6 +2252,7 @@ export type ProjectUncheckedCreateWithoutWorkPointsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -2091,6 +2308,7 @@ export type ProjectUpdateWithoutWorkPointsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -2130,6 +2348,7 @@ export type ProjectUncheckedUpdateWithoutWorkPointsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2169,6 +2388,7 @@ export type ProjectCreateWithoutBlueprintsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2208,6 +2428,7 @@ export type ProjectUncheckedCreateWithoutBlueprintsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2263,6 +2484,7 @@ export type ProjectUpdateWithoutBlueprintsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2302,6 +2524,7 @@ export type ProjectUncheckedUpdateWithoutBlueprintsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2341,6 +2564,7 @@ export type ProjectCreateWithoutStockMovementsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2380,6 +2604,7 @@ export type ProjectUncheckedCreateWithoutStockMovementsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2435,6 +2660,7 @@ export type ProjectUpdateWithoutStockMovementsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2474,6 +2700,7 @@ export type ProjectUncheckedUpdateWithoutStockMovementsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2513,6 +2740,7 @@ export type ProjectCreateWithoutWageDisbursementsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -2552,6 +2780,7 @@ export type ProjectUncheckedCreateWithoutWageDisbursementsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -2607,6 +2836,7 @@ export type ProjectUpdateWithoutWageDisbursementsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -2646,6 +2876,7 @@ export type ProjectUncheckedUpdateWithoutWageDisbursementsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2685,6 +2916,7 @@ export type ProjectCreateWithoutSubkonContractsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2724,6 +2956,7 @@ export type ProjectUncheckedCreateWithoutSubkonContractsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2779,6 +3012,7 @@ export type ProjectUpdateWithoutSubkonContractsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2818,6 +3052,7 @@ export type ProjectUncheckedUpdateWithoutSubkonContractsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2857,6 +3092,7 @@ export type ProjectCreateWithoutEquipmentLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2896,6 +3132,7 @@ export type ProjectUncheckedCreateWithoutEquipmentLogsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2951,6 +3188,7 @@ export type ProjectUpdateWithoutEquipmentLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2990,6 +3228,7 @@ export type ProjectUncheckedUpdateWithoutEquipmentLogsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3029,6 +3268,7 @@ export type ProjectCreateWithoutAddendumsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3068,6 +3308,7 @@ export type ProjectUncheckedCreateWithoutAddendumsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3123,6 +3364,7 @@ export type ProjectUpdateWithoutAddendumsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3162,6 +3404,7 @@ export type ProjectUncheckedUpdateWithoutAddendumsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3201,6 +3444,7 @@ export type ProjectCreateWithoutBastDocumentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3240,6 +3484,7 @@ export type ProjectUncheckedCreateWithoutBastDocumentsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3295,6 +3540,7 @@ export type ProjectUpdateWithoutBastDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3334,6 +3580,7 @@ export type ProjectUncheckedUpdateWithoutBastDocumentsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3373,6 +3620,7 @@ export type ProjectCreateWithoutTicketsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3412,6 +3660,7 @@ export type ProjectUncheckedCreateWithoutTicketsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3467,6 +3716,7 @@ export type ProjectUpdateWithoutTicketsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3506,6 +3756,7 @@ export type ProjectUncheckedUpdateWithoutTicketsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3545,6 +3796,7 @@ export type ProjectCreateWithoutVehicleTripLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3584,6 +3836,7 @@ export type ProjectUncheckedCreateWithoutVehicleTripLogsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3639,6 +3892,7 @@ export type ProjectUpdateWithoutVehicleTripLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3678,6 +3932,7 @@ export type ProjectUncheckedUpdateWithoutVehicleTripLogsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3717,6 +3972,7 @@ export type ProjectCreateWithoutVehicleFuelRequestsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3756,6 +4012,7 @@ export type ProjectUncheckedCreateWithoutVehicleFuelRequestsInput = {
   fieldPicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3811,6 +4068,7 @@ export type ProjectUpdateWithoutVehicleFuelRequestsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3850,6 +4108,7 @@ export type ProjectUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3912,6 +4171,7 @@ export type ProjectUpdateWithoutFieldPicInput = {
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3951,6 +4211,7 @@ export type ProjectUncheckedUpdateWithoutFieldPicInput = {
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3998,6 +4259,7 @@ export type ProjectUncheckedUpdateManyWithoutFieldPicInput = {
  */
 
 export type ProjectCountOutputType = {
+  fieldSurveys: number
   dailyReports: number
   workPoints: number
   wageDisbursements: number
@@ -4016,6 +4278,7 @@ export type ProjectCountOutputType = {
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  fieldSurveys?: boolean | ProjectCountOutputTypeCountFieldSurveysArgs
   dailyReports?: boolean | ProjectCountOutputTypeCountDailyReportsArgs
   workPoints?: boolean | ProjectCountOutputTypeCountWorkPointsArgs
   wageDisbursements?: boolean | ProjectCountOutputTypeCountWageDisbursementsArgs
@@ -4041,6 +4304,13 @@ export type ProjectCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
    * Select specific fields to fetch from the ProjectCountOutputType
    */
   select?: Prisma.ProjectCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountFieldSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FieldSurveyWhereInput
 }
 
 /**
@@ -4173,6 +4443,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   fieldPic?: boolean | Prisma.Project$fieldPicArgs<ExtArgs>
+  fieldSurveys?: boolean | Prisma.Project$fieldSurveysArgs<ExtArgs>
   dailyReports?: boolean | Prisma.Project$dailyReportsArgs<ExtArgs>
   workPoints?: boolean | Prisma.Project$workPointsArgs<ExtArgs>
   wageDisbursements?: boolean | Prisma.Project$wageDisbursementsArgs<ExtArgs>
@@ -4271,6 +4542,7 @@ export type ProjectSelectScalar = {
 export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "title" | "isDeleted" | "kelompokTani" | "address" | "jenisPekerjaan" | "pagu" | "landArea" | "progress" | "priority" | "vendor" | "clientName" | "location" | "status" | "startDate" | "endDate" | "budget" | "fieldPicId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   fieldPic?: boolean | Prisma.Project$fieldPicArgs<ExtArgs>
+  fieldSurveys?: boolean | Prisma.Project$fieldSurveysArgs<ExtArgs>
   dailyReports?: boolean | Prisma.Project$dailyReportsArgs<ExtArgs>
   workPoints?: boolean | Prisma.Project$workPointsArgs<ExtArgs>
   wageDisbursements?: boolean | Prisma.Project$wageDisbursementsArgs<ExtArgs>
@@ -4299,6 +4571,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Project"
   objects: {
     fieldPic: Prisma.$UserPayload<ExtArgs> | null
+    fieldSurveys: Prisma.$FieldSurveyPayload<ExtArgs>[]
     dailyReports: Prisma.$DailyReportPayload<ExtArgs>[]
     workPoints: Prisma.$ProjectWorkPointPayload<ExtArgs>[]
     wageDisbursements: Prisma.$ProjectWageDisbursementPayload<ExtArgs>[]
@@ -4733,6 +5006,7 @@ readonly fields: ProjectFieldRefs;
 export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   fieldPic<T extends Prisma.Project$fieldPicArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$fieldPicArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  fieldSurveys<T extends Prisma.Project$fieldSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$fieldSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldSurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dailyReports<T extends Prisma.Project$dailyReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$dailyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workPoints<T extends Prisma.Project$workPointsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$workPointsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWorkPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wageDisbursements<T extends Prisma.Project$wageDisbursementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$wageDisbursementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWageDisbursementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5216,6 +5490,30 @@ export type Project$fieldPicArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Project.fieldSurveys
+ */
+export type Project$fieldSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FieldSurvey
+   */
+  select?: Prisma.FieldSurveySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FieldSurvey
+   */
+  omit?: Prisma.FieldSurveyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FieldSurveyInclude<ExtArgs> | null
+  where?: Prisma.FieldSurveyWhereInput
+  orderBy?: Prisma.FieldSurveyOrderByWithRelationInput | Prisma.FieldSurveyOrderByWithRelationInput[]
+  cursor?: Prisma.FieldSurveyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FieldSurveyScalarFieldEnum | Prisma.FieldSurveyScalarFieldEnum[]
 }
 
 /**

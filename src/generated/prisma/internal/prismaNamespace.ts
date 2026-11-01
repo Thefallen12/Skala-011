@@ -413,6 +413,7 @@ export const ModelName = {
   WorkTaskMember: 'WorkTaskMember',
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
+  FieldSurvey: 'FieldSurvey',
   DailyReport: 'DailyReport',
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
@@ -465,7 +466,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
+    modelProps: "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1650,6 +1651,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProjectCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProjectCountAggregateOutputType> | number
+        }
+      }
+    }
+    FieldSurvey: {
+      payload: Prisma.$FieldSurveyPayload<ExtArgs>
+      fields: Prisma.FieldSurveyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FieldSurveyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FieldSurveyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        findFirst: {
+          args: Prisma.FieldSurveyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FieldSurveyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        findMany: {
+          args: Prisma.FieldSurveyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>[]
+        }
+        create: {
+          args: Prisma.FieldSurveyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        createMany: {
+          args: Prisma.FieldSurveyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FieldSurveyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>[]
+        }
+        delete: {
+          args: Prisma.FieldSurveyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        update: {
+          args: Prisma.FieldSurveyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        deleteMany: {
+          args: Prisma.FieldSurveyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FieldSurveyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FieldSurveyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>[]
+        }
+        upsert: {
+          args: Prisma.FieldSurveyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FieldSurveyPayload>
+        }
+        aggregate: {
+          args: Prisma.FieldSurveyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFieldSurvey>
+        }
+        groupBy: {
+          args: Prisma.FieldSurveyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FieldSurveyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FieldSurveyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FieldSurveyCountAggregateOutputType> | number
         }
       }
     }
@@ -4662,6 +4737,24 @@ export const ProjectScalarFieldEnum = {
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
+export const FieldSurveyScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  projectName: 'projectName',
+  locationName: 'locationName',
+  responsibleName: 'responsibleName',
+  surveyorId: 'surveyorId',
+  geoJsonData: 'geoJsonData',
+  areaSqm: 'areaSqm',
+  lengthM: 'lengthM',
+  perimeterM: 'perimeterM',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
+
+
 export const DailyReportScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -5345,6 +5438,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -6161,6 +6261,7 @@ export type GlobalOmitConfig = {
   workTaskMember?: Prisma.WorkTaskMemberOmit
   timesheetEntry?: Prisma.TimesheetEntryOmit
   project?: Prisma.ProjectOmit
+  fieldSurvey?: Prisma.FieldSurveyOmit
   dailyReport?: Prisma.DailyReportOmit
   projectProgressPhoto?: Prisma.ProjectProgressPhotoOmit
   projectWorkPoint?: Prisma.ProjectWorkPointOmit

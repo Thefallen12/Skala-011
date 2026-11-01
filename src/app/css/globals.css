@@ -559,47 +559,47 @@ main {
 
 :root {
   --radius: 10px;
-  --background: var(--white);
-  --foreground: var(--dark);
+  --background: #f5f7fb;
+  --foreground: #162338;
   --card: var(--white);
-  --card-foreground: var(--dark);
+  --card-foreground: #162338;
   --popover: var(--white);
-  --popover-foreground: var(--dark);
+  --popover-foreground: #162338;
   --primary: #102a4d;
   --primary-foreground: var(--white);
   --secondary: #e67e22;
-  --secondary-foreground: var(--dark);
-  --muted: #f5f5f5;
-  --muted-foreground: #5a6a85bf;
+  --secondary-foreground: #162338;
+  --muted: #edf2f7;
+  --muted-foreground: #64748b;
   --accent: var(--lightprimary);
   --accent-foreground: var(--primary);
   --destructive: var(--error);
   --destructive-foreground: var(--white);
-  --border: #dfe5ef;
-  --input: #e5e7eb;
-  --ring: var(--lightprimary);
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: var(--primary);
   --chart-1: var(--primary);
   --chart-2: var(--secondary);
   --chart-3: var(--success);
   --chart-4: var(--warning);
   --chart-5: var(--error);
   --sidebar: var(--white);
-  --sidebar-foreground: #2a3547;
+  --sidebar-foreground: #25334a;
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--white);
-  --sidebar-accent: var(--lightprimary);
+  --sidebar-accent: #f1f5f9;
   --sidebar-accent-foreground: var(--primary);
   --sidebar-border: var(--border);
-  --sidebar-ring: #a1a1a1;
+  --sidebar-ring: var(--primary);
 
   /* CUSTOM COLORS */
-  --info: #8754ec;
-  --success: #13deb9;
-  --warning: #f6b51e;
-  --error: #ef4444;
+  --info: #6d28d9;
+  --success: #15803d;
+  --warning: #b45309;
+  --error: #dc2626;
   --white: #ffffff;
   --dark: #102a4d;
-  --bodytext: #5a6a85bf;
+  --bodytext: #64748b;
 
   /* Light Variants */
   --lightprimary: color-mix(in oklab, var(--primary) 12%, transparent);
@@ -619,22 +619,22 @@ main {
 }
 
 .dark {
-  --background: var(--dark);
-  --foreground: var(--white);
-  --card: var(--dark);
-  --card-foreground: var(--white);
-  --popover: #1a385f;
-  --popover-foreground: var(--white);
+  --background: #0b1220;
+  --foreground: #f1f5f9;
+  --card: #142036;
+  --card-foreground: #f1f5f9;
+  --popover: #1b2a41;
+  --popover-foreground: #f1f5f9;
   --primary: #e67e22;
-  --primary-foreground: var(--dark);
+  --primary-foreground: #111827;
   --secondary: #e67e22;
-  --secondary-foreground: var(--dark);
-  --muted: #2a3851;
-  --muted-foreground: #7c8fac;
+  --secondary-foreground: #111827;
+  --muted: #202e44;
+  --muted-foreground: #a0aec0;
   --accent: var(--lightprimary);
   --accent-foreground: var(--primary);
   --destructive: var(--error);
-  --border: #333f55;
+  --border: #2d3d54;
   --input: var(--border);
   --ring: var(--lightprimary);
   --chart-1: var(--primary);
@@ -642,23 +642,23 @@ main {
   --chart-3: var(--success);
   --chart-4: var(--warning);
   --chart-5: var(--error);
-  --sidebar: var(--dark);
-  --sidebar-foreground: #c4cfdf;
+  --sidebar: #101a2b;
+  --sidebar-foreground: #d5deeb;
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: var(--lightprimary);
+  --sidebar-accent: #202e44;
   --sidebar-accent-foreground: var(--primary);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
 
   /* CUSTOM COLORS */
-  --info: #8754ec;
-  --success: #13deb9;
-  --warning: #f6b51e;
-  --error: #ef4444;
+  --info: #a78bfa;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
   --white: #ffffff;
   --dark: #102a4d;
-  --bodytext: #5a6a85bf;
+  --bodytext: #a0aec0;
 
   /* Light Variants */
   --lightprimary: color-mix(in oklab, var(--primary) 20%, transparent);
@@ -702,7 +702,7 @@ main {
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--border, currentcolor);
   }
 }
 

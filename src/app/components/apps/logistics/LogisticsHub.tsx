@@ -296,7 +296,7 @@ export default function LogisticsHub({
       onValueChange={setActiveTab}
       className="space-y-5"
     >
-      <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
+      <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border border-border bg-muted p-2">
         <TabsTrigger value="tickets" className="gap-2">
           <TicketCheck className="size-4" />
           Tiket Masuk

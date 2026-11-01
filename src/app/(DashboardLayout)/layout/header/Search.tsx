@@ -58,19 +58,19 @@ function Search() {
           icon='solar:magnifer-linear'
           width='18'
           height='18'
-          className='absolute left-3 top-1/2 -translate-y-1/2'
+          className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'
         />
 
         <Input
           placeholder='Cari menu...'
-          className='rounded-xl pl-10'
+          className='h-10 rounded-xl border-border bg-background pl-10 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/30'
           required
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
       <div
-        className={`absolute w-full  bg-background rounded-md top-11 z-10 start-0 shadow-md border border-border ${
+        className={`absolute start-0 top-12 z-30 w-full rounded-xl border border-border bg-popover text-popover-foreground shadow-xl ${
           Boolean(query) ? 'block' : 'hidden'
         }`}>
         <SimpleBar className='h-72 p-4 custom-scroll'>
@@ -80,14 +80,14 @@ function Search() {
                 key={i}
                 href={item.url}
                 onClick={() => setQuery('')}
-                className='  p-2 mb-1.5 last:mb-0 flex items-center bg-input/30 gap-2 text-sm font-medium rounded-md hover:bg-primary/20 hover:text-primary w-full'>
+                className='mb-1.5 flex w-full items-center gap-2 rounded-lg bg-muted p-2 text-sm font-medium text-foreground last:mb-0 hover:bg-accent hover:text-accent-foreground'>
                 <div className='flex items-center'>
                   <Icon icon='iconoir:component' width={18} height={18} />
                   <div className='ps-3'>
-                    <h5 className='mb-1 text-sm group-hover/link:text-primary'>
+                    <h5 className='mb-1 text-sm text-foreground'>
                       {item.name}
                     </h5>
-                    <span className='text-xs block truncate text-muted-foreground'>
+                    <span className='block truncate text-xs text-muted-foreground'>
                       {item.path}
                     </span>
                   </div>
@@ -96,7 +96,7 @@ function Search() {
             ))
           ) : (
             <div className='flex items-center justify-center h-full'>
-              <h1 className='text-medium font-medium'>
+              <h1 className='text-medium font-medium text-muted-foreground'>
                 Menu tidak ditemukan.
               </h1>
             </div>

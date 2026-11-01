@@ -305,6 +305,7 @@ model User {
   approvedDirectStockPurchases                      DirectStockPurchase[]         @relation("DirectStockPurchaseApprover")
   ticketAuditLogs                                   TicketAuditLog[]
   assignedProjects                                  Project[]                     @relation("ProjectFieldPic")
+  fieldSurveys                                      FieldSurvey[]                 @relation("FieldSurveyor")
   proposedWorkPointWages                            ProjectWorkPoint[]            @relation("WorkPointWageProposer")
   approvedWorkPointWages                            ProjectWorkPoint[]            @relation("WorkPointWageApprover")
   draftedBlueprints                                 Blueprint[]                   @relation("BlueprintDrafter")
@@ -582,6 +583,7 @@ model Project {
   budget              Decimal?                  @db.Decimal(18, 2)
   fieldPicId          String?
   fieldPic            User?                     @relation("ProjectFieldPic", fields: [fieldPicId], references: [id], onDelete: SetNull)
+  fieldSurveys        FieldSurvey[]
   dailyReports        DailyReport[]
   workPoints          ProjectWorkPoint[]
   wageDisbursements   ProjectWageDisbursement[]
@@ -601,6 +603,26 @@ model Project {
   updatedAt           DateTime                  @updatedAt
 
   @@index([fieldPicId])
+}
+
+model FieldSurvey {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectName     String
+  locationName    String
+  responsibleName String
+  surveyorId      String
+  surveyor        User     @relation("FieldSurveyor", fields: [surveyorId], references: [id], onDelete: Restrict)
+  geoJsonData     Json
+  areaSqm         Float?
+  lengthM         Float?
+  perimeterM      Float?
+  notes           String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([surveyorId, createdAt])
 }
 
 model DailyReport {

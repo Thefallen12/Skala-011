@@ -40,27 +40,33 @@ const Profile = ({
   userRole: UserRole;
 }) => {
   return (
-    <div className='relative group/menu shrink-0 ps-2 sm:ps-15'>
+    <div className='relative group/menu shrink-0 border-l border-border pl-3 sm:pl-4'>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className='hover:text-primary hover:bg-lightprimary rounded-full flex justify-center items-center cursor-pointer group-hover/menu:bg-lightprimary group-hover/menu:text-primary'>
+          <span className='flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1 text-foreground transition hover:bg-accent'>
             <Image
               src={profilePhotoUrl ?? '/images/profile/user-1.jpg'}
               alt='Foto profil'
               height={35}
               width={35}
               style={{ height: 35, width: 35 }}
-              className='rounded-full'
+              className='rounded-full border border-border'
             />
+            <span className='hidden min-w-0 flex-col text-left xl:flex'>
+              <span className='max-w-40 truncate text-sm font-medium text-foreground'>
+                {userName}
+              </span>
+              <span className='text-xs text-muted-foreground'>{roleLabels[userRole]}</span>
+            </span>
           </span>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
           align='end'
-          className='w-[250px] overflow-hidden rounded-md border-0 bg-[#102A4D] p-0 text-white shadow-lg'>
-          <div className='border-b border-white/10 px-4 py-4 text-center'>
-            <p className='truncate text-base font-bold text-white'>{userName}</p>
-            <span className='mt-2 inline-flex max-w-full truncate rounded-full bg-[#E67E22] px-3 py-1 text-xs font-semibold text-white'>
+          className='w-[250px] overflow-hidden rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-lg'>
+          <div className='border-b border-border px-4 py-4 text-center'>
+            <p className='truncate text-base font-bold text-popover-foreground'>{userName}</p>
+            <span className='mt-2 inline-flex max-w-full truncate rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground'>
               {roleLabels[userRole]}
             </span>
           </div>
@@ -69,14 +75,14 @@ const Profile = ({
               <DropdownMenuItem asChild>
                 <Link
                   href='/apps/users'
-                  className='px-4 py-2 flex items-center group/link w-full text-slate-300 hover:bg-[#19385E] hover:text-white focus:bg-[#19385E] focus:text-white'
+                  className='px-4 py-2 flex items-center group/link w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
                 >
                   <div className='flex items-center gap-3 w-full'>
                     <Icon
                       icon='tabler:user-plus'
-                      className='text-lg text-slate-400 group-hover/link:text-white'
+                      className='text-lg text-muted-foreground group-hover/link:text-accent-foreground'
                     />
-                    <h5 className='mb-0 text-sm text-slate-300 group-hover/link:text-white'>
+                    <h5 className='mb-0 text-sm text-muted-foreground group-hover/link:text-accent-foreground'>
                       Kelola Akun
                     </h5>
                   </div>
@@ -87,13 +93,13 @@ const Profile = ({
               <DropdownMenuItem key={index} asChild>
                 <Link
                   href={item.url}
-                  className='px-4 py-2 flex justify-between items-center group/link w-full text-slate-300 hover:bg-[#19385E] hover:text-white focus:bg-[#19385E] focus:text-white'>
+                  className='px-4 py-2 flex justify-between items-center group/link w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'>
                   <div className='flex items-center gap-3 w-full'>
                     <Icon
                       icon={item.icon}
-                      className='text-lg text-slate-400 group-hover/link:text-white'
+                      className='text-lg text-muted-foreground group-hover/link:text-accent-foreground'
                     />
-                    <h5 className='mb-0 text-sm text-slate-300 group-hover/link:text-white'>
+                    <h5 className='mb-0 text-sm text-muted-foreground group-hover/link:text-accent-foreground'>
                       {item.title}
                     </h5>
                   </div>
@@ -102,13 +108,13 @@ const Profile = ({
             ))}
           </SimpleBar>
 
-          <DropdownMenuSeparator className='my-2 bg-white/10' />
+          <DropdownMenuSeparator className='my-2 bg-border' />
 
           <form action={logout} className='px-4 pb-4'>
             <Button
               type='submit'
               variant='outline'
-              className='w-full rounded-md border-[#E67E22] text-[#E67E22] hover:bg-[#E67E22] hover:text-white'>
+              className='w-full rounded-md border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground'>
               Keluar
             </Button>
           </form>

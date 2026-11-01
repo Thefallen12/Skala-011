@@ -98,6 +98,11 @@ export type TimesheetEntry = Prisma.TimesheetEntryModel
  */
 export type Project = Prisma.ProjectModel
 /**
+ * Model FieldSurvey
+ *
+ */
+export type FieldSurvey = Prisma.FieldSurveyModel
+/**
  * Model DailyReport
  * 
  */

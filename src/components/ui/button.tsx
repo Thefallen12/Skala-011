@@ -9,11 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-white hover:bg-primaryemphasis',
+        default: 'bg-primary text-primary-foreground hover:bg-primaryemphasis',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
-          'border border-primary text-primary bg-transparent hover:bg-primary hover:text-white',
+          'border border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground',
         outlinesecondary:
           'border border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-white',
         outlinesuccess:
@@ -24,7 +24,7 @@ const buttonVariants = cva(
           'border border-info bg-transparent hover:bg-info text-info hover:text-white',
         outlineerror:
           'border border-error bg-transparent hover:bg-error text-error hover:text-white',
-        secondary: 'bg-secondary text-white hover:bg-secondaryemphasis',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondaryemphasis',
         success: 'bg-success text-white hover:bg-successemphasis',
         warning: 'bg-warning text-white hover:bg-warningemphasis',
         info: 'bg-info text-white hover:bg-infoemphasis',
@@ -39,9 +39,9 @@ const buttonVariants = cva(
         ghostinfo: 'hover:bg-lightinfo hover:text-info text-info',
         link: 'text-primary underline-offset-4 hover:underline',
         lightprimary:
-          'bg-lightprimary text-primary hover:bg-primary hover:text-white',
+          'bg-lightprimary text-primary hover:bg-primary hover:text-primary-foreground',
         lightsecondary:
-          'bg-lightsecondary text-secondary hover:bg-secondary hover:text-white',
+          'bg-lightsecondary text-secondary hover:bg-secondary hover:text-secondary-foreground',
         lightsuccess:
           'bg-lightsuccess text-success hover:bg-success hover:text-white',
         lightwarning:

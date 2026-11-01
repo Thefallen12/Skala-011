@@ -85,6 +85,8 @@ import {
   UserRole,
 } from "@/generated/prisma/enums";
 import {
+  ChevronLeft,
+  ChevronRight,
   Download,
   ExternalLink,
   Eye,
@@ -93,6 +95,7 @@ import {
   Fuel,
   History,
   ReceiptText,
+  Search,
 } from "lucide-react";
 
 type FinanceOrder = {
@@ -223,6 +226,28 @@ const currency = (amount: number | string | null) =>
         maximumFractionDigits: 0,
       }).format(Number(amount));
 
+const PAYMENT_HISTORY_PAGE_SIZE = 10;
+
+function getPaymentHistoryPageNumbers(
+  currentPage: number,
+  pageCount: number,
+): (number | "ellipsis")[] {
+  if (pageCount <= 5) {
+    return Array.from({ length: pageCount }, (_, index) => index + 1);
+  }
+
+  const firstVisible = Math.max(2, Math.min(currentPage - 1, pageCount - 3));
+  const lastVisible = Math.min(pageCount - 1, firstVisible + 2);
+  const pages: (number | "ellipsis")[] = [1];
+  if (firstVisible > 2) pages.push("ellipsis");
+  for (let page = firstVisible; page <= lastVisible; page += 1) {
+    pages.push(page);
+  }
+  if (lastVisible < pageCount - 1) pages.push("ellipsis");
+  pages.push(pageCount);
+  return pages;
+}
+
 const paymentReceiptHref = withLocalPhotoPreview;
 
 const isImageReceipt = (url: string) =>
@@ -294,6 +319,10 @@ export default function FinanceHub({
     url: string;
   } | null>(null);
   const [unavailableProofUrls, setUnavailableProofUrls] = useState<string[]>([]);
+  const [reviewSearch, setReviewSearch] = useState("");
+  const [paymentQueueSearch, setPaymentQueueSearch] = useState("");
+  const [paymentHistorySearch, setPaymentHistorySearch] = useState("");
+  const [paymentHistoryPage, setPaymentHistoryPage] = useState(1);
   const [selection, setSelection] = useState<Selection>(() => {
     if (!initialOpenSheet) return null;
     if (purchaseOrders.some((order) => order.publicCode === initialOpenSheet)) {
@@ -433,6 +462,39 @@ export default function FinanceHub({
   const pendingPaymentRows = paymentRows.filter(
     (row) => row.grandTotal - row.paidAmount > 0.005,
   );
+  const normalizedReviewSearch = reviewSearch.trim().toLocaleLowerCase("id-ID");
+  const filteredReviewOrders = normalizedReviewSearch
+    ? purchaseOrders.filter((order) =>
+        [
+          order.poNumber,
+          order.vendorName,
+          new Date(order.createdAt).toLocaleDateString("id-ID"),
+          String(order.items.length),
+        ].some((value) =>
+          value.toLocaleLowerCase("id-ID").includes(normalizedReviewSearch),
+        ),
+      )
+    : purchaseOrders;
+  const normalizedPaymentQueueSearch = paymentQueueSearch
+    .trim()
+    .toLocaleLowerCase("id-ID");
+  const filteredPendingPaymentRows = normalizedPaymentQueueSearch
+    ? pendingPaymentRows.filter((row) =>
+        [
+          row.reference,
+          row.title,
+          String(row.grandTotal),
+          currency(row.grandTotal),
+          String(row.paidAmount),
+          currency(row.paidAmount),
+          String(Math.max(0, row.grandTotal - row.paidAmount)),
+          currency(Math.max(0, row.grandTotal - row.paidAmount)),
+          row.transferDestination,
+        ].some((value) =>
+          value.toLocaleLowerCase("id-ID").includes(normalizedPaymentQueueSearch),
+        ),
+      )
+    : pendingPaymentRows;
   const paymentHistoryRows: FinanceHistoryTransaction[] = [
     ...standalonePayments.flatMap((order) =>
       (order.paymentTransactions ?? []).map((payment) => ({
@@ -465,6 +527,49 @@ export default function FinanceHub({
     (a, b) =>
       (b.paidAt ? new Date(b.paidAt).getTime() : 0) -
       (a.paidAt ? new Date(a.paidAt).getTime() : 0),
+  );
+  const normalizedPaymentHistorySearch = paymentHistorySearch
+    .trim()
+    .toLocaleLowerCase("id-ID");
+  const filteredPaymentHistoryRows = normalizedPaymentHistorySearch
+    ? paymentHistoryRows.filter((payment) => {
+        const paymentTypeLabel =
+          payment.paymentType === PaymentType.DOWN_PAYMENT
+            ? "DP"
+            : payment.paymentType === PaymentType.PROGRESS_PAYMENT
+              ? "Termin"
+              : "Pelunasan";
+        const searchableValues = [
+          payment.paidAt
+            ? new Date(payment.paidAt).toLocaleString("id-ID")
+            : "",
+          payment.reference,
+          payment.title,
+          paymentTypeLabel,
+          String(payment.amount),
+          currency(payment.amount),
+          payment.transferDestination,
+        ];
+        return searchableValues.some((value) =>
+          value.toLocaleLowerCase("id-ID").includes(normalizedPaymentHistorySearch),
+        );
+      })
+    : paymentHistoryRows;
+  const paymentHistoryPageCount = Math.max(
+    1,
+    Math.ceil(filteredPaymentHistoryRows.length / PAYMENT_HISTORY_PAGE_SIZE),
+  );
+  const currentPaymentHistoryPage = Math.min(
+    paymentHistoryPage,
+    paymentHistoryPageCount,
+  );
+  const paymentHistoryPageRows = filteredPaymentHistoryRows.slice(
+    (currentPaymentHistoryPage - 1) * PAYMENT_HISTORY_PAGE_SIZE,
+    currentPaymentHistoryPage * PAYMENT_HISTORY_PAGE_SIZE,
+  );
+  const paymentHistoryPageNumbers = getPaymentHistoryPageNumbers(
+    currentPaymentHistoryPage,
+    paymentHistoryPageCount,
   );
   const selectedPaymentRow = paymentModalSelection
     ? paymentRows.find(
@@ -781,6 +886,18 @@ export default function FinanceHub({
     );
   };
 
+  const navigateFromDashboard = (tab: "check" | "payment" | "history") => {
+    setActiveTab(tab);
+    if (tab === "check") {
+      setReviewSearch("");
+    } else if (tab === "payment") {
+      setPaymentQueueSearch("");
+    } else {
+      setPaymentHistorySearch("");
+      setPaymentHistoryPage(1);
+    }
+  };
+
   return (
     <div className="space-y-5">
       <ErpHubBrand
@@ -798,7 +915,7 @@ export default function FinanceHub({
         )}
         months={dashboardMonths}
         categories={dashboardCategories}
-        onNavigate={setActiveTab}
+        onNavigate={navigateFromDashboard}
       />
 
       <Tabs
@@ -845,13 +962,28 @@ export default function FinanceHub({
 
         <TabsContent value="check">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>PO Menunggu Checked By Finance</CardTitle>
+              <div className="relative w-full sm:max-w-xs">
+                <Search
+                  className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  value={reviewSearch}
+                  onChange={(event) => setReviewSearch(event.target.value)}
+                  placeholder="Cari PO atau vendor..."
+                  aria-label="Cari PO yang menunggu pemeriksaan"
+                  className="pl-9"
+                />
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              {purchaseOrders.length === 0 ? (
+              {filteredReviewOrders.length === 0 ? (
                 <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  Tidak ada PO draft yang menunggu pemeriksaan.
+                  {purchaseOrders.length === 0
+                    ? "Tidak ada PO draft yang menunggu pemeriksaan."
+                    : "Tidak ada PO yang cocok dengan pencarian."}
                 </p>
               ) : (
                 <div className="overflow-x-auto rounded-lg border">
@@ -866,7 +998,7 @@ export default function FinanceHub({
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {purchaseOrders.map((order) => (
+                      {filteredReviewOrders.map((order) => (
                         <TableRow
                           key={order.publicCode}
                           className="cursor-pointer"
@@ -919,8 +1051,21 @@ export default function FinanceHub({
 
         <TabsContent value="payment">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>Tagihan & Pembelian Disetujui</CardTitle>
+              <div className="relative w-full sm:max-w-xs">
+                <Search
+                  className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  value={paymentQueueSearch}
+                  onChange={(event) => setPaymentQueueSearch(event.target.value)}
+                  placeholder="Cari tagihan atau vendor..."
+                  aria-label="Cari antrean pembayaran"
+                  className="pl-9"
+                />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-lg border">
@@ -936,7 +1081,7 @@ export default function FinanceHub({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pendingPaymentRows.map((row) => {
+                    {filteredPendingPaymentRows.map((row) => {
                       const balance =
                         Math.round((row.grandTotal - row.paidAmount) * 100) /
                         100;
@@ -1020,13 +1165,15 @@ export default function FinanceHub({
                         </TableRow>
                       );
                     })}
-                    {pendingPaymentRows.length === 0 && (
+                    {filteredPendingPaymentRows.length === 0 && (
                       <TableRow>
                         <TableCell
                           colSpan={6}
                           className="py-10 text-center text-muted-foreground"
                         >
-                          Tidak ada tagihan yang menunggu pembayaran.
+                          {pendingPaymentRows.length === 0
+                            ? "Tidak ada tagihan yang menunggu pembayaran."
+                            : "Tidak ada tagihan yang cocok dengan pencarian."}
                         </TableCell>
                       </TableRow>
                     )}
@@ -1039,8 +1186,24 @@ export default function FinanceHub({
 
         <TabsContent value="history">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>Riwayat & Bukti Transfer</CardTitle>
+              <div className="relative w-full sm:max-w-xs">
+                <Search
+                  className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  value={paymentHistorySearch}
+                  onChange={(event) => {
+                    setPaymentHistorySearch(event.target.value);
+                    setPaymentHistoryPage(1);
+                  }}
+                  placeholder="Cari transaksi..."
+                  aria-label="Cari riwayat pembayaran"
+                  className="pl-9"
+                />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-lg border">
@@ -1056,7 +1219,7 @@ export default function FinanceHub({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {paymentHistoryRows.map((payment) => (
+                    {paymentHistoryPageRows.map((payment) => (
                       <TableRow
                         key={payment.id}
                         className="cursor-pointer"
@@ -1112,18 +1275,100 @@ export default function FinanceHub({
                         </TableCell>
                       </TableRow>
                     ))}
-                    {paymentHistoryRows.length === 0 && (
+                    {filteredPaymentHistoryRows.length === 0 && (
                       <TableRow>
                         <TableCell
                           colSpan={6}
                           className="py-10 text-center text-muted-foreground"
                         >
-                          Belum ada transaksi pembayaran berhasil.
+                          {paymentHistoryRows.length === 0
+                            ? "Belum ada transaksi pembayaran berhasil."
+                            : "Tidak ada transaksi yang cocok dengan pencarian."}
                         </TableCell>
                       </TableRow>
                     )}
                   </TableBody>
                 </Table>
+              </div>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-muted-foreground" aria-live="polite">
+                  Menampilkan{" "}
+                  {filteredPaymentHistoryRows.length === 0
+                    ? 0
+                    : (currentPaymentHistoryPage - 1) *
+                        PAYMENT_HISTORY_PAGE_SIZE +
+                      1}{" "}
+                  sampai{" "}
+                  {Math.min(
+                    currentPaymentHistoryPage * PAYMENT_HISTORY_PAGE_SIZE,
+                    filteredPaymentHistoryRows.length,
+                  )}{" "}
+                  dari {filteredPaymentHistoryRows.length} transaksi
+                </p>
+                <nav
+                  aria-label="Navigasi halaman riwayat pembayaran"
+                  className="flex flex-wrap items-center gap-1"
+                >
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setPaymentHistoryPage((page) => Math.max(1, page - 1))
+                    }
+                    disabled={currentPaymentHistoryPage === 1}
+                    aria-label="Halaman sebelumnya"
+                  >
+                    <ChevronLeft className="size-4" aria-hidden="true" />
+                    <span className="sr-only">Sebelumnya</span>
+                  </Button>
+                  {paymentHistoryPageNumbers.map((page, index) =>
+                    page === "ellipsis" ? (
+                      <span
+                        key={`ellipsis-${index}`}
+                        className="px-2 text-sm text-muted-foreground"
+                        aria-hidden="true"
+                      >
+                        …
+                      </span>
+                    ) : (
+                      <Button
+                        key={page}
+                        type="button"
+                        variant={
+                          page === currentPaymentHistoryPage
+                            ? "default"
+                            : "outline"
+                        }
+                        size="sm"
+                        onClick={() => setPaymentHistoryPage(page)}
+                        aria-label={`Halaman ${page}`}
+                        aria-current={
+                          page === currentPaymentHistoryPage ? "page" : undefined
+                        }
+                      >
+                        {page}
+                      </Button>
+                    ),
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setPaymentHistoryPage((page) =>
+                        Math.min(paymentHistoryPageCount, page + 1),
+                      )
+                    }
+                    disabled={
+                      currentPaymentHistoryPage === paymentHistoryPageCount
+                    }
+                    aria-label="Halaman berikutnya"
+                  >
+                    <ChevronRight className="size-4" aria-hidden="true" />
+                    <span className="sr-only">Berikutnya</span>
+                  </Button>
+                </nav>
               </div>
             </CardContent>
           </Card>
@@ -1548,7 +1793,7 @@ export default function FinanceHub({
       </Tabs>
 
       {message && (
-        <p className="rounded-md border bg-white p-3 text-sm" role="status">
+        <p className="rounded-md border border-border bg-background p-3 text-sm text-foreground" role="status">
           {message}
         </p>
       )}

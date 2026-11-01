@@ -356,7 +356,7 @@ export default function MoverWorkspace({
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-      <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
+      <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border border-border bg-muted p-2">
         <TabsTrigger value="deliveries">Tugas Pengiriman</TabsTrigger>
         <TabsTrigger value="equipment">Alat Berat & BBM</TabsTrigger>
       </TabsList>

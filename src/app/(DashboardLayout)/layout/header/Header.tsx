@@ -74,19 +74,19 @@ const Header = ({
   return (
     <>
       <header
-        className={`sticky top-0 z-2 ${
-          isSticky ? "bg-background shadow-md fixed w-full" : "bg-transparent"
+        className={`sticky top-0 z-20 border-b border-border bg-background text-foreground ${
+          isSticky ? "shadow-md" : "shadow-sm"
         }`}
       >
         <nav
-          className="flex min-w-0 max-w-full! items-center justify-between gap-1 rounded-none px-2 py-4 dark:bg-dark sm:gap-3 sm:px-6 sm:pe-10"
+          className="flex min-h-16 min-w-0 max-w-full! items-center justify-between gap-1 rounded-none bg-background px-2 py-3 sm:gap-3 sm:px-6 sm:pe-10"
         >
           {/* Mobile Toggle Icon */}
           <div
             onClick={() => {
               setIsOpen(true);
             }}
-            className="relative flex shrink-0 cursor-pointer items-center justify-center rounded-full px-2 text-foreground after:absolute after:size-10 after:rounded-full after:bg-transparent hover:after:bg-lightprimary hover:text-primary dark:text-muted-foreground dark:hover:text-primary sm:px-[15px] xl:hidden"
+            className="relative flex shrink-0 cursor-pointer items-center justify-center rounded-full px-2 text-muted-foreground after:absolute after:size-10 after:rounded-full after:bg-transparent hover:after:bg-accent hover:text-accent-foreground sm:px-[15px] xl:hidden"
           >
             <Icon icon="tabler:menu-2" height={20} width={20} />
           </div>
@@ -97,17 +97,17 @@ const Header = ({
 
           <div className="flex shrink-0 items-center xl:hidden">
             <div
-              className="hover:text-primary px-2 md:px-15 group focus:ring-0 rounded-full flex justify-center items-center cursor-pointer relative"
+              className="group relative flex cursor-pointer items-center justify-center rounded-full px-2 text-muted-foreground hover:text-foreground md:px-4"
               onClick={toggleMode}
             >
-              <span className="flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2 group-hover:after:bg-lightprimary">
+              <span className="relative flex items-center justify-center after:absolute after:size-10 after:rounded-full group-hover:after:bg-accent">
                 {theme === "light" ? (
-                  <Icon icon="tabler:moon" width="20" className="text-foreground dark:text-muted-foreground group-hover:text-primary dark:group-hover:text-primary" />
+                  <Icon icon="tabler:moon" width="20" className="text-muted-foreground group-hover:text-foreground" />
                 ) : (
                   <Icon
                     icon="solar:sun-bold-duotone"
                     width="20"
-                    className="text-foreground dark:text-muted-foreground group-hover:text-primary dark:group-hover:text-primary"
+                    className="text-muted-foreground group-hover:text-foreground"
                   />
                 )}
               </span>
@@ -145,17 +145,17 @@ const Header = ({
               <div className="flex gap-0 items-center ">
                 {/* ✅ Dark/Light Toggle */}
                 <div
-                  className="hover:text-primary px-15 group focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-gray relative"
+                  className="group relative flex cursor-pointer items-center justify-center rounded-full px-4 text-muted-foreground hover:text-foreground"
                   onClick={toggleMode}
                 >
-                  <span className="flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2 group-hover:after:bg-lightprimary">
+                  <span className="relative flex items-center justify-center after:absolute after:size-10 after:rounded-full group-hover:after:bg-accent">
                     {theme === "light" ? (
-                      <Icon icon="tabler:moon" width="20" className="text-foreground dark:text-muted-foreground group-hover:text-primary dark:group-hover:text-primary" />
+                      <Icon icon="tabler:moon" width="20" className="text-muted-foreground group-hover:text-foreground" />
                     ) : (
                       <Icon
                         icon="solar:sun-bold-duotone"
                         width="20"
-                        className="text-foreground dark:text-muted-foreground group-hover:text-primary dark:group-hover:text-primary"
+                        className="text-muted-foreground group-hover:text-foreground"
                       />
                     )}
                   </span>

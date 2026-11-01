@@ -14,7 +14,7 @@ const FullLogo = () => {
         className="h-10 w-[45px] shrink-0 rounded-md object-contain dark:bg-white dark:p-1"
       />
       <span className="flex min-w-0 flex-col leading-tight max-[390px]:hidden">
-        <span className="truncate text-sm font-bold text-primary dark:text-white">
+        <span className="truncate text-sm font-bold text-primary dark:text-foreground">
           SKALA PRIORITAS
         </span>
         <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-secondary">

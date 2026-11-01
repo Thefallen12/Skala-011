@@ -55,6 +55,7 @@ export type FieldTeamOption = {
   id: string;
   name: string;
   email: string;
+  profilePhotoUrl: string | null;
 };
 
 export type ProjectProgressReport = {

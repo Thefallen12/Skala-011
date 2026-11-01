@@ -61,7 +61,7 @@ export default async function ProjectsWorkstationPage() {
       startDate: true,
       endDate: true,
       fieldPicId: true,
-      fieldPic: { select: { name: true } },
+      fieldPic: { select: { name: true, profilePhotoUrl: true } },
       dailyReports: {
         orderBy: [{ reportDate: "desc" }, { createdAt: "desc" }],
         take: 100,
@@ -196,7 +196,7 @@ export default async function ProjectsWorkstationPage() {
             isActive: true,
           },
           orderBy: { name: "asc" },
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, email: true, profilePhotoUrl: true },
         })
     : [];
   const projectIds = projects.map((project) => project.id);
@@ -215,6 +215,7 @@ export default async function ProjectsWorkstationPage() {
     location: project.location,
     fieldPicId: project.fieldPicId,
     fieldPicName: project.fieldPic?.name ?? null,
+    fieldPicPhotoUrl: project.fieldPic?.profilePhotoUrl ?? null,
     status: project.status,
     progress: project.progress,
     pagu: isDirector ? project.pagu?.toString() ?? "0" : "0",

@@ -575,14 +575,6 @@ export type DailyReportUncheckedUpdateManyWithoutProjectNestedInput = {
   deleteMany?: Prisma.DailyReportScalarWhereInput | Prisma.DailyReportScalarWhereInput[]
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type DailyReportCreateNestedOneWithoutProgressPhotosInput = {
   create?: Prisma.XOR<Prisma.DailyReportCreateWithoutProgressPhotosInput, Prisma.DailyReportUncheckedCreateWithoutProgressPhotosInput>
   connectOrCreate?: Prisma.DailyReportCreateOrConnectWithoutProgressPhotosInput

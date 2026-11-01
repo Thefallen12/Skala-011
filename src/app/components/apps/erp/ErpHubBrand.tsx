@@ -14,7 +14,7 @@ export default function ErpHubBrand({
   action?: ReactNode;
 }) {
   return (
-    <header className="mb-6 overflow-hidden rounded-xl border bg-white shadow-sm">
+    <header className="mb-6 overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm">
       <div className="h-1.5 bg-secondary" />
       <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">

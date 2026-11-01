@@ -283,7 +283,7 @@ export default function ExecutiveConstructionApprovals({
           )}
         </CardContent>
       </Card>
-      {message && <p className="rounded-md border bg-white p-3 text-sm" role="status">{message}</p>}
+      {message && <p className="rounded-md border border-border bg-background p-3 text-sm text-foreground" role="status">{message}</p>}
     </div>
   );
 }

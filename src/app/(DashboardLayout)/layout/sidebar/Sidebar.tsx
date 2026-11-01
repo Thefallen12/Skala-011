@@ -101,7 +101,7 @@ const renderSidebarItems = (
         } !px-1.5`
       : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground ${
           isSelected
-            ? "!bg-orange-500 !text-white hover:!bg-orange-600"
+              ? "!bg-primary !text-primary-foreground hover:!bg-primary/90"
             : ""
         }`;
 
@@ -215,6 +215,7 @@ const SidebarLayout = ({
       width={"270px"}
       showTrigger={false}
       mode={sidebarMode}
+      themeColor={sidebarMode === "dark" ? "#e67e22" : "#102a4d"}
       className="fixed left-0 top-0 border border-border bg-sidebar dark:bg-sidebar z-10 h-screen"
     >
       {/* Logo */}

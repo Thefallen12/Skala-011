@@ -33,7 +33,7 @@ const BlogComment = ({ comment }: BlogCommentProps) => {
         </div>
 
         <div className="py-4">
-          <p className="text-ld">{comment.comment || ''}</p>
+          <p className="text-foreground">{comment.comment || ''}</p>
         </div>
 
         <div className="relative w-fit">
@@ -72,7 +72,7 @@ const BlogComment = ({ comment }: BlogCommentProps) => {
                 <p>{replyTime}</p>
               </div>
               <div className="py-4">
-                <p className="text-ld">{reply.comment || ''}</p>
+                <p className="text-foreground">{reply.comment || ''}</p>
               </div>
             </div>
           </div>

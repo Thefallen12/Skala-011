@@ -67,7 +67,7 @@ const Notelist: React.FC<NotelistProps> = ({ notes, loading, selectedNoteId, onS
                 >
                   <h6 className="text-base truncate">{note.title}</h6>
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-ld">
+                    <p className="text-xs text-muted-foreground">
                       {note.datef ? new Date(note.datef).toLocaleDateString() : "-"}
                     </p>
                     <Tooltip>

@@ -264,6 +264,7 @@ export type UserWhereInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   ticketAuditLogs?: Prisma.TicketAuditLogListRelationFilter
   assignedProjects?: Prisma.ProjectListRelationFilter
+  fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   proposedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   approvedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   draftedBlueprints?: Prisma.BlueprintListRelationFilter
@@ -335,6 +336,7 @@ export type UserOrderByWithRelationInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseOrderByRelationAggregateInput
   ticketAuditLogs?: Prisma.TicketAuditLogOrderByRelationAggregateInput
   assignedProjects?: Prisma.ProjectOrderByRelationAggregateInput
+  fieldSurveys?: Prisma.FieldSurveyOrderByRelationAggregateInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointOrderByRelationAggregateInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointOrderByRelationAggregateInput
   draftedBlueprints?: Prisma.BlueprintOrderByRelationAggregateInput
@@ -409,6 +411,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   ticketAuditLogs?: Prisma.TicketAuditLogListRelationFilter
   assignedProjects?: Prisma.ProjectListRelationFilter
+  fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   proposedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   approvedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   draftedBlueprints?: Prisma.BlueprintListRelationFilter
@@ -520,6 +523,7 @@ export type UserCreateInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -591,6 +595,7 @@ export type UserUncheckedCreateInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -662,6 +667,7 @@ export type UserUpdateInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -733,6 +739,7 @@ export type UserUncheckedUpdateInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -1115,6 +1122,20 @@ export type UserUpdateOneWithoutAssignedProjectsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedProjectsInput, Prisma.UserUpdateWithoutAssignedProjectsInput>, Prisma.UserUncheckedUpdateWithoutAssignedProjectsInput>
+}
+
+export type UserCreateNestedOneWithoutFieldSurveysInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFieldSurveysInput, Prisma.UserUncheckedCreateWithoutFieldSurveysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFieldSurveysInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFieldSurveysNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFieldSurveysInput, Prisma.UserUncheckedCreateWithoutFieldSurveysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFieldSurveysInput
+  upsert?: Prisma.UserUpsertWithoutFieldSurveysInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFieldSurveysInput, Prisma.UserUpdateWithoutFieldSurveysInput>, Prisma.UserUncheckedUpdateWithoutFieldSurveysInput>
 }
 
 export type UserCreateNestedOneWithoutProposedWorkPointWagesInput = {
@@ -1745,6 +1766,7 @@ export type UserCreateWithoutNotesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -1815,6 +1837,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -1901,6 +1924,7 @@ export type UserUpdateWithoutNotesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -1971,6 +1995,7 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -2042,6 +2067,7 @@ export type UserCreateWithoutNotificationsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -2112,6 +2138,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -2198,6 +2225,7 @@ export type UserUpdateWithoutNotificationsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -2268,6 +2296,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -2337,6 +2366,7 @@ export type UserCreateWithoutCalendarEventInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -2407,6 +2437,7 @@ export type UserUncheckedCreateWithoutCalendarEventInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -2493,6 +2524,7 @@ export type UserUpdateWithoutCalendarEventInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -2563,6 +2595,7 @@ export type UserUncheckedUpdateWithoutCalendarEventInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -2634,6 +2667,7 @@ export type UserCreateWithoutCalendarRemindersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -2704,6 +2738,7 @@ export type UserUncheckedCreateWithoutCalendarRemindersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -2790,6 +2825,7 @@ export type UserUpdateWithoutCalendarRemindersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -2860,6 +2896,7 @@ export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -2930,6 +2967,7 @@ export type UserCreateWithoutCalendarEventParticipantsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -3000,6 +3038,7 @@ export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -3086,6 +3125,7 @@ export type UserUpdateWithoutCalendarEventParticipantsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -3156,6 +3196,7 @@ export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -3225,6 +3266,7 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -3295,6 +3337,7 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverId
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -3370,6 +3413,7 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -3440,6 +3484,7 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterI
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -3526,6 +3571,7 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -3596,6 +3642,7 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverId
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -3677,6 +3724,7 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -3747,6 +3795,7 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterI
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -3817,6 +3866,7 @@ export type UserCreateWithoutSessionInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -3887,6 +3937,7 @@ export type UserUncheckedCreateWithoutSessionInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -3973,6 +4024,7 @@ export type UserUpdateWithoutSessionInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -4043,6 +4095,7 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -4114,6 +4167,7 @@ export type UserCreateWithoutHabitsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -4184,6 +4238,7 @@ export type UserUncheckedCreateWithoutHabitsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -4270,6 +4325,7 @@ export type UserUpdateWithoutHabitsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -4340,6 +4396,7 @@ export type UserUncheckedUpdateWithoutHabitsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -4410,6 +4467,7 @@ export type UserCreateWithoutCreatedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -4480,6 +4538,7 @@ export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -4555,6 +4614,7 @@ export type UserCreateWithoutAssignedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -4625,6 +4685,7 @@ export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -4711,6 +4772,7 @@ export type UserUpdateWithoutCreatedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -4781,6 +4843,7 @@ export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -4862,6 +4925,7 @@ export type UserUpdateWithoutAssignedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -4932,6 +4996,7 @@ export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -5002,6 +5067,7 @@ export type UserCreateWithoutWorkTaskMembershipsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -5072,6 +5138,7 @@ export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -5158,6 +5225,7 @@ export type UserUpdateWithoutWorkTaskMembershipsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -5228,6 +5296,7 @@ export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -5298,6 +5367,7 @@ export type UserCreateWithoutTimesheetEntriesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -5368,6 +5438,7 @@ export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -5454,6 +5525,7 @@ export type UserUpdateWithoutTimesheetEntriesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -5524,6 +5596,7 @@ export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -5593,6 +5666,7 @@ export type UserCreateWithoutAssignedProjectsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -5663,6 +5737,7 @@ export type UserUncheckedCreateWithoutAssignedProjectsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -5749,6 +5824,7 @@ export type UserUpdateWithoutAssignedProjectsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -5819,6 +5895,307 @@ export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFieldSurveysInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFieldSurveysInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFieldSurveysInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFieldSurveysInput, Prisma.UserUncheckedCreateWithoutFieldSurveysInput>
+}
+
+export type UserUpsertWithoutFieldSurveysInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFieldSurveysInput, Prisma.UserUncheckedUpdateWithoutFieldSurveysInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFieldSurveysInput, Prisma.UserUncheckedCreateWithoutFieldSurveysInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFieldSurveysInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFieldSurveysInput, Prisma.UserUncheckedUpdateWithoutFieldSurveysInput>
+}
+
+export type UserUpdateWithoutFieldSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFieldSurveysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -5890,6 +6267,7 @@ export type UserCreateWithoutProposedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
@@ -5960,6 +6338,7 @@ export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
@@ -6035,6 +6414,7 @@ export type UserCreateWithoutApprovedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
@@ -6105,6 +6485,7 @@ export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
@@ -6191,6 +6572,7 @@ export type UserUpdateWithoutProposedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
@@ -6261,6 +6643,7 @@ export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
@@ -6342,6 +6725,7 @@ export type UserUpdateWithoutApprovedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
@@ -6412,6 +6796,7 @@ export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
@@ -6482,6 +6867,7 @@ export type UserCreateWithoutDraftedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
@@ -6552,6 +6938,7 @@ export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
@@ -6627,6 +7014,7 @@ export type UserCreateWithoutReviewedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -6697,6 +7085,7 @@ export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -6783,6 +7172,7 @@ export type UserUpdateWithoutDraftedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
@@ -6853,6 +7243,7 @@ export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
@@ -6934,6 +7325,7 @@ export type UserUpdateWithoutReviewedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -7004,6 +7396,7 @@ export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -7074,6 +7467,7 @@ export type UserCreateWithoutCreatedStockMovementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -7144,6 +7538,7 @@ export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -7230,6 +7625,7 @@ export type UserUpdateWithoutCreatedStockMovementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -7300,6 +7696,7 @@ export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -7370,6 +7767,7 @@ export type UserCreateWithoutStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -7440,6 +7838,7 @@ export type UserUncheckedCreateWithoutStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -7526,6 +7925,7 @@ export type UserUpdateWithoutStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -7596,6 +7996,7 @@ export type UserUncheckedUpdateWithoutStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -7665,6 +8066,7 @@ export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -7735,6 +8137,7 @@ export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -7811,6 +8214,7 @@ export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -7881,6 +8285,7 @@ export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -7956,6 +8361,7 @@ export type UserCreateWithoutCreatedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -8026,6 +8432,7 @@ export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -8111,6 +8518,7 @@ export type UserUpdateWithoutApprovedDirectStockPurchasesInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -8181,6 +8589,7 @@ export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -8263,6 +8672,7 @@ export type UserUpdateWithoutReceivedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -8333,6 +8743,7 @@ export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -8414,6 +8825,7 @@ export type UserUpdateWithoutCreatedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -8484,6 +8896,7 @@ export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -8554,6 +8967,7 @@ export type UserCreateWithoutWageAuditLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -8624,6 +9038,7 @@ export type UserUncheckedCreateWithoutWageAuditLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -8710,6 +9125,7 @@ export type UserUpdateWithoutWageAuditLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -8780,6 +9196,7 @@ export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -8850,6 +9267,7 @@ export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -8920,6 +9338,7 @@ export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -9006,6 +9425,7 @@ export type UserUpdateWithoutCreatedProjectWageDisbursementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -9076,6 +9496,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -9146,6 +9567,7 @@ export type UserCreateWithoutCreatedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -9216,6 +9638,7 @@ export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -9291,6 +9714,7 @@ export type UserCreateWithoutApprovedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -9361,6 +9785,7 @@ export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -9436,6 +9861,7 @@ export type UserCreateWithoutReleasedSubkonRetentionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -9506,6 +9932,7 @@ export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -9592,6 +10019,7 @@ export type UserUpdateWithoutCreatedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -9662,6 +10090,7 @@ export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -9743,6 +10172,7 @@ export type UserUpdateWithoutApprovedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -9813,6 +10243,7 @@ export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -9894,6 +10325,7 @@ export type UserUpdateWithoutReleasedSubkonRetentionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -9964,6 +10396,7 @@ export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -10034,6 +10467,7 @@ export type UserCreateWithoutCreatedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -10104,6 +10538,7 @@ export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -10179,6 +10614,7 @@ export type UserCreateWithoutVerifiedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -10249,6 +10685,7 @@ export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -10324,6 +10761,7 @@ export type UserCreateWithoutReviewedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -10394,6 +10832,7 @@ export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -10469,6 +10908,7 @@ export type UserCreateWithoutApprovedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -10539,6 +10979,7 @@ export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -10614,6 +11055,7 @@ export type UserCreateWithoutPaidSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -10684,6 +11126,7 @@ export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -10770,6 +11213,7 @@ export type UserUpdateWithoutCreatedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -10840,6 +11284,7 @@ export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -10921,6 +11366,7 @@ export type UserUpdateWithoutVerifiedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -10991,6 +11437,7 @@ export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -11072,6 +11519,7 @@ export type UserUpdateWithoutReviewedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -11142,6 +11590,7 @@ export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -11223,6 +11672,7 @@ export type UserUpdateWithoutApprovedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -11293,6 +11743,7 @@ export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -11374,6 +11825,7 @@ export type UserUpdateWithoutPaidSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -11444,6 +11896,7 @@ export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -11514,6 +11967,7 @@ export type UserCreateWithoutCreatedEquipmentLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -11584,6 +12038,7 @@ export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -11670,6 +12125,7 @@ export type UserUpdateWithoutCreatedEquipmentLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -11740,6 +12196,7 @@ export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -11810,6 +12267,7 @@ export type UserCreateWithoutCreatedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -11880,6 +12338,7 @@ export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -11955,6 +12414,7 @@ export type UserCreateWithoutApprovedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -12025,6 +12485,7 @@ export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -12111,6 +12572,7 @@ export type UserUpdateWithoutCreatedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -12181,6 +12643,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -12262,6 +12725,7 @@ export type UserUpdateWithoutApprovedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -12332,6 +12796,7 @@ export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -12402,6 +12867,7 @@ export type UserCreateWithoutApprovedBASTDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -12472,6 +12938,7 @@ export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -12558,6 +13025,7 @@ export type UserUpdateWithoutApprovedBASTDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -12628,6 +13096,7 @@ export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -12697,6 +13166,7 @@ export type UserCreateWithoutTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -12767,6 +13237,7 @@ export type UserUncheckedCreateWithoutTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -12843,6 +13314,7 @@ export type UserCreateWithoutAssignedMoverTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -12913,6 +13385,7 @@ export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -12998,6 +13471,7 @@ export type UserUpdateWithoutTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -13068,6 +13542,7 @@ export type UserUncheckedUpdateWithoutTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -13150,6 +13625,7 @@ export type UserUpdateWithoutAssignedMoverTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -13220,6 +13696,7 @@ export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -13290,6 +13767,7 @@ export type UserCreateWithoutCreatedDocumentTemplatesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -13360,6 +13838,7 @@ export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -13446,6 +13925,7 @@ export type UserUpdateWithoutCreatedDocumentTemplatesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -13516,6 +13996,7 @@ export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -13586,6 +14067,7 @@ export type UserCreateWithoutCreatedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -13656,6 +14138,7 @@ export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -13731,6 +14214,7 @@ export type UserCreateWithoutReviewedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -13801,6 +14285,7 @@ export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -13876,6 +14361,7 @@ export type UserCreateWithoutApprovedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -13946,6 +14432,7 @@ export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -14032,6 +14519,7 @@ export type UserUpdateWithoutCreatedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -14102,6 +14590,7 @@ export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -14183,6 +14672,7 @@ export type UserUpdateWithoutReviewedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -14253,6 +14743,7 @@ export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -14334,6 +14825,7 @@ export type UserUpdateWithoutApprovedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -14404,6 +14896,7 @@ export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -14473,6 +14966,7 @@ export type UserCreateWithoutProcessedPaymentTransactionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -14543,6 +15037,7 @@ export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -14629,6 +15124,7 @@ export type UserUpdateWithoutProcessedPaymentTransactionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -14699,6 +15195,7 @@ export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -14770,6 +15267,7 @@ export type UserCreateWithoutCreatedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -14840,6 +15338,7 @@ export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -14915,6 +15414,7 @@ export type UserCreateWithoutReceivedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -14985,6 +15485,7 @@ export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -15071,6 +15572,7 @@ export type UserUpdateWithoutCreatedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -15141,6 +15643,7 @@ export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -15222,6 +15725,7 @@ export type UserUpdateWithoutReceivedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -15292,6 +15796,7 @@ export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -15362,6 +15867,7 @@ export type UserCreateWithoutCreatedVehicleTripLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -15432,6 +15938,7 @@ export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -15518,6 +16025,7 @@ export type UserUpdateWithoutCreatedVehicleTripLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -15588,6 +16096,7 @@ export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -15658,6 +16167,7 @@ export type UserCreateWithoutVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -15728,6 +16238,7 @@ export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -15803,6 +16314,7 @@ export type UserCreateWithoutReviewedVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -15873,6 +16385,7 @@ export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -15959,6 +16472,7 @@ export type UserUpdateWithoutVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -16029,6 +16543,7 @@ export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -16110,6 +16625,7 @@ export type UserUpdateWithoutReviewedVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -16180,6 +16696,7 @@ export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -16250,6 +16767,7 @@ export type UserCreateWithoutIssuedDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -16320,6 +16838,7 @@ export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -16406,6 +16925,7 @@ export type UserUpdateWithoutIssuedDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -16476,6 +16996,7 @@ export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -16546,6 +17067,7 @@ export type UserCreateWithoutPreparedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -16616,6 +17138,7 @@ export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -16691,6 +17214,7 @@ export type UserCreateWithoutSignedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -16761,6 +17285,7 @@ export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -16836,6 +17361,7 @@ export type UserCreateWithoutIssuedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -16906,6 +17432,7 @@ export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -16992,6 +17519,7 @@ export type UserUpdateWithoutPreparedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -17062,6 +17590,7 @@ export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -17143,6 +17672,7 @@ export type UserUpdateWithoutSignedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -17213,6 +17743,7 @@ export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -17294,6 +17825,7 @@ export type UserUpdateWithoutIssuedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -17364,6 +17896,7 @@ export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -17433,6 +17966,7 @@ export type UserCreateWithoutTicketAuditLogsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
@@ -17503,6 +18037,7 @@ export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
@@ -17589,6 +18124,7 @@ export type UserUpdateWithoutTicketAuditLogsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
@@ -17659,6 +18195,7 @@ export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
@@ -17721,6 +18258,7 @@ export type UserCountOutputType = {
   approvedDirectStockPurchases: number
   ticketAuditLogs: number
   assignedProjects: number
+  fieldSurveys: number
   proposedWorkPointWages: number
   approvedWorkPointWages: number
   draftedBlueprints: number
@@ -17778,6 +18316,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   approvedDirectStockPurchases?: boolean | UserCountOutputTypeCountApprovedDirectStockPurchasesArgs
   ticketAuditLogs?: boolean | UserCountOutputTypeCountTicketAuditLogsArgs
   assignedProjects?: boolean | UserCountOutputTypeCountAssignedProjectsArgs
+  fieldSurveys?: boolean | UserCountOutputTypeCountFieldSurveysArgs
   proposedWorkPointWages?: boolean | UserCountOutputTypeCountProposedWorkPointWagesArgs
   approvedWorkPointWages?: boolean | UserCountOutputTypeCountApprovedWorkPointWagesArgs
   draftedBlueprints?: boolean | UserCountOutputTypeCountDraftedBlueprintsArgs
@@ -17902,6 +18441,13 @@ export type UserCountOutputTypeCountTicketAuditLogsArgs<ExtArgs extends runtime.
  */
 export type UserCountOutputTypeCountAssignedProjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProjectWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFieldSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FieldSurveyWhereInput
 }
 
 /**
@@ -18238,6 +18784,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   approvedDirectStockPurchases?: boolean | Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>
   ticketAuditLogs?: boolean | Prisma.User$ticketAuditLogsArgs<ExtArgs>
   assignedProjects?: boolean | Prisma.User$assignedProjectsArgs<ExtArgs>
+  fieldSurveys?: boolean | Prisma.User$fieldSurveysArgs<ExtArgs>
   proposedWorkPointWages?: boolean | Prisma.User$proposedWorkPointWagesArgs<ExtArgs>
   approvedWorkPointWages?: boolean | Prisma.User$approvedWorkPointWagesArgs<ExtArgs>
   draftedBlueprints?: boolean | Prisma.User$draftedBlueprintsArgs<ExtArgs>
@@ -18348,6 +18895,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   approvedDirectStockPurchases?: boolean | Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>
   ticketAuditLogs?: boolean | Prisma.User$ticketAuditLogsArgs<ExtArgs>
   assignedProjects?: boolean | Prisma.User$assignedProjectsArgs<ExtArgs>
+  fieldSurveys?: boolean | Prisma.User$fieldSurveysArgs<ExtArgs>
   proposedWorkPointWages?: boolean | Prisma.User$proposedWorkPointWagesArgs<ExtArgs>
   approvedWorkPointWages?: boolean | Prisma.User$approvedWorkPointWagesArgs<ExtArgs>
   draftedBlueprints?: boolean | Prisma.User$draftedBlueprintsArgs<ExtArgs>
@@ -18410,6 +18958,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     approvedDirectStockPurchases: Prisma.$DirectStockPurchasePayload<ExtArgs>[]
     ticketAuditLogs: Prisma.$TicketAuditLogPayload<ExtArgs>[]
     assignedProjects: Prisma.$ProjectPayload<ExtArgs>[]
+    fieldSurveys: Prisma.$FieldSurveyPayload<ExtArgs>[]
     proposedWorkPointWages: Prisma.$ProjectWorkPointPayload<ExtArgs>[]
     approvedWorkPointWages: Prisma.$ProjectWorkPointPayload<ExtArgs>[]
     draftedBlueprints: Prisma.$BlueprintPayload<ExtArgs>[]
@@ -18874,6 +19423,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   approvedDirectStockPurchases<T extends Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ticketAuditLogs<T extends Prisma.User$ticketAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ticketAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedProjects<T extends Prisma.User$assignedProjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fieldSurveys<T extends Prisma.User$fieldSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fieldSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldSurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   proposedWorkPointWages<T extends Prisma.User$proposedWorkPointWagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$proposedWorkPointWagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWorkPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedWorkPointWages<T extends Prisma.User$approvedWorkPointWagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedWorkPointWagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWorkPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   draftedBlueprints<T extends Prisma.User$draftedBlueprintsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$draftedBlueprintsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlueprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -19591,6 +20141,30 @@ export type User$assignedProjectsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.ProjectScalarFieldEnum | Prisma.ProjectScalarFieldEnum[]
+}
+
+/**
+ * User.fieldSurveys
+ */
+export type User$fieldSurveysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FieldSurvey
+   */
+  select?: Prisma.FieldSurveySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FieldSurvey
+   */
+  omit?: Prisma.FieldSurveyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FieldSurveyInclude<ExtArgs> | null
+  where?: Prisma.FieldSurveyWhereInput
+  orderBy?: Prisma.FieldSurveyOrderByWithRelationInput | Prisma.FieldSurveyOrderByWithRelationInput[]
+  cursor?: Prisma.FieldSurveyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FieldSurveyScalarFieldEnum | Prisma.FieldSurveyScalarFieldEnum[]
 }
 
 /**

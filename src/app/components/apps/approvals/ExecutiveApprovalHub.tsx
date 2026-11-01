@@ -507,7 +507,7 @@ export default function ExecutiveApprovalHub({
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
+        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border border-border bg-muted p-2">
           <TabsTrigger value="po" className="gap-2">
             <FileText className="size-4" />
             Persetujuan PO <Badge variant="secondary">{purchaseOrders.length}</Badge>
@@ -574,7 +574,7 @@ export default function ExecutiveApprovalHub({
 
       {message && (
         <p
-          className="rounded-md border bg-white p-3 text-sm"
+          className="rounded-md border border-border bg-background p-3 text-sm text-foreground"
           role="status"
           aria-live="polite"
         >

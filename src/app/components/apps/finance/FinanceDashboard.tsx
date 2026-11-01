@@ -161,8 +161,8 @@ export default function FinanceDashboard({
       value: `${reviewCount}`,
       description: "PO menunggu pemeriksaan Keuangan",
       icon: ClipboardCheck,
-      color: "text-[#ff981f]",
-      style: "border-[#ef8b18] bg-[#1d3b68]",
+      color: "text-orange-700 dark:text-orange-300",
+      style: "border-orange-200 bg-orange-50 text-orange-950 hover:bg-orange-100 dark:border-orange-800 dark:bg-orange-950/40 dark:text-orange-100 dark:hover:bg-orange-950/60",
       tab: "check" as const,
     },
     {
@@ -170,8 +170,8 @@ export default function FinanceDashboard({
       value: `${pendingPaymentCount}`,
       description: "Tagihan yang masih perlu dicairkan",
       icon: Clock3,
-      color: "text-[#ffb21f]",
-      style: "border-[#a77925] bg-[#3b4547]",
+      color: "text-amber-700 dark:text-amber-300",
+      style: "border-amber-200 bg-amber-50 text-amber-950 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100 dark:hover:bg-amber-950/60",
       tab: "payment" as const,
     },
     {
@@ -179,8 +179,8 @@ export default function FinanceDashboard({
       value: compactCurrency(outstandingAmount),
       description: "Nilai pembayaran yang masih terbuka",
       icon: Wallet,
-      color: "text-[#16d5c0]",
-      style: "border-[#0d827c] bg-[#124d5f]",
+      color: "text-teal-700 dark:text-teal-300",
+      style: "border-teal-200 bg-teal-50 text-teal-950 hover:bg-teal-100 dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-100 dark:hover:bg-teal-950/60",
       tab: "payment" as const,
     },
     {
@@ -188,8 +188,8 @@ export default function FinanceDashboard({
       value: compactCurrency(totalPaid),
       description: `${totalTransactions} transaksi berhasil`,
       icon: WalletCards,
-      color: "text-[#a78bfa]",
-      style: "border-[#6651bd] bg-[#2b356b]",
+      color: "text-violet-700 dark:text-violet-300",
+      style: "border-violet-200 bg-violet-50 text-violet-950 hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-100 dark:hover:bg-violet-950/60",
       tab: "history" as const,
     },
   ];
@@ -208,20 +208,20 @@ export default function FinanceDashboard({
               type="button"
               variant="ghost"
               onClick={() => onNavigate(metric.tab)}
-              className={`h-auto min-h-28 justify-start rounded-lg border p-4 text-left text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-inherit hover:shadow-md ${metric.style}`}
+              className={`h-auto min-h-28 justify-start rounded-lg border p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${metric.style}`}
             >
               <span className="flex w-full min-w-0 items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-black/20">
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-black/5 dark:bg-black/20">
                   <Icon className={`size-5 ${metric.color}`} aria-hidden="true" />
                 </span>
                 <span className="min-w-0">
                   <span className={`block truncate text-sm font-medium ${metric.color}`}>
                     {metric.label}
                   </span>
-                  <span className="mt-1 block truncate text-2xl font-bold tabular-nums text-white">
+                  <span className="mt-1 block truncate text-2xl font-bold tabular-nums text-foreground">
                     {metric.value}
                   </span>
-                  <span className="mt-1 block truncate text-xs text-white/65">
+                  <span className="mt-1 block truncate text-xs text-muted-foreground">
                     {metric.description}
                   </span>
                 </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import {
@@ -17,7 +18,6 @@ import {
   submitSubkonTermyn,
   verifySubkonTermynField,
 } from "@/app/actions/construction";
-import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
 import ProjectFormModal from "@/app/components/project/ProjectFormModal";
 import ImportProjectModal from "./ImportProjectModal";
 import CreateTicketModal from "@/app/components/apps/tickets/CreateTicketModal";
@@ -26,6 +26,7 @@ import type { FieldTeamOption } from "@/app/(DashboardLayout)/types/project";
 import type { ProjectDashboardRow } from "@/app/(DashboardLayout)/types/project";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -79,6 +80,7 @@ import dynamic from "next/dynamic";
 import type { ApexOptions } from "apexcharts";
 import {
   Archive,
+  BriefcaseBusiness,
   Camera,
   ClipboardList,
   Download,
@@ -87,8 +89,13 @@ import {
   Plus,
   CalendarDays,
   ChartSpline,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  Search,
   Upload,
   Pencil,
+  Users,
 } from "lucide-react";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -104,6 +111,7 @@ export type ProjectWorkstationMasterData = {
   location: string | null;
   fieldPicId: string | null;
   fieldPicName: string | null;
+  fieldPicPhotoUrl: string | null;
   status: ProjectStatus;
   progress: number;
   pagu: string;
@@ -204,6 +212,8 @@ const currency = (amount: number | string) =>
     maximumFractionDigits: 0,
   }).format(Number(amount));
 
+const PROJECTS_PER_PAGE = 6;
+
 const formatProjectDate = (date: string | null) =>
   date
     ? new Date(`${date}T00:00:00.000Z`).toLocaleDateString("id-ID", {
@@ -263,12 +273,15 @@ const sCurveOptions: ApexOptions = {
 
 function getStatusBadgeClass(status: string) {
   if (status === "PENDING_SETUP") {
-    return "border-amber-300 bg-amber-50 text-amber-800";
+    return "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300";
   }
   if (status === "RUNNING" || status === "ON_PROGRESS" || status === "ACTIVE") {
-    return "border-emerald-300 bg-emerald-50 text-emerald-800";
+    return "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-300";
   }
-  return "";
+  if (status === "DONE" || status === "COMPLETED") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300";
+  }
+  return "border-border bg-muted text-muted-foreground";
 }
 
 function getSCurveSeries(project: ProjectWorkstationMasterData) {
@@ -374,6 +387,7 @@ export default function ProjectWorkstationMaster({
     string | null
   >(null);
   const [search, setSearch] = useState("");
+  const [projectPage, setProjectPage] = useState(1);
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [confirmArchiveOpen, setConfirmArchiveOpen] = useState(false);
@@ -410,6 +424,23 @@ export default function ProjectWorkstationMaster({
       ].some((value) => value.toLocaleLowerCase("id-ID").includes(query))
     );
   });
+  const projectPageCount = Math.max(
+    1,
+    Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE),
+  );
+  const currentProjectPage = Math.min(projectPage, projectPageCount);
+  const visibleProjects = filteredProjects.slice(
+    (currentProjectPage - 1) * PROJECTS_PER_PAGE,
+    currentProjectPage * PROJECTS_PER_PAGE,
+  );
+  const activeProjectCount = projects.filter(
+    (project) => project.status !== "DONE" && project.status !== "COMPLETED",
+  ).length;
+  const assignedPicCount = new Set(
+    projects
+      .map((project) => project.fieldPicId ?? project.fieldPicName)
+      .filter((pic): pic is string => Boolean(pic)),
+  ).size;
   const ticketProjectOptions: TicketProjectOption[] = projects.map(
     ({ id, title, kelompokTani }) => ({ id, title, kelompokTani }),
   );
@@ -576,46 +607,113 @@ export default function ProjectWorkstationMaster({
 
   return (
     <div className="space-y-5">
-      <ErpHubBrand
-        title="Project Workstation"
-        description="Satu pusat kendali untuk data proyek, anggaran, pelaksanaan, dan dokumen."
-      />
-
-      <Card>
-        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <CardTitle className="text-primary">Daftar Proyek</CardTitle>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {filteredProjects.length} dari {projects.length} proyek
+      <header className="overflow-hidden rounded-2xl border border-border bg-gradient-to-r from-card to-muted p-5 text-foreground shadow-lg sm:p-6">
+        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="grid size-16 shrink-0 place-items-center rounded-2xl border border-border bg-muted p-2">
+              <Image
+                src="/images/logos/icont%20logo%201.svg"
+                alt="Skala Prioritas Engineering"
+                width={48}
+                height={48}
+                className="size-12 rounded-lg bg-white object-contain p-1"
+              />
+            </div>
+            <div className="min-w-0 border-l-2 border-secondary pl-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">
+                Skala Prioritas Engineering
+              </p>
+              <h1 className="mt-1 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                Project Workstation
+              </h1>
+              <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                Satu pusat kendali untuk data proyek, anggaran, pelaksanaan, dan dokumen.
+              </p>
+            </div>
+          </div>
+          <div className="shrink-0 space-y-2 sm:text-right">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Adapt, Improvise and Finish
             </p>
+            <p className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 text-xs font-medium text-foreground">
+              <MapPin className="size-3.5 text-secondary" aria-hidden="true" />
+              Takengon, Aceh
+            </p>
+            <div className="flex flex-wrap gap-2 sm:justify-end">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-medium text-sky-700 dark:border-sky-400/20 dark:bg-sky-400/10 dark:text-sky-300">
+                <BriefcaseBusiness className="size-3.5" aria-hidden="true" />
+                {activeProjectCount} Proyek Aktif
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-medium text-violet-700 dark:border-violet-400/20 dark:bg-violet-400/10 dark:text-violet-300">
+                <Users className="size-3.5" aria-hidden="true" />
+                {assignedPicCount} PIC Terlibat
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <Card className="border-border bg-card text-card-foreground shadow-md">
+        <CardHeader className="flex flex-col gap-4 pb-4 xl:flex-row xl:items-center xl:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-lg text-foreground">Daftar Proyek</CardTitle>
+              <span className="rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                {filteredProjects.length} dari {projects.length} proyek
+              </span>
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             {isProjectManager && (
               <>
-                <Button onClick={() => setNewProjectOpen(true)}>
+                <Button
+                  size="sm"
+                  onClick={() => setNewProjectOpen(true)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
                   <Plus className="mr-2 size-4" />
                   Tambah Proyek Baru
                 </Button>
-                <Button variant="outline" onClick={() => setImportOpen(true)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setImportOpen(true)}
+                  className="border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+                >
                   <Upload className="mr-2 size-4" />
                   Import CSV
                 </Button>
               </>
             )}
-            <Button asChild variant="outline">
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+            >
               <a href={getExportHref("csv")}>
                 <Download className="mr-2 size-4" />
                 Export (CSV)
               </a>
             </Button>
-            <Button asChild variant="outline">
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+            >
               <a href={getExportHref("xlsx")}>
                 Export Excel
                 <Download className="ml-2 size-4" />
               </a>
             </Button>
             {isProjectManager && (
-              <Button asChild variant="outline">
+              <Button
+                asChild
+                size="sm"
+                variant="outline"
+                className="border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+              >
                 <a href="/api/projects/template-csv" download>
                   Download Template CSV
                 </a>
@@ -624,41 +722,67 @@ export default function ProjectWorkstationMaster({
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Input
-            aria-label="Cari proyek"
-            placeholder="Cari nama, kode, lokasi, atau PIC..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
+          <div className="relative">
+            <Search
+              className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+              aria-hidden="true"
+            />
+            <Input
+              aria-label="Cari proyek"
+              placeholder="Cari nama, kode, lokasi, atau PIC..."
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setProjectPage(1);
+              }}
+              className="border-border bg-background pl-9 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
+            />
+          </div>
           {notice && (
-            <p role="status" className="text-sm text-muted-foreground">
+            <p
+              role="status"
+              className="rounded-lg border border-border bg-muted p-3 text-sm text-muted-foreground"
+            >
               {notice}
             </p>
           )}
-          <div className="overflow-x-auto rounded-md border">
-            <Table>
+          <div className="overflow-x-auto rounded-xl border border-border">
+            <Table className="text-xs">
               <TableHeader>
-                <TableRow>
-                  <TableHead>Kode</TableHead>
-                  <TableHead>Nama Proyek</TableHead>
-                  <TableHead>Lokasi</TableHead>
+                <TableRow className="border-border bg-muted hover:bg-muted">
+                  <TableHead className="px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Kode & Nama Proyek
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Lokasi
+                  </TableHead>
                   {canViewFinancials && (
                     <>
-                      <TableHead className="text-right">Pagu Budget</TableHead>
-                      <TableHead className="text-right">Realisasi</TableHead>
+                      <TableHead className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                        Pagu Budget
+                      </TableHead>
+                      <TableHead className="px-4 py-3 text-right text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                        Realisasi
+                      </TableHead>
                     </>
                   )}
-                  <TableHead>Penunjukan PIC</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead className="px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Penunjukan PIC
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Status
+                  </TableHead>
+                  <TableHead className="px-4 py-3 text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Aksi
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredProjects.map((project) => (
+                {visibleProjects.map((project) => (
                   <TableRow
                     key={project.id}
                     tabIndex={0}
-                    className="cursor-pointer"
+                    className="cursor-pointer border-border text-foreground transition-colors hover:bg-accent focus-visible:bg-accent"
                     onClick={() => {
                       setNotice("");
                       setActiveProjectId(project.id);
@@ -670,22 +794,28 @@ export default function ProjectWorkstationMaster({
                       }
                     }}
                   >
-                    <TableCell>{project.code}</TableCell>
-                    <TableCell className="min-w-48 font-medium">
-                      {project.title}
-                      <span className="mt-1 block text-xs text-muted-foreground">
-                        {project.kelompokTani}
+                    <TableCell className="min-w-56 px-4 py-3">
+                      <span className="mb-1 block max-w-72 truncate font-mono text-[10px] text-slate-400">
+                        {project.code}
                       </span>
+                      <span className="block font-semibold text-foreground">
+                        {project.title}
+                      </span>
+                      {project.kelompokTani && (
+                        <span className="mt-0.5 block text-xs text-slate-400">
+                          {project.kelompokTani}
+                        </span>
+                      )}
                     </TableCell>
-                    <TableCell className="min-w-40">
+                    <TableCell className="min-w-44 max-w-64 whitespace-normal px-4 py-3 text-muted-foreground">
                       {project.location || project.address}
                     </TableCell>
                     {canViewFinancials && (
                       <>
-                        <TableCell className="whitespace-nowrap text-right">
+                        <TableCell className="whitespace-nowrap px-4 py-3 text-right font-medium text-emerald-700 dark:text-emerald-300">
                           {currency(project.pagu)}
                         </TableCell>
-                        <TableCell className="whitespace-nowrap text-right">
+                        <TableCell className="whitespace-nowrap px-4 py-3 text-right text-foreground">
                           {currency(project.realized)}
                         </TableCell>
                       </>
@@ -694,42 +824,73 @@ export default function ProjectWorkstationMaster({
                       onClick={(event) => event.stopPropagation()}
                       onKeyDown={(event) => event.stopPropagation()}
                     >
-                      {isProjectManager ? (
-                        <Select
-                          value={project.fieldPicId ?? "unassigned"}
-                          disabled={isPending}
-                          onValueChange={(value) =>
-                            assignFieldPic(
-                              project.id,
-                              value === "unassigned" ? "" : value,
-                            )
-                          }
-                        >
-                          <SelectTrigger
-                            aria-label={`PIC proyek ${project.title}`}
-                            className="min-w-44"
+                      {(() => {
+                        const fieldPic = fieldTeamUsers.find(
+                          (user) => user.id === project.fieldPicId,
+                        );
+                        const picName =
+                          fieldPic?.name ??
+                          project.fieldPicName ??
+                          "Belum ditentukan";
+                        const photoUrl =
+                          fieldPic?.profilePhotoUrl ??
+                          project.fieldPicPhotoUrl;
+                        return isProjectManager ? (
+                          <Select
+                            value={project.fieldPicId ?? "unassigned"}
+                            disabled={isPending}
+                            onValueChange={(value) =>
+                              assignFieldPic(
+                                project.id,
+                                value === "unassigned" ? "" : value,
+                              )
+                            }
                           >
-                            <SelectValue placeholder="Pilih PIC" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="unassigned">
-                              Belum ditentukan
-                            </SelectItem>
-                            {fieldTeamUsers.map((user) => (
-                              <SelectItem key={user.id} value={user.id}>
-                                {user.name}
+                            <SelectTrigger
+                              aria-label={`PIC proyek ${project.title}`}
+                              className="min-w-44 border-border bg-background text-foreground hover:border-primary"
+                            >
+                              <SelectValue placeholder="Pilih PIC" />
+                            </SelectTrigger>
+                            <SelectContent className="border border-border bg-popover text-popover-foreground">
+                              <SelectItem value="unassigned">
+                                Belum ditentukan
                               </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      ) : (
-                        project.fieldPicName ?? "Belum ditentukan"
-                      )}
+                              {fieldTeamUsers.map((user) => (
+                                <SelectItem key={user.id} value={user.id}>
+                                  <Avatar className="size-6 border border-border">
+                                    <AvatarImage
+                                      src={user.profilePhotoUrl ?? undefined}
+                                      alt=""
+                                    />
+                                    <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
+                                      {user.name.slice(0, 1).toUpperCase()}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  {user.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <div className="flex min-w-36 items-center gap-2">
+                            <Avatar className="size-7 border border-border">
+                              <AvatarImage src={photoUrl ?? undefined} alt="" />
+                              <AvatarFallback className="bg-muted text-[10px] text-muted-foreground">
+                                {picName.slice(0, 1).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="max-w-40 truncate text-foreground">
+                              {picName}
+                            </span>
+                          </div>
+                        );
+                      })()}
                     </TableCell>
                     <TableCell>
                       <Badge
                         variant="outline"
-                        className={getStatusBadgeClass(project.status)}
+                        className={`whitespace-nowrap font-semibold uppercase tracking-wide ${getStatusBadgeClass(project.status)}`}
                       >
                         {statusLabels[project.status] ?? project.status}
                       </Badge>
@@ -738,12 +899,13 @@ export default function ProjectWorkstationMaster({
                       onClick={(event) => event.stopPropagation()}
                       onKeyDown={(event) => event.stopPropagation()}
                     >
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center justify-center gap-1">
                         {isProjectManager && (
                           <Button
                             variant="ghost"
                             size="icon"
                             aria-label={`Edit ${project.title}`}
+                            className="size-9 border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:text-sky-800 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-sky-300 dark:hover:bg-sky-500 dark:hover:text-white"
                             onClick={() => editProject(project)}
                           >
                             <Pencil className="size-4" />
@@ -768,8 +930,8 @@ export default function ProjectWorkstationMaster({
                 {filteredProjects.length === 0 && (
                   <TableRow>
                     <TableCell
-                      colSpan={8}
-                      className="h-24 text-center text-muted-foreground"
+                      colSpan={canViewFinancials ? 7 : 5}
+                      className="h-24 text-center text-slate-400"
                     >
                       {projects.length
                         ? "Tidak ada proyek yang cocok dengan pencarian."
@@ -779,6 +941,50 @@ export default function ProjectWorkstationMaster({
                 )}
               </TableBody>
             </Table>
+          </div>
+          <div className="flex flex-col gap-3 border-t border-border pt-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <p aria-live="polite">
+              Menampilkan{" "}
+              {filteredProjects.length === 0
+                ? 0
+                : (currentProjectPage - 1) * PROJECTS_PER_PAGE + 1}
+              {"-"}
+              {Math.min(
+                currentProjectPage * PROJECTS_PER_PAGE,
+                filteredProjects.length,
+              )}{" "}
+              dari {filteredProjects.length} proyek
+            </p>
+            <nav aria-label="Navigasi halaman proyek" className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Halaman proyek sebelumnya"
+                className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+                disabled={currentProjectPage <= 1}
+                onClick={() =>
+                  setProjectPage((page) => Math.max(1, page - 1))
+                }
+              >
+                <ChevronLeft className="size-4" aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Halaman proyek berikutnya"
+                className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+                disabled={currentProjectPage >= projectPageCount}
+                onClick={() =>
+                  setProjectPage((page) =>
+                    Math.min(projectPageCount, page + 1),
+                  )
+                }
+              >
+                <ChevronRight className="size-4" aria-hidden="true" />
+              </Button>
+            </nav>
           </div>
         </CardContent>
       </Card>
@@ -854,7 +1060,7 @@ export default function ProjectWorkstationMaster({
                 defaultValue={canViewFinancials ? "pagu" : "titik"}
                 className="space-y-4"
               >
-                <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
+                <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border border-border bg-muted p-2">
                   {canViewFinancials && (
                     <TabsTrigger value="pagu" className="gap-2">
                       <ClipboardList className="size-4" />

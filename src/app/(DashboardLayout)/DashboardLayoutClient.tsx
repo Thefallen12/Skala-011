@@ -43,7 +43,7 @@ export default function DashboardLayoutClient({
   return (
     <div className='flex min-h-screen w-full min-w-0'>
       <div className='page-wrapper flex min-w-0 flex-1'>
-        <div className='xl:block hidden'>
+        <div className='hidden xl:block xl:w-0 xl:shrink-0'>
           <Sidebar
             canManageUsers={canManageUsers}
             canAccessLogistics={canAccessLogistics}

@@ -67,6 +67,7 @@ export const ModelName = {
   WorkTaskMember: 'WorkTaskMember',
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
+  FieldSurvey: 'FieldSurvey',
   DailyReport: 'DailyReport',
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
@@ -352,6 +353,24 @@ export const ProjectScalarFieldEnum = {
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+export const FieldSurveyScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  projectName: 'projectName',
+  locationName: 'locationName',
+  responsibleName: 'responsibleName',
+  surveyorId: 'surveyorId',
+  geoJsonData: 'geoJsonData',
+  areaSqm: 'areaSqm',
+  lengthM: 'lengthM',
+  perimeterM: 'perimeterM',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
 
 
 export const DailyReportScalarFieldEnum = {
@@ -1037,6 +1056,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
