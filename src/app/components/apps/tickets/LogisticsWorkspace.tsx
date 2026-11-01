@@ -220,6 +220,12 @@ export default function LogisticsWorkspace({
     useState(false);
   const [receivingPurchaseError, setReceivingPurchaseError] = useState("");
   const [receivingPhotos, setReceivingPhotos] = useState<string[]>([]);
+  const [stockReceiptPreview, setStockReceiptPreview] = useState<{
+    url: string;
+    label: string;
+  } | null>(null);
+  const [stockReceiptPreviewFailed, setStockReceiptPreviewFailed] =
+    useState(false);
   const [stockQuery, setStockQuery] = useState("");
   const [stockFilter, setStockFilter] = useState("ALL");
   const [stockPage, setStockPage] = useState(1);
@@ -1337,15 +1343,22 @@ export default function LogisticsWorkspace({
                         "—"
                       )}
                       {receiptPhotos.map((photo, index) => (
-                        <a
+                        <Button
                           key={photo}
-                          className="mt-1 block text-xs text-primary underline"
-                          href={photo}
-                          target="_blank"
-                          rel="noreferrer"
+                          type="button"
+                          variant="link"
+                          size="sm"
+                          className="mt-1 block h-auto p-0 text-xs"
+                          onClick={() => {
+                            setStockReceiptPreviewFailed(false);
+                            setStockReceiptPreview({
+                              url: photo,
+                              label: `${purchase.purchaseNumber} · Foto penerimaan ${index + 1}`,
+                            });
+                          }}
                         >
                           Lihat foto {index + 1}
-                        </a>
+                        </Button>
                       ))}
                     </TableCell>
                     {canCreatePurchaseOrder && (
@@ -1815,6 +1828,50 @@ export default function LogisticsWorkspace({
                   </Button>
                 </div>
               </form>
+            )}
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={stockReceiptPreview !== null}
+          onOpenChange={(open) => {
+            if (!open) {
+              setStockReceiptPreview(null);
+              setStockReceiptPreviewFailed(false);
+            }
+          }}
+        >
+          <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-5xl">
+            <DialogHeader>
+              <DialogTitle>
+                {stockReceiptPreview?.label ?? "Bukti penerimaan"}
+              </DialogTitle>
+              <DialogDescription>
+                Pratinjau foto bukti penerimaan barang.
+              </DialogDescription>
+            </DialogHeader>
+            {stockReceiptPreview && (
+              <>
+                <div className="relative flex min-h-64 items-center justify-center overflow-hidden rounded-lg border bg-muted/30 sm:min-h-[60vh]">
+                  {stockReceiptPreviewFailed ? (
+                    <p className="max-w-lg p-6 text-center text-sm text-muted-foreground" role="status">
+                      Foto ini tidak dapat dimuat. Jika URL menggunakan rute
+                      penyimpanan lokal lama, file sumbernya mungkin sudah tidak
+                      tersedia di server asal. Foto baru akan tersimpan di
+                      Cloudinary.
+                    </p>
+                  ) : (
+                    <Image
+                      src={stockReceiptPreview.url}
+                      alt={stockReceiptPreview.label}
+                      fill
+                      unoptimized
+                      className="object-contain"
+                      sizes="(max-width: 640px) 100vw, 80vw"
+                      onError={() => setStockReceiptPreviewFailed(true)}
+                    />
+                  )}
+                </div>
+              </>
             )}
           </DialogContent>
         </Dialog>
