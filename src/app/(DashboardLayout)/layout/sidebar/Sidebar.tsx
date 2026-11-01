@@ -94,7 +94,11 @@ const renderSidebarItems = (
       ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-transparent ${
           isSelected ? "!bg-transparent !text-primary" : ""
         } !px-1.5`
-      : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground`;
+      : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground ${
+          isSelected
+            ? "!bg-orange-500 !text-white hover:!bg-orange-600"
+            : ""
+        }`;
 
     return (
       <div onClick={onClose} key={index}>
