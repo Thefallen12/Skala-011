@@ -46,6 +46,7 @@ export type FieldSurveyMinAggregateOutputType = {
   responsibleName: string | null
   surveyorId: string | null
   surveyName: string | null
+  surveyType: string | null
   projectCode: string | null
   objectCategory: string | null
   vegetationType: string | null
@@ -57,6 +58,7 @@ export type FieldSurveyMinAggregateOutputType = {
   lengthM: number | null
   perimeterM: number | null
   notes: string | null
+  generalNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +71,7 @@ export type FieldSurveyMaxAggregateOutputType = {
   responsibleName: string | null
   surveyorId: string | null
   surveyName: string | null
+  surveyType: string | null
   projectCode: string | null
   objectCategory: string | null
   vegetationType: string | null
@@ -80,6 +83,7 @@ export type FieldSurveyMaxAggregateOutputType = {
   lengthM: number | null
   perimeterM: number | null
   notes: string | null
+  generalNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -92,6 +96,7 @@ export type FieldSurveyCountAggregateOutputType = {
   responsibleName: number
   surveyorId: number
   surveyName: number
+  surveyType: number
   projectCode: number
   objectCategory: number
   vegetationType: number
@@ -105,6 +110,7 @@ export type FieldSurveyCountAggregateOutputType = {
   lengthM: number
   perimeterM: number
   notes: number
+  generalNotes: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -131,6 +137,7 @@ export type FieldSurveyMinAggregateInputType = {
   responsibleName?: true
   surveyorId?: true
   surveyName?: true
+  surveyType?: true
   projectCode?: true
   objectCategory?: true
   vegetationType?: true
@@ -142,6 +149,7 @@ export type FieldSurveyMinAggregateInputType = {
   lengthM?: true
   perimeterM?: true
   notes?: true
+  generalNotes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -154,6 +162,7 @@ export type FieldSurveyMaxAggregateInputType = {
   responsibleName?: true
   surveyorId?: true
   surveyName?: true
+  surveyType?: true
   projectCode?: true
   objectCategory?: true
   vegetationType?: true
@@ -165,6 +174,7 @@ export type FieldSurveyMaxAggregateInputType = {
   lengthM?: true
   perimeterM?: true
   notes?: true
+  generalNotes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -177,6 +187,7 @@ export type FieldSurveyCountAggregateInputType = {
   responsibleName?: true
   surveyorId?: true
   surveyName?: true
+  surveyType?: true
   projectCode?: true
   objectCategory?: true
   vegetationType?: true
@@ -190,6 +201,7 @@ export type FieldSurveyCountAggregateInputType = {
   lengthM?: true
   perimeterM?: true
   notes?: true
+  generalNotes?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -289,6 +301,7 @@ export type FieldSurveyGroupByOutputType = {
   responsibleName: string
   surveyorId: string
   surveyName: string
+  surveyType: string
   projectCode: string | null
   objectCategory: string
   vegetationType: string | null
@@ -302,6 +315,7 @@ export type FieldSurveyGroupByOutputType = {
   lengthM: number | null
   perimeterM: number | null
   notes: string | null
+  generalNotes: string | null
   createdAt: Date
   updatedAt: Date
   _count: FieldSurveyCountAggregateOutputType | null
@@ -337,6 +351,7 @@ export type FieldSurveyWhereInput = {
   responsibleName?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyorId?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyName?: Prisma.StringFilter<"FieldSurvey"> | string
+  surveyType?: Prisma.StringFilter<"FieldSurvey"> | string
   projectCode?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   objectCategory?: Prisma.StringFilter<"FieldSurvey"> | string
   vegetationType?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
@@ -350,10 +365,13 @@ export type FieldSurveyWhereInput = {
   lengthM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   perimeterM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   notes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
+  generalNotes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   surveyor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  features?: Prisma.SurveyFeatureListRelationFilter
+  photos?: Prisma.SurveyPhotoListRelationFilter
 }
 
 export type FieldSurveyOrderByWithRelationInput = {
@@ -364,6 +382,7 @@ export type FieldSurveyOrderByWithRelationInput = {
   responsibleName?: Prisma.SortOrder
   surveyorId?: Prisma.SortOrder
   surveyName?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   projectCode?: Prisma.SortOrderInput | Prisma.SortOrder
   objectCategory?: Prisma.SortOrder
   vegetationType?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -377,10 +396,13 @@ export type FieldSurveyOrderByWithRelationInput = {
   lengthM?: Prisma.SortOrderInput | Prisma.SortOrder
   perimeterM?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  generalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   project?: Prisma.ProjectOrderByWithRelationInput
   surveyor?: Prisma.UserOrderByWithRelationInput
+  features?: Prisma.SurveyFeatureOrderByRelationAggregateInput
+  photos?: Prisma.SurveyPhotoOrderByRelationAggregateInput
 }
 
 export type FieldSurveyWhereUniqueInput = Prisma.AtLeast<{
@@ -394,6 +416,7 @@ export type FieldSurveyWhereUniqueInput = Prisma.AtLeast<{
   responsibleName?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyorId?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyName?: Prisma.StringFilter<"FieldSurvey"> | string
+  surveyType?: Prisma.StringFilter<"FieldSurvey"> | string
   projectCode?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   objectCategory?: Prisma.StringFilter<"FieldSurvey"> | string
   vegetationType?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
@@ -407,10 +430,13 @@ export type FieldSurveyWhereUniqueInput = Prisma.AtLeast<{
   lengthM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   perimeterM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   notes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
+  generalNotes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   surveyor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  features?: Prisma.SurveyFeatureListRelationFilter
+  photos?: Prisma.SurveyPhotoListRelationFilter
 }, "id">
 
 export type FieldSurveyOrderByWithAggregationInput = {
@@ -421,6 +447,7 @@ export type FieldSurveyOrderByWithAggregationInput = {
   responsibleName?: Prisma.SortOrder
   surveyorId?: Prisma.SortOrder
   surveyName?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   projectCode?: Prisma.SortOrderInput | Prisma.SortOrder
   objectCategory?: Prisma.SortOrder
   vegetationType?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -434,6 +461,7 @@ export type FieldSurveyOrderByWithAggregationInput = {
   lengthM?: Prisma.SortOrderInput | Prisma.SortOrder
   perimeterM?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  generalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FieldSurveyCountOrderByAggregateInput
@@ -454,6 +482,7 @@ export type FieldSurveyScalarWhereWithAggregatesInput = {
   responsibleName?: Prisma.StringWithAggregatesFilter<"FieldSurvey"> | string
   surveyorId?: Prisma.StringWithAggregatesFilter<"FieldSurvey"> | string
   surveyName?: Prisma.StringWithAggregatesFilter<"FieldSurvey"> | string
+  surveyType?: Prisma.StringWithAggregatesFilter<"FieldSurvey"> | string
   projectCode?: Prisma.StringNullableWithAggregatesFilter<"FieldSurvey"> | string | null
   objectCategory?: Prisma.StringWithAggregatesFilter<"FieldSurvey"> | string
   vegetationType?: Prisma.StringNullableWithAggregatesFilter<"FieldSurvey"> | string | null
@@ -467,6 +496,7 @@ export type FieldSurveyScalarWhereWithAggregatesInput = {
   lengthM?: Prisma.FloatNullableWithAggregatesFilter<"FieldSurvey"> | number | null
   perimeterM?: Prisma.FloatNullableWithAggregatesFilter<"FieldSurvey"> | number | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"FieldSurvey"> | string | null
+  generalNotes?: Prisma.StringNullableWithAggregatesFilter<"FieldSurvey"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FieldSurvey"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FieldSurvey"> | Date | string
 }
@@ -477,6 +507,7 @@ export type FieldSurveyCreateInput = {
   locationName: string
   responsibleName: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -490,10 +521,13 @@ export type FieldSurveyCreateInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project?: Prisma.ProjectCreateNestedOneWithoutFieldSurveysInput
   surveyor: Prisma.UserCreateNestedOneWithoutFieldSurveysInput
+  features?: Prisma.SurveyFeatureCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyUncheckedCreateInput = {
@@ -504,6 +538,7 @@ export type FieldSurveyUncheckedCreateInput = {
   responsibleName: string
   surveyorId: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -517,8 +552,11 @@ export type FieldSurveyUncheckedCreateInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  features?: Prisma.SurveyFeatureUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyUpdateInput = {
@@ -527,6 +565,7 @@ export type FieldSurveyUpdateInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -540,10 +579,13 @@ export type FieldSurveyUpdateInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneWithoutFieldSurveysNestedInput
   surveyor?: Prisma.UserUpdateOneRequiredWithoutFieldSurveysNestedInput
+  features?: Prisma.SurveyFeatureUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyUncheckedUpdateInput = {
@@ -554,6 +596,7 @@ export type FieldSurveyUncheckedUpdateInput = {
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -567,8 +610,11 @@ export type FieldSurveyUncheckedUpdateInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  features?: Prisma.SurveyFeatureUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyCreateManyInput = {
@@ -579,6 +625,7 @@ export type FieldSurveyCreateManyInput = {
   responsibleName: string
   surveyorId: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -592,6 +639,7 @@ export type FieldSurveyCreateManyInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -602,6 +650,7 @@ export type FieldSurveyUpdateManyMutationInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -615,6 +664,7 @@ export type FieldSurveyUpdateManyMutationInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -627,6 +677,7 @@ export type FieldSurveyUncheckedUpdateManyInput = {
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -640,6 +691,7 @@ export type FieldSurveyUncheckedUpdateManyInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -670,6 +722,7 @@ export type FieldSurveyCountOrderByAggregateInput = {
   responsibleName?: Prisma.SortOrder
   surveyorId?: Prisma.SortOrder
   surveyName?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   projectCode?: Prisma.SortOrder
   objectCategory?: Prisma.SortOrder
   vegetationType?: Prisma.SortOrder
@@ -683,6 +736,7 @@ export type FieldSurveyCountOrderByAggregateInput = {
   lengthM?: Prisma.SortOrder
   perimeterM?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  generalNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -701,6 +755,7 @@ export type FieldSurveyMaxOrderByAggregateInput = {
   responsibleName?: Prisma.SortOrder
   surveyorId?: Prisma.SortOrder
   surveyName?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   projectCode?: Prisma.SortOrder
   objectCategory?: Prisma.SortOrder
   vegetationType?: Prisma.SortOrder
@@ -712,6 +767,7 @@ export type FieldSurveyMaxOrderByAggregateInput = {
   lengthM?: Prisma.SortOrder
   perimeterM?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  generalNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -724,6 +780,7 @@ export type FieldSurveyMinOrderByAggregateInput = {
   responsibleName?: Prisma.SortOrder
   surveyorId?: Prisma.SortOrder
   surveyName?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   projectCode?: Prisma.SortOrder
   objectCategory?: Prisma.SortOrder
   vegetationType?: Prisma.SortOrder
@@ -735,6 +792,7 @@ export type FieldSurveyMinOrderByAggregateInput = {
   lengthM?: Prisma.SortOrder
   perimeterM?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  generalNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -743,6 +801,11 @@ export type FieldSurveySumOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   lengthM?: Prisma.SortOrder
   perimeterM?: Prisma.SortOrder
+}
+
+export type FieldSurveyScalarRelationFilter = {
+  is?: Prisma.FieldSurveyWhereInput
+  isNot?: Prisma.FieldSurveyWhereInput
 }
 
 export type FieldSurveyCreateNestedManyWithoutSurveyorInput = {
@@ -846,12 +909,41 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type FieldSurveyCreateNestedOneWithoutFeaturesInput = {
+  create?: Prisma.XOR<Prisma.FieldSurveyCreateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.FieldSurveyCreateOrConnectWithoutFeaturesInput
+  connect?: Prisma.FieldSurveyWhereUniqueInput
+}
+
+export type FieldSurveyUpdateOneRequiredWithoutFeaturesNestedInput = {
+  create?: Prisma.XOR<Prisma.FieldSurveyCreateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.FieldSurveyCreateOrConnectWithoutFeaturesInput
+  upsert?: Prisma.FieldSurveyUpsertWithoutFeaturesInput
+  connect?: Prisma.FieldSurveyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FieldSurveyUpdateToOneWithWhereWithoutFeaturesInput, Prisma.FieldSurveyUpdateWithoutFeaturesInput>, Prisma.FieldSurveyUncheckedUpdateWithoutFeaturesInput>
+}
+
+export type FieldSurveyCreateNestedOneWithoutPhotosInput = {
+  create?: Prisma.XOR<Prisma.FieldSurveyCreateWithoutPhotosInput, Prisma.FieldSurveyUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.FieldSurveyCreateOrConnectWithoutPhotosInput
+  connect?: Prisma.FieldSurveyWhereUniqueInput
+}
+
+export type FieldSurveyUpdateOneRequiredWithoutPhotosNestedInput = {
+  create?: Prisma.XOR<Prisma.FieldSurveyCreateWithoutPhotosInput, Prisma.FieldSurveyUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.FieldSurveyCreateOrConnectWithoutPhotosInput
+  upsert?: Prisma.FieldSurveyUpsertWithoutPhotosInput
+  connect?: Prisma.FieldSurveyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FieldSurveyUpdateToOneWithWhereWithoutPhotosInput, Prisma.FieldSurveyUpdateWithoutPhotosInput>, Prisma.FieldSurveyUncheckedUpdateWithoutPhotosInput>
+}
+
 export type FieldSurveyCreateWithoutSurveyorInput = {
   id?: string
   projectName: string
   locationName: string
   responsibleName: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -865,9 +957,12 @@ export type FieldSurveyCreateWithoutSurveyorInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project?: Prisma.ProjectCreateNestedOneWithoutFieldSurveysInput
+  features?: Prisma.SurveyFeatureCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyUncheckedCreateWithoutSurveyorInput = {
@@ -877,6 +972,7 @@ export type FieldSurveyUncheckedCreateWithoutSurveyorInput = {
   locationName: string
   responsibleName: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -890,8 +986,11 @@ export type FieldSurveyUncheckedCreateWithoutSurveyorInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  features?: Prisma.SurveyFeatureUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyCreateOrConnectWithoutSurveyorInput = {
@@ -931,6 +1030,7 @@ export type FieldSurveyScalarWhereInput = {
   responsibleName?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyorId?: Prisma.StringFilter<"FieldSurvey"> | string
   surveyName?: Prisma.StringFilter<"FieldSurvey"> | string
+  surveyType?: Prisma.StringFilter<"FieldSurvey"> | string
   projectCode?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   objectCategory?: Prisma.StringFilter<"FieldSurvey"> | string
   vegetationType?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
@@ -944,6 +1044,7 @@ export type FieldSurveyScalarWhereInput = {
   lengthM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   perimeterM?: Prisma.FloatNullableFilter<"FieldSurvey"> | number | null
   notes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
+  generalNotes?: Prisma.StringNullableFilter<"FieldSurvey"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FieldSurvey"> | Date | string
 }
@@ -954,6 +1055,7 @@ export type FieldSurveyCreateWithoutProjectInput = {
   locationName: string
   responsibleName: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -967,9 +1069,12 @@ export type FieldSurveyCreateWithoutProjectInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   surveyor: Prisma.UserCreateNestedOneWithoutFieldSurveysInput
+  features?: Prisma.SurveyFeatureCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyUncheckedCreateWithoutProjectInput = {
@@ -979,6 +1084,7 @@ export type FieldSurveyUncheckedCreateWithoutProjectInput = {
   responsibleName: string
   surveyorId: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -992,8 +1098,11 @@ export type FieldSurveyUncheckedCreateWithoutProjectInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  features?: Prisma.SurveyFeatureUncheckedCreateNestedManyWithoutSurveyInput
+  photos?: Prisma.SurveyPhotoUncheckedCreateNestedManyWithoutSurveyInput
 }
 
 export type FieldSurveyCreateOrConnectWithoutProjectInput = {
@@ -1022,13 +1131,13 @@ export type FieldSurveyUpdateManyWithWhereWithoutProjectInput = {
   data: Prisma.XOR<Prisma.FieldSurveyUpdateManyMutationInput, Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectInput>
 }
 
-export type FieldSurveyCreateManySurveyorInput = {
+export type FieldSurveyCreateWithoutFeaturesInput = {
   id?: string
-  projectId?: string | null
   projectName: string
   locationName: string
   responsibleName: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -1042,6 +1151,264 @@ export type FieldSurveyCreateManySurveyorInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutFieldSurveysInput
+  surveyor: Prisma.UserCreateNestedOneWithoutFieldSurveysInput
+  photos?: Prisma.SurveyPhotoCreateNestedManyWithoutSurveyInput
+}
+
+export type FieldSurveyUncheckedCreateWithoutFeaturesInput = {
+  id?: string
+  projectId?: string | null
+  projectName: string
+  locationName: string
+  responsibleName: string
+  surveyorId: string
+  surveyName?: string
+  surveyType?: string
+  projectCode?: string | null
+  objectCategory?: string
+  vegetationType?: string | null
+  topography?: string | null
+  landOwnership?: string | null
+  documentationUrls?: Prisma.FieldSurveyCreatedocumentationUrlsInput | string[]
+  geometryType?: string | null
+  centerCoordinate?: string | null
+  geoJsonData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: number | null
+  lengthM?: number | null
+  perimeterM?: number | null
+  notes?: string | null
+  generalNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  photos?: Prisma.SurveyPhotoUncheckedCreateNestedManyWithoutSurveyInput
+}
+
+export type FieldSurveyCreateOrConnectWithoutFeaturesInput = {
+  where: Prisma.FieldSurveyWhereUniqueInput
+  create: Prisma.XOR<Prisma.FieldSurveyCreateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedCreateWithoutFeaturesInput>
+}
+
+export type FieldSurveyUpsertWithoutFeaturesInput = {
+  update: Prisma.XOR<Prisma.FieldSurveyUpdateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedUpdateWithoutFeaturesInput>
+  create: Prisma.XOR<Prisma.FieldSurveyCreateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedCreateWithoutFeaturesInput>
+  where?: Prisma.FieldSurveyWhereInput
+}
+
+export type FieldSurveyUpdateToOneWithWhereWithoutFeaturesInput = {
+  where?: Prisma.FieldSurveyWhereInput
+  data: Prisma.XOR<Prisma.FieldSurveyUpdateWithoutFeaturesInput, Prisma.FieldSurveyUncheckedUpdateWithoutFeaturesInput>
+}
+
+export type FieldSurveyUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectName?: Prisma.StringFieldUpdateOperationsInput | string
+  locationName?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
+  projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
+  vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationUrls?: Prisma.FieldSurveyUpdatedocumentationUrlsInput | string[]
+  geometryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  centerCoordinate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  geoJsonData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutFieldSurveysNestedInput
+  surveyor?: Prisma.UserUpdateOneRequiredWithoutFieldSurveysNestedInput
+  photos?: Prisma.SurveyPhotoUpdateManyWithoutSurveyNestedInput
+}
+
+export type FieldSurveyUncheckedUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectName?: Prisma.StringFieldUpdateOperationsInput | string
+  locationName?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
+  projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
+  vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationUrls?: Prisma.FieldSurveyUpdatedocumentationUrlsInput | string[]
+  geometryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  centerCoordinate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  geoJsonData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  photos?: Prisma.SurveyPhotoUncheckedUpdateManyWithoutSurveyNestedInput
+}
+
+export type FieldSurveyCreateWithoutPhotosInput = {
+  id?: string
+  projectName: string
+  locationName: string
+  responsibleName: string
+  surveyName?: string
+  surveyType?: string
+  projectCode?: string | null
+  objectCategory?: string
+  vegetationType?: string | null
+  topography?: string | null
+  landOwnership?: string | null
+  documentationUrls?: Prisma.FieldSurveyCreatedocumentationUrlsInput | string[]
+  geometryType?: string | null
+  centerCoordinate?: string | null
+  geoJsonData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: number | null
+  lengthM?: number | null
+  perimeterM?: number | null
+  notes?: string | null
+  generalNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutFieldSurveysInput
+  surveyor: Prisma.UserCreateNestedOneWithoutFieldSurveysInput
+  features?: Prisma.SurveyFeatureCreateNestedManyWithoutSurveyInput
+}
+
+export type FieldSurveyUncheckedCreateWithoutPhotosInput = {
+  id?: string
+  projectId?: string | null
+  projectName: string
+  locationName: string
+  responsibleName: string
+  surveyorId: string
+  surveyName?: string
+  surveyType?: string
+  projectCode?: string | null
+  objectCategory?: string
+  vegetationType?: string | null
+  topography?: string | null
+  landOwnership?: string | null
+  documentationUrls?: Prisma.FieldSurveyCreatedocumentationUrlsInput | string[]
+  geometryType?: string | null
+  centerCoordinate?: string | null
+  geoJsonData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: number | null
+  lengthM?: number | null
+  perimeterM?: number | null
+  notes?: string | null
+  generalNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  features?: Prisma.SurveyFeatureUncheckedCreateNestedManyWithoutSurveyInput
+}
+
+export type FieldSurveyCreateOrConnectWithoutPhotosInput = {
+  where: Prisma.FieldSurveyWhereUniqueInput
+  create: Prisma.XOR<Prisma.FieldSurveyCreateWithoutPhotosInput, Prisma.FieldSurveyUncheckedCreateWithoutPhotosInput>
+}
+
+export type FieldSurveyUpsertWithoutPhotosInput = {
+  update: Prisma.XOR<Prisma.FieldSurveyUpdateWithoutPhotosInput, Prisma.FieldSurveyUncheckedUpdateWithoutPhotosInput>
+  create: Prisma.XOR<Prisma.FieldSurveyCreateWithoutPhotosInput, Prisma.FieldSurveyUncheckedCreateWithoutPhotosInput>
+  where?: Prisma.FieldSurveyWhereInput
+}
+
+export type FieldSurveyUpdateToOneWithWhereWithoutPhotosInput = {
+  where?: Prisma.FieldSurveyWhereInput
+  data: Prisma.XOR<Prisma.FieldSurveyUpdateWithoutPhotosInput, Prisma.FieldSurveyUncheckedUpdateWithoutPhotosInput>
+}
+
+export type FieldSurveyUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectName?: Prisma.StringFieldUpdateOperationsInput | string
+  locationName?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
+  projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
+  vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationUrls?: Prisma.FieldSurveyUpdatedocumentationUrlsInput | string[]
+  geometryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  centerCoordinate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  geoJsonData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutFieldSurveysNestedInput
+  surveyor?: Prisma.UserUpdateOneRequiredWithoutFieldSurveysNestedInput
+  features?: Prisma.SurveyFeatureUpdateManyWithoutSurveyNestedInput
+}
+
+export type FieldSurveyUncheckedUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  projectName?: Prisma.StringFieldUpdateOperationsInput | string
+  locationName?: Prisma.StringFieldUpdateOperationsInput | string
+  responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
+  projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
+  vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topography?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationUrls?: Prisma.FieldSurveyUpdatedocumentationUrlsInput | string[]
+  geometryType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  centerCoordinate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  geoJsonData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  features?: Prisma.SurveyFeatureUncheckedUpdateManyWithoutSurveyNestedInput
+}
+
+export type FieldSurveyCreateManySurveyorInput = {
+  id?: string
+  projectId?: string | null
+  projectName: string
+  locationName: string
+  responsibleName: string
+  surveyName?: string
+  surveyType?: string
+  projectCode?: string | null
+  objectCategory?: string
+  vegetationType?: string | null
+  topography?: string | null
+  landOwnership?: string | null
+  documentationUrls?: Prisma.FieldSurveyCreatedocumentationUrlsInput | string[]
+  geometryType?: string | null
+  centerCoordinate?: string | null
+  geoJsonData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  areaSqm?: number | null
+  lengthM?: number | null
+  perimeterM?: number | null
+  notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1052,6 +1419,7 @@ export type FieldSurveyUpdateWithoutSurveyorInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1065,9 +1433,12 @@ export type FieldSurveyUpdateWithoutSurveyorInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneWithoutFieldSurveysNestedInput
+  features?: Prisma.SurveyFeatureUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyUncheckedUpdateWithoutSurveyorInput = {
@@ -1077,6 +1448,7 @@ export type FieldSurveyUncheckedUpdateWithoutSurveyorInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1090,8 +1462,11 @@ export type FieldSurveyUncheckedUpdateWithoutSurveyorInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  features?: Prisma.SurveyFeatureUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyUncheckedUpdateManyWithoutSurveyorInput = {
@@ -1101,6 +1476,7 @@ export type FieldSurveyUncheckedUpdateManyWithoutSurveyorInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1114,6 +1490,7 @@ export type FieldSurveyUncheckedUpdateManyWithoutSurveyorInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1125,6 +1502,7 @@ export type FieldSurveyCreateManyProjectInput = {
   responsibleName: string
   surveyorId: string
   surveyName?: string
+  surveyType?: string
   projectCode?: string | null
   objectCategory?: string
   vegetationType?: string | null
@@ -1138,6 +1516,7 @@ export type FieldSurveyCreateManyProjectInput = {
   lengthM?: number | null
   perimeterM?: number | null
   notes?: string | null
+  generalNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1148,6 +1527,7 @@ export type FieldSurveyUpdateWithoutProjectInput = {
   locationName?: Prisma.StringFieldUpdateOperationsInput | string
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1161,9 +1541,12 @@ export type FieldSurveyUpdateWithoutProjectInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   surveyor?: Prisma.UserUpdateOneRequiredWithoutFieldSurveysNestedInput
+  features?: Prisma.SurveyFeatureUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyUncheckedUpdateWithoutProjectInput = {
@@ -1173,6 +1556,7 @@ export type FieldSurveyUncheckedUpdateWithoutProjectInput = {
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1186,8 +1570,11 @@ export type FieldSurveyUncheckedUpdateWithoutProjectInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  features?: Prisma.SurveyFeatureUncheckedUpdateManyWithoutSurveyNestedInput
+  photos?: Prisma.SurveyPhotoUncheckedUpdateManyWithoutSurveyNestedInput
 }
 
 export type FieldSurveyUncheckedUpdateManyWithoutProjectInput = {
@@ -1197,6 +1584,7 @@ export type FieldSurveyUncheckedUpdateManyWithoutProjectInput = {
   responsibleName?: Prisma.StringFieldUpdateOperationsInput | string
   surveyorId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyName?: Prisma.StringFieldUpdateOperationsInput | string
+  surveyType?: Prisma.StringFieldUpdateOperationsInput | string
   projectCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectCategory?: Prisma.StringFieldUpdateOperationsInput | string
   vegetationType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1210,10 +1598,49 @@ export type FieldSurveyUncheckedUpdateManyWithoutProjectInput = {
   lengthM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   perimeterM?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type FieldSurveyCountOutputType
+ */
+
+export type FieldSurveyCountOutputType = {
+  features: number
+  photos: number
+}
+
+export type FieldSurveyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  features?: boolean | FieldSurveyCountOutputTypeCountFeaturesArgs
+  photos?: boolean | FieldSurveyCountOutputTypeCountPhotosArgs
+}
+
+/**
+ * FieldSurveyCountOutputType without action
+ */
+export type FieldSurveyCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FieldSurveyCountOutputType
+   */
+  select?: Prisma.FieldSurveyCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FieldSurveyCountOutputType without action
+ */
+export type FieldSurveyCountOutputTypeCountFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SurveyFeatureWhereInput
+}
+
+/**
+ * FieldSurveyCountOutputType without action
+ */
+export type FieldSurveyCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SurveyPhotoWhereInput
+}
 
 
 export type FieldSurveySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1224,6 +1651,7 @@ export type FieldSurveySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   responsibleName?: boolean
   surveyorId?: boolean
   surveyName?: boolean
+  surveyType?: boolean
   projectCode?: boolean
   objectCategory?: boolean
   vegetationType?: boolean
@@ -1237,10 +1665,14 @@ export type FieldSurveySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   lengthM?: boolean
   perimeterM?: boolean
   notes?: boolean
+  generalNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.FieldSurvey$projectArgs<ExtArgs>
   surveyor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  features?: boolean | Prisma.FieldSurvey$featuresArgs<ExtArgs>
+  photos?: boolean | Prisma.FieldSurvey$photosArgs<ExtArgs>
+  _count?: boolean | Prisma.FieldSurveyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["fieldSurvey"]>
 
 export type FieldSurveySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1251,6 +1683,7 @@ export type FieldSurveySelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   responsibleName?: boolean
   surveyorId?: boolean
   surveyName?: boolean
+  surveyType?: boolean
   projectCode?: boolean
   objectCategory?: boolean
   vegetationType?: boolean
@@ -1264,6 +1697,7 @@ export type FieldSurveySelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   lengthM?: boolean
   perimeterM?: boolean
   notes?: boolean
+  generalNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.FieldSurvey$projectArgs<ExtArgs>
@@ -1278,6 +1712,7 @@ export type FieldSurveySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   responsibleName?: boolean
   surveyorId?: boolean
   surveyName?: boolean
+  surveyType?: boolean
   projectCode?: boolean
   objectCategory?: boolean
   vegetationType?: boolean
@@ -1291,6 +1726,7 @@ export type FieldSurveySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   lengthM?: boolean
   perimeterM?: boolean
   notes?: boolean
+  generalNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.FieldSurvey$projectArgs<ExtArgs>
@@ -1305,6 +1741,7 @@ export type FieldSurveySelectScalar = {
   responsibleName?: boolean
   surveyorId?: boolean
   surveyName?: boolean
+  surveyType?: boolean
   projectCode?: boolean
   objectCategory?: boolean
   vegetationType?: boolean
@@ -1318,14 +1755,18 @@ export type FieldSurveySelectScalar = {
   lengthM?: boolean
   perimeterM?: boolean
   notes?: boolean
+  generalNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FieldSurveyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "projectName" | "locationName" | "responsibleName" | "surveyorId" | "surveyName" | "projectCode" | "objectCategory" | "vegetationType" | "topography" | "landOwnership" | "documentationUrls" | "geometryType" | "centerCoordinate" | "geoJsonData" | "areaSqm" | "lengthM" | "perimeterM" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["fieldSurvey"]>
+export type FieldSurveyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "projectName" | "locationName" | "responsibleName" | "surveyorId" | "surveyName" | "surveyType" | "projectCode" | "objectCategory" | "vegetationType" | "topography" | "landOwnership" | "documentationUrls" | "geometryType" | "centerCoordinate" | "geoJsonData" | "areaSqm" | "lengthM" | "perimeterM" | "notes" | "generalNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["fieldSurvey"]>
 export type FieldSurveyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.FieldSurvey$projectArgs<ExtArgs>
   surveyor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  features?: boolean | Prisma.FieldSurvey$featuresArgs<ExtArgs>
+  photos?: boolean | Prisma.FieldSurvey$photosArgs<ExtArgs>
+  _count?: boolean | Prisma.FieldSurveyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FieldSurveyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.FieldSurvey$projectArgs<ExtArgs>
@@ -1341,6 +1782,8 @@ export type $FieldSurveyPayload<ExtArgs extends runtime.Types.Extensions.Interna
   objects: {
     project: Prisma.$ProjectPayload<ExtArgs> | null
     surveyor: Prisma.$UserPayload<ExtArgs>
+    features: Prisma.$SurveyFeaturePayload<ExtArgs>[]
+    photos: Prisma.$SurveyPhotoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1350,6 +1793,7 @@ export type $FieldSurveyPayload<ExtArgs extends runtime.Types.Extensions.Interna
     responsibleName: string
     surveyorId: string
     surveyName: string
+    surveyType: string
     projectCode: string | null
     objectCategory: string
     vegetationType: string | null
@@ -1363,6 +1807,7 @@ export type $FieldSurveyPayload<ExtArgs extends runtime.Types.Extensions.Interna
     lengthM: number | null
     perimeterM: number | null
     notes: string | null
+    generalNotes: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["fieldSurvey"]>
@@ -1761,6 +2206,8 @@ export interface Prisma__FieldSurveyClient<T, Null = never, ExtArgs extends runt
   readonly [Symbol.toStringTag]: "PrismaPromise"
   project<T extends Prisma.FieldSurvey$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldSurvey$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   surveyor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  features<T extends Prisma.FieldSurvey$featuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldSurvey$featuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SurveyFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  photos<T extends Prisma.FieldSurvey$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldSurvey$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SurveyPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1797,6 +2244,7 @@ export interface FieldSurveyFieldRefs {
   readonly responsibleName: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly surveyorId: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly surveyName: Prisma.FieldRef<"FieldSurvey", 'String'>
+  readonly surveyType: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly projectCode: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly objectCategory: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly vegetationType: Prisma.FieldRef<"FieldSurvey", 'String'>
@@ -1810,6 +2258,7 @@ export interface FieldSurveyFieldRefs {
   readonly lengthM: Prisma.FieldRef<"FieldSurvey", 'Float'>
   readonly perimeterM: Prisma.FieldRef<"FieldSurvey", 'Float'>
   readonly notes: Prisma.FieldRef<"FieldSurvey", 'String'>
+  readonly generalNotes: Prisma.FieldRef<"FieldSurvey", 'String'>
   readonly createdAt: Prisma.FieldRef<"FieldSurvey", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FieldSurvey", 'DateTime'>
 }
@@ -2229,6 +2678,54 @@ export type FieldSurvey$projectArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.ProjectInclude<ExtArgs> | null
   where?: Prisma.ProjectWhereInput
+}
+
+/**
+ * FieldSurvey.features
+ */
+export type FieldSurvey$featuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SurveyFeature
+   */
+  select?: Prisma.SurveyFeatureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SurveyFeature
+   */
+  omit?: Prisma.SurveyFeatureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SurveyFeatureInclude<ExtArgs> | null
+  where?: Prisma.SurveyFeatureWhereInput
+  orderBy?: Prisma.SurveyFeatureOrderByWithRelationInput | Prisma.SurveyFeatureOrderByWithRelationInput[]
+  cursor?: Prisma.SurveyFeatureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SurveyFeatureScalarFieldEnum | Prisma.SurveyFeatureScalarFieldEnum[]
+}
+
+/**
+ * FieldSurvey.photos
+ */
+export type FieldSurvey$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SurveyPhoto
+   */
+  select?: Prisma.SurveyPhotoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SurveyPhoto
+   */
+  omit?: Prisma.SurveyPhotoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SurveyPhotoInclude<ExtArgs> | null
+  where?: Prisma.SurveyPhotoWhereInput
+  orderBy?: Prisma.SurveyPhotoOrderByWithRelationInput | Prisma.SurveyPhotoOrderByWithRelationInput[]
+  cursor?: Prisma.SurveyPhotoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SurveyPhotoScalarFieldEnum | Prisma.SurveyPhotoScalarFieldEnum[]
 }
 
 /**

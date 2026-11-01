@@ -23,6 +23,7 @@ interface GlobalModalProps {
   bodyClassName?: string;
   overlayClassName?: string;
   footerNote?: string;
+  hideHeader?: boolean;
 }
 
 export function GlobalModal({
@@ -37,6 +38,7 @@ export function GlobalModal({
   bodyClassName,
   overlayClassName,
   footerNote = "* Pastikan data yang dimasukkan telah sesuai.",
+  hideHeader = false,
 }: GlobalModalProps) {
   return (
     <Dialog
@@ -56,7 +58,10 @@ export function GlobalModal({
           className,
         )}
       >
-        <DialogHeader className="shrink-0 flex-row items-start justify-between gap-4 space-y-0 border-b border-slate-800 bg-[#162035] px-6 py-5 pr-16">
+        <DialogHeader className={cn(
+          "shrink-0 flex-row items-start justify-between gap-4 space-y-0 border-b border-slate-800 bg-[#162035] px-6 py-5 pr-16",
+          hideHeader && "hidden",
+        )}>
           <div className="flex min-w-0 items-start gap-3.5">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-orange-500/15 text-orange-400">
               {icon ?? <FolderOpen aria-hidden="true" className="size-5" />}

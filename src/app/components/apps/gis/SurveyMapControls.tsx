@@ -241,7 +241,7 @@ export default function SurveyMapControls({
               <span className="text-muted-foreground">Area terhitung</span>
               <span className="text-right font-medium text-foreground">
                 {measurements.areaSqm > 0
-                  ? `${formatNumber(measurements.areaSqm)} m² (${formatNumber(measurements.areaSqm / 10_000, 2)} Ha)`
+                  ? `${formatNumber(measurements.areaSqm / 10_000, 2)} Ha`
                   : "—"}
               </span>
             </p>

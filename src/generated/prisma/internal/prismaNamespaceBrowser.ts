@@ -68,6 +68,8 @@ export const ModelName = {
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
   FieldSurvey: 'FieldSurvey',
+  SurveyFeature: 'SurveyFeature',
+  SurveyPhoto: 'SurveyPhoto',
   DailyReport: 'DailyReport',
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
@@ -369,6 +371,7 @@ export const FieldSurveyScalarFieldEnum = {
   responsibleName: 'responsibleName',
   surveyorId: 'surveyorId',
   surveyName: 'surveyName',
+  surveyType: 'surveyType',
   projectCode: 'projectCode',
   objectCategory: 'objectCategory',
   vegetationType: 'vegetationType',
@@ -382,11 +385,44 @@ export const FieldSurveyScalarFieldEnum = {
   lengthM: 'lengthM',
   perimeterM: 'perimeterM',
   notes: 'notes',
+  generalNotes: 'generalNotes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
+
+
+export const SurveyFeatureScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  featureCategory: 'featureCategory',
+  name: 'name',
+  description: 'description',
+  geometryType: 'geometryType',
+  geoJsonData: 'geoJsonData',
+  areaSqm: 'areaSqm',
+  lengthM: 'lengthM',
+  photoUrls: 'photoUrls',
+  createdAt: 'createdAt'
+} as const
+
+export type SurveyFeatureScalarFieldEnum = (typeof SurveyFeatureScalarFieldEnum)[keyof typeof SurveyFeatureScalarFieldEnum]
+
+
+export const SurveyPhotoScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  featureId: 'featureId',
+  url: 'url',
+  caption: 'caption',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SurveyPhotoScalarFieldEnum = (typeof SurveyPhotoScalarFieldEnum)[keyof typeof SurveyPhotoScalarFieldEnum]
 
 
 export const DailyReportScalarFieldEnum = {

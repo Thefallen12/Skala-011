@@ -30,7 +30,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import type { SurveyGeoJSON } from "@/lib/field-survey-geojson";
+import {
+  measureSurveyGeoJSON,
+  type SurveyGeoJSON,
+} from "@/lib/field-survey-geojson";
 import { FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER } from "@/lib/field-survey-photo-config";
 import type { FieldSurveySummary, SurveyProjectOption } from "./SurveySidebar";
 
@@ -54,6 +57,13 @@ const formSchema = z.object({
 });
 
 export type SurveyFormValues = z.infer<typeof formSchema>;
+type DocumentationPhotoDraft = {
+  url: string;
+  caption: string;
+  latitude: number;
+  longitude: number;
+  capturedAt: string;
+};
 
 const categoryToObjectCategory: Record<string, SurveyFormValues["objectCategory"]> = {
   polygon: "Batas Area Proyek (Polygon)",
@@ -103,6 +113,7 @@ export default function SurveyForm({
   onProjectChange,
   onCancel,
   onLoadSurvey,
+  onSavedSurvey,
 }: {
   projects: SurveyProjectOption[];
   surveys: FieldSurveySummary[];
@@ -118,6 +129,7 @@ export default function SurveyForm({
   onProjectChange: (projectId: string) => void;
   onCancel: () => void;
   onLoadSurvey: (survey: FieldSurveySummary) => Promise<void>;
+  onSavedSurvey?: (surveyId: string) => void;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -146,10 +158,13 @@ export default function SurveyForm({
   });
   const documentationUrls =
     useWatch({ control: form.control, name: "documentationUrls" }) ?? [];
+  const [documentationPhotos, setDocumentationPhotos] = useState<DocumentationPhotoDraft[]>([]);
+  const [uploadLocation, setUploadLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const selectedProjectId = useWatch({
     control: form.control,
     name: "projectId",
   });
+  const areaHa = measureSurveyGeoJSON(geoJsonData).areaSqm / 10_000;
 
   useEffect(() => {
     const projectId = initialProjectId || null;
@@ -177,6 +192,17 @@ export default function SurveyForm({
         setStatus({ type: "error", message: "Kode proyek tidak ditemukan." });
         return;
       }
+      if (
+        documentationPhotos.length !== values.documentationUrls.length ||
+        documentationPhotos.some((photo) => photo.caption.trim().length < 2)
+      ) {
+        setStatus({
+          type: "error",
+          message: "Setiap foto wajib memiliki keterangan sebelum survei disimpan.",
+        });
+
+        return;
+      }
 
       const result = await saveFieldSurvey({
         projectId: values.projectId,
@@ -189,15 +215,81 @@ export default function SurveyForm({
         landOwnership: values.landOwnership,
         notes: values.notes,
         documentationUrls: values.documentationUrls,
+        documentationPhotos,
         geoJsonData,
+        surveyType: "REHAB_SAWAH",
+        features: geoJsonData.features
+          .filter((feature) => feature.geometry)
+          .map((feature, index) => ({
+            featureCategory:
+              typeof feature.properties?.featureCategory === "string"
+                ? feature.properties.featureCategory
+                : feature.geometry?.type.includes("Line")
+                  ? "Saluran Irigasi Tersier"
+                  : feature.geometry?.type.includes("Point")
+                    ? "Titik Kerusakan"
+                    : "Area Rehab Sawah",
+            name:
+              typeof feature.properties?.title === "string" &&
+              feature.properties.title.trim()
+                ? feature.properties.title
+                : `Fitur Rehab Sawah ${index + 1}`,
+            description:
+              typeof feature.properties?.description === "string"
+                ? feature.properties.description
+                : "",
+            geometryType: feature.geometry?.type ?? "Geometry",
+            geoJsonData: feature,
+            photoUrls: [],
+            ...(typeof feature.properties?.photoUrls === "string"
+              ? {
+                  photoUrls: feature.properties.photoUrls
+                    .split(",")
+                    .map((url) => url.trim())
+                    .filter(Boolean)
+                    .slice(0, 10),
+                }
+              : {}),
+          })),
       });
       setStatus({
         type: result.success ? "success" : "error",
         message: result.message,
       });
-      if (result.success) router.refresh();
+      if (result.success) {
+        if (result.surveyId) onSavedSurvey?.(result.surveyId);
+        const nextProjectId = values.projectId || "none";
+        router.replace(
+          `/apps/projects?section=surveys&view=details&projectId=${encodeURIComponent(nextProjectId)}`,
+          { scroll: false },
+        );
+        router.refresh();
+      }
     });
   });
+
+  const requestPhotoLocation = (open: () => void) => {
+    if (!navigator.geolocation) {
+      setUploadError("Perangkat ini tidak mendukung geotag lokasi.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUploadLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setUploadError("");
+        open();
+      },
+      () => {
+        setUploadError(
+          "Izin lokasi wajib diberikan sebelum foto geotag dapat diunggah.",
+        );
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+    );
+  };
 
   const handleLoadSurvey = async (survey: FieldSurveySummary) => {
     setLoadingSurveyId(survey.id);
@@ -242,6 +334,23 @@ export default function SurveyForm({
               Seksi 1: Informasi Dasar Proyek
             </h2>
             <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="survey-area-ha" className="text-xs text-slate-400">
+                  Luas Polygon (Ha)
+                </Label>
+                <Input
+                  id="survey-area-ha"
+                  value={areaHa > 0 ? areaHa.toLocaleString("id-ID", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 4,
+                  }) : "—"}
+                  readOnly
+                  className="border-slate-700 bg-slate-800 text-slate-100"
+                />
+                <p className="text-[11px] text-slate-500">
+                  Luas dihitung dari polygon yang sama pada peta.
+                </p>
+              </div>
               <div className="space-y-1.5">
                 <Label htmlFor="survey-name" className="text-xs text-slate-400">
                   Nama Lokasi / Survei
@@ -466,25 +575,47 @@ export default function SurveyForm({
                 </Label>
                 <div className="flex min-h-32 flex-wrap items-center gap-2 rounded-lg border border-dashed border-slate-700 bg-slate-800/70 p-3">
                   {documentationUrls.map((url, index) => (
-                    <div
-                      key={url}
-                      className="group relative size-16 overflow-hidden rounded-md border border-slate-600 bg-cover bg-center"
-                      style={{ backgroundImage: `url("${url}")` }}
-                    >
-                      <button
-                        type="button"
-                        aria-label={`Hapus foto ${index + 1}`}
-                        onClick={() =>
-                          form.setValue(
-                            "documentationUrls",
-                            documentationUrls.filter((item) => item !== url),
-                            { shouldDirty: true },
+                    <div key={url} className="w-full rounded-md border border-slate-700 bg-slate-900/60 p-2 sm:w-[calc(50%-0.25rem)]">
+                      <div
+                        className="group relative h-24 overflow-hidden rounded-md border border-slate-600 bg-cover bg-center"
+                        style={{ backgroundImage: `url("${url}")` }}
+                      >
+                        <button
+                          type="button"
+                          aria-label={`Hapus foto ${index + 1}`}
+                          onClick={() => {
+                            form.setValue(
+                              "documentationUrls",
+                              documentationUrls.filter((item) => item !== url),
+                              { shouldDirty: true },
+                            );
+                            setDocumentationPhotos((photos) =>
+                              photos.filter((photo) => photo.url !== url),
+                            );
+                          }}
+                          className="absolute right-1 top-1 rounded bg-slate-950/80 p-1 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100"
+                        >
+                          <Trash2 className="size-3" aria-hidden="true" />
+                        </button>
+                      </div>
+                      <Input
+                        value={documentationPhotos[index]?.caption ?? ""}
+                        onChange={(event) =>
+                          setDocumentationPhotos((photos) =>
+                            photos.map((photo) =>
+                              photo.url === url
+                                ? { ...photo, caption: event.target.value }
+                                : photo,
+                            ),
                           )
                         }
-                        className="absolute right-1 top-1 rounded bg-slate-950/80 p-1 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100"
-                      >
-                        <Trash2 className="size-3" aria-hidden="true" />
-                      </button>
+                        placeholder={`Keterangan foto ${index + 1} wajib diisi`}
+                        className="mt-2 h-8 border-slate-700 bg-slate-800 text-xs text-slate-100"
+                        required
+                      />
+                      <p className="mt-1 text-[10px] text-slate-500">
+                        GPS: {documentationPhotos[index]?.latitude.toFixed(6)}, {documentationPhotos[index]?.longitude.toFixed(6)}
+                      </p>
                     </div>
                   ))}
                   {cloudinaryCloudName && cloudinaryApiKey ? (
@@ -514,6 +645,7 @@ export default function SurveyForm({
                           "secure_url" in result.info &&
                           typeof result.info.secure_url === "string"
                         ) {
+                          const secureUrl = result.info.secure_url;
                           const current =
                             form.getValues("documentationUrls");
                           if (current.length >= 10) {
@@ -522,11 +654,27 @@ export default function SurveyForm({
                             );
                             return;
                           }
+                          if (!uploadLocation) {
+                            setUploadError(
+                              "Lokasi foto tidak ditemukan. Aktifkan izin lokasi lalu unggah kembali.",
+                            );
+                            return;
+                          }
                           form.setValue(
                             "documentationUrls",
-                            [...current, result.info.secure_url],
+                            [...current, secureUrl],
                             { shouldDirty: true, shouldValidate: true },
                           );
+                          setDocumentationPhotos((photos) => [
+                            ...photos,
+                            {
+                              url: secureUrl,
+                              caption: "",
+                              latitude: uploadLocation.latitude,
+                              longitude: uploadLocation.longitude,
+                              capturedAt: new Date().toISOString(),
+                            },
+                          ]);
                           setUploadError("");
                         }
                       }}
@@ -542,7 +690,7 @@ export default function SurveyForm({
                           type="button"
                           variant="outline"
                           disabled={documentationUrls.length >= 10}
-                          onClick={() => open()}
+                          onClick={() => requestPhotoLocation(open)}
                           className="size-16 border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700"
                           aria-label="Unggah foto dokumentasi"
                         >

@@ -49,6 +49,18 @@ export type SurveyProjectOption = {
   vendor: string;
 };
 
+export type FieldSurveyFeatureSummary = {
+  id: string;
+  featureCategory: string;
+  name: string;
+  description: string | null;
+  geometryType: string;
+  geoJsonData: SurveyGeoJSON["features"][number];
+  areaSqm: number | null;
+  lengthM: number | null;
+  photoUrls: string[];
+};
+
 export type FieldSurveySummary = {
   id: string;
   projectId: string | null;
@@ -68,6 +80,8 @@ export type FieldSurveySummary = {
   perimeterM: number | null;
   notes: string | null;
   createdAt: string;
+  surveyType?: string;
+  features?: FieldSurveyFeatureSummary[];
 };
 
 function formatNumber(value: number, maximumFractionDigits = 1) {
@@ -75,7 +89,7 @@ function formatNumber(value: number, maximumFractionDigits = 1) {
 }
 
 function formatArea(value: number) {
-  return `${formatNumber(value)} m² · ${formatNumber(value / 10_000, 2)} Ha`;
+  return `${formatNumber(value / 10_000, 2)} Ha`;
 }
 
 function formatDistance(value: number) {
@@ -239,6 +253,11 @@ export default function SurveySidebar({
       if (result.success) {
         setLocationName("");
         setNotes("");
+        const nextProjectId = projectId || "none";
+        router.replace(
+          `/apps/projects?section=surveys&view=details&projectId=${encodeURIComponent(nextProjectId)}`,
+          { scroll: false },
+        );
         router.refresh();
       }
     });
@@ -576,7 +595,7 @@ export default function SurveySidebar({
                         </span>
                         <span className="mt-1 block text-[10px] text-muted-foreground">
                           {new Date(survey.createdAt).toLocaleDateString("id-ID")} ·{" "}
-                          {formatNumber(survey.areaSqm ?? 0)} m² ·{" "}
+                          {formatNumber((survey.areaSqm ?? 0) / 10_000, 2)} Ha ·{" "}
                           {formatDistance(survey.lengthM ?? 0)}
                         </span>
                       </span>

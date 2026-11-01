@@ -39,6 +39,8 @@ export type SurveyDrawRequest = {
 
 export type SurveyFeatureMetadata = {
   title: string;
+  category: string;
+  photoUrls: string;
   projectTitle: string;
   desa: string;
   kecamatan: string;
@@ -58,6 +60,7 @@ export default function ProjectMapLoader({
   onDrawnDataChange,
   onDrawToolSelect,
   onFeatureCreated,
+  onFeatureSelected,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
@@ -68,6 +71,7 @@ export default function ProjectMapLoader({
   onDrawnDataChange: (data: SurveyGeoJSON) => void;
   onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
   onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
+  onFeatureSelected: (feature: SurveyGeoJSON["features"][number]) => void;
 }) {
   return (
     <ProjectMap
@@ -80,6 +84,7 @@ export default function ProjectMapLoader({
       onDrawnDataChange={onDrawnDataChange}
       onDrawToolSelect={onDrawToolSelect}
       onFeatureCreated={onFeatureCreated}
+      onFeatureSelected={onFeatureSelected}
     />
   );
 }

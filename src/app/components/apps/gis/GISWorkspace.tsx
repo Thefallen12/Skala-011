@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { CldUploadWidget } from "next-cloudinary";
 import { center } from "@turf/turf";
 import {
   ArrowUpRight,
@@ -13,6 +14,8 @@ import {
   Shapes,
   Pencil,
   Upload,
+  FileText,
+  Printer,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -47,6 +50,7 @@ import ProjectMapLoader, {
   type SurveyDrawRequest,
   type SurveyLayerVisibility,
 } from "./ProjectMapLoader";
+import { FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER } from "@/lib/field-survey-photo-config";
 
 function emptyCollection(): SurveyGeoJSON {
   return { type: "FeatureCollection", features: [] };
@@ -102,6 +106,8 @@ export default function GISWorkspace({
   const [editingFeatureId, setEditingFeatureId] = useState<string | null>(null);
   const [featureMetadata, setFeatureMetadata] = useState<SurveyFeatureMetadata>({
     title: "",
+    category: "Area Rehab Sawah",
+    photoUrls: "",
     projectTitle: "",
     desa: "",
     kecamatan: "",
@@ -120,6 +126,9 @@ export default function GISWorkspace({
     point: true,
   });
   const [drawRequest, setDrawRequest] = useState<SurveyDrawRequest | null>(null);
+  const [reportSurveyId, setReportSurveyId] = useState<string | null>(surveys[0]?.id ?? null);
+  const [reportPreviewOpen, setReportPreviewOpen] = useState(false);
+  const reportFrameRef = useRef<HTMLIFrameElement>(null);
 
   const combinedData = useMemo<SurveyGeoJSON>(
     () => ({
@@ -213,6 +222,14 @@ export default function GISWorkspace({
       title:
         readFeatureText(properties, "title") ||
         getDefaultFeatureTitle(feature.geometry?.type),
+      category:
+        readFeatureText(properties, "featureCategory") ||
+        (feature.geometry?.type?.includes("Line")
+          ? "Saluran Irigasi Tersier"
+          : feature.geometry?.type?.includes("Point")
+            ? "Titik Kerusakan"
+            : "Area Rehab Sawah"),
+      photoUrls: readFeatureText(properties, "photoUrls"),
       projectTitle:
         readFeatureText(properties, "projectTitle") || project?.title || "",
       desa: readFeatureText(properties, "desa"),
@@ -255,6 +272,8 @@ export default function GISWorkspace({
             ...(feature.properties ?? {}),
             ...featureMetadata,
             title: featureMetadata.title.trim(),
+            featureCategory: featureMetadata.category.trim(),
+            photoUrls: featureMetadata.photoUrls.trim(),
             projectTitle: featureMetadata.projectTitle.trim(),
             desa: featureMetadata.desa.trim(),
             kecamatan: featureMetadata.kecamatan.trim(),
@@ -369,6 +388,18 @@ export default function GISWorkspace({
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
+            {reportSurveyId && (
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="h-7 gap-1.5 px-2.5 text-[10px]"
+                onClick={() => setReportPreviewOpen(true)}
+              >
+                <FileText className="size-4" />
+                Tampilkan PDF
+              </Button>
+            )}
             <Button
               type="button"
               size="sm"
@@ -503,10 +534,10 @@ export default function GISWorkspace({
                 }))
               }
               onFeatureCreated={(feature) => {
-                const featureId = feature.properties?.__surveyLayerId;
-                if (typeof featureId === "string") {
-                  openFeatureEditor(featureId, feature);
-                }
+                changeView("details");
+              }}
+              onFeatureSelected={() => {
+                changeView("details");
               }}
             />
           </Card>
@@ -623,6 +654,7 @@ export default function GISWorkspace({
             onProjectChange={changeProject}
             onCancel={startNewSurvey}
             onLoadSurvey={loadSavedSurvey}
+            onSavedSurvey={setReportSurveyId}
           />
         </div>
       </section>
@@ -634,6 +666,41 @@ export default function GISWorkspace({
           <ArrowUpRight className="size-3" aria-hidden="true" />
         </span>
       </p>
+      <GlobalModal
+        isOpen={reportPreviewOpen && reportSurveyId !== null}
+        onClose={() => setReportPreviewOpen(false)}
+        title="Pratinjau PDF: Rekap Hasil Survei Lapangan"
+        description="Laporan mengikuti template A4. Gunakan cetak untuk menyimpan sebagai PDF."
+        className="z-[2100] max-w-[calc(210mm+3rem)]"
+        overlayClassName="z-[2099]"
+        bodyClassName="bg-slate-950/30 p-0"
+        footer={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => reportFrameRef.current?.contentWindow?.print()}
+            >
+              <Printer className="mr-2 size-4" />
+              Cetak / Simpan PDF
+            </Button>
+            <Button type="button" onClick={() => setReportPreviewOpen(false)}>
+              Tutup
+            </Button>
+          </>
+        }
+      >
+        <iframe
+          ref={reportFrameRef}
+          title="Laporan survei"
+          src={
+            reportSurveyId
+              ? `/report/${encodeURIComponent(reportSurveyId)}`
+              : undefined
+          }
+          className="h-[70vh] w-full rounded-lg bg-white"
+        />
+      </GlobalModal>
       <GlobalModal
         isOpen={featureEditorOpen}
         onClose={() => {
@@ -683,6 +750,28 @@ export default function GISWorkspace({
                   maxLength={160}
                   required
                 />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="feature-category">Kategori fitur rehab sawah</Label>
+                <select
+                  id="feature-category"
+                  value={featureMetadata.category}
+                  onChange={(event) =>
+                    setFeatureMetadata((current) => ({
+                      ...current,
+                      category: event.target.value,
+                    }))
+                  }
+                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+                >
+                  <option>Saluran Irigasi Primer</option>
+                  <option>Saluran Irigasi Sekunder</option>
+                  <option>Saluran Irigasi Tersier</option>
+                  <option>Area Rehab Sawah</option>
+                  <option>Tanggul Rusak</option>
+                  <option>Titik Kerusakan</option>
+                  <option>Lainnya</option>
+                </select>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="feature-project-title">Judul proyek</Label>
@@ -782,6 +871,57 @@ export default function GISWorkspace({
                   placeholder="Catatan untuk titik, jalur, atau area ini..."
                   maxLength={2000}
                   rows={3}
+                />
+              </div>
+              <div className="space-y-1.5 sm:col-span-2">
+                <Label htmlFor="feature-photo-urls">Foto fitur (URL Cloudinary, pisahkan dengan koma)</Label>
+                {cloudinaryCloudName && cloudinaryApiKey && (
+                  <CldUploadWidget
+                    config={{ cloud: { cloudName: cloudinaryCloudName, apiKey: cloudinaryApiKey } }}
+                    signatureEndpoint="/api/cloudinary/field-survey-signature"
+                    options={{
+                      folder: FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
+                      resourceType: "image",
+                      sources: ["local", "camera"],
+                      multiple: true,
+                      maxFiles: 10,
+                      maxFileSize: 8 * 1024 * 1024,
+                      clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
+                      showPoweredBy: false,
+                    }}
+                    onSuccess={(result) => {
+                      const info = result.info;
+                      if (
+                        result.event === "success" &&
+                        typeof info === "object" &&
+                        info !== null &&
+                        "secure_url" in info &&
+                        typeof info.secure_url === "string"
+                      ) {
+                        setFeatureMetadata((current) => ({
+                          ...current,
+                          photoUrls: [...current.photoUrls.split(",").map((url) => url.trim()).filter(Boolean), info.secure_url].slice(0, 10).join(", "),
+                        }));
+                      }
+                    }}
+                  >
+                    {({ open }) => (
+                      <Button type="button" variant="outline" onClick={() => open()}>
+                        Unggah foto fitur
+                      </Button>
+                    )}
+                  </CldUploadWidget>
+                )}
+                <Input
+                  id="feature-photo-urls"
+                  value={featureMetadata.photoUrls}
+                  onChange={(event) =>
+                    setFeatureMetadata((current) => ({
+                      ...current,
+                      photoUrls: event.target.value,
+                    }))
+                  }
+                  placeholder="https://res.cloudinary.com/.../foto.jpg"
                 />
               </div>
             </div>

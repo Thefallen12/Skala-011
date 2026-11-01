@@ -629,6 +629,7 @@ model FieldSurvey {
   surveyorId        String
   surveyor          User     @relation("FieldSurveyor", fields: [surveyorId], references: [id], onDelete: Restrict)
   surveyName        String   @default("Survei Lapangan")
+  surveyType        String   @default("REHAB_SAWAH")
   projectCode       String?
   objectCategory    String   @default("Batas Area Proyek (Polygon)")
   vegetationType    String?
@@ -642,11 +643,49 @@ model FieldSurvey {
   lengthM           Float?
   perimeterM        Float?
   notes             String?  @db.Text
+  generalNotes      String?  @db.Text
+  features          SurveyFeature[]
+  photos            SurveyPhoto[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now()) @updatedAt
 
   @@index([projectId, createdAt])
   @@index([surveyorId, createdAt])
+}
+
+model SurveyFeature {
+  id              String      @id @default(cuid())
+  surveyId        String
+  survey          FieldSurvey  @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  featureCategory String
+  name            String
+  description     String?      @db.Text
+  geometryType    String
+  geoJsonData     Json
+  areaSqm         Float?
+  lengthM         Float?
+  photoUrls       String[]    @default([])
+  photos          SurveyPhoto[]
+  createdAt       DateTime    @default(now())
+
+  @@index([surveyId, createdAt])
+}
+
+model SurveyPhoto {
+  id          String         @id @default(cuid())
+  surveyId    String
+  survey      FieldSurvey    @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  featureId   String?
+  feature     SurveyFeature? @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  url         String
+  caption     String         @db.Text
+  latitude    Float
+  longitude   Float
+  capturedAt  DateTime       @default(now())
+  createdAt   DateTime       @default(now())
+
+  @@index([surveyId, createdAt])
+  @@index([featureId, createdAt])
 }
 
 model DailyReport {

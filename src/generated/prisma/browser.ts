@@ -103,6 +103,16 @@ export type Project = Prisma.ProjectModel
  */
 export type FieldSurvey = Prisma.FieldSurveyModel
 /**
+ * Model SurveyFeature
+ * 
+ */
+export type SurveyFeature = Prisma.SurveyFeatureModel
+/**
+ * Model SurveyPhoto
+ * 
+ */
+export type SurveyPhoto = Prisma.SurveyPhotoModel
+/**
  * Model DailyReport
  * 
  */

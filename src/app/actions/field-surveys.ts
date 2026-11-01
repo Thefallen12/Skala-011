@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
-import { center } from "@turf/turf";
+import { area, center, length } from "@turf/turf";
 import {
   isSurveyGeoJSON,
   isSurveyGeoJSONWithinLimit,
@@ -58,7 +58,22 @@ const saveSurveySchema = z.object({
     )
     .max(10)
     .optional(),
+  documentationPhotos: z.array(z.object({
+    url: z.string().url(),
+    caption: z.string().trim().min(2).max(500),
+    latitude: z.number().finite().min(-90).max(90),
+    longitude: z.number().finite().min(-180).max(180),
+    capturedAt: z.string().datetime().optional(),
+  })).max(10).optional(),
   geoJsonData: z.unknown(),
+  features: z.array(z.object({
+    featureCategory: z.string().trim().min(2).max(120),
+    name: z.string().trim().min(2).max(160),
+    description: z.string().trim().max(5000).optional(),
+    geometryType: z.string().trim().min(2).max(80),
+    geoJsonData: z.unknown(),
+    photoUrls: z.array(z.string().url()).max(10).optional(),
+  })).max(200).optional(),
 });
 
 async function getActiveSurveyor() {
@@ -84,12 +99,29 @@ export type SaveFieldSurveyInput = {
   topography?: string;
   landOwnership?: string;
   documentationUrls?: string[];
+  documentationPhotos?: Array<{
+    url: string;
+    caption: string;
+    latitude: number;
+    longitude: number;
+    capturedAt?: string;
+  }>;
   geoJsonData: SurveyGeoJSON;
+  surveyType?: string;
+  features?: Array<{
+    featureCategory: string;
+    name: string;
+    description?: string;
+    geometryType: string;
+    geoJsonData: SurveyGeoJSON["features"][number];
+    photoUrls?: string[];
+  }>;
 };
 
 export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
   success: boolean;
   message: string;
+  surveyId?: string;
 }> {
   const surveyor = await getActiveSurveyor();
   if (!surveyor) {
@@ -115,6 +147,8 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
     topography,
     landOwnership,
     documentationUrls,
+    documentationPhotos,
+    features,
   } = parsed.data;
   if (!isSurveyGeoJSON(geoJsonData)) {
     return {
@@ -181,7 +215,7 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
   }
 
   try {
-    await prisma.fieldSurvey.create({
+    const survey = await prisma.fieldSurvey.create({
       data: {
         projectId: project?.id ?? null,
         projectName: project
@@ -205,11 +239,61 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
         lengthM: measurements.lengthM,
         perimeterM: measurements.perimeterM,
         notes: notes || null,
+        surveyType: "REHAB_SAWAH",
+        features: features?.length
+          ? {
+              create: features.map((feature) => {
+                const geoJsonFeature = feature.geoJsonData as SurveyGeoJSON["features"][number];
+                const geometry = geoJsonFeature.geometry;
+                const featureMeasurement = geometry
+                  ? {
+                      areaSqm:
+                        geometry.type === "Polygon" ||
+                        geometry.type === "MultiPolygon"
+                          ? area(geoJsonFeature as never)
+                          : null,
+                      lengthM:
+                        geometry.type === "LineString" ||
+                        geometry.type === "MultiLineString" ||
+                        geometry.type === "Polygon" ||
+                        geometry.type === "MultiPolygon"
+                          ? length(geoJsonFeature as never, { units: "meters" })
+                          : null,
+                    }
+                  : { areaSqm: null, lengthM: null };
+                return {
+                  featureCategory: feature.featureCategory,
+                  name: feature.name,
+                  description: feature.description || null,
+                  geometryType: feature.geometryType,
+                  geoJsonData: geoJsonFeature as object,
+                  areaSqm: featureMeasurement.areaSqm,
+                  lengthM: featureMeasurement.lengthM,
+                  photoUrls: feature.photoUrls ?? [],
+                };
+              }),
+            }
+          : undefined,
+        photos: documentationPhotos?.length
+          ? {
+              create: documentationPhotos.map((photo) => ({
+                url: photo.url,
+                caption: photo.caption,
+                latitude: photo.latitude,
+                longitude: photo.longitude,
+                capturedAt: photo.capturedAt ? new Date(photo.capturedAt) : undefined,
+              })),
+            }
+          : undefined,
       },
     });
 
     revalidatePath("/apps/projects");
-    return { success: true, message: "Data survei berhasil disimpan." };
+    return {
+      success: true,
+      message: "Data survei berhasil disimpan.",
+      surveyId: survey.id,
+    };
   } catch (error) {
     console.error("Saving field survey failed:", error);
     return {

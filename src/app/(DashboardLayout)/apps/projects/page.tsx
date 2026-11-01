@@ -238,6 +238,21 @@ export default async function ProjectsWorkstationPage({
       perimeterM: true,
       notes: true,
       createdAt: true,
+      surveyType: true,
+      features: {
+        orderBy: { createdAt: "asc" },
+        select: {
+          id: true,
+          featureCategory: true,
+          name: true,
+          description: true,
+          geometryType: true,
+          geoJsonData: true,
+          areaSqm: true,
+          lengthM: true,
+          photoUrls: true,
+        },
+      },
     },
   });
   const surveys: FieldSurveySummary[] = savedSurveys.map((survey) => ({
@@ -259,6 +274,11 @@ export default async function ProjectsWorkstationPage({
     perimeterM: survey.perimeterM,
     notes: survey.notes,
     createdAt: survey.createdAt.toISOString(),
+    surveyType: survey.surveyType,
+    features: survey.features.map((feature) => ({
+      ...feature,
+      geoJsonData: feature.geoJsonData as unknown as NonNullable<FieldSurveySummary["features"]>[number]["geoJsonData"],
+    })),
   }));
   const fieldTeamUsers =
     isDirector || session.user.role === UserRole.ADMINISTRATIONS

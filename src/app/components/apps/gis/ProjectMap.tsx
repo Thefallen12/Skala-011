@@ -416,6 +416,7 @@ export default function ProjectMap({
   onDrawnDataChange,
   onDrawToolSelect,
   onFeatureCreated,
+  onFeatureSelected,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
@@ -426,6 +427,7 @@ export default function ProjectMap({
   onDrawnDataChange: (data: SurveyGeoJSON) => void;
   onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
   onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
+  onFeatureSelected: (feature: SurveyGeoJSON["features"][number]) => void;
 }) {
   const featureGroupRef = useRef<LeafletFeatureGroup>(null);
   const activeToolRef = useRef<ActiveMapTool | null>(null);
@@ -657,6 +659,11 @@ export default function ProjectMap({
                 weight: 2,
               })
             }
+            onEachFeature={(feature, layer) => {
+              layer.on("click", () =>
+                onFeatureSelected(feature as SurveyGeoJSON["features"][number]),
+              );
+            }}
           />
         )}
 
@@ -690,6 +697,7 @@ export default function ProjectMap({
                 __surveyLayerId: localId,
               };
               (layer as Layer & { feature?: FeatureWithLocalId }).feature = feature;
+              layer.on("click", () => onFeatureSelected(feature));
               onDrawnDataChange(
                 collectionFromFeatures([
                   ...(drawnData.features as FeatureWithLocalId[]),

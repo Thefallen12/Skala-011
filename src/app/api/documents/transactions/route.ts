@@ -752,7 +752,18 @@ export async function GET(request: NextRequest) {
     document.qrDataUrl = qrDataUrl;
     document.approvalQrDataUrl = approvalQrDataUrl;
     delete document.approvalPublicCode;
-    const pdf = await renderPdf(renderUniversalTransactionDocument(document));
+    const documentHtml = renderUniversalTransactionDocument(document);
+    if (previewOnly) {
+      return new NextResponse(documentHtml, {
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "private, no-store",
+          "X-Content-Type-Options": "nosniff",
+        },
+      });
+    }
+
+    const pdf = await renderPdf(documentHtml);
     const disposition =
       request.nextUrl.searchParams.get("download") === "1"
         ? "attachment"

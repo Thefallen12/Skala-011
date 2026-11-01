@@ -414,6 +414,8 @@ export const ModelName = {
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
   FieldSurvey: 'FieldSurvey',
+  SurveyFeature: 'SurveyFeature',
+  SurveyPhoto: 'SurveyPhoto',
   DailyReport: 'DailyReport',
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
@@ -472,7 +474,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
+    modelProps: "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1731,6 +1733,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FieldSurveyCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FieldSurveyCountAggregateOutputType> | number
+        }
+      }
+    }
+    SurveyFeature: {
+      payload: Prisma.$SurveyFeaturePayload<ExtArgs>
+      fields: Prisma.SurveyFeatureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SurveyFeatureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SurveyFeatureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        findFirst: {
+          args: Prisma.SurveyFeatureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SurveyFeatureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        findMany: {
+          args: Prisma.SurveyFeatureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>[]
+        }
+        create: {
+          args: Prisma.SurveyFeatureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        createMany: {
+          args: Prisma.SurveyFeatureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SurveyFeatureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>[]
+        }
+        delete: {
+          args: Prisma.SurveyFeatureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        update: {
+          args: Prisma.SurveyFeatureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        deleteMany: {
+          args: Prisma.SurveyFeatureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SurveyFeatureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SurveyFeatureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>[]
+        }
+        upsert: {
+          args: Prisma.SurveyFeatureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyFeaturePayload>
+        }
+        aggregate: {
+          args: Prisma.SurveyFeatureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSurveyFeature>
+        }
+        groupBy: {
+          args: Prisma.SurveyFeatureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SurveyFeatureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SurveyFeatureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SurveyFeatureCountAggregateOutputType> | number
+        }
+      }
+    }
+    SurveyPhoto: {
+      payload: Prisma.$SurveyPhotoPayload<ExtArgs>
+      fields: Prisma.SurveyPhotoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SurveyPhotoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SurveyPhotoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        findFirst: {
+          args: Prisma.SurveyPhotoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SurveyPhotoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        findMany: {
+          args: Prisma.SurveyPhotoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>[]
+        }
+        create: {
+          args: Prisma.SurveyPhotoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        createMany: {
+          args: Prisma.SurveyPhotoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SurveyPhotoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>[]
+        }
+        delete: {
+          args: Prisma.SurveyPhotoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        update: {
+          args: Prisma.SurveyPhotoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        deleteMany: {
+          args: Prisma.SurveyPhotoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SurveyPhotoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SurveyPhotoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>[]
+        }
+        upsert: {
+          args: Prisma.SurveyPhotoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SurveyPhotoPayload>
+        }
+        aggregate: {
+          args: Prisma.SurveyPhotoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSurveyPhoto>
+        }
+        groupBy: {
+          args: Prisma.SurveyPhotoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SurveyPhotoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SurveyPhotoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SurveyPhotoCountAggregateOutputType> | number
         }
       }
     }
@@ -5195,6 +5345,7 @@ export const FieldSurveyScalarFieldEnum = {
   responsibleName: 'responsibleName',
   surveyorId: 'surveyorId',
   surveyName: 'surveyName',
+  surveyType: 'surveyType',
   projectCode: 'projectCode',
   objectCategory: 'objectCategory',
   vegetationType: 'vegetationType',
@@ -5208,11 +5359,44 @@ export const FieldSurveyScalarFieldEnum = {
   lengthM: 'lengthM',
   perimeterM: 'perimeterM',
   notes: 'notes',
+  generalNotes: 'generalNotes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
+
+
+export const SurveyFeatureScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  featureCategory: 'featureCategory',
+  name: 'name',
+  description: 'description',
+  geometryType: 'geometryType',
+  geoJsonData: 'geoJsonData',
+  areaSqm: 'areaSqm',
+  lengthM: 'lengthM',
+  photoUrls: 'photoUrls',
+  createdAt: 'createdAt'
+} as const
+
+export type SurveyFeatureScalarFieldEnum = (typeof SurveyFeatureScalarFieldEnum)[keyof typeof SurveyFeatureScalarFieldEnum]
+
+
+export const SurveyPhotoScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  featureId: 'featureId',
+  url: 'url',
+  caption: 'caption',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SurveyPhotoScalarFieldEnum = (typeof SurveyPhotoScalarFieldEnum)[keyof typeof SurveyPhotoScalarFieldEnum]
 
 
 export const DailyReportScalarFieldEnum = {
@@ -6853,6 +7037,8 @@ export type GlobalOmitConfig = {
   timesheetEntry?: Prisma.TimesheetEntryOmit
   project?: Prisma.ProjectOmit
   fieldSurvey?: Prisma.FieldSurveyOmit
+  surveyFeature?: Prisma.SurveyFeatureOmit
+  surveyPhoto?: Prisma.SurveyPhotoOmit
   dailyReport?: Prisma.DailyReportOmit
   projectProgressPhoto?: Prisma.ProjectProgressPhotoOmit
   projectWorkPoint?: Prisma.ProjectWorkPointOmit
