@@ -401,6 +401,7 @@ export type TicketWhereInput = {
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   items?: Prisma.TicketItemListRelationFilter
   purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  directStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   auditLogs?: Prisma.TicketAuditLogListRelationFilter
   operationalDocuments?: Prisma.OperationalDocumentListRelationFilter
@@ -440,6 +441,7 @@ export type TicketOrderByWithRelationInput = {
   project?: Prisma.ProjectOrderByWithRelationInput
   items?: Prisma.TicketItemOrderByRelationAggregateInput
   purchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
+  directStockPurchases?: Prisma.DirectStockPurchaseOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   auditLogs?: Prisma.TicketAuditLogOrderByRelationAggregateInput
   operationalDocuments?: Prisma.OperationalDocumentOrderByRelationAggregateInput
@@ -482,6 +484,7 @@ export type TicketWhereUniqueInput = Prisma.AtLeast<{
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   items?: Prisma.TicketItemListRelationFilter
   purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  directStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   auditLogs?: Prisma.TicketAuditLogListRelationFilter
   operationalDocuments?: Prisma.OperationalDocumentListRelationFilter
@@ -586,6 +589,7 @@ export type TicketCreateInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -622,6 +626,7 @@ export type TicketUncheckedCreateInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -658,6 +663,7 @@ export type TicketUpdateInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -694,6 +700,7 @@ export type TicketUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -797,6 +804,11 @@ export type TicketOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type TicketNullableScalarRelationFilter = {
+  is?: Prisma.TicketWhereInput | null
+  isNot?: Prisma.TicketWhereInput | null
+}
+
 export type TicketCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ticketNumber?: Prisma.SortOrder
@@ -895,11 +907,6 @@ export type TicketMinOrderByAggregateInput = {
 export type TicketSumOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   requestedAmount?: Prisma.SortOrder
-}
-
-export type TicketNullableScalarRelationFilter = {
-  is?: Prisma.TicketWhereInput | null
-  isNot?: Prisma.TicketWhereInput | null
 }
 
 export type TicketScalarRelationFilter = {
@@ -1031,6 +1038,22 @@ export type TicketUncheckedUpdateManyWithoutProjectNestedInput = {
   update?: Prisma.TicketUpdateWithWhereUniqueWithoutProjectInput | Prisma.TicketUpdateWithWhereUniqueWithoutProjectInput[]
   updateMany?: Prisma.TicketUpdateManyWithWhereWithoutProjectInput | Prisma.TicketUpdateManyWithWhereWithoutProjectInput[]
   deleteMany?: Prisma.TicketScalarWhereInput | Prisma.TicketScalarWhereInput[]
+}
+
+export type TicketCreateNestedOneWithoutDirectStockPurchasesInput = {
+  create?: Prisma.XOR<Prisma.TicketCreateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedCreateWithoutDirectStockPurchasesInput>
+  connectOrCreate?: Prisma.TicketCreateOrConnectWithoutDirectStockPurchasesInput
+  connect?: Prisma.TicketWhereUniqueInput
+}
+
+export type TicketUpdateOneWithoutDirectStockPurchasesNestedInput = {
+  create?: Prisma.XOR<Prisma.TicketCreateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedCreateWithoutDirectStockPurchasesInput>
+  connectOrCreate?: Prisma.TicketCreateOrConnectWithoutDirectStockPurchasesInput
+  upsert?: Prisma.TicketUpsertWithoutDirectStockPurchasesInput
+  disconnect?: Prisma.TicketWhereInput | boolean
+  delete?: Prisma.TicketWhereInput | boolean
+  connect?: Prisma.TicketWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TicketUpdateToOneWithWhereWithoutDirectStockPurchasesInput, Prisma.TicketUpdateWithoutDirectStockPurchasesInput>, Prisma.TicketUncheckedUpdateWithoutDirectStockPurchasesInput>
 }
 
 export type EnumTicketTypeFieldUpdateOperationsInput = {
@@ -1176,6 +1199,7 @@ export type TicketCreateWithoutRequesterInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -1211,6 +1235,7 @@ export type TicketUncheckedCreateWithoutRequesterInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -1256,6 +1281,7 @@ export type TicketCreateWithoutMoverAssigneeInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -1291,6 +1317,7 @@ export type TicketUncheckedCreateWithoutMoverAssigneeInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -1401,6 +1428,7 @@ export type TicketCreateWithoutProjectInput = {
   moverAssignee?: Prisma.UserCreateNestedOneWithoutAssignedMoverTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -1436,6 +1464,7 @@ export type TicketUncheckedCreateWithoutProjectInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -1468,6 +1497,166 @@ export type TicketUpdateManyWithWhereWithoutProjectInput = {
   data: Prisma.XOR<Prisma.TicketUpdateManyMutationInput, Prisma.TicketUncheckedUpdateManyWithoutProjectInput>
 }
 
+export type TicketCreateWithoutDirectStockPurchasesInput = {
+  id?: string
+  ticketNumber: string
+  title: string
+  description?: string | null
+  type: $Enums.TicketType
+  priority?: $Enums.TicketPriority
+  status?: $Enums.TicketStatus
+  fulfillmentStatus?: $Enums.TicketFulfillmentStatus
+  totalAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  requestedAmount?: number | null
+  isApprovedByDirector?: boolean
+  attachmentUrl?: string | null
+  requestCategory?: $Enums.TicketRequestCategory | null
+  fieldCategory?: $Enums.TicketFieldCategory | null
+  recipientName?: string | null
+  bankName?: string | null
+  accountNumber?: string | null
+  purchaseReceiptUrl?: string | null
+  transferReceiptUrl?: string | null
+  transferDestination?: string | null
+  deliveryReceiptUrl?: string | null
+  deliveryOrderReceiptUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  requester: Prisma.UserCreateNestedOneWithoutTicketsInput
+  moverAssignee?: Prisma.UserCreateNestedOneWithoutAssignedMoverTicketsInput
+  project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
+  items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
+  auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
+  operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutTicketInput
+}
+
+export type TicketUncheckedCreateWithoutDirectStockPurchasesInput = {
+  id?: string
+  ticketNumber: string
+  title: string
+  description?: string | null
+  type: $Enums.TicketType
+  priority?: $Enums.TicketPriority
+  status?: $Enums.TicketStatus
+  fulfillmentStatus?: $Enums.TicketFulfillmentStatus
+  totalAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  requestedAmount?: number | null
+  isApprovedByDirector?: boolean
+  attachmentUrl?: string | null
+  requestCategory?: $Enums.TicketRequestCategory | null
+  fieldCategory?: $Enums.TicketFieldCategory | null
+  recipientName?: string | null
+  bankName?: string | null
+  accountNumber?: string | null
+  purchaseReceiptUrl?: string | null
+  transferReceiptUrl?: string | null
+  transferDestination?: string | null
+  deliveryReceiptUrl?: string | null
+  deliveryOrderReceiptUrl?: string | null
+  moverAssigneeId?: string | null
+  requesterId: string
+  projectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
+  auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
+  operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutTicketInput
+}
+
+export type TicketCreateOrConnectWithoutDirectStockPurchasesInput = {
+  where: Prisma.TicketWhereUniqueInput
+  create: Prisma.XOR<Prisma.TicketCreateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedCreateWithoutDirectStockPurchasesInput>
+}
+
+export type TicketUpsertWithoutDirectStockPurchasesInput = {
+  update: Prisma.XOR<Prisma.TicketUpdateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedUpdateWithoutDirectStockPurchasesInput>
+  create: Prisma.XOR<Prisma.TicketCreateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedCreateWithoutDirectStockPurchasesInput>
+  where?: Prisma.TicketWhereInput
+}
+
+export type TicketUpdateToOneWithWhereWithoutDirectStockPurchasesInput = {
+  where?: Prisma.TicketWhereInput
+  data: Prisma.XOR<Prisma.TicketUpdateWithoutDirectStockPurchasesInput, Prisma.TicketUncheckedUpdateWithoutDirectStockPurchasesInput>
+}
+
+export type TicketUpdateWithoutDirectStockPurchasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumTicketTypeFieldUpdateOperationsInput | $Enums.TicketType
+  priority?: Prisma.EnumTicketPriorityFieldUpdateOperationsInput | $Enums.TicketPriority
+  status?: Prisma.EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
+  fulfillmentStatus?: Prisma.EnumTicketFulfillmentStatusFieldUpdateOperationsInput | $Enums.TicketFulfillmentStatus
+  totalAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  requestedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestCategory?: Prisma.NullableEnumTicketRequestCategoryFieldUpdateOperationsInput | $Enums.TicketRequestCategory | null
+  fieldCategory?: Prisma.NullableEnumTicketFieldCategoryFieldUpdateOperationsInput | $Enums.TicketFieldCategory | null
+  recipientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purchaseReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryOrderReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requester?: Prisma.UserUpdateOneRequiredWithoutTicketsNestedInput
+  moverAssignee?: Prisma.UserUpdateOneWithoutAssignedMoverTicketsNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
+  items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
+  auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
+  operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutTicketNestedInput
+}
+
+export type TicketUncheckedUpdateWithoutDirectStockPurchasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumTicketTypeFieldUpdateOperationsInput | $Enums.TicketType
+  priority?: Prisma.EnumTicketPriorityFieldUpdateOperationsInput | $Enums.TicketPriority
+  status?: Prisma.EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
+  fulfillmentStatus?: Prisma.EnumTicketFulfillmentStatusFieldUpdateOperationsInput | $Enums.TicketFulfillmentStatus
+  totalAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  requestedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestCategory?: Prisma.NullableEnumTicketRequestCategoryFieldUpdateOperationsInput | $Enums.TicketRequestCategory | null
+  fieldCategory?: Prisma.NullableEnumTicketFieldCategoryFieldUpdateOperationsInput | $Enums.TicketFieldCategory | null
+  recipientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purchaseReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryOrderReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moverAssigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
+  auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
+  operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutTicketNestedInput
+}
+
 export type TicketCreateWithoutPurchaseOrdersInput = {
   id?: string
   ticketNumber: string
@@ -1497,6 +1686,7 @@ export type TicketCreateWithoutPurchaseOrdersInput = {
   moverAssignee?: Prisma.UserCreateNestedOneWithoutAssignedMoverTicketsInput
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -1532,6 +1722,7 @@ export type TicketUncheckedCreateWithoutPurchaseOrdersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -1583,6 +1774,7 @@ export type TicketUpdateWithoutPurchaseOrdersInput = {
   moverAssignee?: Prisma.UserUpdateOneWithoutAssignedMoverTicketsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -1618,6 +1810,7 @@ export type TicketUncheckedUpdateWithoutPurchaseOrdersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -1654,6 +1847,7 @@ export type TicketCreateWithoutPaymentTransactionsInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutTicketInput
@@ -1689,6 +1883,7 @@ export type TicketUncheckedCreateWithoutPaymentTransactionsInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutTicketInput
@@ -1740,6 +1935,7 @@ export type TicketUpdateWithoutPaymentTransactionsInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutTicketNestedInput
@@ -1775,6 +1971,7 @@ export type TicketUncheckedUpdateWithoutPaymentTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutTicketNestedInput
@@ -1810,6 +2007,7 @@ export type TicketCreateWithoutDeliveryOrdersInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -1845,6 +2043,7 @@ export type TicketUncheckedCreateWithoutDeliveryOrdersInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -1896,6 +2095,7 @@ export type TicketUpdateWithoutDeliveryOrdersInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -1931,6 +2131,7 @@ export type TicketUncheckedUpdateWithoutDeliveryOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -1966,6 +2167,7 @@ export type TicketCreateWithoutOperationalDocumentsInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutTicketInput
@@ -2001,6 +2203,7 @@ export type TicketUncheckedCreateWithoutOperationalDocumentsInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutTicketInput
@@ -2052,6 +2255,7 @@ export type TicketUpdateWithoutOperationalDocumentsInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutTicketNestedInput
@@ -2087,6 +2291,7 @@ export type TicketUncheckedUpdateWithoutOperationalDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutTicketNestedInput
@@ -2121,6 +2326,7 @@ export type TicketCreateWithoutItemsInput = {
   moverAssignee?: Prisma.UserCreateNestedOneWithoutAssignedMoverTicketsInput
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
@@ -2156,6 +2362,7 @@ export type TicketUncheckedCreateWithoutItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   auditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
@@ -2207,6 +2414,7 @@ export type TicketUpdateWithoutItemsInput = {
   moverAssignee?: Prisma.UserUpdateOneWithoutAssignedMoverTicketsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -2242,6 +2450,7 @@ export type TicketUncheckedUpdateWithoutItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -2278,6 +2487,7 @@ export type TicketCreateWithoutAuditLogsInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutTicketsInput
   items?: Prisma.TicketItemCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutTicketInput
@@ -2313,6 +2523,7 @@ export type TicketUncheckedCreateWithoutAuditLogsInput = {
   updatedAt?: Date | string
   items?: Prisma.TicketItemUncheckedCreateNestedManyWithoutTicketInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutTicketInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutTicketInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutTicketInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutTicketInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutTicketInput
@@ -2364,6 +2575,7 @@ export type TicketUpdateWithoutAuditLogsInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutTicketNestedInput
@@ -2399,6 +2611,7 @@ export type TicketUncheckedUpdateWithoutAuditLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutTicketNestedInput
@@ -2491,6 +2704,7 @@ export type TicketUpdateWithoutRequesterInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -2526,6 +2740,7 @@ export type TicketUncheckedUpdateWithoutRequesterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -2590,6 +2805,7 @@ export type TicketUpdateWithoutMoverAssigneeInput = {
   project?: Prisma.ProjectUpdateOneWithoutTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -2625,6 +2841,7 @@ export type TicketUncheckedUpdateWithoutMoverAssigneeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -2718,6 +2935,7 @@ export type TicketUpdateWithoutProjectInput = {
   moverAssignee?: Prisma.UserUpdateOneWithoutAssignedMoverTicketsNestedInput
   items?: Prisma.TicketItemUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutTicketNestedInput
@@ -2753,6 +2971,7 @@ export type TicketUncheckedUpdateWithoutProjectInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.TicketItemUncheckedUpdateManyWithoutTicketNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutTicketNestedInput
+  directStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutTicketNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutTicketNestedInput
   auditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutTicketNestedInput
   operationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutTicketNestedInput
@@ -2796,6 +3015,7 @@ export type TicketUncheckedUpdateManyWithoutProjectInput = {
 export type TicketCountOutputType = {
   items: number
   purchaseOrders: number
+  directStockPurchases: number
   paymentTransactions: number
   auditLogs: number
   operationalDocuments: number
@@ -2805,6 +3025,7 @@ export type TicketCountOutputType = {
 export type TicketCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   items?: boolean | TicketCountOutputTypeCountItemsArgs
   purchaseOrders?: boolean | TicketCountOutputTypeCountPurchaseOrdersArgs
+  directStockPurchases?: boolean | TicketCountOutputTypeCountDirectStockPurchasesArgs
   paymentTransactions?: boolean | TicketCountOutputTypeCountPaymentTransactionsArgs
   auditLogs?: boolean | TicketCountOutputTypeCountAuditLogsArgs
   operationalDocuments?: boolean | TicketCountOutputTypeCountOperationalDocumentsArgs
@@ -2833,6 +3054,13 @@ export type TicketCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Ex
  */
 export type TicketCountOutputTypeCountPurchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PurchaseOrderWhereInput
+}
+
+/**
+ * TicketCountOutputType without action
+ */
+export type TicketCountOutputTypeCountDirectStockPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DirectStockPurchaseWhereInput
 }
 
 /**
@@ -2897,6 +3125,7 @@ export type TicketSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   project?: boolean | Prisma.Ticket$projectArgs<ExtArgs>
   items?: boolean | Prisma.Ticket$itemsArgs<ExtArgs>
   purchaseOrders?: boolean | Prisma.Ticket$purchaseOrdersArgs<ExtArgs>
+  directStockPurchases?: boolean | Prisma.Ticket$directStockPurchasesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Ticket$paymentTransactionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.Ticket$auditLogsArgs<ExtArgs>
   operationalDocuments?: boolean | Prisma.Ticket$operationalDocumentsArgs<ExtArgs>
@@ -3007,6 +3236,7 @@ export type TicketInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   project?: boolean | Prisma.Ticket$projectArgs<ExtArgs>
   items?: boolean | Prisma.Ticket$itemsArgs<ExtArgs>
   purchaseOrders?: boolean | Prisma.Ticket$purchaseOrdersArgs<ExtArgs>
+  directStockPurchases?: boolean | Prisma.Ticket$directStockPurchasesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Ticket$paymentTransactionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.Ticket$auditLogsArgs<ExtArgs>
   operationalDocuments?: boolean | Prisma.Ticket$operationalDocumentsArgs<ExtArgs>
@@ -3032,6 +3262,7 @@ export type $TicketPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     project: Prisma.$ProjectPayload<ExtArgs> | null
     items: Prisma.$TicketItemPayload<ExtArgs>[]
     purchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
+    directStockPurchases: Prisma.$DirectStockPurchasePayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     auditLogs: Prisma.$TicketAuditLogPayload<ExtArgs>[]
     operationalDocuments: Prisma.$OperationalDocumentPayload<ExtArgs>[]
@@ -3464,6 +3695,7 @@ export interface Prisma__TicketClient<T, Null = never, ExtArgs extends runtime.T
   project<T extends Prisma.Ticket$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   items<T extends Prisma.Ticket$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseOrders<T extends Prisma.Ticket$purchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$purchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  directStockPurchases<T extends Prisma.Ticket$directStockPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$directStockPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Ticket$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.Ticket$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   operationalDocuments<T extends Prisma.Ticket$operationalDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ticket$operationalDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OperationalDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4008,6 +4240,30 @@ export type Ticket$purchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.PurchaseOrderScalarFieldEnum | Prisma.PurchaseOrderScalarFieldEnum[]
+}
+
+/**
+ * Ticket.directStockPurchases
+ */
+export type Ticket$directStockPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DirectStockPurchase
+   */
+  select?: Prisma.DirectStockPurchaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DirectStockPurchase
+   */
+  omit?: Prisma.DirectStockPurchaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DirectStockPurchaseInclude<ExtArgs> | null
+  where?: Prisma.DirectStockPurchaseWhereInput
+  orderBy?: Prisma.DirectStockPurchaseOrderByWithRelationInput | Prisma.DirectStockPurchaseOrderByWithRelationInput[]
+  cursor?: Prisma.DirectStockPurchaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DirectStockPurchaseScalarFieldEnum | Prisma.DirectStockPurchaseScalarFieldEnum[]
 }
 
 /**

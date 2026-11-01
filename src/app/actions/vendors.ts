@@ -95,11 +95,92 @@ export async function createVendor(
   }
 
   revalidatePath("/apps/logistics");
+  revalidatePath("/apps/logistics/stock");
   revalidatePath("/apps/approvals");
   revalidatePath("/api/vendors");
   return {
     success: true,
     message: "Vendor baru berhasil disimpan.",
+    vendor,
+  };
+}
+
+export async function updateVendor(
+  vendorId: string,
+  input: VendorInput,
+): Promise<VendorActionResult> {
+  const session = await auth();
+  if (
+    !session?.user?.id ||
+    (session.user.role !== UserRole.LOGISTICS &&
+      session.user.role !== UserRole.ADMINISTRATIONS)
+  ) {
+    return failure("Hanya Logistik atau Administrasi yang dapat mengubah vendor.");
+  }
+  if (
+    typeof vendorId !== "string" ||
+    vendorId.trim().length === 0 ||
+    vendorId.length > 64 ||
+    !input ||
+    typeof input.name !== "string" ||
+    input.name.trim().length < 2 ||
+    input.name.trim().length > 180 ||
+    typeof input.category !== "string" ||
+    input.category.trim().length < 2 ||
+    input.category.trim().length > 100 ||
+    !validOptionalText(input.address, 500) ||
+    !validOptionalText(input.phone, 60) ||
+    !validOptionalText(input.email, 180) ||
+    !validOptionalText(input.bankName, 120) ||
+    !validOptionalText(input.bankAccount, 80) ||
+    !validOptionalText(input.bankHolder, 180)
+  ) {
+    return failure("Data vendor tidak valid. Periksa kembali informasi yang diisi.");
+  }
+
+  let vendor: NonNullable<VendorActionResult["vendor"]>;
+  try {
+    vendor = await prisma.vendor.update({
+      where: { id: vendorId },
+      data: {
+        name: input.name.trim(),
+        category: input.category.trim(),
+        address: input.address?.trim() || null,
+        phone: input.phone?.trim() || null,
+        email: input.email?.trim() || null,
+        bankName: input.bankName?.trim() || null,
+        bankAccount: input.bankAccount?.trim() || null,
+        bankHolder: input.bankHolder?.trim() || null,
+      },
+      select: {
+        id: true,
+        name: true,
+        bankName: true,
+        bankAccount: true,
+        bankHolder: true,
+      },
+    });
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "P2025"
+    ) {
+      return failure("Vendor tidak ditemukan.");
+    }
+    console.error("Vendor update failed:", error);
+    return failure("Vendor gagal diperbarui. Periksa data lalu coba kembali.");
+  }
+
+  revalidatePath("/apps/logistics");
+  revalidatePath("/apps/logistics/stock");
+  revalidatePath("/apps/approvals");
+  revalidatePath("/apps/finance");
+  revalidatePath("/api/vendors");
+  return {
+    success: true,
+    message: "Data vendor berhasil diperbarui.",
     vendor,
   };
 }

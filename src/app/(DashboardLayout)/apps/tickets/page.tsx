@@ -168,6 +168,18 @@ const Tickets = async ({
             },
           },
         },
+        directStockPurchases: {
+          orderBy: { createdAt: "desc" },
+          select: {
+            id: true,
+            purchaseNumber: true,
+            vendorName: true,
+            totalAmount: true,
+            status: true,
+            isApprovedByDirector: true,
+            createdAt: true,
+          },
+        },
         paymentTransactions: {
           where: { status: PaymentStatus.PAID },
           orderBy: { createdAt: "desc" },
@@ -276,6 +288,11 @@ const Tickets = async ({
       ...purchaseOrder,
       createdAt: purchaseOrder.createdAt.toISOString(),
       paidAt: purchaseOrder.paidAt?.toISOString() ?? null,
+    })),
+    directStockPurchases: ticket.directStockPurchases.map((purchase) => ({
+      ...purchase,
+      totalAmount: purchase.totalAmount.toString(),
+      createdAt: purchase.createdAt.toISOString(),
     })),
     paymentTransactions:
       session.user.role === UserRole.FINANCE ||

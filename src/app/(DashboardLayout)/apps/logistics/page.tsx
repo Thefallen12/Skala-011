@@ -333,6 +333,18 @@ export default async function LogisticsPage({
             paidAt: true,
           },
         },
+        directStockPurchases: {
+          orderBy: { createdAt: "desc" },
+          select: {
+            id: true,
+            purchaseNumber: true,
+            vendorName: true,
+            totalAmount: true,
+            status: true,
+            isApprovedByDirector: true,
+            createdAt: true,
+          },
+        },
         deliveryOrders: {
           orderBy: { createdAt: "desc" },
           select: {
@@ -454,6 +466,9 @@ export default async function LogisticsPage({
           select: { id: true, itemName: true, quantity: true, unit: true },
         },
         receivedBy: { select: { name: true } },
+        ticket: {
+          select: { id: true, ticketNumber: true, title: true },
+        },
       },
     }),
     prisma.vehicle.findMany({
@@ -541,6 +556,11 @@ export default async function LogisticsPage({
       ...purchaseOrder,
       createdAt: purchaseOrder.createdAt.toISOString(),
       paidAt: purchaseOrder.paidAt?.toISOString() ?? null,
+    })),
+    directStockPurchases: ticket.directStockPurchases.map((purchase) => ({
+      ...purchase,
+      totalAmount: purchase.totalAmount.toString(),
+      createdAt: purchase.createdAt.toISOString(),
     })),
     deliveryOrders: ticket.deliveryOrders.map((deliveryOrder) => ({
       ...deliveryOrder,

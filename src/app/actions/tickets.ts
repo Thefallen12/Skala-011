@@ -626,6 +626,7 @@ const directPurchaseFailure = (
 
 export async function createDirectStockPurchase(input: {
   vendorId: string;
+  ticketId?: string;
   items: { stockItemId: string; quantity: string; unitPrice: string }[];
   reference?: string;
   notes?: string;
@@ -645,6 +646,10 @@ export async function createDirectStockPurchase(input: {
     !input ||
     typeof input.vendorId !== "string" ||
     !input.vendorId.trim() ||
+    (input.ticketId !== undefined &&
+      (typeof input.ticketId !== "string" ||
+        !input.ticketId.trim() ||
+        input.ticketId.length > 64)) ||
     !Array.isArray(input.items) ||
     input.items.length === 0 ||
     input.items.length > 50 ||
@@ -694,6 +699,20 @@ export async function createDirectStockPurchase(input: {
         throw new Error("Vendor tidak ditemukan atau belum disetujui.");
       }
 
+      const ticket = input.ticketId
+        ? await transaction.ticket.findFirst({
+            where: {
+              id: input.ticketId,
+              type: TicketType.MATERIAL,
+              status: { not: TicketStatus.REJECTED },
+            },
+            select: { id: true, ticketNumber: true },
+          })
+        : null;
+      if (input.ticketId && !ticket) {
+        throw new Error("Tiket material tidak ditemukan atau sudah ditolak.");
+      }
+
       const stockItems = await transaction.stockItem.findMany({
         where: { id: { in: input.items.map((item) => item.stockItemId) } },
         select: { id: true, name: true, unit: true },
@@ -732,6 +751,7 @@ export async function createDirectStockPurchase(input: {
         data: {
           purchaseNumber: number,
           vendorId: vendor.id,
+          ticketId: ticket?.id ?? null,
           vendorName: vendor.name,
           paymentMethod: hasBankDetails
             ? POPaymentMethod.TRANSFER
@@ -748,6 +768,16 @@ export async function createDirectStockPurchase(input: {
           items: { create: items },
         },
       });
+      if (ticket) {
+        await transaction.ticketAuditLog.create({
+          data: {
+            ticketId: ticket.id,
+            userId: session.user.id,
+            action: "LOGISTICS_DIRECT_PURCHASE_CREATED",
+            notes: `Pembelian langsung ${number} ditautkan ke permintaan ini.`,
+          },
+        });
+      }
       await sendNotification({
         roleTarget: [UserRole.DIRECTOR, UserRole.DEPUTY_DIRECTOR],
         title: "Pembelian Langsung Menunggu Persetujuan",
@@ -761,6 +791,7 @@ export async function createDirectStockPurchase(input: {
 
     revalidatePath("/apps/logistics/stock");
     revalidatePath("/apps/logistics");
+    revalidatePath("/apps/tickets");
     return {
       success: true,
       message: `Pembelian ${purchaseNumber} tercatat dan menunggu persetujuan Direktur. Stok belum berubah.`,
@@ -771,7 +802,8 @@ export async function createDirectStockPurchase(input: {
     return directPurchaseFailure(
       error instanceof Error &&
         (error.message.startsWith("Vendor ") ||
-          error.message.startsWith("Satu atau lebih"))
+        error.message.startsWith("Tiket ") ||
+        error.message.startsWith("Satu atau lebih"))
         ? error.message
         : "Pembelian stok gagal dicatat. Periksa data lalu coba kembali.",
     );
@@ -1013,6 +1045,7 @@ export async function receiveDirectStockPurchase(
 
     revalidatePath("/apps/logistics/stock");
     revalidatePath("/apps/logistics");
+    revalidatePath("/apps/tickets");
     return {
       success: true,
       message: `Pembelian ${purchaseNumber} diterima. Saldo stok telah diperbarui.`,

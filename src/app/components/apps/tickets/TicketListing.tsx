@@ -112,6 +112,7 @@ const auditActionLabels: Record<string, string> = {
   LOGISTICS_SWITCHED_TO_PURCHASE: "Dialihkan ke pengadaan baru",
   LOGISTICS_BUY_STORE: "Dibeli di toko; diteruskan ke Keuangan",
   LOGISTICS_PO_CREATED: "PO dibuat; menunggu persetujuan",
+  LOGISTICS_DIRECT_PURCHASE_CREATED: "Pembelian langsung ditautkan",
   DOCUMENT_ISSUED: "Dokumen PO/DO diterbitkan",
   FINANCE_PAYMENT_COMPLETED: "Pembayaran diselesaikan",
   MOVER_DELIVERY_COMPLETED: "Barang diterima di lapangan",
@@ -708,6 +709,44 @@ export default function TicketListing({
                   <p className="text-sm">
                     Total estimasi: {formatCurrency(selectedTicket.totalAmount)}
                   </p>
+                  {(selectedTicket.directStockPurchases?.length ?? 0) > 0 && (
+                    <div className="space-y-2 rounded-md border p-3">
+                      <h4 className="font-semibold">Pembelian Langsung Terkait</h4>
+                      {selectedTicket.directStockPurchases!.map((purchase) => (
+                        <div
+                          key={purchase.id}
+                          className="flex flex-wrap items-center justify-between gap-3 border-t pt-2 first:border-0 first:pt-0"
+                        >
+                          <div>
+                            <p className="font-medium">
+                              {purchase.purchaseNumber} · {purchase.vendorName}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {format(
+                                new Date(purchase.createdAt),
+                                "d MMM yyyy, HH:mm",
+                                { locale: id },
+                              )}{" "}
+                              · {formatCurrency(purchase.totalAmount)}
+                            </p>
+                          </div>
+                          <Badge
+                            variant={
+                              purchase.status === "RECEIVED"
+                                ? "lightSuccess"
+                                : "lightWarning"
+                            }
+                          >
+                            {purchase.status === "RECEIVED"
+                              ? "Diterima"
+                              : purchase.isApprovedByDirector
+                                ? "Dalam proses"
+                                : "Menunggu Direktur"}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {selectedTicket.type === TicketType.MATERIAL &&
                     (role === UserRole.LOGISTICS ||
                       role === UserRole.DIRECTOR ||

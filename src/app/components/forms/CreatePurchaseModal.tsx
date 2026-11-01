@@ -37,11 +37,18 @@ type PurchaseVendor = {
   bankHolder: string | null;
 };
 
+type PurchaseTicket = {
+  id: string;
+  ticketNumber: string;
+  title: string;
+};
+
 export default function CreatePurchaseModal({
   open,
   onOpenChange,
   vendors,
   stockItems,
+  tickets = [],
   initialType = "DIRECT_PURCHASE",
   onCreated,
 }: {
@@ -49,6 +56,7 @@ export default function CreatePurchaseModal({
   onOpenChange: (open: boolean) => void;
   vendors: PurchaseVendor[];
   stockItems: PurchaseStockItem[];
+  tickets?: PurchaseTicket[];
   initialType?: PurchaseModalType;
   onCreated: (message: string) => void;
 }) {
@@ -127,6 +135,7 @@ export default function CreatePurchaseModal({
             key={open ? "direct-purchase-open" : "direct-purchase-closed"}
             stockItems={stockItems}
             vendors={vendors}
+            tickets={tickets}
             onCancel={() => changeOpen(false)}
             onCreated={handleCreated}
           />

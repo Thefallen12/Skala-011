@@ -507,6 +507,7 @@ export const DirectStockPurchaseScalarFieldEnum = {
   id: 'id',
   purchaseNumber: 'purchaseNumber',
   vendorId: 'vendorId',
+  ticketId: 'ticketId',
   vendorName: 'vendorName',
   paymentMethod: 'paymentMethod',
   paymentBankName: 'paymentBankName',

@@ -47,6 +47,12 @@ type PurchaseStockItem = {
   unitPrice: string;
 };
 
+type PurchaseTicket = {
+  id: string;
+  ticketNumber: string;
+  title: string;
+};
+
 type PurchaseLine = {
   key: number;
   stockItemId: string;
@@ -63,11 +69,13 @@ const currency = new Intl.NumberFormat("id-ID", {
 export default function DirectStockPurchaseForm({
   stockItems,
   vendors,
+  tickets = [],
   onCancel,
   onCreated,
 }: {
   stockItems: PurchaseStockItem[];
   vendors: PurchaseVendorOption[];
+  tickets?: PurchaseTicket[];
   onCancel?: () => void;
   onCreated?: (message: string) => void;
 }) {
@@ -79,6 +87,7 @@ export default function DirectStockPurchaseForm({
   const [catalogItems, setCatalogItems] = useState(stockItems);
   const [vendorId, setVendorId] = useState("");
   const [availableVendors, setAvailableVendors] = useState(vendors);
+  const [ticketId, setTicketId] = useState("");
   const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemUnit, setNewItemUnit] = useState("pcs");
@@ -193,6 +202,7 @@ export default function DirectStockPurchaseForm({
       try {
         const result = await createDirectStockPurchase({
           vendorId: vendor.id,
+          ...(ticketId ? { ticketId } : {}),
           items: items.map(({ stockItemId, quantity, unitPrice }) => ({
             stockItemId,
             quantity,
@@ -283,6 +293,33 @@ export default function DirectStockPurchaseForm({
           </p>
         </div>
       )}
+
+      <div className="space-y-2">
+        <Label htmlFor="direct-stock-ticket">
+          Tautkan ke Tiket / Permintaan (opsional)
+        </Label>
+        <Select
+          value={ticketId || "none"}
+          onValueChange={(value) => setTicketId(value === "none" ? "" : value)}
+          disabled={isPending}
+        >
+          <SelectTrigger id="direct-stock-ticket">
+            <SelectValue placeholder="Tidak ditautkan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">Tidak ditautkan</SelectItem>
+            {tickets.map((ticket) => (
+              <SelectItem key={ticket.id} value={ticket.id}>
+                {ticket.ticketNumber} · {ticket.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          Pembelian akan tampil pada detail permintaan yang dipilih. Data lama
+          tetap tidak tertaut.
+        </p>
+      </div>
 
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3">

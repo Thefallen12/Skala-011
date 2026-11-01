@@ -84,6 +84,15 @@ export type TicketRow = {
     createdAt: string;
     paidAt?: string | null;
   }[];
+  directStockPurchases?: {
+    id: string;
+    purchaseNumber: string;
+    vendorName: string;
+    totalAmount: string;
+    status: "PENDING_RECEIPT" | "RECEIVED";
+    isApprovedByDirector: boolean;
+    createdAt: string;
+  }[];
   deliveryOrders?: {
     publicCode: string;
     doNumber: string;

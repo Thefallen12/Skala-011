@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
 import LogisticsWorkspace from "@/app/components/apps/tickets/LogisticsWorkspace";
-import { PaymentStatus, UserRole } from "@/generated/prisma/enums";
+import {
+  PaymentStatus,
+  TicketStatus,
+  TicketType,
+  UserRole,
+} from "@/generated/prisma/enums";
 import { auth } from "../../../../../../auth";
 import { prisma } from "@/lib/prisma";
 
@@ -32,7 +37,13 @@ export default async function LogisticsStockPage({
         ? "stock-purchase"
         : undefined;
 
-  const [stockItems, projects, vendors, directStockPurchases] = await Promise.all([
+  const [
+    stockItems,
+    projects,
+    vendors,
+    directStockPurchases,
+    purchaseTickets,
+  ] = await Promise.all([
     prisma.stockItem.findMany({
       orderBy: { name: "asc" },
     }),
@@ -74,8 +85,19 @@ export default async function LogisticsStockPage({
               select: { id: true, itemName: true, quantity: true, unit: true },
             },
             receivedBy: { select: { name: true } },
+            ticket: {
+              select: { id: true, ticketNumber: true, title: true },
+            },
           },
         }),
+    prisma.ticket.findMany({
+      where: {
+        type: TicketType.MATERIAL,
+        status: { not: TicketStatus.REJECTED },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, ticketNumber: true, title: true },
+    }),
   ]);
 
   return (
@@ -94,6 +116,7 @@ export default async function LogisticsStockPage({
         role={session.user.role}
         mode="stock"
         initialAction={initialAction}
+        purchaseTickets={purchaseTickets}
         vendors={vendors}
         stockItems={stockItems.map((item) => ({
           ...item,

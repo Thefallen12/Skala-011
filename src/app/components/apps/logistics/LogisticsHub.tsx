@@ -8,7 +8,7 @@ import {
   createEquipmentLog,
   createEquipmentMaster,
 } from "@/app/actions/construction";
-import { createVendor } from "@/app/actions/vendors";
+import { createVendor, updateVendor } from "@/app/actions/vendors";
 import LogisticsWorkspace from "@/app/components/apps/tickets/LogisticsWorkspace";
 import VehicleFleetPanel from "@/app/components/apps/logistics/VehicleFleetPanel";
 import VehicleOperationsPanel from "@/app/components/apps/logistics/VehicleOperationsPanel";
@@ -53,7 +53,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Boxes, FileText, Fuel, TicketCheck, Truck } from "lucide-react";
+import { Boxes, FileText, Fuel, Pencil, TicketCheck, Truck } from "lucide-react";
 
 type LogisticsStockItem = {
   id: string;
@@ -79,6 +79,7 @@ type DirectStockPurchaseRow = {
   arrivalPhotoUrl: string | null;
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
+  ticket: { id: string; ticketNumber: string; title: string } | null;
 };
 
 type LogisticsVendor = {
@@ -186,6 +187,7 @@ export default function LogisticsHub({
   const [equipmentSheetOpen, setEquipmentSheetOpen] = useState(false);
   const [equipmentMasterSheetOpen, setEquipmentMasterSheetOpen] = useState(false);
   const [vendorSheetOpen, setVendorSheetOpen] = useState(false);
+  const [editingVendor, setEditingVendor] = useState<LogisticsVendor | null>(null);
   const [vendorMessage, setVendorMessage] = useState("");
   const [isPending, startTransition] = useTransition();
   const openDocumentPreview = (document: NonNullable<DocumentSelection>) => {
@@ -254,26 +256,30 @@ export default function LogisticsHub({
   const submitVendor = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const input = {
+      name: String(formData.get("name") ?? ""),
+      category: String(formData.get("category") ?? ""),
+      address: String(formData.get("address") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      bankName: String(formData.get("bankName") ?? ""),
+      bankAccount: String(formData.get("bankAccount") ?? ""),
+      bankHolder: String(formData.get("bankHolder") ?? ""),
+    };
     setVendorMessage("");
     startTransition(async () => {
       try {
-        const result = await createVendor({
-          name: String(formData.get("name") ?? ""),
-          category: String(formData.get("category") ?? ""),
-          address: String(formData.get("address") ?? ""),
-          phone: String(formData.get("phone") ?? ""),
-          email: String(formData.get("email") ?? ""),
-          bankName: String(formData.get("bankName") ?? ""),
-          bankAccount: String(formData.get("bankAccount") ?? ""),
-          bankHolder: String(formData.get("bankHolder") ?? ""),
-        });
+        const result = editingVendor
+          ? await updateVendor(editingVendor.id, input)
+          : await createVendor(input);
         setVendorMessage(result.message);
         if (result.success) {
           setVendorSheetOpen(false);
+          setEditingVendor(null);
           router.refresh();
         }
       } catch (error) {
-        console.error("Vendor creation failed:", error);
+        console.error("Vendor save failed:", error);
         setVendorMessage("Vendor gagal disimpan. Silakan coba kembali.");
       }
     });
@@ -331,6 +337,11 @@ export default function LogisticsHub({
           mode="stock"
           stockItems={stockItems}
           stockPurchases={stockPurchases}
+          purchaseTickets={tickets.map(({ id, ticketNumber, title }) => ({
+            id,
+            ticketNumber,
+            title,
+          }))}
         />
       </TabsContent>
 
@@ -440,6 +451,7 @@ export default function LogisticsHub({
               type="button"
               onClick={() => {
                 setVendorMessage("");
+                setEditingVendor(null);
                 setVendorSheetOpen(true);
               }}
             >
@@ -456,6 +468,7 @@ export default function LogisticsHub({
                     <TableHead>Bank</TableHead>
                     <TableHead>No. Rek</TableHead>
                     <TableHead>Kontak</TableHead>
+                    <TableHead className="w-24 text-right">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -466,11 +479,26 @@ export default function LogisticsHub({
                       <TableCell>{vendor.bankName ?? "—"}</TableCell>
                       <TableCell>{vendor.bankAccount ?? "—"}</TableCell>
                       <TableCell>{vendor.phone ?? vendor.email ?? "—"}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setVendorMessage("");
+                            setEditingVendor(vendor);
+                            setVendorSheetOpen(true);
+                          }}
+                        >
+                          <Pencil aria-hidden="true" />
+                          Edit
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                   {vendors.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
+                      <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                         Belum ada vendor di katalog.
                       </TableCell>
                     </TableRow>
@@ -590,47 +618,59 @@ export default function LogisticsHub({
         </div>
       </TabsContent>
 
-      <Sheet open={vendorSheetOpen} onOpenChange={setVendorSheetOpen}>
+      <Sheet
+        open={vendorSheetOpen}
+        onOpenChange={(open) => {
+          setVendorSheetOpen(open);
+          if (!open) setEditingVendor(null);
+        }}
+      >
         <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
           <SheetHeader className="pr-8">
-            <SheetTitle>Tambah Vendor Baru</SheetTitle>
+            <SheetTitle>
+              {editingVendor ? "Edit Vendor" : "Tambah Vendor Baru"}
+            </SheetTitle>
             <SheetDescription>
               Data rekening vendor akan digunakan otomatis saat membuat PO.
             </SheetDescription>
           </SheetHeader>
-          <form className="mt-6 space-y-4" onSubmit={submitVendor}>
+          <form
+            key={editingVendor?.id ?? "new-vendor"}
+            className="mt-6 space-y-4"
+            onSubmit={submitVendor}
+          >
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="vendor-name">Nama Vendor</Label>
-                <Input id="vendor-name" name="name" maxLength={180} required />
+                <Input id="vendor-name" name="name" maxLength={180} required defaultValue={editingVendor?.name ?? ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor-category">Kategori</Label>
-                <Input id="vendor-category" name="category" maxLength={100} required />
+                <Input id="vendor-category" name="category" maxLength={100} required defaultValue={editingVendor?.category ?? ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor-phone">Kontak / Telepon</Label>
-                <Input id="vendor-phone" name="phone" maxLength={60} />
+                <Input id="vendor-phone" name="phone" maxLength={60} defaultValue={editingVendor?.phone ?? ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor-email">Email</Label>
-                <Input id="vendor-email" name="email" type="email" maxLength={180} />
+                <Input id="vendor-email" name="email" type="email" maxLength={180} defaultValue={editingVendor?.email ?? ""} />
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="vendor-address">Alamat</Label>
-                <Input id="vendor-address" name="address" maxLength={500} />
+                <Input id="vendor-address" name="address" maxLength={500} defaultValue={editingVendor?.address ?? ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor-bank">Nama Bank</Label>
-                <Input id="vendor-bank" name="bankName" maxLength={120} />
+                <Input id="vendor-bank" name="bankName" maxLength={120} defaultValue={editingVendor?.bankName ?? ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor-account">Nomor Rekening</Label>
-                <Input id="vendor-account" name="bankAccount" maxLength={80} />
+                <Input id="vendor-account" name="bankAccount" maxLength={80} defaultValue={editingVendor?.bankAccount ?? ""} />
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="vendor-holder">Nama Pemilik Rekening</Label>
-                <Input id="vendor-holder" name="bankHolder" maxLength={180} />
+                <Input id="vendor-holder" name="bankHolder" maxLength={180} defaultValue={editingVendor?.bankHolder ?? ""} />
               </div>
             </div>
             {vendorMessage && (
@@ -645,7 +685,11 @@ export default function LogisticsHub({
                 </Button>
               </SheetClose>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Menyimpan..." : "Simpan Vendor"}
+                {isPending
+                  ? "Menyimpan..."
+                  : editingVendor
+                    ? "Simpan Perubahan"
+                    : "Simpan Vendor"}
               </Button>
             </SheetFooter>
           </form>

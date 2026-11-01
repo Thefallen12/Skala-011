@@ -156,6 +156,13 @@ type DirectStockPurchaseRow = {
   arrivalPhotoUrl: string | null;
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
+  ticket: { id: string; ticketNumber: string; title: string } | null;
+};
+
+type PurchaseTicketOption = {
+  id: string;
+  ticketNumber: string;
+  title: string;
 };
 
 type LogisticsVendor = {
@@ -175,6 +182,7 @@ export default function LogisticsWorkspace({
   mode = "logistics",
   stockItems = [],
   stockPurchases = [],
+  purchaseTickets = [],
   initialAction,
   initialOpenSheet,
 }: {
@@ -186,6 +194,7 @@ export default function LogisticsWorkspace({
   mode?: "logistics" | "stock";
   stockItems?: LogisticsStockItem[];
   stockPurchases?: DirectStockPurchaseRow[];
+  purchaseTickets?: PurchaseTicketOption[];
   initialAction?: "ticket" | "stock-purchase";
   initialOpenSheet?: string;
 }) {
@@ -832,6 +841,7 @@ export default function LogisticsWorkspace({
                   }
                   vendors={vendors}
                   stockItems={stockItems}
+                  tickets={purchaseTickets}
                   onCreated={(message) => {
                     setStockNotice(message);
                     setPurchaseOpen(false);
@@ -1233,6 +1243,7 @@ export default function LogisticsWorkspace({
                 <TableRow>
                   <TableHead>No. Pembelian</TableHead>
                   <TableHead>Vendor</TableHead>
+                  <TableHead>Tiket / Permintaan</TableHead>
                   <TableHead>Barang</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead>Status</TableHead>
@@ -1250,6 +1261,21 @@ export default function LogisticsWorkspace({
                       </p>
                     </TableCell>
                     <TableCell>{purchase.vendorName}</TableCell>
+                    <TableCell>
+                      {purchase.ticket ? (
+                        <Link
+                          className="font-medium text-primary underline-offset-4 hover:underline"
+                          href={`/apps/logistics?tab=tickets&openSheet=${encodeURIComponent(purchase.ticket.id)}`}
+                        >
+                          {purchase.ticket.ticketNumber}
+                          <span className="block max-w-48 truncate text-xs font-normal text-muted-foreground">
+                            {purchase.ticket.title}
+                          </span>
+                        </Link>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <p>{purchase.items.map((item) => item.itemName).join(", ")}</p>
                       <p className="text-xs text-muted-foreground">
@@ -1321,7 +1347,7 @@ export default function LogisticsWorkspace({
                 {stockPurchases.length === 0 && (
                   <TableRow>
                     <TableCell
-                      colSpan={canCreatePurchaseOrder ? 7 : 6}
+                      colSpan={canCreatePurchaseOrder ? 8 : 7}
                       className="py-8 text-center text-sm text-muted-foreground"
                     >
                       Belum ada pembelian langsung.
