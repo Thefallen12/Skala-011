@@ -164,7 +164,7 @@ export default function VehicleFleetPanel({
             </p>
           )}
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-sm">
+            <table className="app-data-table w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b text-left">
                   <th className="p-3">Nomor Plat</th>

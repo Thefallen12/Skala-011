@@ -399,6 +399,8 @@ export default function ProjectWorkstationMaster({
   const sectionParam = searchParams.get("section");
   const viewParam = searchParams.get("view");
   const projectParam = searchParams.get("projectId");
+  const projectStatusFilter =
+    searchParams.get("status") === "RUNNING" ? "RUNNING" : "ALL";
   const activeSection = sectionParam === "surveys" ? "surveys" : "projects";
   const surveyView = viewParam === "details" ? "details" : "map";
   const surveyProjectId =
@@ -437,7 +439,10 @@ export default function ProjectWorkstationMaster({
   ) ?? [];
   const filteredProjects = projects.filter((project) => {
     const query = search.trim().toLocaleLowerCase("id-ID");
-    return (
+    const matchesStatus =
+      projectStatusFilter === "ALL" ||
+      ["RUNNING", "ON_PROGRESS", "ACTIVE"].includes(project.status);
+    return matchesStatus && (
       !query ||
       [
         project.title,
@@ -781,21 +786,44 @@ export default function ProjectWorkstationMaster({
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="relative">
-            <Search
-              className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
-              aria-hidden="true"
-            />
-            <Input
-              aria-label="Cari proyek"
-              placeholder="Cari nama, kode, lokasi, atau PIC..."
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative min-w-0 flex-1">
+              <Search
+                className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+                aria-hidden="true"
+              />
+              <Input
+                aria-label="Cari proyek"
+                placeholder="Cari nama, kode, lokasi, atau PIC..."
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setProjectPage(1);
+                }}
+                className="border-border bg-background pl-9 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
+              />
+            </div>
+            <Select
+              value={projectStatusFilter}
+              onValueChange={(value) => {
+                const params = new URLSearchParams(searchParams.toString());
+                if (value === "ALL") params.delete("status");
+                else params.set("status", value);
+                params.set("section", "projects");
+                router.replace(`/apps/projects?${params.toString()}`, {
+                  scroll: false,
+                });
                 setProjectPage(1);
               }}
-              className="border-border bg-background pl-9 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
-            />
+            >
+              <SelectTrigger aria-label="Filter status proyek" className="w-full sm:w-52">
+                <SelectValue placeholder="Semua status proyek" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Semua status proyek</SelectItem>
+                <SelectItem value="RUNNING">Proyek berjalan</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           {notice && (
             <p

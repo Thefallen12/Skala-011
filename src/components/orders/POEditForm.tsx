@@ -19,15 +19,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -43,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import PurchaseOrderTemplate from "@/components/documents/PurchaseOrderTemplate";
+import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
 
 type POFormValues = {
   poNumber: string;
@@ -592,86 +584,32 @@ export default function POEditForm({
         <Button
           type="button"
           variant="outline"
-          onClick={() => {
-            if (publicCode) setIsPdfPreviewOpen(true);
-            else window.print();
-          }}
+          disabled={!publicCode}
+          onClick={() => setIsPdfPreviewOpen(true)}
         >
           <Printer className="mr-2 h-4 w-4" /> Pratinjau / Cetak PDF
         </Button>
-      </div>
-      <div className="order-print-template hidden print:block">
-        <PurchaseOrderTemplate
-          poNumber={watchedForm.poNumber ?? ""}
-          date={createdAt ?? ""}
-          vendorName={watchedForm.vendorName ?? ""}
-          vendorAddress={vendorAddress}
-          vendorContact={vendorContact}
-          vendorPhone={vendorPhone}
-          paymentMethod={watchedForm.paymentMethod ?? POPaymentMethod.CASH}
-          paymentBankName={watchedForm.paymentBankName ?? ""}
-          paymentAccountNumber={watchedForm.paymentAccountNumber ?? ""}
-          paymentAccountName={watchedForm.paymentAccountName ?? ""}
-          paymentTerms={watchedForm.paymentTerms ?? ""}
-          includeTax={Boolean(watchedForm.includeTax)}
-          projectSiteName={projectSiteName ?? undefined}
-          items={watchedItems.map((item) => ({
-            ...item,
-            totalPrice: (Number(item.quantity) || 0) * (Number(item.unitPrice) || 0),
-          }))}
-          logisticsStaffName={logisticsStaffName ?? undefined}
-          financeReviewerName={currentReviewer}
-          financeReviewedAt={currentReviewTime}
-          approvedByName={currentApprover}
-          approvedAt={currentApprovalTime}
-          qrDataUrl={currentStatus === "APPROVED" ? currentQr : null}
-        />
+        {!publicCode && (
+          <p className="self-center text-xs text-muted-foreground">
+            Simpan PO terlebih dahulu untuk melihat pratinjau cetak.
+          </p>
+        )}
       </div>
       {publicCode && (
-        <Sheet open={isPdfPreviewOpen} onOpenChange={setIsPdfPreviewOpen}>
-          <SheetContent className="flex h-[100dvh] w-full flex-col sm:max-w-5xl">
-            <SheetHeader>
-              <SheetTitle>Pratinjau PO {poNumber}</SheetTitle>
-              <SheetDescription>
-                Pratinjau dokumen Purchase Order sesuai format cetak.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="mt-4 min-h-0 flex-1 overflow-auto rounded-md border bg-slate-100 p-3">
-              <PurchaseOrderTemplate
-                poNumber={watchedForm.poNumber ?? ""}
-                date={createdAt ?? ""}
-                vendorName={watchedForm.vendorName ?? ""}
-                vendorAddress={vendorAddress}
-                vendorContact={vendorContact}
-                vendorPhone={vendorPhone}
-                paymentMethod={watchedForm.paymentMethod ?? POPaymentMethod.CASH}
-                paymentBankName={watchedForm.paymentBankName ?? ""}
-                paymentAccountNumber={watchedForm.paymentAccountNumber ?? ""}
-                paymentAccountName={watchedForm.paymentAccountName ?? ""}
-                paymentTerms={watchedForm.paymentTerms ?? ""}
-                includeTax={Boolean(watchedForm.includeTax)}
-                projectSiteName={projectSiteName ?? undefined}
-                items={watchedItems.map((item) => ({
-                  itemName: item.itemName ?? "",
-                  quantity: Number(item.quantity) || 0,
-                  unit: item.unit ?? "",
-                  unitPrice: Number(item.unitPrice) || 0,
-                  totalPrice:
-                    (Number(item.quantity) || 0) * (Number(item.unitPrice) || 0),
-                }))}
-                logisticsStaffName={logisticsStaffName ?? undefined}
-                financeReviewerName={currentReviewer}
-                financeReviewedAt={currentReviewTime}
-                approvedByName={currentApprover}
-                approvedAt={currentApprovalTime}
-                qrDataUrl={currentStatus === "APPROVED" ? currentQr : null}
-              />
-            </div>
-            <SheetFooter>
+        <GlobalModal
+          isOpen={isPdfPreviewOpen}
+          onClose={() => setIsPdfPreviewOpen(false)}
+          title={`Pratinjau PO ${poNumber}`}
+          description="Pratinjau dokumen Purchase Order sesuai format cetak."
+          className="max-w-6xl"
+          bodyClassName="flex min-h-[65vh] flex-1 flex-col"
+          footerNote=""
+          footer={
+            <>
               {currentStatus === "APPROVED" && (
                 <Button asChild>
                   <a
-                    href={`/api/documents/po?publicCode=${encodeURIComponent(publicCode)}&download=1`}
+                    href={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(publicCode)}`}
                     download
                   >
                     <Download className="mr-2 h-4 w-4" />
@@ -679,12 +617,21 @@ export default function POEditForm({
                   </a>
                 </Button>
               )}
-              <SheetClose asChild>
-                <Button type="button" variant="outline">Tutup</Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsPdfPreviewOpen(false)}
+              >
+                Tutup
+              </Button>
+            </>
+          }
+        >
+          <UniversalDocumentPreview
+            title={`Purchase Order ${poNumber}`}
+            src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(publicCode)}`}
+          />
+        </GlobalModal>
       )}
     </form>
   );

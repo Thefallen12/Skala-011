@@ -1,10 +1,9 @@
 "use client";
 
-import { CircleCheck, ClipboardList, Clock3 } from "lucide-react";
+import { Activity, CircleCheck, ClipboardList, Clock3 } from "lucide-react";
 import type { TicketRow } from "@/app/(DashboardLayout)/types/ticket";
 import { TicketStatus } from "@/generated/prisma/enums";
 import { Button } from "@/components/ui/button";
-import CardBox from "@/app/components/shared/CardBox";
 import {
   formatTicketCurrency,
   getTotalTicketValueInCents,
@@ -30,6 +29,18 @@ export default function TicketFilter({
       style: "bg-lightprimary text-primary",
     },
     {
+      filter: "ACTIVE",
+      title: "Tiket aktif",
+      count: tickets.filter(
+        (ticket) =>
+          ticket.status !== TicketStatus.DRAFT &&
+          ticket.status !== TicketStatus.COMPLETED &&
+          ticket.status !== TicketStatus.REJECTED,
+      ).length,
+      icon: Activity,
+      style: "bg-lightinfo text-info",
+    },
+    {
       filter: "ACTION_REQUIRED",
       title: "Memerlukan tindakan",
       count: actionRequiredCount,
@@ -47,7 +58,7 @@ export default function TicketFilter({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
       {cards.map(({ filter, title, count, icon: Icon, style }) => (
         <Button
           key={title}
@@ -68,12 +79,21 @@ export default function TicketFilter({
           </span>
         </Button>
       ))}
-      <CardBox className="flex min-h-28 flex-col justify-center bg-lightinfo p-5 text-info">
+      <Button
+        type="button"
+        variant="ghost"
+        aria-label="Tampilkan semua tiket untuk melihat total nilai"
+        aria-pressed={activeFilter === "ALL"}
+        onClick={() => setFilter("ALL")}
+        className={`h-auto min-h-28 w-full flex-col items-start justify-center rounded-md border border-border bg-lightinfo p-5 text-left text-info hover:brightness-95 focus-visible:ring-2 focus-visible:ring-primary ${
+          activeFilter === "ALL" ? "ring-2 ring-primary" : ""
+        }`}
+      >
         <span className="text-2xl font-semibold">
           {formatTicketCurrency(getTotalTicketValueInCents(tickets))}
         </span>
-        <span className="mt-1 text-sm">Total nilai tiket</span>
-      </CardBox>
+        <span className="mt-1 text-sm">Total nilai tiket · lihat semua data</span>
+      </Button>
     </div>
   );
 }

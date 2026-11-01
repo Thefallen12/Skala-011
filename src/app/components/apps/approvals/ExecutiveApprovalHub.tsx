@@ -17,7 +17,7 @@ import {
   approveByDirector,
 } from "@/app/actions/tickets";
 import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
-import PurchaseOrderTemplate from "@/components/documents/PurchaseOrderTemplate";
+import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -581,29 +581,10 @@ export default function ExecutiveApprovalHub({
               PO {qrTitle || signedPo.order.poNumber} telah disetujui
             </CardTitle>
           </CardHeader>
-          <CardContent className="max-h-[75vh] overflow-auto rounded-lg bg-slate-100 p-3">
-            <PurchaseOrderTemplate
-              poNumber={signedPo.order.poNumber}
-              date={dateLabel(signedPo.order.createdAt)}
-              vendorName={signedPo.order.vendorName}
-              vendorAddress={signedPo.order.vendorAddress}
-              vendorContact={signedPo.order.vendorContact}
-              vendorPhone={signedPo.order.vendorPhone}
-              paymentMethod={signedPo.order.paymentMethod}
-              paymentBankName={signedPo.order.paymentBankName ?? ""}
-              paymentAccountNumber={signedPo.order.paymentAccountNumber ?? ""}
-              paymentAccountName={signedPo.order.paymentAccountName ?? ""}
-              paymentTerms={signedPo.order.paymentTerms ?? ""}
-              includeTax={signedPo.order.includeTax}
-              financeReviewerName={
-                signedPo.order.financeReviewerName ?? undefined
-              }
-              financeReviewedAt={signedPo.order.financeReviewedAt ?? undefined}
-              projectSiteName={signedPo.order.projectSiteName}
-              items={signedPo.order.items}
-              approvedByName={signedPo.approvedByName}
-              approvedAt={signedPo.approvedAt}
-              qrDataUrl={signedPo.qrDataUrl}
+          <CardContent>
+            <UniversalDocumentPreview
+              title={`Purchase Order ${signedPo.order.poNumber}`}
+              src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(signedPo.order.publicCode)}`}
             />
           </CardContent>
         </Card>
@@ -653,26 +634,10 @@ export default function ExecutiveApprovalHub({
                   Pemeriksa Keuangan: {selectedPo.financeReviewerName ?? "—"} ·{" "}
                   {selectedPo.financeReviewedAt ?? "Belum diperiksa"}
                 </p>
-                <div className="max-h-[65vh] overflow-auto rounded-lg border bg-slate-100 p-3">
-                  <PurchaseOrderTemplate
-                    poNumber={selectedPo.poNumber}
-                    date={dateLabel(selectedPo.createdAt)}
-                    vendorName={selectedPo.vendorName}
-                    vendorAddress={selectedPo.vendorAddress}
-                    vendorContact={selectedPo.vendorContact}
-                    vendorPhone={selectedPo.vendorPhone}
-                    paymentMethod={selectedPo.paymentMethod}
-                    paymentBankName={selectedPo.paymentBankName ?? ""}
-                    paymentAccountNumber={selectedPo.paymentAccountNumber ?? ""}
-                    paymentAccountName={selectedPo.paymentAccountName ?? ""}
-                    paymentTerms={selectedPo.paymentTerms ?? ""}
-                    includeTax={selectedPo.includeTax}
-                    financeReviewerName={selectedPo.financeReviewerName ?? undefined}
-                    financeReviewedAt={selectedPo.financeReviewedAt ?? undefined}
-                    projectSiteName={selectedPo.projectSiteName}
-                    items={selectedPo.items}
-                  />
-                </div>
+                <UniversalDocumentPreview
+                  title={`Purchase Order ${selectedPo.poNumber}`}
+                  src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(selectedPo.publicCode)}`}
+                />
                 {isExecutive(role) && (
                   <Button
                     disabled={isPending}

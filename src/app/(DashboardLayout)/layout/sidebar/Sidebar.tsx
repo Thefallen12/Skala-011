@@ -216,7 +216,7 @@ const SidebarLayout = ({
       showTrigger={false}
       mode={sidebarMode}
       themeColor={sidebarMode === "dark" ? "#e67e22" : "#102a4d"}
-      className="fixed left-0 top-0 border border-border bg-sidebar dark:bg-sidebar z-10 h-screen"
+      className="fixed left-0 top-0 z-10 h-screen border border-border bg-sidebar/85 backdrop-blur-xl dark:bg-sidebar/85"
     >
       {/* Logo */}
       <div className="px-6 flex items-center brand-logo overflow-hidden">

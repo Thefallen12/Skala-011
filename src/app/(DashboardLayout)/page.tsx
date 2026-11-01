@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import { getTicketPageVisibilityWhere } from "@/lib/ticket-visibility";
 import { getJakartaDateKey, getJakartaDayRange, shiftDateKey } from "@/lib/habit-date";
 import {
   ProjectStatus,
@@ -95,7 +96,7 @@ export default async function DashboardPage() {
     projectCount,
     projectsByStatus,
     recentProjects,
-    ticketCountByStatus,
+    visibleActiveTicketCount,
     recentTickets,
     tasksByStatus,
     monthlyStockMovements,
@@ -126,9 +127,21 @@ export default async function DashboardPage() {
         fieldPic: { select: { name: true } },
       },
     }),
-    prisma.ticket.groupBy({
-      by: ["status"],
-      _count: { _all: true },
+    prisma.ticket.count({
+      where: {
+        AND: [
+          getTicketPageVisibilityWhere(session.user.role, session.user.id),
+          {
+            status: {
+              notIn: [
+                TicketStatus.DRAFT,
+                TicketStatus.COMPLETED,
+                TicketStatus.REJECTED,
+              ],
+            },
+          },
+        ],
+      },
     }),
     prisma.ticket.findMany({
       orderBy: { createdAt: "desc" },
@@ -195,9 +208,6 @@ export default async function DashboardPage() {
   const projectCounts = new Map(
     projectsByStatus.map((entry) => [entry.status, entry._count._all]),
   );
-  const ticketCounts = new Map(
-    ticketCountByStatus.map((entry) => [entry.status, entry._count._all]),
-  );
   const taskCounts = new Map(
     tasksByStatus.map((entry) => [entry.status, entry._count._all]),
   );
@@ -206,14 +216,7 @@ export default async function DashboardPage() {
     (taskCounts.get(WorkTaskStatus.IN_PROGRESS) ?? 0);
   const completedTaskCount = taskCounts.get(WorkTaskStatus.DONE) ?? 0;
   const totalTaskCount = activeTaskCount + completedTaskCount;
-  const activeTickets = ticketCountByStatus
-    .filter(
-      ({ status }) =>
-        status !== TicketStatus.DRAFT &&
-        status !== TicketStatus.COMPLETED &&
-        status !== TicketStatus.REJECTED,
-    )
-    .reduce((total, entry) => total + entry._count._all, 0);
+  const activeTickets = visibleActiveTicketCount;
   const monthlyProjectCounts = Array(12).fill(0) as number[];
   const monthlyTicketCounts = Array(12).fill(0) as number[];
   for (const item of monthlyActivity) {
@@ -239,7 +242,7 @@ export default async function DashboardPage() {
       title: "Total Proyek",
       value: String(projectCount),
       caption: "Aktif & rencana",
-      href: "/apps/projects",
+      href: "/apps/projects?section=projects&status=ALL",
       icon: "projects",
       color: "orange",
     },
@@ -251,7 +254,7 @@ export default async function DashboardPage() {
           (projectCounts.get(ProjectStatus.ACTIVE) ?? 0),
       ),
       caption: `+${monthlyProjectCounts[Number(todayKey.slice(5, 7)) - 1] ?? 0} proyek baru bulan ini`,
-      href: "/apps/projects",
+      href: "/apps/projects?section=projects&status=RUNNING",
       icon: "growth",
       color: "blue",
     },
@@ -267,7 +270,7 @@ export default async function DashboardPage() {
       title: "Tiket Aktif",
       value: String(activeTickets),
       caption: "Membutuhkan tindakan",
-      href: "/apps/tickets",
+      href: "/apps/tickets?filter=ACTIVE#ticket-directory",
       icon: "tickets",
       color: "teal",
     },
@@ -283,7 +286,7 @@ export default async function DashboardPage() {
               user.role === UserRole.ADMINISTRATIONS
             ? "/apps/logistics/stock"
             : user.role === UserRole.FINANCE
-              ? "/apps/finance"
+              ? "/apps/finance?tab=ledger#finance-ledger-tab"
               : "/apps/projects",
       icon: "stock",
       color: "indigo",

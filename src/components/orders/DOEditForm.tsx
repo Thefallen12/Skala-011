@@ -14,13 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { GlobalModal } from "@/components/ui/global-modal";
 import {
   Select,
   SelectContent,
@@ -36,7 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import DeliveryOrderTemplate from "@/components/documents/DeliveryOrderTemplate";
+import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
 import { withLocalPhotoPreview } from "@/lib/photo-urls";
 
 type DeliveryTicketOption = {
@@ -812,13 +806,16 @@ export default function DOEditForm({
         <Button
           type="button"
           variant="outline"
-          onClick={() => {
-            if (publicCode) setIsPdfPreviewOpen(true);
-            else window.print();
-          }}
+          disabled={!publicCode}
+          onClick={() => setIsPdfPreviewOpen(true)}
         >
           <Printer className="mr-2 h-4 w-4" /> Pratinjau / Cetak PDF
         </Button>
+        {!publicCode && (
+          <p className="self-center text-xs text-muted-foreground">
+            Simpan DO terlebih dahulu untuk melihat pratinjau cetak.
+          </p>
+        )}
         <Button
           type="button"
           variant="outline"
@@ -829,95 +826,30 @@ export default function DOEditForm({
           {showQr ? "Sembunyikan QR" : "Tampilkan QR verifikasi"}
         </Button>
       </div>
-      <div className="order-print-template hidden print:block">
-        <DeliveryOrderTemplate
-          doNumber={watchedForm.doNumber ?? ""}
-          date={createdAt ?? ""}
-          projectName={effectiveProjectName || "Gudang (tanpa proyek)"}
-          poContractNumber={poNumber ?? ""}
-          projectSiteLocation={effectiveProjectSite || "-"}
-          vendorDestination={
-            vendorName ||
-            selectedTicket?.vendorName ||
-            watchedForm.receiverName ||
-            ""
-          }
-          driverMoverName={watchedForm.driverName ?? ""}
-          vehiclePlateNumber={watchedForm.vehiclePlate ?? ""}
-          items={watchedItems.map((item, index) => ({
-            no: index + 1,
-            itemCode: "",
-            description: item.itemName ?? "",
-            qty: Number(item.qtyDelivered) || 0,
-            unit: item.unit ?? "",
-            remarks: item.remarks ?? "",
-          }))}
-          logisticsStaffName={logisticsStaffName ?? ""}
-          qrDataUrl={qrDataUrl}
-          driverName={watchedForm.driverName ?? ""}
-          vehicleDocumentNumber={watchedForm.vehicleDocumentNumber ?? ""}
-          receiverVendorName={
-            receivedByName ??
-            (watchedForm.deliveryMethod === DODeliveryMethod.EXPEDITION
-              ? ""
-              : watchedForm.receiverName ?? "")
-          }
-          driverIdentityNumber={watchedForm.driverIdentityNumber ?? ""}
-          driverPhone={watchedForm.driverPhone ?? ""}
-          receivedAt={receivedAt ?? undefined}
-          receivedByName={receivedByName ?? undefined}
-        />
-      </div>
       {publicCode && (
-        <Sheet open={isPdfPreviewOpen} onOpenChange={setIsPdfPreviewOpen}>
-          <SheetContent className="flex h-[100dvh] w-full flex-col sm:max-w-5xl">
-            <SheetHeader>
-              <SheetTitle>Pratinjau DO {doNumber}</SheetTitle>
-              <SheetDescription>
-                Pratinjau dokumen Delivery Order / Surat Jalan sesuai format cetak.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="mt-4 min-h-0 flex-1 overflow-auto rounded-md border bg-slate-100 p-3">
-              <DeliveryOrderTemplate
-                doNumber={watchedForm.doNumber ?? ""}
-                date={createdAt ?? ""}
-                projectName={effectiveProjectName || "Gudang (tanpa proyek)"}
-                poContractNumber={poNumber ?? ""}
-                projectSiteLocation={effectiveProjectSite || "-"}
-                vendorDestination={
-                  vendorName ||
-                  selectedTicket?.vendorName ||
-                  watchedForm.receiverName ||
-                  ""
-                }
-                driverMoverName={watchedForm.driverName ?? ""}
-                vehiclePlateNumber={watchedForm.vehiclePlate ?? ""}
-                items={watchedItems.map((item, index) => ({
-                  no: index + 1,
-                  itemCode: "",
-                  description: item.itemName ?? "",
-                  qty: Number(item.qtyDelivered) || 0,
-                  unit: item.unit ?? "",
-                  remarks: item.remarks ?? "",
-                }))}
-                logisticsStaffName={logisticsStaffName ?? ""}
-                qrDataUrl={qrDataUrl}
-                driverName={watchedForm.driverName ?? ""}
-                vehicleDocumentNumber={watchedForm.vehicleDocumentNumber ?? ""}
-                receiverVendorName={
-                  receivedByName ??
-                  (watchedForm.deliveryMethod === DODeliveryMethod.EXPEDITION
-                    ? ""
-                    : watchedForm.receiverName ?? "")
-                }
-                driverIdentityNumber={watchedForm.driverIdentityNumber ?? ""}
-                driverPhone={watchedForm.driverPhone ?? ""}
-                receivedAt={receivedAt ?? undefined}
-                receivedByName={receivedByName ?? undefined}
-              />
-            </div>
-          </SheetContent>
-        </Sheet>
+        <GlobalModal
+          isOpen={isPdfPreviewOpen}
+          onClose={() => setIsPdfPreviewOpen(false)}
+          title={`Pratinjau DO ${doNumber}`}
+          description="Pratinjau dokumen Delivery Order / Surat Jalan sesuai format cetak."
+          className="max-w-6xl"
+          bodyClassName="flex min-h-[65vh] flex-1 flex-col"
+          footerNote=""
+          footer={
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsPdfPreviewOpen(false)}
+            >
+              Tutup
+            </Button>
+          }
+        >
+          <UniversalDocumentPreview
+            title={`Delivery Order ${doNumber}`}
+            src={`/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(publicCode)}`}
+          />
+        </GlobalModal>
       )}
     </form>
   );

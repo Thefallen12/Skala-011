@@ -7,6 +7,7 @@ import {
   DODeliveryMethod,
   FulfillmentStatus,
   NotificationType,
+  PaymentStatus,
   POPaymentMethod,
   POStatus,
   StockMovementType,
@@ -38,6 +39,11 @@ import {
 import { Prisma } from "@/generated/prisma/client";
 import { removeTicketReceipt, saveTicketReceipt } from "@/lib/ticket-receipts";
 import { VEHICLE_FUEL_EFFICIENCY_KM_PER_LITER } from "@/lib/vehicle-fuel";
+import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
+import {
+  vendorInvoiceInputSchema,
+  type VendorInvoiceInput,
+} from "@/lib/invoice-input";
 
 export type PurchaseOrderItemInput = {
   stockItemId?: string;
@@ -49,6 +55,7 @@ export type PurchaseOrderItemInput = {
 
 export type DeliveryOrderItemInput = {
   id?: string;
+  itemCode?: string | null;
   itemName: string;
   qtyOrdered: number;
   qtyDelivered: number;
@@ -63,6 +70,7 @@ export type OrderActionResult = {
   qrDataUrl?: string;
   actorName?: string;
   approvedAt?: string;
+  invoiceId?: string;
 };
 
 type PurchaseOrderInput = {
@@ -147,6 +155,7 @@ function isDeliveryOrderItem(value: unknown): value is DeliveryOrderItemInput {
       (typeof item.id === "string" &&
         item.id.length > 0 &&
         item.id.length <= 64)) &&
+    (item.itemCode === undefined || isText(item.itemCode, 100, true)) &&
     isText(item.itemName, 180) &&
     typeof item.qtyOrdered === "number" &&
     Number.isFinite(item.qtyOrdered) &&
@@ -288,7 +297,7 @@ export async function createPurchaseOrder(
       const selectedStockItems = selectedStockIds.length
         ? await transaction.stockItem.findMany({
             where: { id: { in: selectedStockIds } },
-            select: { id: true, name: true, unit: true },
+            select: { id: true, sku: true, name: true, unit: true },
           })
         : [];
       if (selectedStockItems.length !== selectedStockIds.length) {
@@ -358,6 +367,9 @@ export async function createPurchaseOrder(
           items: {
             create: input.items.map((item) => ({
               ...item,
+              itemCode: item.stockItemId
+                ? (selectedStockById.get(item.stockItemId)?.sku ?? null)
+                : null,
               stockItemId: item.stockItemId ?? null,
               itemName: item.itemName.trim(),
               unit: item.unit.trim(),
@@ -419,6 +431,22 @@ export async function updatePurchaseOrder(
         data: { updatedAt: new Date() },
       });
       if (statusGuard.count !== 1) return false;
+      const stockItemIds = [
+        ...new Set(
+          input.items.flatMap((item) =>
+            item.stockItemId ? [item.stockItemId] : [],
+          ),
+        ),
+      ];
+      const stockItems = stockItemIds.length
+        ? await transaction.stockItem.findMany({
+            where: { id: { in: stockItemIds } },
+            select: { id: true, sku: true },
+          })
+        : [];
+      const stockCodeById = new Map(
+        stockItems.map((item) => [item.id, item.sku]),
+      );
 
       await transaction.purchaseOrder.update({
         where: { publicCode },
@@ -444,6 +472,9 @@ export async function updatePurchaseOrder(
             deleteMany: {},
             create: input.items.map((item) => ({
               ...item,
+              itemCode: item.stockItemId
+                ? (stockCodeById.get(item.stockItemId) ?? null)
+                : null,
               itemName: item.itemName.trim(),
               unit: item.unit.trim(),
               totalPrice: item.quantity * item.unitPrice,
@@ -612,6 +643,267 @@ export async function approvePurchaseOrder(
       timeZone: "Asia/Jakarta",
     }),
   };
+}
+
+export async function submitPurchaseOrderInvoice(
+  publicCode: string,
+  input: VendorInvoiceInput,
+): Promise<OrderActionResult> {
+  const session = await auth();
+  if (!session?.user || !canEditPurchaseOrders(session.user.role)) {
+    return fail("Hanya Logistik yang dapat mengirim invoice/bon PO.");
+  }
+  const parsed = vendorInvoiceInputSchema.safeParse(input);
+  if (!validPublicCode(publicCode) || !parsed.success) {
+    return fail("Invoice/bon PO tidak valid. Unggah file melalui Cloudinary.");
+  }
+  if (!isPurchaseOrderInvoiceUrl(parsed.data.documentUrl)) {
+    return fail("URL invoice/bon harus berasal dari folder Cloudinary invoice.");
+  }
+
+  try {
+    const updated = await prisma.$transaction(async (transaction) => {
+      const order = await transaction.purchaseOrder.findUnique({
+        where: { publicCode },
+        select: {
+          id: true,
+          poNumber: true,
+          vendorName: true,
+          status: true,
+          ticketId: true,
+          projectId: true,
+          vendorPoSentAt: true,
+          vendorInvoiceUrl: true,
+          invoices: {
+            select: { id: true },
+            take: 1,
+          },
+          ticket: { select: { projectId: true } },
+          paymentTransactions: {
+            where: { status: PaymentStatus.PAID },
+            select: { id: true },
+            take: 1,
+          },
+        },
+      });
+      if (!order || order.ticketId) {
+        throw new Error("PO mandiri tidak ditemukan.");
+      }
+      if (order.status !== POStatus.APPROVED) {
+        throw new Error("PO harus disetujui Direktur sebelum invoice dikirim.");
+      }
+      if (!order.vendorPoSentAt) {
+        throw new Error("Tandai PO telah dikirim ke vendor sebelum mengirim invoice.");
+      }
+      if (order.paymentTransactions.length > 0) {
+        throw new Error("Invoice PO tidak dapat diganti setelah pembayaran dimulai.");
+      }
+      if (order.vendorInvoiceUrl || order.invoices.length > 0) {
+        throw new Error("Invoice/bon untuk PO ini sudah pernah dikirim.");
+      }
+
+      const items = parsed.data.items.map((item) => ({
+        ...item,
+        itemCode: item.itemCode?.trim() || null,
+        totalPrice: item.quantity * item.unitPrice,
+      }));
+      const subTotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
+      const tax = parsed.data.tax ?? 0;
+      const deduction = parsed.data.deduction ?? 0;
+      const grandTotal = subTotal + tax - deduction;
+      if (!Number.isFinite(grandTotal) || grandTotal <= 0) {
+        throw new Error("Total invoice harus lebih besar dari nol.");
+      }
+
+      const update = await transaction.purchaseOrder.updateMany({
+        where: {
+          id: order.id,
+          status: POStatus.APPROVED,
+          vendorInvoiceUrl: null,
+        },
+        data: {
+          vendorInvoiceUrl: parsed.data.documentUrl,
+          vendorInvoiceUploadedAt: new Date(),
+          vendorInvoiceUploadedById: session.user.id,
+        },
+      });
+      if (update.count !== 1) {
+        throw new Error("Status PO berubah. Muat ulang sebelum mengirim invoice.");
+      }
+      const invoice = await transaction.invoice.create({
+        data: {
+          publicCode: await generateAvailablePublicCode(transaction),
+          invoiceNumber: parsed.data.invoiceNumber,
+          poId: order.id,
+          projectId: order.projectId ?? order.ticket?.projectId ?? null,
+          vendorName: order.vendorName,
+          periodOrDate: parsed.data.periodOrDate?.trim() || null,
+          paymentMethod: parsed.data.paymentMethod?.trim() || null,
+          bankAccount: parsed.data.bankAccount?.trim() || null,
+          documentUrl: parsed.data.documentUrl,
+          subTotal,
+          tax,
+          deduction,
+          grandTotal,
+          status: "UNPAID",
+          items: {
+            create: items,
+          },
+        },
+        select: { id: true },
+      });
+      await sendNotification({
+        roleTarget: UserRole.FINANCE,
+        title: "Invoice PO Siap Dibayar",
+        message: `Invoice/bon PO #${order.poNumber} dari Logistik siap diperiksa dan dibayar.`,
+        actionUrl: `/apps/finance?tab=payments&openSheet=${encodeURIComponent(publicCode)}`,
+        type: NotificationType.APPROVAL,
+        database: transaction,
+      });
+      return { poNumber: order.poNumber, invoiceId: invoice.id };
+    });
+
+    revalidatePath("/apps/logistics");
+    revalidatePath("/apps/finance");
+    return {
+      success: true,
+      message: `Invoice/bon PO ${updated.poNumber} berhasil dikirim ke Keuangan.`,
+      invoiceId: updated.invoiceId,
+    };
+  } catch (error) {
+    console.error("Purchase order invoice submission failed:", error);
+    return fail(
+      error instanceof Error
+        ? error.message
+        : "Invoice/bon gagal dikirim ke Keuangan. Silakan coba kembali.",
+    );
+  }
+}
+
+export async function markPurchaseOrderSentToVendor(
+  publicCode: string,
+): Promise<OrderActionResult> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== UserRole.LOGISTICS) {
+    return fail("Hanya Logistik yang dapat mencatat pengiriman PO ke vendor.");
+  }
+  if (!validPublicCode(publicCode)) {
+    return fail("Kode Purchase Order tidak valid.");
+  }
+
+  try {
+    const updated = await prisma.purchaseOrder.updateMany({
+      where: {
+        publicCode,
+        status: POStatus.APPROVED,
+        vendorPoSentAt: null,
+      },
+      data: {
+        vendorPoSentAt: new Date(),
+        vendorPoSentById: session.user.id,
+      },
+    });
+    if (updated.count !== 1) {
+      return fail(
+        "PO belum disetujui atau sudah tercatat dikirim ke vendor.",
+      );
+    }
+
+    revalidatePath("/apps/logistics");
+    revalidatePath("/apps/finance");
+    return {
+      success: true,
+      message: "Pengiriman PO ke vendor berhasil dicatat.",
+    };
+  } catch (error) {
+    console.error("Purchase order vendor dispatch failed:", error);
+    return fail("Pengiriman PO ke vendor gagal dicatat. Silakan coba kembali.");
+  }
+}
+
+export async function markPurchaseOrderConfirmationSent(
+  paymentTransactionId: string,
+): Promise<OrderActionResult> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== UserRole.LOGISTICS) {
+    return fail("Hanya Logistik yang dapat menandai KO dikirim ke vendor.");
+  }
+  if (!isText(paymentTransactionId, 191)) {
+    return fail("Data pembayaran KO tidak valid.");
+  }
+
+  try {
+    const payment = await prisma.paymentTransaction.findFirst({
+      where: {
+        id: paymentTransactionId.trim(),
+        status: PaymentStatus.PAID,
+        confirmationOrderNumber: { not: null },
+        poId: { not: null },
+      },
+      select: {
+        id: true,
+        confirmationOrderNumber: true,
+        vendorSentAt: true,
+        orderConfirmation: {
+          select: { id: true, vendorSentAt: true },
+        },
+        po: { select: { poNumber: true, vendorName: true } },
+      },
+    });
+    if (!payment || !payment.po) {
+      return fail("Konfirmasi Order tidak ditemukan.");
+    }
+    if (payment.vendorSentAt || payment.orderConfirmation?.vendorSentAt) {
+      return fail("Konfirmasi Order ini sudah ditandai dikirim ke vendor.");
+    }
+
+    const sentAt = new Date();
+    const updated = await prisma.$transaction(async (transaction) => {
+      const paymentUpdate = await transaction.paymentTransaction.updateMany({
+        where: {
+          id: payment.id,
+          status: PaymentStatus.PAID,
+          confirmationOrderNumber: payment.confirmationOrderNumber,
+          vendorSentAt: null,
+        },
+        data: {
+          vendorSentAt: sentAt,
+          vendorSentById: session.user.id,
+        },
+      });
+      if (paymentUpdate.count !== 1) return false;
+      if (payment.orderConfirmation) {
+        const confirmationUpdate =
+          await transaction.orderConfirmation.updateMany({
+            where: {
+              id: payment.orderConfirmation.id,
+              vendorSentAt: null,
+            },
+            data: {
+              vendorSentAt: sentAt,
+              vendorSentById: session.user.id,
+            },
+          });
+        if (confirmationUpdate.count !== 1) {
+          throw new Error("Status pengiriman KO berubah. Muat ulang sebelum mencoba lagi.");
+        }
+      }
+      return true;
+    });
+    if (!updated) {
+      return fail("Status pengiriman KO berubah. Muat ulang sebelum mencoba lagi.");
+    }
+
+    revalidatePath("/apps/logistics");
+    revalidatePath("/apps/finance");
+    return {
+      success: true,
+      message: `KO ${payment.confirmationOrderNumber} untuk PO ${payment.po.poNumber} ditandai sudah dikirim ke ${payment.po.vendorName}.`,
+    };
+  } catch (error) {
+    console.error("Purchase order confirmation handoff failed:", error);
+    return fail("Status pengiriman KO gagal disimpan. Silakan coba kembali.");
+  }
 }
 
 export async function createDeliveryOrder(
@@ -887,6 +1179,7 @@ export async function createDeliveryOrder(
           status: input.status,
           items: {
             create: input.items.map((item) => ({
+              itemCode: item.itemCode?.trim() || null,
               qtyOrdered: item.qtyOrdered,
               qtyDelivered: item.qtyDelivered,
               itemName: item.itemName.trim(),
@@ -1088,12 +1381,23 @@ export async function updateDeliveryOrder(
           deliveryMethod: true,
           status: true,
           vehicleId: true,
+          driverName: true,
+          vehicleDocumentNumber: true,
+          vehiclePlateNumber: true,
+          vehiclePlate: true,
+          driverIdentityNumber: true,
+          driverPhone: true,
+          receiverName: true,
+          signedAt: true,
           items: {
             select: {
               id: true,
+              itemCode: true,
               itemName: true,
+              qtyOrdered: true,
               qtyDelivered: true,
               unit: true,
+              remarks: true,
             },
           },
           ticket: {
@@ -1186,6 +1490,50 @@ export async function updateDeliveryOrder(
       ) {
         throw new Error(
           "Daftar item DO berubah sejak halaman dibuka. Muat ulang sebelum menyimpan.",
+        );
+      }
+
+      const nextDriverName =
+        input.deliveryMethod === DODeliveryMethod.EXPEDITION
+          ? input.driverName!.trim()
+          : assignedMoverName ?? input.driverName?.trim() ?? null;
+      const nextVehiclePlate =
+        assignedVehicle?.plateNumber ?? input.vehiclePlate?.trim() ?? null;
+      const nextReceiverName =
+        isExpeditionArrival && !existingOrder.receivedAt
+          ? session.user.name?.trim() || "Tim Logistik"
+          : input.receiverName?.trim() || null;
+      const documentContentChanged =
+        normalizedDoNumber !== currentOrder.doNumber ||
+        nextDriverName !== currentOrder.driverName ||
+        (input.vehicleDocumentNumber?.trim() || null) !==
+          currentOrder.vehicleDocumentNumber ||
+        nextVehiclePlate !== currentOrder.vehiclePlate ||
+        (assignedVehicle
+          ? assignedVehicle.plateNumber !== currentOrder.vehiclePlateNumber
+          : false) ||
+        (input.driverIdentityNumber?.trim() || null) !==
+          currentOrder.driverIdentityNumber ||
+        (input.driverPhone?.trim() || null) !== currentOrder.driverPhone ||
+        nextReceiverName !== currentOrder.receiverName ||
+        input.items.length !== currentOrder.items.length ||
+        input.items.some((item) => {
+          const currentItem = currentOrder.items.find(
+            (candidate) => candidate.id === item.id,
+          );
+          return (
+            !currentItem ||
+            (item.itemCode?.trim() || null) !== currentItem.itemCode ||
+            item.itemName.trim() !== currentItem.itemName ||
+            item.qtyOrdered !== currentItem.qtyOrdered ||
+            item.qtyDelivered !== currentItem.qtyDelivered ||
+            item.unit.trim() !== currentItem.unit ||
+            (item.remarks?.trim() || null) !== currentItem.remarks
+          );
+        });
+      if (currentOrder.signedAt && documentContentChanged) {
+        throw new Error(
+          "DO sudah ditandatangani. Perubahan isi dokumen memerlukan DO baru.",
         );
       }
 
@@ -1405,6 +1753,7 @@ export async function updateDeliveryOrder(
       });
       for (const item of input.items) {
         const data = {
+          itemCode: item.itemCode?.trim() || null,
           itemName: item.itemName.trim(),
           qtyOrdered: item.qtyOrdered,
           qtyDelivered: item.qtyDelivered,
@@ -1461,7 +1810,7 @@ export async function updateDeliveryOrder(
     console.error("Delivery Order update failed:", error);
     const actionableError =
       error instanceof Error &&
-      /^(Daftar item DO berubah|Nama dan satuan barang|Stok .* tidak mencukupi|Riwayat stok DO|Kendaraan|DO sudah memiliki kendaraan|Status DO internal)/.test(
+      /^(Daftar item DO berubah|Nama dan satuan barang|Stok .* tidak mencukupi|Riwayat stok DO|Kendaraan|DO sudah memiliki kendaraan|Status DO internal|DO sudah ditandatangani)/.test(
         error.message,
       );
     return fail(

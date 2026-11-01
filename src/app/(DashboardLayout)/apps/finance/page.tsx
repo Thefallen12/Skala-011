@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import FinanceHub from "@/app/components/apps/finance/FinanceHub";
 import type {
-  FinanceDashboardCategory,
   FinanceDashboardMonth,
+  FinanceDashboardTransaction,
+  FinanceExpenseCategory,
 } from "@/app/components/apps/finance/FinanceDashboard";
 import { Prisma } from "@/generated/prisma/client";
 import {
@@ -41,12 +42,8 @@ export default async function FinancePage({
   if (!session?.user) redirect("/auth/login");
   if (!financeRoles.includes(session.user.role)) redirect("/");
   const currentDate = new Date();
-  const dashboardStart = new Date(
-    Date.UTC(
-      currentDate.getUTCFullYear(),
-      currentDate.getUTCMonth() - 11,
-      1,
-    ),
+  const cashflowDashboardStart = new Date(
+    Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth() - 5, 1),
   );
 
   const [
@@ -58,9 +55,18 @@ export default async function FinancePage({
     retentionContracts,
     vendors,
     documentTemplates,
+    financeAccounts,
+    cashflows,
+    unmatchedHistoricalPayments,
+    dashboardIncomingFunds,
+    dashboardPaidExpenses,
+    financeProjects,
     vehicleTripLogs,
     vehicleFuelRequests,
-    dashboardPaymentAggregates,
+    documentSignoffInvoices,
+    documentSignoffConfirmations,
+    documentSignoffDeliveryOrders,
+    cashflowMonthlyAggregates,
   ] = await Promise.all([
     prisma.purchaseOrder.findMany({
       where: { status: POStatus.DRAFT },
@@ -89,6 +95,7 @@ export default async function FinancePage({
         createdAt: true,
         paidAt: true,
         paymentReceiptUrl: true,
+        vendorInvoiceUrl: true,
         items: {
           select: {
             itemName: true,
@@ -117,6 +124,7 @@ export default async function FinancePage({
       where: {
         status: POStatus.APPROVED,
         ticketId: null,
+        vendorInvoiceUrl: { not: null },
       },
       orderBy: { approvedAt: "asc" },
       select: {
@@ -143,6 +151,7 @@ export default async function FinancePage({
         createdAt: true,
         paidAt: true,
         paymentReceiptUrl: true,
+        vendorInvoiceUrl: true,
         items: {
           select: {
             itemName: true,
@@ -220,7 +229,6 @@ export default async function FinancePage({
         OR: [
           { type: { not: TicketType.MATERIAL } },
           { purchaseReceiptUrl: { not: null } },
-          { purchaseOrders: { some: { status: POStatus.APPROVED } } },
         ],
       },
       orderBy: { createdAt: "asc" },
@@ -234,6 +242,14 @@ export default async function FinancePage({
         recipientName: true,
         bankName: true,
         accountNumber: true,
+        requester: {
+          select: {
+            name: true,
+            bankName: true,
+            bankAccountName: true,
+            bankAccountNumber: true,
+          },
+        },
         purchaseOrders: {
           where: { status: POStatus.APPROVED },
           orderBy: { createdAt: "desc" },
@@ -357,6 +373,132 @@ export default async function FinancePage({
       orderBy: [{ updatedAt: "desc" }, { name: "asc" }],
       select: { id: true, name: true, type: true },
     }),
+    prisma.financeAccount.findMany({
+      orderBy: { accountName: "asc" },
+      select: {
+        id: true,
+        accountName: true,
+        accountNumber: true,
+        holderName: true,
+        balance: true,
+      },
+    }),
+    prisma.cashflow.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        type: true,
+        amount: true,
+        sourceDesc: true,
+        paymentMethod: true,
+        senderName: true,
+        transferGroupId: true,
+        proofUrl: true,
+        createdAt: true,
+        account: { select: { accountName: true } },
+        project: { select: { kelompokTani: true } },
+        recorder: { select: { name: true } },
+      },
+    }),
+    prisma.paymentTransaction.findMany({
+      where: {
+        status: PaymentStatus.PAID,
+        paidAt: { not: null },
+        cashflow: null,
+        OR: [
+          { ticketId: { not: null } },
+          { poId: { not: null } },
+          { directStockPurchaseId: { not: null } },
+        ],
+      },
+      orderBy: { paidAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        amount: true,
+        paymentType: true,
+        proofOfTransferUrl: true,
+        paidAt: true,
+        ticket: {
+          select: { ticketNumber: true, title: true },
+        },
+        po: {
+          select: { poNumber: true, vendorName: true },
+        },
+        directStockPurchase: {
+          select: { purchaseNumber: true, vendorName: true },
+        },
+      },
+    }),
+    prisma.cashflow.findMany({
+      where: { type: "IN", transferGroupId: null },
+      orderBy: { createdAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        amount: true,
+        sourceDesc: true,
+        paymentMethod: true,
+        senderName: true,
+        proofUrl: true,
+        createdAt: true,
+        account: { select: { accountName: true } },
+        project: { select: { kelompokTani: true } },
+        recorder: { select: { name: true } },
+      },
+    }),
+    prisma.paymentTransaction.findMany({
+      where: {
+        status: PaymentStatus.PAID,
+        paidAt: { not: null },
+        OR: [
+          { ticketId: { not: null } },
+          { poId: { not: null } },
+          { directStockPurchaseId: { not: null } },
+        ],
+      },
+      orderBy: { paidAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        amount: true,
+        transferDestination: true,
+        proofOfTransferUrl: true,
+        paymentType: true,
+        paidAt: true,
+        ticket: {
+          select: {
+            ticketNumber: true,
+            title: true,
+            requester: { select: { name: true } },
+            project: { select: { title: true, kelompokTani: true } },
+          },
+        },
+        po: {
+          select: {
+            poNumber: true,
+            vendorName: true,
+            project: { select: { title: true, kelompokTani: true } },
+          },
+        },
+        directStockPurchase: {
+          select: {
+            purchaseNumber: true,
+            vendorName: true,
+            ticket: {
+              select: {
+                project: { select: { title: true, kelompokTani: true } },
+              },
+            },
+          },
+        },
+      },
+    }),
+    prisma.project.findMany({
+      orderBy: { title: "asc" },
+      select: { id: true, title: true, kelompokTani: true },
+    }),
     prisma.vehicleTripLog.findMany({
       orderBy: { createdAt: "desc" },
       take: 200,
@@ -417,50 +559,126 @@ export default async function FinancePage({
         project: { select: { title: true, kelompokTani: true } },
       },
     }),
+    session.user.role === UserRole.FINANCE
+      ? prisma.invoice.findMany({
+          where: { signedAt: null },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            invoiceNumber: true,
+            signedBy: { select: { name: true } },
+            signedAt: true,
+            acknowledgedBy: { select: { name: true } },
+            acknowledgedAt: true,
+          },
+        })
+      : session.user.role === UserRole.DIRECTOR
+        ? prisma.invoice.findMany({
+            where: { signedAt: { not: null }, acknowledgedAt: null },
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              invoiceNumber: true,
+              signedBy: { select: { name: true } },
+              signedAt: true,
+              acknowledgedBy: { select: { name: true } },
+              acknowledgedAt: true,
+            },
+          })
+        : Promise.resolve([]),
+    session.user.role === UserRole.FINANCE
+      ? prisma.orderConfirmation.findMany({
+          where: { signedAt: { not: null }, acknowledgedAt: null },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            koNumber: true,
+            signedBy: { select: { name: true } },
+            signedAt: true,
+            acknowledgedBy: { select: { name: true } },
+            acknowledgedAt: true,
+          },
+        })
+      : Promise.resolve([]),
+    session.user.role === UserRole.FINANCE
+      ? prisma.deliveryOrder.findMany({
+          where: { signedAt: { not: null }, acknowledgedAt: null },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            publicCode: true,
+            doNumber: true,
+            signedBy: { select: { name: true } },
+            signedAt: true,
+            acknowledgedBy: { select: { name: true } },
+            acknowledgedAt: true,
+          },
+        })
+      : Promise.resolve([]),
     prisma.$queryRaw<
       {
         monthKey: string;
-        category: string;
-        transactionCount: number;
+        flowType: string;
+        sourceCategory: string;
         totalAmount: number;
       }[]
     >`
-      SELECT
-        to_char(
-          date_trunc('month', "paidAt" AT TIME ZONE 'UTC'),
-          'YYYY-MM'
-        ) AS "monthKey",
-        CASE
-          WHEN "directStockPurchaseId" IS NOT NULL THEN 'direct-purchase'
-          WHEN "poId" IS NOT NULL THEN 'purchase-order'
-          WHEN "ticketId" IS NOT NULL THEN 'ticket'
-          ELSE 'other'
-        END AS category,
-        COUNT(*)::int AS "transactionCount",
-        COALESCE(SUM(amount), 0)::double precision AS "totalAmount"
-      FROM "PaymentTransaction"
-      WHERE status = ${PaymentStatus.PAID}
-        AND "paidAt" >= ${dashboardStart}
-        AND "paidAt" <= ${currentDate}
-      GROUP BY 1, 2
+      SELECT "monthKey", "flowType", "sourceCategory",
+        SUM("totalAmount")::double precision AS "totalAmount"
+      FROM (
+        SELECT
+          to_char(date_trunc('month', "createdAt" AT TIME ZONE 'UTC'), 'YYYY-MM') AS "monthKey",
+          'IN'::text AS "flowType",
+          'incoming'::text AS "sourceCategory",
+          SUM(amount)::double precision AS "totalAmount"
+        FROM "Cashflow"
+        WHERE type = 'IN'
+          AND "transferGroupId" IS NULL
+          AND "createdAt" >= ${cashflowDashboardStart}
+          AND "createdAt" <= ${currentDate}
+        GROUP BY 1
+
+        UNION ALL
+
+        SELECT
+          to_char(date_trunc('month', "paidAt" AT TIME ZONE 'UTC'), 'YYYY-MM') AS "monthKey",
+          'OUT'::text AS "flowType",
+          CASE
+            WHEN "ticketId" IS NOT NULL THEN 'ticket'
+            WHEN "poId" IS NOT NULL THEN 'purchase-order'
+            ELSE 'direct-material'
+          END AS "sourceCategory",
+          SUM(amount)::double precision AS "totalAmount"
+        FROM "PaymentTransaction"
+        WHERE status = ${PaymentStatus.PAID}
+          AND "paidAt" >= ${cashflowDashboardStart}
+          AND "paidAt" <= ${currentDate}
+          AND (
+            "ticketId" IS NOT NULL
+            OR "poId" IS NOT NULL
+            OR "directStockPurchaseId" IS NOT NULL
+          )
+        GROUP BY 1, 3
+      ) AS "financeFlows"
+      GROUP BY 1, 2, 3
       ORDER BY 1 ASC
     `,
   ]);
 
   const dashboardMonths: FinanceDashboardMonth[] = Array.from(
-    { length: 12 },
+    { length: 6 },
     (_, index) => {
       const monthDate = new Date(
         Date.UTC(
           currentDate.getUTCFullYear(),
-          currentDate.getUTCMonth() - 11 + index,
+          currentDate.getUTCMonth() - 5 + index,
           1,
         ),
       );
       const key = `${monthDate.getUTCFullYear()}-${String(
         monthDate.getUTCMonth() + 1,
       ).padStart(2, "0")}`;
-      const aggregates = dashboardPaymentAggregates.filter(
+      const monthAggregates = cashflowMonthlyAggregates.filter(
         (aggregate) => aggregate.monthKey === key,
       );
       return {
@@ -469,45 +687,135 @@ export default async function FinancePage({
           month: "short",
           timeZone: "UTC",
         }).format(monthDate),
-        paymentCount: aggregates.reduce(
-          (total, aggregate) => total + aggregate.transactionCount,
-          0,
-        ),
-        totalPaid: aggregates.reduce(
-          (total, aggregate) => total + aggregate.totalAmount,
-          0,
-        ),
+        inflow: monthAggregates
+          .filter((aggregate) => aggregate.flowType === "IN")
+          .reduce((total, aggregate) => total + aggregate.totalAmount, 0),
+        outflow: monthAggregates
+          .filter((aggregate) => aggregate.flowType === "OUT")
+          .reduce((total, aggregate) => total + aggregate.totalAmount, 0),
       };
     },
   );
-  const dashboardCategoryLabels: Record<string, string> = {
-    "purchase-order": "Purchase Order",
+  const currentMonthCashflow = dashboardMonths[dashboardMonths.length - 1];
+  const expenseCategoryLabels: Record<
+    FinanceExpenseCategory["kind"],
+    string
+  > = {
     ticket: "Tiket",
-    "direct-purchase": "Pembelian Langsung",
-    other: "Lainnya",
+    "purchase-order": "Purchase Order",
+    "direct-material": "Belanja Material Langsung",
   };
-  const dashboardCategories: FinanceDashboardCategory[] = [
-    "purchase-order",
+  const expenseCategoryKinds: FinanceExpenseCategory["kind"][] = [
     "ticket",
-    "direct-purchase",
-    "other",
-  ].map((kind) => {
-    const aggregates = dashboardPaymentAggregates.filter(
-      (aggregate) => aggregate.category === kind,
-    );
-    return {
-      kind,
-      label: dashboardCategoryLabels[kind],
-      paymentCount: aggregates.reduce(
-        (total, aggregate) => total + aggregate.transactionCount,
-        0,
-      ),
-      totalPaid: aggregates.reduce(
-        (total, aggregate) => total + aggregate.totalAmount,
-        0,
-      ),
-    };
-  });
+    "purchase-order",
+    "direct-material",
+  ];
+  const expenseCategories: FinanceExpenseCategory[] = expenseCategoryKinds.map((kind) => ({
+    kind,
+    label: expenseCategoryLabels[kind],
+    amount: cashflowMonthlyAggregates
+      .filter(
+        (aggregate) =>
+          aggregate.flowType === "OUT" &&
+          aggregate.sourceCategory === kind,
+      )
+      .reduce((total, aggregate) => total + aggregate.totalAmount, 0),
+  }));
+  const dashboardTransactions: FinanceDashboardTransaction[] = [
+    ...dashboardIncomingFunds.map((fund) => ({
+      id: fund.id,
+      createdAt: fund.createdAt.toISOString(),
+      type: "IN" as const,
+      category: "Dana Masuk",
+      sourceDesc: fund.sourceDesc,
+      paymentMethod:
+        fund.paymentMethod === "DEPOSIT"
+          ? "Setor tunai"
+          : fund.paymentMethod === "CASH"
+            ? "Tunai"
+            : "Transfer",
+      counterparty: fund.senderName || fund.recorder.name || "—",
+      accountOrDestination: fund.account.accountName,
+      projectName: fund.project?.kelompokTani ?? null,
+      amount: fund.amount,
+      proofUrl: fund.proofUrl,
+    })),
+    ...dashboardPaidExpenses.flatMap((payment) => {
+      if (!payment.paidAt) return [];
+      if (payment.ticket) {
+        return [{
+          id: payment.id,
+          createdAt: payment.paidAt.toISOString(),
+          type: "OUT" as const,
+          category: "Tiket",
+          sourceDesc: `${payment.ticket.ticketNumber} · ${payment.ticket.title}`,
+          paymentMethod:
+            payment.paymentType === "DOWN_PAYMENT"
+              ? "Down Payment"
+              : payment.paymentType === "PROGRESS_PAYMENT"
+                ? "Termin"
+                : "Pelunasan",
+          counterparty: payment.ticket.requester.name,
+          accountOrDestination: payment.transferDestination || "Tujuan tidak dicatat",
+          projectName:
+            payment.ticket.project?.kelompokTani ||
+            payment.ticket.project?.title ||
+            null,
+          amount: payment.amount,
+          proofUrl: payment.proofOfTransferUrl,
+        }];
+      }
+      if (payment.po) {
+        return [{
+          id: payment.id,
+          createdAt: payment.paidAt.toISOString(),
+          type: "OUT" as const,
+          category: "Purchase Order",
+          sourceDesc: `${payment.po.poNumber} · ${payment.po.vendorName}`,
+          paymentMethod:
+            payment.paymentType === "DOWN_PAYMENT"
+              ? "Down Payment"
+              : payment.paymentType === "PROGRESS_PAYMENT"
+                ? "Termin"
+                : "Pelunasan",
+          counterparty: payment.po.vendorName,
+          accountOrDestination: payment.transferDestination || "Tujuan tidak dicatat",
+          projectName:
+            payment.po.project?.kelompokTani ||
+            payment.po.project?.title ||
+            null,
+          amount: payment.amount,
+          proofUrl: payment.proofOfTransferUrl,
+        }];
+      }
+      if (payment.directStockPurchase) {
+        const project = payment.directStockPurchase.ticket?.project;
+        return [{
+          id: payment.id,
+          createdAt: payment.paidAt.toISOString(),
+          type: "OUT" as const,
+          category: "Belanja Material Langsung",
+          sourceDesc: `${payment.directStockPurchase.purchaseNumber} · ${payment.directStockPurchase.vendorName}`,
+          paymentMethod:
+            payment.paymentType === "DOWN_PAYMENT"
+              ? "Down Payment"
+              : payment.paymentType === "PROGRESS_PAYMENT"
+                ? "Termin"
+                : "Pelunasan",
+          counterparty: payment.directStockPurchase.vendorName,
+          accountOrDestination: payment.transferDestination || "Tujuan tidak dicatat",
+          projectName: project?.kelompokTani || project?.title || null,
+          amount: payment.amount,
+          proofUrl: payment.proofOfTransferUrl,
+        }];
+      }
+      return [];
+    }),
+  ].sort(
+    (first, second) =>
+      new Date(second.createdAt).getTime() -
+      new Date(first.createdAt).getTime(),
+  );
 
   const findVendor = (name: string) =>
     vendors.find(
@@ -515,6 +823,36 @@ export default async function FinancePage({
         vendor.name.trim().toLocaleLowerCase("id-ID") ===
         name.trim().toLocaleLowerCase("id-ID"),
     );
+
+  const historicalPayments = unmatchedHistoricalPayments.flatMap((payment) => {
+    if (!payment.paidAt) return [];
+    const source = payment.ticket
+     ? {
+         category: "Tiket",
+         description: `${payment.ticket.ticketNumber} · ${payment.ticket.title}`,
+       }
+     : payment.po
+       ? {
+           category: "Purchase Order",
+           description: `${payment.po.poNumber} · ${payment.po.vendorName}`,
+         }
+       : payment.directStockPurchase
+         ? {
+             category: "Belanja Material Langsung",
+             description: `${payment.directStockPurchase.purchaseNumber} · ${payment.directStockPurchase.vendorName}`,
+           }
+         : null;
+    if (!source) return [];
+    return [{
+     id: payment.id,
+     amount: payment.amount,
+     paidAt: payment.paidAt.toISOString(),
+     paymentType: payment.paymentType,
+     proofUrl: payment.proofOfTransferUrl,
+     category: source.category,
+     sourceDesc: source.description,
+    }];
+  });
 
   return (
     <>
@@ -524,7 +862,58 @@ export default async function FinancePage({
         cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
         cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         dashboardMonths={dashboardMonths}
-        dashboardCategories={dashboardCategories}
+        financeAccounts={financeAccounts}
+        dashboardTransactions={dashboardTransactions}
+        expenseCategories={expenseCategories}
+        cashflows={cashflows.map((cashflow) => ({
+          ...cashflow,
+          createdAt: cashflow.createdAt.toISOString(),
+        }))}
+        historicalPayments={historicalPayments}
+        financeProjects={financeProjects.map((project) => ({
+          id: project.id,
+          name: project.kelompokTani || project.title,
+        }))}
+        monthInflow={currentMonthCashflow.inflow}
+        monthOutflow={currentMonthCashflow.outflow}
+        documentSignoffTasks={[
+          ...documentSignoffInvoices.map((document) => ({
+            id: document.id,
+            kind: "INVOICE" as const,
+            number: document.invoiceNumber,
+            action:
+              session.user.role === UserRole.FINANCE
+                ? ("sign" as const)
+                : ("acknowledge" as const),
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=INVOICE&id=${encodeURIComponent(document.id)}`,
+          })),
+          ...documentSignoffConfirmations.map((document) => ({
+            id: document.id,
+            kind: "KO" as const,
+            number: document.koNumber,
+            action: "acknowledge" as const,
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=KO&id=${encodeURIComponent(document.id)}`,
+          })),
+          ...documentSignoffDeliveryOrders.map((document) => ({
+            id: document.id,
+            kind: "DO" as const,
+            number: document.doNumber,
+            action: "acknowledge" as const,
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(document.publicCode)}`,
+          })),
+        ]}
         purchaseOrders={orders.map((order) => ({
           id: order.id,
           publicCode: order.publicCode,
@@ -536,6 +925,7 @@ export default async function FinancePage({
           createdAt: order.createdAt.toISOString(),
           paidAt: order.paidAt?.toISOString() ?? null,
           paymentReceiptUrl: order.paymentReceiptUrl,
+          vendorInvoiceUrl: order.vendorInvoiceUrl,
           paymentMethod: order.paymentMethod,
           paymentBankName:
             order.paymentBankName ??
@@ -571,6 +961,7 @@ export default async function FinancePage({
           createdAt: order.createdAt.toISOString(),
           paidAt: order.paidAt?.toISOString() ?? null,
           paymentReceiptUrl: order.paymentReceiptUrl,
+          vendorInvoiceUrl: order.vendorInvoiceUrl,
           paymentMethod: order.paymentMethod,
           paymentBankName:
             order.paymentBankName ??
@@ -635,19 +1026,31 @@ export default async function FinancePage({
             ticket.totalAmount?.toString() ??
             null,
           purchaseReceiptUrl: ticket.purchaseReceiptUrl,
-          recipientName: ticket.recipientName,
-          bankName: ticket.bankName,
-          accountNumber: ticket.accountNumber,
+          recipientName:
+            ticket.recipientName ??
+            ticket.requester.bankAccountName ??
+            ticket.requester.name,
+          bankName: ticket.bankName ?? ticket.requester.bankName,
+          accountNumber:
+            ticket.accountNumber ?? ticket.requester.bankAccountNumber,
           transferDestination:
             ticket.purchaseOrders[0]?.paymentBankName &&
             ticket.purchaseOrders[0]?.paymentAccountNumber
               ? `Ditransfer ke: ${ticket.purchaseOrders[0].paymentBankName} & ${ticket.purchaseOrders[0].paymentAccountNumber}`
               : null,
-          vendorBankName: ticket.purchaseOrders[0]?.paymentBankName ?? ticket.bankName,
+          vendorBankName:
+            ticket.purchaseOrders[0]?.paymentBankName ??
+            ticket.bankName ??
+            ticket.requester.bankName,
           vendorAccountNumber:
-            ticket.purchaseOrders[0]?.paymentAccountNumber ?? ticket.accountNumber,
+            ticket.purchaseOrders[0]?.paymentAccountNumber ??
+            ticket.accountNumber ??
+            ticket.requester.bankAccountNumber,
           vendorAccountName:
-            ticket.purchaseOrders[0]?.paymentAccountName ?? ticket.recipientName,
+            ticket.purchaseOrders[0]?.paymentAccountName ??
+            ticket.recipientName ??
+            ticket.requester.bankAccountName ??
+            ticket.requester.name,
           projectName: ticket.project
             ? `${ticket.project.kelompokTani} · ${ticket.project.title}`
             : null,

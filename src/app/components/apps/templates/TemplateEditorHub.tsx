@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { FilePlus2, Pencil, Plus } from "lucide-react";
+import { Eye, FilePlus2, Pencil, Plus } from "lucide-react";
 import type { DocType } from "@/generated/prisma/enums";
 import {
   getRichDocumentTemplate,
@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GlobalModal } from "@/components/ui/global-modal";
+import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
 import {
   Table,
   TableBody,
@@ -56,6 +57,13 @@ const documentTypes: { value: DocType; label: string }[] = [
   { value: "SURAT_JALAN", label: "Surat Jalan" },
 ];
 
+const universalPreviewTypes = [
+  { value: "PO", label: "Purchase Order (PO)" },
+  { value: "INVOICE", label: "Invoice" },
+  { value: "KO", label: "Konfirmasi Order (KO)" },
+  { value: "DO", label: "Delivery Order (DO)" },
+] as const;
+
 const emptyDraft = (): Draft => ({
   name: "",
   type: "PURCHASE_ORDER",
@@ -79,6 +87,8 @@ export default function TemplateEditorHub({
   );
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [previewKind, setPreviewKind] =
+    useState<(typeof universalPreviewTypes)[number]["value"]>("PO");
 
   const openNewTemplate = () => {
     setDraft(emptyDraft());
@@ -152,6 +162,44 @@ export default function TemplateEditorHub({
           <Plus className="mr-2 size-4" />
           Buat Template
         </Button>
+      </section>
+
+      <section className="space-y-4 rounded-xl border bg-card p-4 sm:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="space-y-1">
+            <p className="flex items-center gap-2 text-sm font-semibold">
+              <Eye className="size-4 text-primary" />
+              Pratinjau Desain Dokumen Universal
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Lihat contoh desain cetak PO, Invoice, KO, dan DO tanpa perlu
+              membuka transaksi.
+            </p>
+          </div>
+          <Select
+            value={previewKind}
+            onValueChange={(value) =>
+              setPreviewKind(
+                value as (typeof universalPreviewTypes)[number]["value"],
+              )
+            }
+          >
+            <SelectTrigger className="w-full sm:w-64" aria-label="Pilih jenis pratinjau">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {universalPreviewTypes.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <UniversalDocumentPreview
+          title={`Contoh desain ${previewKind}`}
+          src={`/api/documents/transactions?preview=1&kind=${previewKind}`}
+        />
       </section>
 
       <div className="overflow-hidden rounded-xl border bg-card">

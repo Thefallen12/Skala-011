@@ -41,6 +41,7 @@ export type POItemSumAggregateOutputType = {
 export type POItemMinAggregateOutputType = {
   id: string | null
   poId: string | null
+  itemCode: string | null
   stockItemId: string | null
   itemName: string | null
   quantity: number | null
@@ -52,6 +53,7 @@ export type POItemMinAggregateOutputType = {
 export type POItemMaxAggregateOutputType = {
   id: string | null
   poId: string | null
+  itemCode: string | null
   stockItemId: string | null
   itemName: string | null
   quantity: number | null
@@ -63,6 +65,7 @@ export type POItemMaxAggregateOutputType = {
 export type POItemCountAggregateOutputType = {
   id: number
   poId: number
+  itemCode: number
   stockItemId: number
   itemName: number
   quantity: number
@@ -88,6 +91,7 @@ export type POItemSumAggregateInputType = {
 export type POItemMinAggregateInputType = {
   id?: true
   poId?: true
+  itemCode?: true
   stockItemId?: true
   itemName?: true
   quantity?: true
@@ -99,6 +103,7 @@ export type POItemMinAggregateInputType = {
 export type POItemMaxAggregateInputType = {
   id?: true
   poId?: true
+  itemCode?: true
   stockItemId?: true
   itemName?: true
   quantity?: true
@@ -110,6 +115,7 @@ export type POItemMaxAggregateInputType = {
 export type POItemCountAggregateInputType = {
   id?: true
   poId?: true
+  itemCode?: true
   stockItemId?: true
   itemName?: true
   quantity?: true
@@ -208,6 +214,7 @@ export type POItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type POItemGroupByOutputType = {
   id: string
   poId: string
+  itemCode: string | null
   stockItemId: string | null
   itemName: string
   quantity: number
@@ -242,6 +249,7 @@ export type POItemWhereInput = {
   NOT?: Prisma.POItemWhereInput | Prisma.POItemWhereInput[]
   id?: Prisma.StringFilter<"POItem"> | string
   poId?: Prisma.StringFilter<"POItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"POItem"> | string | null
   stockItemId?: Prisma.StringNullableFilter<"POItem"> | string | null
   itemName?: Prisma.StringFilter<"POItem"> | string
   quantity?: Prisma.FloatFilter<"POItem"> | number
@@ -256,6 +264,7 @@ export type POItemWhereInput = {
 export type POItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   poId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrderInput | Prisma.SortOrder
   stockItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   itemName?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -273,6 +282,7 @@ export type POItemWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.POItemWhereInput[]
   NOT?: Prisma.POItemWhereInput | Prisma.POItemWhereInput[]
   poId?: Prisma.StringFilter<"POItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"POItem"> | string | null
   stockItemId?: Prisma.StringNullableFilter<"POItem"> | string | null
   itemName?: Prisma.StringFilter<"POItem"> | string
   quantity?: Prisma.FloatFilter<"POItem"> | number
@@ -287,6 +297,7 @@ export type POItemWhereUniqueInput = Prisma.AtLeast<{
 export type POItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   poId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrderInput | Prisma.SortOrder
   stockItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   itemName?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -306,6 +317,7 @@ export type POItemScalarWhereWithAggregatesInput = {
   NOT?: Prisma.POItemScalarWhereWithAggregatesInput | Prisma.POItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"POItem"> | string
   poId?: Prisma.StringWithAggregatesFilter<"POItem"> | string
+  itemCode?: Prisma.StringNullableWithAggregatesFilter<"POItem"> | string | null
   stockItemId?: Prisma.StringNullableWithAggregatesFilter<"POItem"> | string | null
   itemName?: Prisma.StringWithAggregatesFilter<"POItem"> | string
   quantity?: Prisma.FloatWithAggregatesFilter<"POItem"> | number
@@ -316,6 +328,7 @@ export type POItemScalarWhereWithAggregatesInput = {
 
 export type POItemCreateInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -329,6 +342,7 @@ export type POItemCreateInput = {
 export type POItemUncheckedCreateInput = {
   id?: string
   poId: string
+  itemCode?: string | null
   stockItemId?: string | null
   itemName: string
   quantity: number
@@ -340,6 +354,7 @@ export type POItemUncheckedCreateInput = {
 
 export type POItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -353,6 +368,7 @@ export type POItemUpdateInput = {
 export type POItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   poId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stockItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -365,6 +381,7 @@ export type POItemUncheckedUpdateInput = {
 export type POItemCreateManyInput = {
   id?: string
   poId: string
+  itemCode?: string | null
   stockItemId?: string | null
   itemName: string
   quantity: number
@@ -375,6 +392,7 @@ export type POItemCreateManyInput = {
 
 export type POItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -385,6 +403,7 @@ export type POItemUpdateManyMutationInput = {
 export type POItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   poId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stockItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -406,6 +425,7 @@ export type POItemOrderByRelationAggregateInput = {
 export type POItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   poId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   stockItemId?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -423,6 +443,7 @@ export type POItemAvgOrderByAggregateInput = {
 export type POItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   poId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   stockItemId?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -434,6 +455,7 @@ export type POItemMaxOrderByAggregateInput = {
 export type POItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   poId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   stockItemId?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
@@ -555,6 +577,7 @@ export type POItemUpdateOneWithoutTicketItemsNestedInput = {
 
 export type POItemCreateWithoutStockItemInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -567,6 +590,7 @@ export type POItemCreateWithoutStockItemInput = {
 export type POItemUncheckedCreateWithoutStockItemInput = {
   id?: string
   poId: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -607,6 +631,7 @@ export type POItemScalarWhereInput = {
   NOT?: Prisma.POItemScalarWhereInput | Prisma.POItemScalarWhereInput[]
   id?: Prisma.StringFilter<"POItem"> | string
   poId?: Prisma.StringFilter<"POItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"POItem"> | string | null
   stockItemId?: Prisma.StringNullableFilter<"POItem"> | string | null
   itemName?: Prisma.StringFilter<"POItem"> | string
   quantity?: Prisma.FloatFilter<"POItem"> | number
@@ -617,6 +642,7 @@ export type POItemScalarWhereInput = {
 
 export type POItemCreateWithoutPoInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -628,6 +654,7 @@ export type POItemCreateWithoutPoInput = {
 
 export type POItemUncheckedCreateWithoutPoInput = {
   id?: string
+  itemCode?: string | null
   stockItemId?: string | null
   itemName: string
   quantity: number
@@ -665,6 +692,7 @@ export type POItemUpdateManyWithWhereWithoutPoInput = {
 
 export type POItemCreateWithoutTicketItemsInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -677,6 +705,7 @@ export type POItemCreateWithoutTicketItemsInput = {
 export type POItemUncheckedCreateWithoutTicketItemsInput = {
   id?: string
   poId: string
+  itemCode?: string | null
   stockItemId?: string | null
   itemName: string
   quantity: number
@@ -703,6 +732,7 @@ export type POItemUpdateToOneWithWhereWithoutTicketItemsInput = {
 
 export type POItemUpdateWithoutTicketItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -715,6 +745,7 @@ export type POItemUpdateWithoutTicketItemsInput = {
 export type POItemUncheckedUpdateWithoutTicketItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   poId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stockItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -726,6 +757,7 @@ export type POItemUncheckedUpdateWithoutTicketItemsInput = {
 export type POItemCreateManyStockItemInput = {
   id?: string
   poId: string
+  itemCode?: string | null
   itemName: string
   quantity: number
   unit: string
@@ -735,6 +767,7 @@ export type POItemCreateManyStockItemInput = {
 
 export type POItemUpdateWithoutStockItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -747,6 +780,7 @@ export type POItemUpdateWithoutStockItemInput = {
 export type POItemUncheckedUpdateWithoutStockItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   poId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -758,6 +792,7 @@ export type POItemUncheckedUpdateWithoutStockItemInput = {
 export type POItemUncheckedUpdateManyWithoutStockItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   poId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -767,6 +802,7 @@ export type POItemUncheckedUpdateManyWithoutStockItemInput = {
 
 export type POItemCreateManyPoInput = {
   id?: string
+  itemCode?: string | null
   stockItemId?: string | null
   itemName: string
   quantity: number
@@ -777,6 +813,7 @@ export type POItemCreateManyPoInput = {
 
 export type POItemUpdateWithoutPoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   unit?: Prisma.StringFieldUpdateOperationsInput | string
@@ -788,6 +825,7 @@ export type POItemUpdateWithoutPoInput = {
 
 export type POItemUncheckedUpdateWithoutPoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stockItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -799,6 +837,7 @@ export type POItemUncheckedUpdateWithoutPoInput = {
 
 export type POItemUncheckedUpdateManyWithoutPoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stockItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -841,6 +880,7 @@ export type POItemCountOutputTypeCountTicketItemsArgs<ExtArgs extends runtime.Ty
 export type POItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   poId?: boolean
+  itemCode?: boolean
   stockItemId?: boolean
   itemName?: boolean
   quantity?: boolean
@@ -856,6 +896,7 @@ export type POItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type POItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   poId?: boolean
+  itemCode?: boolean
   stockItemId?: boolean
   itemName?: boolean
   quantity?: boolean
@@ -869,6 +910,7 @@ export type POItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type POItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   poId?: boolean
+  itemCode?: boolean
   stockItemId?: boolean
   itemName?: boolean
   quantity?: boolean
@@ -882,6 +924,7 @@ export type POItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type POItemSelectScalar = {
   id?: boolean
   poId?: boolean
+  itemCode?: boolean
   stockItemId?: boolean
   itemName?: boolean
   quantity?: boolean
@@ -890,7 +933,7 @@ export type POItemSelectScalar = {
   totalPrice?: boolean
 }
 
-export type POItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "poId" | "stockItemId" | "itemName" | "quantity" | "unit" | "unitPrice" | "totalPrice", ExtArgs["result"]["pOItem"]>
+export type POItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "poId" | "itemCode" | "stockItemId" | "itemName" | "quantity" | "unit" | "unitPrice" | "totalPrice", ExtArgs["result"]["pOItem"]>
 export type POItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   po?: boolean | Prisma.PurchaseOrderDefaultArgs<ExtArgs>
   stockItem?: boolean | Prisma.POItem$stockItemArgs<ExtArgs>
@@ -916,6 +959,7 @@ export type $POItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     poId: string
+    itemCode: string | null
     stockItemId: string | null
     itemName: string
     quantity: number
@@ -1350,6 +1394,7 @@ export interface Prisma__POItemClient<T, Null = never, ExtArgs extends runtime.T
 export interface POItemFieldRefs {
   readonly id: Prisma.FieldRef<"POItem", 'String'>
   readonly poId: Prisma.FieldRef<"POItem", 'String'>
+  readonly itemCode: Prisma.FieldRef<"POItem", 'String'>
   readonly stockItemId: Prisma.FieldRef<"POItem", 'String'>
   readonly itemName: Prisma.FieldRef<"POItem", 'String'>
   readonly quantity: Prisma.FieldRef<"POItem", 'Float'>

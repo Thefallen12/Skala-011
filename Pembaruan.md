@@ -106,20 +106,48 @@ Seluruh modul ERP dikelompokkan ke dalam **7 Rute Utama** untuk meminimalkan _pa
 [KOORDINATOR LAPANGAN] ──> Verifikasi Kebutuhan Proyek
 │
 ▼
-[KEUANGAN] ──> Cek Ketersediaan Anggaran
+[LOGISTIK] ──> Pilih pemenuhan dari stok atau buat draf PO vendor
 │
-▼
-[KOORDINATOR LOGISTIK]
-├─► (Jalur A: Stok Gudang Ada) ──> Auto DO ──> Teruskan ke MOVER ──> [TERIMA DI LAPANGAN]
+├─► (Stok tersedia) ──> Terbit DO internal ──> MOVER ──> [BARANG DITERIMA]
 │
-└─► (Jalur B: Beli Vendor) ──> Draf PO ──> Checked by KEUANGAN
-│
-▼
-[DIRECTUR / WAKIL DIR]
-Approve & Generate QR Sign
-│
-▼
-[LOGISTIK & MOVER] ──> Terbit DO ──> [TERIMA DI LAPANGAN]
+└─► (Beli melalui PO)
+     │
+     ▼
+   [KEUANGAN] ──> Periksa PO (Checked By)
+     │
+     ▼
+   [DIREKTUR / WAKIL DIREKTUR] ──> Setujui PO & terbitkan QR
+     │
+     ▼
+   [LOGISTIK] ──> Kirim PO ke vendor & catat pengiriman
+     │
+     ▼
+   [VENDOR] ──> Kirim invoice/bon
+     │
+     ▼
+   [LOGISTIK] ──> Unggah invoice/bon ke PO/tiket
+     │
+     ▼
+   [KEUANGAN] ──> Bayar DP, termin, atau pelunasan
+     │               └─ Setiap pembayaran menghasilkan KO dan bukti transfer
+     ▼
+   [LOGISTIK] ──> Cetak KO, kirim KO + bukti transfer ke vendor, lalu catat
+     │               bahwa dokumen telah diteruskan
+     ▼
+   [VENDOR] ──> Proses pesanan & kirim data mover/ekspedisi
+     │
+     ▼
+   [LOGISTIK] ──> Terbitkan DO ekspedisi
+     │
+     ▼
+   [TIM LAPANGAN] ──> Konfirmasi barang diterima ──> [TRANSAKSI SELESAI]
+
+Untuk PO material yang terkait tiket proyek, pembayaran dapat dilakukan bertahap.
+Setiap transaksi pembayaran memiliki nomor KO unik dan masuk ke antrean Logistik
+bersama bukti transfernya. Invoice/bon harus tersedia sebelum pembayaran dimulai.
+
+PO mandiri untuk restock gudang tetap mengikuti alur penerimaan stok gudang;
+alur DO ekspedisi di atas berlaku untuk pengadaan vendor yang terkait tiket proyek.
 
 ### 5.2 Alur Titik Pekerjaan & Negosiasi Upah Tukang
 

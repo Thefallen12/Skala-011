@@ -2,7 +2,7 @@ import type { Prisma } from "@/generated/prisma/client";
 
 export async function nextDocumentNumber(
   transaction: Prisma.TransactionClient,
-  kind: "PO" | "DO" | "STOCK",
+  kind: "PO" | "DO" | "KO" | "INV" | "STOCK",
 ): Promise<string> {
   const year = new Date().getFullYear();
   const format = (value: number) =>
@@ -18,6 +18,21 @@ export async function nextDocumentNumber(
       select: { value: true },
     });
     const number = format(sequence.value);
+    if (kind === "KO") {
+      const [legacyPayment, confirmation] = await Promise.all([
+        transaction.paymentTransaction.findUnique({
+          where: { confirmationOrderNumber: number },
+          select: { id: true },
+        }),
+        transaction.orderConfirmation.findUnique({
+          where: { koNumber: number },
+          select: { id: true },
+        }),
+      ]);
+      if (!legacyPayment && !confirmation) return number;
+      continue;
+    }
+
     const existing =
       kind === "PO"
         ? await transaction.purchaseOrder.findUnique({
@@ -29,10 +44,15 @@ export async function nextDocumentNumber(
               where: { doNumber: number },
               select: { id: true },
             })
-          : await transaction.stockPurchase.findUnique({
-              where: { purchaseNumber: number },
-              select: { id: true },
-            });
+          : kind === "INV"
+            ? await transaction.invoice.findUnique({
+                where: { invoiceNumber: number },
+                select: { id: true },
+              })
+            : await transaction.stockPurchase.findUnique({
+                where: { purchaseNumber: number },
+                select: { id: true },
+              });
     if (!existing) return number;
   }
 }

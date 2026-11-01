@@ -28,6 +28,7 @@ export type PurchaseOrderMinAggregateOutputType = {
   id: string | null
   publicCode: string | null
   poNumber: string | null
+  projectId: string | null
   vendorName: string | null
   paymentMethod: $Enums.POPaymentMethod | null
   paymentBankName: string | null
@@ -37,6 +38,11 @@ export type PurchaseOrderMinAggregateOutputType = {
   includeTax: boolean | null
   transferDestination: string | null
   paymentReceiptUrl: string | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedAt: Date | null
+  vendorInvoiceUploadedById: string | null
+  vendorPoSentAt: Date | null
+  vendorPoSentById: string | null
   paidAt: Date | null
   status: $Enums.POStatus | null
   createdById: string | null
@@ -54,6 +60,7 @@ export type PurchaseOrderMaxAggregateOutputType = {
   id: string | null
   publicCode: string | null
   poNumber: string | null
+  projectId: string | null
   vendorName: string | null
   paymentMethod: $Enums.POPaymentMethod | null
   paymentBankName: string | null
@@ -63,6 +70,11 @@ export type PurchaseOrderMaxAggregateOutputType = {
   includeTax: boolean | null
   transferDestination: string | null
   paymentReceiptUrl: string | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedAt: Date | null
+  vendorInvoiceUploadedById: string | null
+  vendorPoSentAt: Date | null
+  vendorPoSentById: string | null
   paidAt: Date | null
   status: $Enums.POStatus | null
   createdById: string | null
@@ -80,6 +92,7 @@ export type PurchaseOrderCountAggregateOutputType = {
   id: number
   publicCode: number
   poNumber: number
+  projectId: number
   vendorName: number
   paymentMethod: number
   paymentBankName: number
@@ -89,6 +102,11 @@ export type PurchaseOrderCountAggregateOutputType = {
   includeTax: number
   transferDestination: number
   paymentReceiptUrl: number
+  vendorInvoiceUrl: number
+  vendorInvoiceUploadedAt: number
+  vendorInvoiceUploadedById: number
+  vendorPoSentAt: number
+  vendorPoSentById: number
   paidAt: number
   status: number
   createdById: number
@@ -108,6 +126,7 @@ export type PurchaseOrderMinAggregateInputType = {
   id?: true
   publicCode?: true
   poNumber?: true
+  projectId?: true
   vendorName?: true
   paymentMethod?: true
   paymentBankName?: true
@@ -117,6 +136,11 @@ export type PurchaseOrderMinAggregateInputType = {
   includeTax?: true
   transferDestination?: true
   paymentReceiptUrl?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedAt?: true
+  vendorInvoiceUploadedById?: true
+  vendorPoSentAt?: true
+  vendorPoSentById?: true
   paidAt?: true
   status?: true
   createdById?: true
@@ -134,6 +158,7 @@ export type PurchaseOrderMaxAggregateInputType = {
   id?: true
   publicCode?: true
   poNumber?: true
+  projectId?: true
   vendorName?: true
   paymentMethod?: true
   paymentBankName?: true
@@ -143,6 +168,11 @@ export type PurchaseOrderMaxAggregateInputType = {
   includeTax?: true
   transferDestination?: true
   paymentReceiptUrl?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedAt?: true
+  vendorInvoiceUploadedById?: true
+  vendorPoSentAt?: true
+  vendorPoSentById?: true
   paidAt?: true
   status?: true
   createdById?: true
@@ -160,6 +190,7 @@ export type PurchaseOrderCountAggregateInputType = {
   id?: true
   publicCode?: true
   poNumber?: true
+  projectId?: true
   vendorName?: true
   paymentMethod?: true
   paymentBankName?: true
@@ -169,6 +200,11 @@ export type PurchaseOrderCountAggregateInputType = {
   includeTax?: true
   transferDestination?: true
   paymentReceiptUrl?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedAt?: true
+  vendorInvoiceUploadedById?: true
+  vendorPoSentAt?: true
+  vendorPoSentById?: true
   paidAt?: true
   status?: true
   createdById?: true
@@ -259,6 +295,7 @@ export type PurchaseOrderGroupByOutputType = {
   id: string
   publicCode: string
   poNumber: string
+  projectId: string | null
   vendorName: string
   paymentMethod: $Enums.POPaymentMethod
   paymentBankName: string | null
@@ -268,6 +305,11 @@ export type PurchaseOrderGroupByOutputType = {
   includeTax: boolean
   transferDestination: string | null
   paymentReceiptUrl: string | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedAt: Date | null
+  vendorInvoiceUploadedById: string | null
+  vendorPoSentAt: Date | null
+  vendorPoSentById: string | null
   paidAt: Date | null
   status: $Enums.POStatus
   createdById: string | null
@@ -306,6 +348,7 @@ export type PurchaseOrderWhereInput = {
   id?: Prisma.StringFilter<"PurchaseOrder"> | string
   publicCode?: Prisma.StringFilter<"PurchaseOrder"> | string
   poNumber?: Prisma.StringFilter<"PurchaseOrder"> | string
+  projectId?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   vendorName?: Prisma.StringFilter<"PurchaseOrder"> | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFilter<"PurchaseOrder"> | $Enums.POPaymentMethod
   paymentBankName?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -315,6 +358,11 @@ export type PurchaseOrderWhereInput = {
   includeTax?: Prisma.BoolFilter<"PurchaseOrder"> | boolean
   transferDestination?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paymentReceiptUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorPoSentAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorPoSentById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
   status?: Prisma.EnumPOStatusFilter<"PurchaseOrder"> | $Enums.POStatus
   createdById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -326,12 +374,17 @@ export type PurchaseOrderWhereInput = {
   ticketId?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PurchaseOrder"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PurchaseOrder"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
+  vendorInvoiceUploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  vendorPoSentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   items?: Prisma.POItemListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  confirmations?: Prisma.OrderConfirmationListRelationFilter
   deliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   stockPurchases?: Prisma.StockPurchaseListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
@@ -341,6 +394,7 @@ export type PurchaseOrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   publicCode?: Prisma.SortOrder
   poNumber?: Prisma.SortOrder
+  projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   vendorName?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   paymentBankName?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -350,6 +404,11 @@ export type PurchaseOrderOrderByWithRelationInput = {
   includeTax?: Prisma.SortOrder
   transferDestination?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentReceiptUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorPoSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorPoSentById?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -361,12 +420,17 @@ export type PurchaseOrderOrderByWithRelationInput = {
   ticketId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  project?: Prisma.ProjectOrderByWithRelationInput
+  vendorInvoiceUploadedBy?: Prisma.UserOrderByWithRelationInput
+  vendorPoSentBy?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   vendor?: Prisma.VendorOrderByWithRelationInput
   reviewedBy?: Prisma.UserOrderByWithRelationInput
   approvedBy?: Prisma.UserOrderByWithRelationInput
   ticket?: Prisma.TicketOrderByWithRelationInput
   items?: Prisma.POItemOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  confirmations?: Prisma.OrderConfirmationOrderByRelationAggregateInput
   deliveryOrders?: Prisma.DeliveryOrderOrderByRelationAggregateInput
   stockPurchases?: Prisma.StockPurchaseOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
@@ -379,6 +443,7 @@ export type PurchaseOrderWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PurchaseOrderWhereInput | Prisma.PurchaseOrderWhereInput[]
   OR?: Prisma.PurchaseOrderWhereInput[]
   NOT?: Prisma.PurchaseOrderWhereInput | Prisma.PurchaseOrderWhereInput[]
+  projectId?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   vendorName?: Prisma.StringFilter<"PurchaseOrder"> | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFilter<"PurchaseOrder"> | $Enums.POPaymentMethod
   paymentBankName?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -388,6 +453,11 @@ export type PurchaseOrderWhereUniqueInput = Prisma.AtLeast<{
   includeTax?: Prisma.BoolFilter<"PurchaseOrder"> | boolean
   transferDestination?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paymentReceiptUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorPoSentAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorPoSentById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
   status?: Prisma.EnumPOStatusFilter<"PurchaseOrder"> | $Enums.POStatus
   createdById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -399,12 +469,17 @@ export type PurchaseOrderWhereUniqueInput = Prisma.AtLeast<{
   ticketId?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PurchaseOrder"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PurchaseOrder"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
+  vendorInvoiceUploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  vendorPoSentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   items?: Prisma.POItemListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  confirmations?: Prisma.OrderConfirmationListRelationFilter
   deliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   stockPurchases?: Prisma.StockPurchaseListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
@@ -414,6 +489,7 @@ export type PurchaseOrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   publicCode?: Prisma.SortOrder
   poNumber?: Prisma.SortOrder
+  projectId?: Prisma.SortOrderInput | Prisma.SortOrder
   vendorName?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   paymentBankName?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -423,6 +499,11 @@ export type PurchaseOrderOrderByWithAggregationInput = {
   includeTax?: Prisma.SortOrder
   transferDestination?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentReceiptUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorPoSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorPoSentById?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -446,6 +527,7 @@ export type PurchaseOrderScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"PurchaseOrder"> | string
   publicCode?: Prisma.StringWithAggregatesFilter<"PurchaseOrder"> | string
   poNumber?: Prisma.StringWithAggregatesFilter<"PurchaseOrder"> | string
+  projectId?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
   vendorName?: Prisma.StringWithAggregatesFilter<"PurchaseOrder"> | string
   paymentMethod?: Prisma.EnumPOPaymentMethodWithAggregatesFilter<"PurchaseOrder"> | $Enums.POPaymentMethod
   paymentBankName?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
@@ -455,6 +537,11 @@ export type PurchaseOrderScalarWhereWithAggregatesInput = {
   includeTax?: Prisma.BoolWithAggregatesFilter<"PurchaseOrder"> | boolean
   transferDestination?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
   paymentReceiptUrl?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PurchaseOrder"> | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
+  vendorPoSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PurchaseOrder"> | Date | string | null
+  vendorPoSentById?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PurchaseOrder"> | Date | string | null
   status?: Prisma.EnumPOStatusWithAggregatesFilter<"PurchaseOrder"> | $Enums.POStatus
   createdById?: Prisma.StringNullableWithAggregatesFilter<"PurchaseOrder"> | string | null
@@ -481,18 +568,26 @@ export type PurchaseOrderCreateInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -502,6 +597,7 @@ export type PurchaseOrderUncheckedCreateInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -511,6 +607,11 @@ export type PurchaseOrderUncheckedCreateInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -523,6 +624,8 @@ export type PurchaseOrderUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -541,18 +644,26 @@ export type PurchaseOrderUpdateInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -562,6 +673,7 @@ export type PurchaseOrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -571,6 +683,11 @@ export type PurchaseOrderUncheckedUpdateInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -583,6 +700,8 @@ export type PurchaseOrderUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -592,6 +711,7 @@ export type PurchaseOrderCreateManyInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -601,6 +721,11 @@ export type PurchaseOrderCreateManyInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -627,6 +752,9 @@ export type PurchaseOrderUpdateManyMutationInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -639,6 +767,7 @@ export type PurchaseOrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -648,6 +777,11 @@ export type PurchaseOrderUncheckedUpdateManyInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -680,6 +814,7 @@ export type PurchaseOrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   publicCode?: Prisma.SortOrder
   poNumber?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
   vendorName?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   paymentBankName?: Prisma.SortOrder
@@ -689,6 +824,11 @@ export type PurchaseOrderCountOrderByAggregateInput = {
   includeTax?: Prisma.SortOrder
   transferDestination?: Prisma.SortOrder
   paymentReceiptUrl?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorPoSentAt?: Prisma.SortOrder
+  vendorPoSentById?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -706,6 +846,7 @@ export type PurchaseOrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   publicCode?: Prisma.SortOrder
   poNumber?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
   vendorName?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   paymentBankName?: Prisma.SortOrder
@@ -715,6 +856,11 @@ export type PurchaseOrderMaxOrderByAggregateInput = {
   includeTax?: Prisma.SortOrder
   transferDestination?: Prisma.SortOrder
   paymentReceiptUrl?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorPoSentAt?: Prisma.SortOrder
+  vendorPoSentById?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -732,6 +878,7 @@ export type PurchaseOrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   publicCode?: Prisma.SortOrder
   poNumber?: Prisma.SortOrder
+  projectId?: Prisma.SortOrder
   vendorName?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
   paymentBankName?: Prisma.SortOrder
@@ -741,6 +888,11 @@ export type PurchaseOrderMinOrderByAggregateInput = {
   includeTax?: Prisma.SortOrder
   transferDestination?: Prisma.SortOrder
   paymentReceiptUrl?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorPoSentAt?: Prisma.SortOrder
+  vendorPoSentById?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -780,6 +932,20 @@ export type PurchaseOrderCreateNestedManyWithoutApprovedByInput = {
   connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
 }
 
+export type PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput> | Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorPoSentByInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
+export type PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
 export type PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutCreatedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutCreatedByInput> | Prisma.PurchaseOrderCreateWithoutCreatedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutCreatedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutCreatedByInput[]
@@ -798,6 +964,20 @@ export type PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput = {
   create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutApprovedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutApprovedByInput> | Prisma.PurchaseOrderCreateWithoutApprovedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutApprovedByInput[]
   connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutApprovedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutApprovedByInput[]
   createMany?: Prisma.PurchaseOrderCreateManyApprovedByInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
+export type PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput> | Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorPoSentByInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
+export type PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInputEnvelope
   connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
 }
 
@@ -843,6 +1023,34 @@ export type PurchaseOrderUpdateManyWithoutApprovedByNestedInput = {
   deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
 }
 
+export type PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput> | Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorPoSentByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorPoSentByInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorPoSentByInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorPoSentByInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
+export type PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
 export type PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput = {
   create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutCreatedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutCreatedByInput> | Prisma.PurchaseOrderCreateWithoutCreatedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutCreatedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutCreatedByInput[]
@@ -882,6 +1090,76 @@ export type PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput = {
   connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
   update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutApprovedByInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutApprovedByInput[]
   updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutApprovedByInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutApprovedByInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput> | Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorPoSentByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorPoSentByInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorPoSentByInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorPoSentByInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorPoSentByInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
+export type PurchaseOrderCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput> | Prisma.PurchaseOrderCreateWithoutProjectInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput | Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyProjectInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
+export type PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput> | Prisma.PurchaseOrderCreateWithoutProjectInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput | Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyProjectInputEnvelope
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+}
+
+export type PurchaseOrderUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput> | Prisma.PurchaseOrderCreateWithoutProjectInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput | Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutProjectInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyProjectInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutProjectInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutProjectInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput> | Prisma.PurchaseOrderCreateWithoutProjectInput[] | Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput | Prisma.PurchaseOrderCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutProjectInput | Prisma.PurchaseOrderUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.PurchaseOrderCreateManyProjectInputEnvelope
+  set?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  disconnect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  delete?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  connect?: Prisma.PurchaseOrderWhereUniqueInput | Prisma.PurchaseOrderWhereUniqueInput[]
+  update?: Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutProjectInput | Prisma.PurchaseOrderUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.PurchaseOrderUpdateManyWithWhereWithoutProjectInput | Prisma.PurchaseOrderUpdateManyWithWhereWithoutProjectInput[]
   deleteMany?: Prisma.PurchaseOrderScalarWhereInput | Prisma.PurchaseOrderScalarWhereInput[]
 }
 
@@ -1035,6 +1313,36 @@ export type PurchaseOrderUpdateOneRequiredWithoutItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseOrderUpdateToOneWithWhereWithoutItemsInput, Prisma.PurchaseOrderUpdateWithoutItemsInput>, Prisma.PurchaseOrderUncheckedUpdateWithoutItemsInput>
 }
 
+export type PurchaseOrderCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.PurchaseOrderWhereUniqueInput
+}
+
+export type PurchaseOrderUpdateOneWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.PurchaseOrderUpsertWithoutInvoicesInput
+  disconnect?: Prisma.PurchaseOrderWhereInput | boolean
+  delete?: Prisma.PurchaseOrderWhereInput | boolean
+  connect?: Prisma.PurchaseOrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseOrderUpdateToOneWithWhereWithoutInvoicesInput, Prisma.PurchaseOrderUpdateWithoutInvoicesInput>, Prisma.PurchaseOrderUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type PurchaseOrderCreateNestedOneWithoutConfirmationsInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedCreateWithoutConfirmationsInput>
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutConfirmationsInput
+  connect?: Prisma.PurchaseOrderWhereUniqueInput
+}
+
+export type PurchaseOrderUpdateOneRequiredWithoutConfirmationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedCreateWithoutConfirmationsInput>
+  connectOrCreate?: Prisma.PurchaseOrderCreateOrConnectWithoutConfirmationsInput
+  upsert?: Prisma.PurchaseOrderUpsertWithoutConfirmationsInput
+  connect?: Prisma.PurchaseOrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseOrderUpdateToOneWithWhereWithoutConfirmationsInput, Prisma.PurchaseOrderUpdateWithoutConfirmationsInput>, Prisma.PurchaseOrderUncheckedUpdateWithoutConfirmationsInput>
+}
+
 export type PurchaseOrderCreateWithoutCreatedByInput = {
   id?: string
   publicCode: string
@@ -1048,17 +1356,25 @@ export type PurchaseOrderCreateWithoutCreatedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1068,6 +1384,7 @@ export type PurchaseOrderUncheckedCreateWithoutCreatedByInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1077,6 +1394,11 @@ export type PurchaseOrderUncheckedCreateWithoutCreatedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   vendorId?: string | null
@@ -1088,6 +1410,8 @@ export type PurchaseOrderUncheckedCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1116,17 +1440,25 @@ export type PurchaseOrderCreateWithoutReviewedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1136,6 +1468,7 @@ export type PurchaseOrderUncheckedCreateWithoutReviewedByInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1145,6 +1478,11 @@ export type PurchaseOrderUncheckedCreateWithoutReviewedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1156,6 +1494,8 @@ export type PurchaseOrderUncheckedCreateWithoutReviewedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1184,17 +1524,25 @@ export type PurchaseOrderCreateWithoutApprovedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1204,6 +1552,7 @@ export type PurchaseOrderUncheckedCreateWithoutApprovedByInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1213,6 +1562,11 @@ export type PurchaseOrderUncheckedCreateWithoutApprovedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1224,6 +1578,8 @@ export type PurchaseOrderUncheckedCreateWithoutApprovedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1236,6 +1592,174 @@ export type PurchaseOrderCreateOrConnectWithoutApprovedByInput = {
 
 export type PurchaseOrderCreateManyApprovedByInputEnvelope = {
   data: Prisma.PurchaseOrderCreateManyApprovedByInput | Prisma.PurchaseOrderCreateManyApprovedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type PurchaseOrderCreateWithoutVendorPoSentByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderCreateOrConnectWithoutVendorPoSentByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput>
+}
+
+export type PurchaseOrderCreateManyVendorPoSentByInputEnvelope = {
+  data: Prisma.PurchaseOrderCreateManyVendorPoSentByInput | Prisma.PurchaseOrderCreateManyVendorPoSentByInput[]
+  skipDuplicates?: boolean
+}
+
+export type PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderCreateOrConnectWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type PurchaseOrderCreateManyVendorInvoiceUploadedByInputEnvelope = {
+  data: Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInput | Prisma.PurchaseOrderCreateManyVendorInvoiceUploadedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -1262,6 +1786,7 @@ export type PurchaseOrderScalarWhereInput = {
   id?: Prisma.StringFilter<"PurchaseOrder"> | string
   publicCode?: Prisma.StringFilter<"PurchaseOrder"> | string
   poNumber?: Prisma.StringFilter<"PurchaseOrder"> | string
+  projectId?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   vendorName?: Prisma.StringFilter<"PurchaseOrder"> | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFilter<"PurchaseOrder"> | $Enums.POPaymentMethod
   paymentBankName?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -1271,6 +1796,11 @@ export type PurchaseOrderScalarWhereInput = {
   includeTax?: Prisma.BoolFilter<"PurchaseOrder"> | boolean
   transferDestination?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paymentReceiptUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
+  vendorPoSentAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
+  vendorPoSentById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PurchaseOrder"> | Date | string | null
   status?: Prisma.EnumPOStatusFilter<"PurchaseOrder"> | $Enums.POStatus
   createdById?: Prisma.StringNullableFilter<"PurchaseOrder"> | string | null
@@ -1316,6 +1846,138 @@ export type PurchaseOrderUpdateManyWithWhereWithoutApprovedByInput = {
   data: Prisma.XOR<Prisma.PurchaseOrderUpdateManyMutationInput, Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByInput>
 }
 
+export type PurchaseOrderUpsertWithWhereUniqueWithoutVendorPoSentByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedUpdateWithoutVendorPoSentByInput>
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorPoSentByInput>
+}
+
+export type PurchaseOrderUpdateWithWhereUniqueWithoutVendorPoSentByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutVendorPoSentByInput, Prisma.PurchaseOrderUncheckedUpdateWithoutVendorPoSentByInput>
+}
+
+export type PurchaseOrderUpdateManyWithWhereWithoutVendorPoSentByInput = {
+  where: Prisma.PurchaseOrderScalarWhereInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateManyMutationInput, Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByInput>
+}
+
+export type PurchaseOrderUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedUpdateWithoutVendorInvoiceUploadedByInput>
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedCreateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type PurchaseOrderUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutVendorInvoiceUploadedByInput, Prisma.PurchaseOrderUncheckedUpdateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type PurchaseOrderUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.PurchaseOrderScalarWhereInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateManyMutationInput, Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByInput>
+}
+
+export type PurchaseOrderCreateWithoutProjectInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderUncheckedCreateWithoutProjectInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderCreateOrConnectWithoutProjectInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput>
+}
+
+export type PurchaseOrderCreateManyProjectInputEnvelope = {
+  data: Prisma.PurchaseOrderCreateManyProjectInput | Prisma.PurchaseOrderCreateManyProjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type PurchaseOrderUpsertWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutProjectInput, Prisma.PurchaseOrderUncheckedUpdateWithoutProjectInput>
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutProjectInput, Prisma.PurchaseOrderUncheckedCreateWithoutProjectInput>
+}
+
+export type PurchaseOrderUpdateWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutProjectInput, Prisma.PurchaseOrderUncheckedUpdateWithoutProjectInput>
+}
+
+export type PurchaseOrderUpdateManyWithWhereWithoutProjectInput = {
+  where: Prisma.PurchaseOrderScalarWhereInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateManyMutationInput, Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectInput>
+}
+
 export type PurchaseOrderCreateWithoutStockPurchasesInput = {
   id?: string
   publicCode: string
@@ -1329,18 +1991,26 @@ export type PurchaseOrderCreateWithoutStockPurchasesInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
 }
@@ -1349,6 +2019,7 @@ export type PurchaseOrderUncheckedCreateWithoutStockPurchasesInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1358,6 +2029,11 @@ export type PurchaseOrderUncheckedCreateWithoutStockPurchasesInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1370,6 +2046,8 @@ export type PurchaseOrderUncheckedCreateWithoutStockPurchasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
 }
@@ -1403,18 +2081,26 @@ export type PurchaseOrderUpdateWithoutStockPurchasesInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
 }
@@ -1423,6 +2109,7 @@ export type PurchaseOrderUncheckedUpdateWithoutStockPurchasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1432,6 +2119,11 @@ export type PurchaseOrderUncheckedUpdateWithoutStockPurchasesInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1444,6 +2136,8 @@ export type PurchaseOrderUncheckedUpdateWithoutStockPurchasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
 }
@@ -1461,17 +2155,25 @@ export type PurchaseOrderCreateWithoutVendorInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1481,6 +2183,7 @@ export type PurchaseOrderUncheckedCreateWithoutVendorInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1490,6 +2193,11 @@ export type PurchaseOrderUncheckedCreateWithoutVendorInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1501,6 +2209,8 @@ export type PurchaseOrderUncheckedCreateWithoutVendorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1545,17 +2255,25 @@ export type PurchaseOrderCreateWithoutTicketInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1565,6 +2283,7 @@ export type PurchaseOrderUncheckedCreateWithoutTicketInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1574,6 +2293,11 @@ export type PurchaseOrderUncheckedCreateWithoutTicketInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1585,6 +2309,8 @@ export type PurchaseOrderUncheckedCreateWithoutTicketInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1629,18 +2355,26 @@ export type PurchaseOrderCreateWithoutPaymentTransactionsInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
 }
@@ -1649,6 +2383,7 @@ export type PurchaseOrderUncheckedCreateWithoutPaymentTransactionsInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1658,6 +2393,11 @@ export type PurchaseOrderUncheckedCreateWithoutPaymentTransactionsInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1670,6 +2410,8 @@ export type PurchaseOrderUncheckedCreateWithoutPaymentTransactionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
 }
@@ -1703,18 +2445,26 @@ export type PurchaseOrderUpdateWithoutPaymentTransactionsInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
 }
@@ -1723,6 +2473,7 @@ export type PurchaseOrderUncheckedUpdateWithoutPaymentTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1732,6 +2483,11 @@ export type PurchaseOrderUncheckedUpdateWithoutPaymentTransactionsInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1744,6 +2500,8 @@ export type PurchaseOrderUncheckedUpdateWithoutPaymentTransactionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
 }
@@ -1761,18 +2519,26 @@ export type PurchaseOrderCreateWithoutDeliveryOrdersInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
   items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
 }
@@ -1781,6 +2547,7 @@ export type PurchaseOrderUncheckedCreateWithoutDeliveryOrdersInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1790,6 +2557,11 @@ export type PurchaseOrderUncheckedCreateWithoutDeliveryOrdersInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1802,6 +2574,8 @@ export type PurchaseOrderUncheckedCreateWithoutDeliveryOrdersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
 }
@@ -1835,18 +2609,26 @@ export type PurchaseOrderUpdateWithoutDeliveryOrdersInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
 }
@@ -1855,6 +2637,7 @@ export type PurchaseOrderUncheckedUpdateWithoutDeliveryOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1864,6 +2647,11 @@ export type PurchaseOrderUncheckedUpdateWithoutDeliveryOrdersInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1876,6 +2664,8 @@ export type PurchaseOrderUncheckedUpdateWithoutDeliveryOrdersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
 }
@@ -1893,17 +2683,25 @@ export type PurchaseOrderCreateWithoutItemsInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   reviewedAt?: Date | string | null
   approvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
   vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
@@ -1913,6 +2711,7 @@ export type PurchaseOrderUncheckedCreateWithoutItemsInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -1922,6 +2721,11 @@ export type PurchaseOrderUncheckedCreateWithoutItemsInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -1933,6 +2737,8 @@ export type PurchaseOrderUncheckedCreateWithoutItemsInput = {
   ticketId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
   stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
@@ -1967,17 +2773,25 @@ export type PurchaseOrderUpdateWithoutItemsInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -1987,6 +2801,7 @@ export type PurchaseOrderUncheckedUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1996,6 +2811,11 @@ export type PurchaseOrderUncheckedUpdateWithoutItemsInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2007,12 +2827,14 @@ export type PurchaseOrderUncheckedUpdateWithoutItemsInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
 }
 
-export type PurchaseOrderCreateManyCreatedByInput = {
+export type PurchaseOrderCreateWithoutInvoicesInput = {
   id?: string
   publicCode: string
   poNumber: string
@@ -2025,6 +2847,340 @@ export type PurchaseOrderCreateManyCreatedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  confirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedCreateWithoutInvoicesInput>
+}
+
+export type PurchaseOrderUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.PurchaseOrderWhereInput
+}
+
+export type PurchaseOrderUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.PurchaseOrderWhereInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutInvoicesInput, Prisma.PurchaseOrderUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type PurchaseOrderUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderCreateWithoutConfirmationsInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutPurchaseOrdersInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput
+  vendorPoSentBy?: Prisma.UserCreateNestedOneWithoutSentPurchaseOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPurchaseOrdersInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPurchaseOrdersInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedPurchaseOrdersInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedPurchaseOrdersInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPurchaseOrdersInput
+  items?: Prisma.POItemCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderUncheckedCreateWithoutConfirmationsInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.POItemUncheckedCreateNestedManyWithoutPoInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPoInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutPoInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutPurchaseOrderInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutPoInput
+}
+
+export type PurchaseOrderCreateOrConnectWithoutConfirmationsInput = {
+  where: Prisma.PurchaseOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedCreateWithoutConfirmationsInput>
+}
+
+export type PurchaseOrderUpsertWithoutConfirmationsInput = {
+  update: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedUpdateWithoutConfirmationsInput>
+  create: Prisma.XOR<Prisma.PurchaseOrderCreateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedCreateWithoutConfirmationsInput>
+  where?: Prisma.PurchaseOrderWhereInput
+}
+
+export type PurchaseOrderUpdateToOneWithWhereWithoutConfirmationsInput = {
+  where?: Prisma.PurchaseOrderWhereInput
+  data: Prisma.XOR<Prisma.PurchaseOrderUpdateWithoutConfirmationsInput, Prisma.PurchaseOrderUncheckedUpdateWithoutConfirmationsInput>
+}
+
+export type PurchaseOrderUpdateWithoutConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateWithoutConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderCreateManyCreatedByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   vendorId?: string | null
@@ -2041,6 +3197,7 @@ export type PurchaseOrderCreateManyReviewedByInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -2050,6 +3207,11 @@ export type PurchaseOrderCreateManyReviewedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -2066,6 +3228,7 @@ export type PurchaseOrderCreateManyApprovedByInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -2075,12 +3238,79 @@ export type PurchaseOrderCreateManyApprovedByInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
   vendorId?: string | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PurchaseOrderCreateManyVendorPoSentByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PurchaseOrderCreateManyVendorInvoiceUploadedByInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
   approvedAt?: Date | string | null
   ticketId?: string | null
   createdAt?: Date | string
@@ -2100,17 +3330,25 @@ export type PurchaseOrderUpdateWithoutCreatedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -2120,6 +3358,7 @@ export type PurchaseOrderUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2129,6 +3368,11 @@ export type PurchaseOrderUncheckedUpdateWithoutCreatedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2140,6 +3384,8 @@ export type PurchaseOrderUncheckedUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -2149,6 +3395,7 @@ export type PurchaseOrderUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2158,6 +3405,11 @@ export type PurchaseOrderUncheckedUpdateManyWithoutCreatedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2183,17 +3435,25 @@ export type PurchaseOrderUpdateWithoutReviewedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -2203,6 +3463,7 @@ export type PurchaseOrderUncheckedUpdateWithoutReviewedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2212,6 +3473,11 @@ export type PurchaseOrderUncheckedUpdateWithoutReviewedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2223,6 +3489,8 @@ export type PurchaseOrderUncheckedUpdateWithoutReviewedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -2232,6 +3500,7 @@ export type PurchaseOrderUncheckedUpdateManyWithoutReviewedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2241,6 +3510,11 @@ export type PurchaseOrderUncheckedUpdateManyWithoutReviewedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2266,17 +3540,25 @@ export type PurchaseOrderUpdateWithoutApprovedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -2286,6 +3568,7 @@ export type PurchaseOrderUncheckedUpdateWithoutApprovedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2295,6 +3578,11 @@ export type PurchaseOrderUncheckedUpdateWithoutApprovedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2306,6 +3594,8 @@ export type PurchaseOrderUncheckedUpdateWithoutApprovedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -2315,6 +3605,7 @@ export type PurchaseOrderUncheckedUpdateManyWithoutApprovedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2324,6 +3615,11 @@ export type PurchaseOrderUncheckedUpdateManyWithoutApprovedByInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2336,7 +3632,217 @@ export type PurchaseOrderUncheckedUpdateManyWithoutApprovedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PurchaseOrderCreateManyVendorInput = {
+export type PurchaseOrderUpdateWithoutVendorPoSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateWithoutVendorPoSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PurchaseOrderUpdateWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PurchaseOrderCreateManyProjectInput = {
   id?: string
   publicCode: string
   poNumber: string
@@ -2349,6 +3855,148 @@ export type PurchaseOrderCreateManyVendorInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
+  paidAt?: Date | string | null
+  status?: $Enums.POStatus
+  createdById?: string | null
+  vendorId?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  ticketId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PurchaseOrderUpdateWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
+  items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
+  deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
+}
+
+export type PurchaseOrderUncheckedUpdateManyWithoutProjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PurchaseOrderCreateManyVendorInput = {
+  id?: string
+  publicCode: string
+  poNumber: string
+  projectId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  transferDestination?: string | null
+  paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -2374,17 +4022,25 @@ export type PurchaseOrderUpdateWithoutVendorInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -2394,6 +4050,7 @@ export type PurchaseOrderUncheckedUpdateWithoutVendorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2403,6 +4060,11 @@ export type PurchaseOrderUncheckedUpdateWithoutVendorInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2414,6 +4076,8 @@ export type PurchaseOrderUncheckedUpdateWithoutVendorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -2423,6 +4087,7 @@ export type PurchaseOrderUncheckedUpdateManyWithoutVendorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2432,6 +4097,11 @@ export type PurchaseOrderUncheckedUpdateManyWithoutVendorInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2448,6 +4118,7 @@ export type PurchaseOrderCreateManyTicketInput = {
   id?: string
   publicCode: string
   poNumber: string
+  projectId?: string | null
   vendorName: string
   paymentMethod?: $Enums.POPaymentMethod
   paymentBankName?: string | null
@@ -2457,6 +4128,11 @@ export type PurchaseOrderCreateManyTicketInput = {
   includeTax?: boolean
   transferDestination?: string | null
   paymentReceiptUrl?: string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorPoSentAt?: Date | string | null
+  vendorPoSentById?: string | null
   paidAt?: Date | string | null
   status?: $Enums.POStatus
   createdById?: string | null
@@ -2482,17 +4158,25 @@ export type PurchaseOrderUpdateWithoutTicketInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutPurchaseOrdersNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput
+  vendorPoSentBy?: Prisma.UserUpdateOneWithoutSentPurchaseOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput
   vendor?: Prisma.VendorUpdateOneWithoutPurchaseOrdersNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutReviewedPurchaseOrdersNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedPurchaseOrdersNestedInput
   items?: Prisma.POItemUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutPoNestedInput
@@ -2502,6 +4186,7 @@ export type PurchaseOrderUncheckedUpdateWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2511,6 +4196,11 @@ export type PurchaseOrderUncheckedUpdateWithoutTicketInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2522,6 +4212,8 @@ export type PurchaseOrderUncheckedUpdateWithoutTicketInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.POItemUncheckedUpdateManyWithoutPoNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPoNestedInput
+  confirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutPoNestedInput
   deliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutPoNestedInput
   stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutPurchaseOrderNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoNestedInput
@@ -2531,6 +4223,7 @@ export type PurchaseOrderUncheckedUpdateManyWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   poNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vendorName?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
   paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2540,6 +4233,11 @@ export type PurchaseOrderUncheckedUpdateManyWithoutTicketInput = {
   includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transferDestination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorPoSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorPoSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumPOStatusFieldUpdateOperationsInput | $Enums.POStatus
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2559,6 +4257,8 @@ export type PurchaseOrderUncheckedUpdateManyWithoutTicketInput = {
 
 export type PurchaseOrderCountOutputType = {
   items: number
+  invoices: number
+  confirmations: number
   deliveryOrders: number
   stockPurchases: number
   paymentTransactions: number
@@ -2566,6 +4266,8 @@ export type PurchaseOrderCountOutputType = {
 
 export type PurchaseOrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   items?: boolean | PurchaseOrderCountOutputTypeCountItemsArgs
+  invoices?: boolean | PurchaseOrderCountOutputTypeCountInvoicesArgs
+  confirmations?: boolean | PurchaseOrderCountOutputTypeCountConfirmationsArgs
   deliveryOrders?: boolean | PurchaseOrderCountOutputTypeCountDeliveryOrdersArgs
   stockPurchases?: boolean | PurchaseOrderCountOutputTypeCountStockPurchasesArgs
   paymentTransactions?: boolean | PurchaseOrderCountOutputTypeCountPaymentTransactionsArgs
@@ -2586,6 +4288,20 @@ export type PurchaseOrderCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
  */
 export type PurchaseOrderCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.POItemWhereInput
+}
+
+/**
+ * PurchaseOrderCountOutputType without action
+ */
+export type PurchaseOrderCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * PurchaseOrderCountOutputType without action
+ */
+export type PurchaseOrderCountOutputTypeCountConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderConfirmationWhereInput
 }
 
 /**
@@ -2614,6 +4330,7 @@ export type PurchaseOrderSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   publicCode?: boolean
   poNumber?: boolean
+  projectId?: boolean
   vendorName?: boolean
   paymentMethod?: boolean
   paymentBankName?: boolean
@@ -2623,6 +4340,11 @@ export type PurchaseOrderSelect<ExtArgs extends runtime.Types.Extensions.Interna
   includeTax?: boolean
   transferDestination?: boolean
   paymentReceiptUrl?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedAt?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorPoSentAt?: boolean
+  vendorPoSentById?: boolean
   paidAt?: boolean
   status?: boolean
   createdById?: boolean
@@ -2634,12 +4356,17 @@ export type PurchaseOrderSelect<ExtArgs extends runtime.Types.Extensions.Interna
   ticketId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
   approvedBy?: boolean | Prisma.PurchaseOrder$approvedByArgs<ExtArgs>
   ticket?: boolean | Prisma.PurchaseOrder$ticketArgs<ExtArgs>
   items?: boolean | Prisma.PurchaseOrder$itemsArgs<ExtArgs>
+  invoices?: boolean | Prisma.PurchaseOrder$invoicesArgs<ExtArgs>
+  confirmations?: boolean | Prisma.PurchaseOrder$confirmationsArgs<ExtArgs>
   deliveryOrders?: boolean | Prisma.PurchaseOrder$deliveryOrdersArgs<ExtArgs>
   stockPurchases?: boolean | Prisma.PurchaseOrder$stockPurchasesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.PurchaseOrder$paymentTransactionsArgs<ExtArgs>
@@ -2650,6 +4377,7 @@ export type PurchaseOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   publicCode?: boolean
   poNumber?: boolean
+  projectId?: boolean
   vendorName?: boolean
   paymentMethod?: boolean
   paymentBankName?: boolean
@@ -2659,6 +4387,11 @@ export type PurchaseOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   includeTax?: boolean
   transferDestination?: boolean
   paymentReceiptUrl?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedAt?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorPoSentAt?: boolean
+  vendorPoSentById?: boolean
   paidAt?: boolean
   status?: boolean
   createdById?: boolean
@@ -2670,6 +4403,9 @@ export type PurchaseOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   ticketId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
@@ -2681,6 +4417,7 @@ export type PurchaseOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   publicCode?: boolean
   poNumber?: boolean
+  projectId?: boolean
   vendorName?: boolean
   paymentMethod?: boolean
   paymentBankName?: boolean
@@ -2690,6 +4427,11 @@ export type PurchaseOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   includeTax?: boolean
   transferDestination?: boolean
   paymentReceiptUrl?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedAt?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorPoSentAt?: boolean
+  vendorPoSentById?: boolean
   paidAt?: boolean
   status?: boolean
   createdById?: boolean
@@ -2701,6 +4443,9 @@ export type PurchaseOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   ticketId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
@@ -2712,6 +4457,7 @@ export type PurchaseOrderSelectScalar = {
   id?: boolean
   publicCode?: boolean
   poNumber?: boolean
+  projectId?: boolean
   vendorName?: boolean
   paymentMethod?: boolean
   paymentBankName?: boolean
@@ -2721,6 +4467,11 @@ export type PurchaseOrderSelectScalar = {
   includeTax?: boolean
   transferDestination?: boolean
   paymentReceiptUrl?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedAt?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorPoSentAt?: boolean
+  vendorPoSentById?: boolean
   paidAt?: boolean
   status?: boolean
   createdById?: boolean
@@ -2734,20 +4485,28 @@ export type PurchaseOrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PurchaseOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicCode" | "poNumber" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "transferDestination" | "paymentReceiptUrl" | "paidAt" | "status" | "createdById" | "vendorId" | "reviewedById" | "reviewedAt" | "approvedById" | "approvedAt" | "ticketId" | "createdAt" | "updatedAt", ExtArgs["result"]["purchaseOrder"]>
+export type PurchaseOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicCode" | "poNumber" | "projectId" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "transferDestination" | "paymentReceiptUrl" | "vendorInvoiceUrl" | "vendorInvoiceUploadedAt" | "vendorInvoiceUploadedById" | "vendorPoSentAt" | "vendorPoSentById" | "paidAt" | "status" | "createdById" | "vendorId" | "reviewedById" | "reviewedAt" | "approvedById" | "approvedAt" | "ticketId" | "createdAt" | "updatedAt", ExtArgs["result"]["purchaseOrder"]>
 export type PurchaseOrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
   approvedBy?: boolean | Prisma.PurchaseOrder$approvedByArgs<ExtArgs>
   ticket?: boolean | Prisma.PurchaseOrder$ticketArgs<ExtArgs>
   items?: boolean | Prisma.PurchaseOrder$itemsArgs<ExtArgs>
+  invoices?: boolean | Prisma.PurchaseOrder$invoicesArgs<ExtArgs>
+  confirmations?: boolean | Prisma.PurchaseOrder$confirmationsArgs<ExtArgs>
   deliveryOrders?: boolean | Prisma.PurchaseOrder$deliveryOrdersArgs<ExtArgs>
   stockPurchases?: boolean | Prisma.PurchaseOrder$stockPurchasesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.PurchaseOrder$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.PurchaseOrderCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PurchaseOrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
@@ -2755,6 +4514,9 @@ export type PurchaseOrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Type
   ticket?: boolean | Prisma.PurchaseOrder$ticketArgs<ExtArgs>
 }
 export type PurchaseOrderIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.PurchaseOrder$projectArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>
+  vendorPoSentBy?: boolean | Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>
   createdBy?: boolean | Prisma.PurchaseOrder$createdByArgs<ExtArgs>
   vendor?: boolean | Prisma.PurchaseOrder$vendorArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>
@@ -2765,12 +4527,17 @@ export type PurchaseOrderIncludeUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type $PurchaseOrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PurchaseOrder"
   objects: {
+    project: Prisma.$ProjectPayload<ExtArgs> | null
+    vendorInvoiceUploadedBy: Prisma.$UserPayload<ExtArgs> | null
+    vendorPoSentBy: Prisma.$UserPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs> | null
     vendor: Prisma.$VendorPayload<ExtArgs> | null
     reviewedBy: Prisma.$UserPayload<ExtArgs> | null
     approvedBy: Prisma.$UserPayload<ExtArgs> | null
     ticket: Prisma.$TicketPayload<ExtArgs> | null
     items: Prisma.$POItemPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    confirmations: Prisma.$OrderConfirmationPayload<ExtArgs>[]
     deliveryOrders: Prisma.$DeliveryOrderPayload<ExtArgs>[]
     stockPurchases: Prisma.$StockPurchasePayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
@@ -2779,6 +4546,7 @@ export type $PurchaseOrderPayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     publicCode: string
     poNumber: string
+    projectId: string | null
     vendorName: string
     paymentMethod: $Enums.POPaymentMethod
     paymentBankName: string | null
@@ -2788,6 +4556,11 @@ export type $PurchaseOrderPayload<ExtArgs extends runtime.Types.Extensions.Inter
     includeTax: boolean
     transferDestination: string | null
     paymentReceiptUrl: string | null
+    vendorInvoiceUrl: string | null
+    vendorInvoiceUploadedAt: Date | null
+    vendorInvoiceUploadedById: string | null
+    vendorPoSentAt: Date | null
+    vendorPoSentById: string | null
     paidAt: Date | null
     status: $Enums.POStatus
     createdById: string | null
@@ -3193,12 +4966,17 @@ readonly fields: PurchaseOrderFieldRefs;
  */
 export interface Prisma__PurchaseOrderClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  project<T extends Prisma.PurchaseOrder$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vendorInvoiceUploadedBy<T extends Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vendorPoSentBy<T extends Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$vendorPoSentByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.PurchaseOrder$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   vendor<T extends Prisma.PurchaseOrder$vendorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$vendorArgs<ExtArgs>>): Prisma.Prisma__VendorClient<runtime.Types.Result.GetResult<Prisma.$VendorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reviewedBy<T extends Prisma.PurchaseOrder$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$reviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   approvedBy<T extends Prisma.PurchaseOrder$approvedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$approvedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   ticket<T extends Prisma.PurchaseOrder$ticketArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$ticketArgs<ExtArgs>>): Prisma.Prisma__TicketClient<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   items<T extends Prisma.PurchaseOrder$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$POItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.PurchaseOrder$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  confirmations<T extends Prisma.PurchaseOrder$confirmationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$confirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deliveryOrders<T extends Prisma.PurchaseOrder$deliveryOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$deliveryOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stockPurchases<T extends Prisma.PurchaseOrder$stockPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$stockPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.PurchaseOrder$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseOrder$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3234,6 +5012,7 @@ export interface PurchaseOrderFieldRefs {
   readonly id: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly publicCode: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly poNumber: Prisma.FieldRef<"PurchaseOrder", 'String'>
+  readonly projectId: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly vendorName: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly paymentMethod: Prisma.FieldRef<"PurchaseOrder", 'POPaymentMethod'>
   readonly paymentBankName: Prisma.FieldRef<"PurchaseOrder", 'String'>
@@ -3243,6 +5022,11 @@ export interface PurchaseOrderFieldRefs {
   readonly includeTax: Prisma.FieldRef<"PurchaseOrder", 'Boolean'>
   readonly transferDestination: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly paymentReceiptUrl: Prisma.FieldRef<"PurchaseOrder", 'String'>
+  readonly vendorInvoiceUrl: Prisma.FieldRef<"PurchaseOrder", 'String'>
+  readonly vendorInvoiceUploadedAt: Prisma.FieldRef<"PurchaseOrder", 'DateTime'>
+  readonly vendorInvoiceUploadedById: Prisma.FieldRef<"PurchaseOrder", 'String'>
+  readonly vendorPoSentAt: Prisma.FieldRef<"PurchaseOrder", 'DateTime'>
+  readonly vendorPoSentById: Prisma.FieldRef<"PurchaseOrder", 'String'>
   readonly paidAt: Prisma.FieldRef<"PurchaseOrder", 'DateTime'>
   readonly status: Prisma.FieldRef<"PurchaseOrder", 'POStatus'>
   readonly createdById: Prisma.FieldRef<"PurchaseOrder", 'String'>
@@ -3655,6 +5439,63 @@ export type PurchaseOrderDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * PurchaseOrder.project
+ */
+export type PurchaseOrder$projectArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Project
+   */
+  select?: Prisma.ProjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Project
+   */
+  omit?: Prisma.ProjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectInclude<ExtArgs> | null
+  where?: Prisma.ProjectWhereInput
+}
+
+/**
+ * PurchaseOrder.vendorInvoiceUploadedBy
+ */
+export type PurchaseOrder$vendorInvoiceUploadedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * PurchaseOrder.vendorPoSentBy
+ */
+export type PurchaseOrder$vendorPoSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * PurchaseOrder.createdBy
  */
 export type PurchaseOrder$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3771,6 +5612,54 @@ export type PurchaseOrder$itemsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.POItemScalarFieldEnum | Prisma.POItemScalarFieldEnum[]
+}
+
+/**
+ * PurchaseOrder.invoices
+ */
+export type PurchaseOrder$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * PurchaseOrder.confirmations
+ */
+export type PurchaseOrder$confirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderConfirmation
+   */
+  select?: Prisma.OrderConfirmationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderConfirmation
+   */
+  omit?: Prisma.OrderConfirmationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderConfirmationInclude<ExtArgs> | null
+  where?: Prisma.OrderConfirmationWhereInput
+  orderBy?: Prisma.OrderConfirmationOrderByWithRelationInput | Prisma.OrderConfirmationOrderByWithRelationInput[]
+  cursor?: Prisma.OrderConfirmationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderConfirmationScalarFieldEnum | Prisma.OrderConfirmationScalarFieldEnum[]
 }
 
 /**

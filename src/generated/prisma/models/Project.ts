@@ -376,6 +376,9 @@ export type ProjectWhereInput = {
   timesheetEntries?: Prisma.TimesheetEntryListRelationFilter
   blueprints?: Prisma.BlueprintListRelationFilter
   subkonContracts?: Prisma.SubkonContractListRelationFilter
+  purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  cashflows?: Prisma.CashflowListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
   vehicleTripLogs?: Prisma.VehicleTripLogListRelationFilter
   vehicleFuelRequests?: Prisma.VehicleFuelRequestListRelationFilter
@@ -418,6 +421,9 @@ export type ProjectOrderByWithRelationInput = {
   timesheetEntries?: Prisma.TimesheetEntryOrderByRelationAggregateInput
   blueprints?: Prisma.BlueprintOrderByRelationAggregateInput
   subkonContracts?: Prisma.SubkonContractOrderByRelationAggregateInput
+  purchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  cashflows?: Prisma.CashflowOrderByRelationAggregateInput
   equipmentLogs?: Prisma.EquipmentLogOrderByRelationAggregateInput
   vehicleTripLogs?: Prisma.VehicleTripLogOrderByRelationAggregateInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestOrderByRelationAggregateInput
@@ -463,6 +469,9 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   timesheetEntries?: Prisma.TimesheetEntryListRelationFilter
   blueprints?: Prisma.BlueprintListRelationFilter
   subkonContracts?: Prisma.SubkonContractListRelationFilter
+  purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  cashflows?: Prisma.CashflowListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
   vehicleTripLogs?: Prisma.VehicleTripLogListRelationFilter
   vehicleFuelRequests?: Prisma.VehicleFuelRequestListRelationFilter
@@ -562,6 +571,9 @@ export type ProjectCreateInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -603,6 +615,9 @@ export type ProjectUncheckedCreateInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -644,6 +659,9 @@ export type ProjectUpdateInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -685,6 +703,9 @@ export type ProjectUncheckedUpdateInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -1145,6 +1166,22 @@ export type ProjectUpdateOneWithoutTicketsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutTicketsInput, Prisma.ProjectUpdateWithoutTicketsInput>, Prisma.ProjectUncheckedUpdateWithoutTicketsInput>
 }
 
+export type ProjectCreateNestedOneWithoutPurchaseOrdersInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedCreateWithoutPurchaseOrdersInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPurchaseOrdersInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutPurchaseOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedCreateWithoutPurchaseOrdersInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPurchaseOrdersInput
+  upsert?: Prisma.ProjectUpsertWithoutPurchaseOrdersInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutPurchaseOrdersInput, Prisma.ProjectUpdateWithoutPurchaseOrdersInput>, Prisma.ProjectUncheckedUpdateWithoutPurchaseOrdersInput>
+}
+
 export type ProjectCreateNestedOneWithoutVehicleTripLogsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutVehicleTripLogsInput, Prisma.ProjectUncheckedCreateWithoutVehicleTripLogsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutVehicleTripLogsInput
@@ -1175,6 +1212,38 @@ export type ProjectUpdateOneWithoutVehicleFuelRequestsNestedInput = {
   delete?: Prisma.ProjectWhereInput | boolean
   connect?: Prisma.ProjectWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutVehicleFuelRequestsInput, Prisma.ProjectUpdateWithoutVehicleFuelRequestsInput>, Prisma.ProjectUncheckedUpdateWithoutVehicleFuelRequestsInput>
+}
+
+export type ProjectCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.ProjectUpsertWithoutInvoicesInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutInvoicesInput, Prisma.ProjectUpdateWithoutInvoicesInput>, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type ProjectCreateNestedOneWithoutCashflowsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCashflowsInput, Prisma.ProjectUncheckedCreateWithoutCashflowsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCashflowsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutCashflowsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCashflowsInput, Prisma.ProjectUncheckedCreateWithoutCashflowsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCashflowsInput
+  upsert?: Prisma.ProjectUpsertWithoutCashflowsInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutCashflowsInput, Prisma.ProjectUpdateWithoutCashflowsInput>, Prisma.ProjectUncheckedUpdateWithoutCashflowsInput>
 }
 
 export type ProjectCreateWithoutFieldPicInput = {
@@ -1210,6 +1279,9 @@ export type ProjectCreateWithoutFieldPicInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -1250,6 +1322,9 @@ export type ProjectUncheckedCreateWithoutFieldPicInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -1344,6 +1419,9 @@ export type ProjectCreateWithoutCalendarEventsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -1384,6 +1462,9 @@ export type ProjectUncheckedCreateWithoutCalendarEventsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -1440,6 +1521,9 @@ export type ProjectUpdateWithoutCalendarEventsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -1480,6 +1564,9 @@ export type ProjectUncheckedUpdateWithoutCalendarEventsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -1520,6 +1607,9 @@ export type ProjectCreateWithoutWorkTasksInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -1560,6 +1650,9 @@ export type ProjectUncheckedCreateWithoutWorkTasksInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -1616,6 +1709,9 @@ export type ProjectUpdateWithoutWorkTasksInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -1656,6 +1752,9 @@ export type ProjectUncheckedUpdateWithoutWorkTasksInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -1696,6 +1795,9 @@ export type ProjectCreateWithoutTimesheetEntriesInput = {
   workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -1736,6 +1838,9 @@ export type ProjectUncheckedCreateWithoutTimesheetEntriesInput = {
   workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -1792,6 +1897,9 @@ export type ProjectUpdateWithoutTimesheetEntriesInput = {
   workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -1832,6 +1940,9 @@ export type ProjectUncheckedUpdateWithoutTimesheetEntriesInput = {
   workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -1872,6 +1983,9 @@ export type ProjectCreateWithoutFieldSurveysInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -1912,6 +2026,9 @@ export type ProjectUncheckedCreateWithoutFieldSurveysInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -1968,6 +2085,9 @@ export type ProjectUpdateWithoutFieldSurveysInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2008,6 +2128,9 @@ export type ProjectUncheckedUpdateWithoutFieldSurveysInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2048,6 +2171,9 @@ export type ProjectCreateWithoutDailyReportsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2088,6 +2214,9 @@ export type ProjectUncheckedCreateWithoutDailyReportsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -2144,6 +2273,9 @@ export type ProjectUpdateWithoutDailyReportsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2184,6 +2316,9 @@ export type ProjectUncheckedUpdateWithoutDailyReportsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2224,6 +2359,9 @@ export type ProjectCreateWithoutWorkPointsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2264,6 +2402,9 @@ export type ProjectUncheckedCreateWithoutWorkPointsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -2320,6 +2461,9 @@ export type ProjectUpdateWithoutWorkPointsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2360,6 +2504,9 @@ export type ProjectUncheckedUpdateWithoutWorkPointsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2400,6 +2547,9 @@ export type ProjectCreateWithoutBlueprintsInput = {
   workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2440,6 +2590,9 @@ export type ProjectUncheckedCreateWithoutBlueprintsInput = {
   workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -2496,6 +2649,9 @@ export type ProjectUpdateWithoutBlueprintsInput = {
   workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2536,6 +2692,9 @@ export type ProjectUncheckedUpdateWithoutBlueprintsInput = {
   workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2576,6 +2735,9 @@ export type ProjectCreateWithoutStockMovementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2616,6 +2778,9 @@ export type ProjectUncheckedCreateWithoutStockMovementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -2672,6 +2837,9 @@ export type ProjectUpdateWithoutStockMovementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2712,6 +2880,9 @@ export type ProjectUncheckedUpdateWithoutStockMovementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2752,6 +2923,9 @@ export type ProjectCreateWithoutWageDisbursementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2792,6 +2966,9 @@ export type ProjectUncheckedCreateWithoutWageDisbursementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -2848,6 +3025,9 @@ export type ProjectUpdateWithoutWageDisbursementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -2888,6 +3068,9 @@ export type ProjectUncheckedUpdateWithoutWageDisbursementsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -2928,6 +3111,9 @@ export type ProjectCreateWithoutSubkonContractsInput = {
   workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -2968,6 +3154,9 @@ export type ProjectUncheckedCreateWithoutSubkonContractsInput = {
   workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -3024,6 +3213,9 @@ export type ProjectUpdateWithoutSubkonContractsInput = {
   workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -3064,6 +3256,9 @@ export type ProjectUncheckedUpdateWithoutSubkonContractsInput = {
   workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -3105,6 +3300,9 @@ export type ProjectCreateWithoutEquipmentLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
@@ -3145,6 +3343,9 @@ export type ProjectUncheckedCreateWithoutEquipmentLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
@@ -3201,6 +3402,9 @@ export type ProjectUpdateWithoutEquipmentLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
@@ -3241,6 +3445,9 @@ export type ProjectUncheckedUpdateWithoutEquipmentLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
@@ -3281,6 +3488,9 @@ export type ProjectCreateWithoutAddendumsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -3321,6 +3531,9 @@ export type ProjectUncheckedCreateWithoutAddendumsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -3377,6 +3590,9 @@ export type ProjectUpdateWithoutAddendumsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -3417,6 +3633,9 @@ export type ProjectUncheckedUpdateWithoutAddendumsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -3457,6 +3676,9 @@ export type ProjectCreateWithoutBastDocumentsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -3497,6 +3719,9 @@ export type ProjectUncheckedCreateWithoutBastDocumentsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -3553,6 +3778,9 @@ export type ProjectUpdateWithoutBastDocumentsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -3593,6 +3821,9 @@ export type ProjectUncheckedUpdateWithoutBastDocumentsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -3632,6 +3863,9 @@ export type ProjectCreateWithoutTicketsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
@@ -3672,6 +3906,9 @@ export type ProjectUncheckedCreateWithoutTicketsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
@@ -3728,6 +3965,9 @@ export type ProjectUpdateWithoutTicketsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -3768,6 +4008,197 @@ export type ProjectUncheckedUpdateWithoutTicketsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutPurchaseOrdersInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutPurchaseOrdersInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutPurchaseOrdersInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedCreateWithoutPurchaseOrdersInput>
+}
+
+export type ProjectUpsertWithoutPurchaseOrdersInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedUpdateWithoutPurchaseOrdersInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedCreateWithoutPurchaseOrdersInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutPurchaseOrdersInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutPurchaseOrdersInput, Prisma.ProjectUncheckedUpdateWithoutPurchaseOrdersInput>
+}
+
+export type ProjectUpdateWithoutPurchaseOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutPurchaseOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -3809,6 +4240,9 @@ export type ProjectCreateWithoutVehicleTripLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
@@ -3849,6 +4283,9 @@ export type ProjectUncheckedCreateWithoutVehicleTripLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
@@ -3905,6 +4342,9 @@ export type ProjectUpdateWithoutVehicleTripLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
@@ -3945,6 +4385,9 @@ export type ProjectUncheckedUpdateWithoutVehicleTripLogsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
@@ -3985,6 +4428,9 @@ export type ProjectCreateWithoutVehicleFuelRequestsInput = {
   timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
@@ -4025,6 +4471,9 @@ export type ProjectUncheckedCreateWithoutVehicleFuelRequestsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
   blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
   subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
   addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
@@ -4081,6 +4530,9 @@ export type ProjectUpdateWithoutVehicleFuelRequestsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
@@ -4121,8 +4573,387 @@ export type ProjectUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutInvoicesInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+}
+
+export type ProjectUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutInvoicesInput, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutInvoicesInput, Prisma.ProjectUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutInvoicesInput, Prisma.ProjectUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type ProjectUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutCashflowsInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutCashflowsInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutCashflowsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutCashflowsInput, Prisma.ProjectUncheckedCreateWithoutCashflowsInput>
+}
+
+export type ProjectUpsertWithoutCashflowsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutCashflowsInput, Prisma.ProjectUncheckedUpdateWithoutCashflowsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutCashflowsInput, Prisma.ProjectUncheckedCreateWithoutCashflowsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutCashflowsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutCashflowsInput, Prisma.ProjectUncheckedUpdateWithoutCashflowsInput>
+}
+
+export type ProjectUpdateWithoutCashflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutCashflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
   addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
   bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
 }
@@ -4184,6 +5015,9 @@ export type ProjectUpdateWithoutFieldPicInput = {
   timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
@@ -4224,6 +5058,9 @@ export type ProjectUncheckedUpdateWithoutFieldPicInput = {
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
   blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
   vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
@@ -4272,6 +5109,9 @@ export type ProjectCountOutputType = {
   timesheetEntries: number
   blueprints: number
   subkonContracts: number
+  purchaseOrders: number
+  invoices: number
+  cashflows: number
   equipmentLogs: number
   vehicleTripLogs: number
   vehicleFuelRequests: number
@@ -4291,6 +5131,9 @@ export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   timesheetEntries?: boolean | ProjectCountOutputTypeCountTimesheetEntriesArgs
   blueprints?: boolean | ProjectCountOutputTypeCountBlueprintsArgs
   subkonContracts?: boolean | ProjectCountOutputTypeCountSubkonContractsArgs
+  purchaseOrders?: boolean | ProjectCountOutputTypeCountPurchaseOrdersArgs
+  invoices?: boolean | ProjectCountOutputTypeCountInvoicesArgs
+  cashflows?: boolean | ProjectCountOutputTypeCountCashflowsArgs
   equipmentLogs?: boolean | ProjectCountOutputTypeCountEquipmentLogsArgs
   vehicleTripLogs?: boolean | ProjectCountOutputTypeCountVehicleTripLogsArgs
   vehicleFuelRequests?: boolean | ProjectCountOutputTypeCountVehicleFuelRequestsArgs
@@ -4388,6 +5231,27 @@ export type ProjectCountOutputTypeCountSubkonContractsArgs<ExtArgs extends runti
 /**
  * ProjectCountOutputType without action
  */
+export type ProjectCountOutputTypeCountPurchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PurchaseOrderWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountCashflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CashflowWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
 export type ProjectCountOutputTypeCountEquipmentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.EquipmentLogWhereInput
 }
@@ -4456,6 +5320,9 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   timesheetEntries?: boolean | Prisma.Project$timesheetEntriesArgs<ExtArgs>
   blueprints?: boolean | Prisma.Project$blueprintsArgs<ExtArgs>
   subkonContracts?: boolean | Prisma.Project$subkonContractsArgs<ExtArgs>
+  purchaseOrders?: boolean | Prisma.Project$purchaseOrdersArgs<ExtArgs>
+  invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
+  cashflows?: boolean | Prisma.Project$cashflowsArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Project$equipmentLogsArgs<ExtArgs>
   vehicleTripLogs?: boolean | Prisma.Project$vehicleTripLogsArgs<ExtArgs>
   vehicleFuelRequests?: boolean | Prisma.Project$vehicleFuelRequestsArgs<ExtArgs>
@@ -4555,6 +5422,9 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   timesheetEntries?: boolean | Prisma.Project$timesheetEntriesArgs<ExtArgs>
   blueprints?: boolean | Prisma.Project$blueprintsArgs<ExtArgs>
   subkonContracts?: boolean | Prisma.Project$subkonContractsArgs<ExtArgs>
+  purchaseOrders?: boolean | Prisma.Project$purchaseOrdersArgs<ExtArgs>
+  invoices?: boolean | Prisma.Project$invoicesArgs<ExtArgs>
+  cashflows?: boolean | Prisma.Project$cashflowsArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Project$equipmentLogsArgs<ExtArgs>
   vehicleTripLogs?: boolean | Prisma.Project$vehicleTripLogsArgs<ExtArgs>
   vehicleFuelRequests?: boolean | Prisma.Project$vehicleFuelRequestsArgs<ExtArgs>
@@ -4584,6 +5454,9 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     timesheetEntries: Prisma.$TimesheetEntryPayload<ExtArgs>[]
     blueprints: Prisma.$BlueprintPayload<ExtArgs>[]
     subkonContracts: Prisma.$SubkonContractPayload<ExtArgs>[]
+    purchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    cashflows: Prisma.$CashflowPayload<ExtArgs>[]
     equipmentLogs: Prisma.$EquipmentLogPayload<ExtArgs>[]
     vehicleTripLogs: Prisma.$VehicleTripLogPayload<ExtArgs>[]
     vehicleFuelRequests: Prisma.$VehicleFuelRequestPayload<ExtArgs>[]
@@ -5019,6 +5892,9 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   timesheetEntries<T extends Prisma.Project$timesheetEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$timesheetEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimesheetEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   blueprints<T extends Prisma.Project$blueprintsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$blueprintsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlueprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subkonContracts<T extends Prisma.Project$subkonContractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$subkonContractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubkonContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  purchaseOrders<T extends Prisma.Project$purchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$purchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Project$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cashflows<T extends Prisma.Project$cashflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$cashflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CashflowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipmentLogs<T extends Prisma.Project$equipmentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$equipmentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicleTripLogs<T extends Prisma.Project$vehicleTripLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$vehicleTripLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleTripLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicleFuelRequests<T extends Prisma.Project$vehicleFuelRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$vehicleFuelRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleFuelRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5756,6 +6632,78 @@ export type Project$subkonContractsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.SubkonContractScalarFieldEnum | Prisma.SubkonContractScalarFieldEnum[]
+}
+
+/**
+ * Project.purchaseOrders
+ */
+export type Project$purchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PurchaseOrder
+   */
+  select?: Prisma.PurchaseOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PurchaseOrder
+   */
+  omit?: Prisma.PurchaseOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PurchaseOrderInclude<ExtArgs> | null
+  where?: Prisma.PurchaseOrderWhereInput
+  orderBy?: Prisma.PurchaseOrderOrderByWithRelationInput | Prisma.PurchaseOrderOrderByWithRelationInput[]
+  cursor?: Prisma.PurchaseOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PurchaseOrderScalarFieldEnum | Prisma.PurchaseOrderScalarFieldEnum[]
+}
+
+/**
+ * Project.invoices
+ */
+export type Project$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * Project.cashflows
+ */
+export type Project$cashflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Cashflow
+   */
+  select?: Prisma.CashflowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Cashflow
+   */
+  omit?: Prisma.CashflowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CashflowInclude<ExtArgs> | null
+  where?: Prisma.CashflowWhereInput
+  orderBy?: Prisma.CashflowOrderByWithRelationInput | Prisma.CashflowOrderByWithRelationInput[]
+  cursor?: Prisma.CashflowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CashflowScalarFieldEnum | Prisma.CashflowScalarFieldEnum[]
 }
 
 /**

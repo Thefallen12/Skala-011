@@ -295,6 +295,8 @@ export type UserWhereInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   reviewedPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   approvedPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  sentPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderListRelationFilter
   createdDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   preparedOperationalDocuments?: Prisma.OperationalDocumentListRelationFilter
   signedOperationalDocuments?: Prisma.OperationalDocumentListRelationFilter
@@ -306,9 +308,18 @@ export type UserWhereInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   createdStockMovements?: Prisma.StockMovementListRelationFilter
   receivedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
+  sentPaymentConfirmations?: Prisma.PaymentTransactionListRelationFilter
+  sentOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  signedInvoices?: Prisma.InvoiceListRelationFilter
+  acknowledgedInvoices?: Prisma.InvoiceListRelationFilter
+  signedOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  signedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   wageAuditLogs?: Prisma.WageAuditLogListRelationFilter
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  cashflowsRecorded?: Prisma.CashflowListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -367,6 +378,8 @@ export type UserOrderByWithRelationInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   createdDeliveryOrders?: Prisma.DeliveryOrderOrderByRelationAggregateInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentOrderByRelationAggregateInput
   signedOperationalDocuments?: Prisma.OperationalDocumentOrderByRelationAggregateInput
@@ -378,9 +391,18 @@ export type UserOrderByWithRelationInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseOrderByRelationAggregateInput
   createdStockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderOrderByRelationAggregateInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionOrderByRelationAggregateInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationOrderByRelationAggregateInput
+  signedInvoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  acknowledgedInvoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationOrderByRelationAggregateInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationOrderByRelationAggregateInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderOrderByRelationAggregateInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderOrderByRelationAggregateInput
   wageAuditLogs?: Prisma.WageAuditLogOrderByRelationAggregateInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  cashflowsRecorded?: Prisma.CashflowOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -442,6 +464,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   reviewedPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   approvedPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  sentPurchaseOrders?: Prisma.PurchaseOrderListRelationFilter
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderListRelationFilter
   createdDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   preparedOperationalDocuments?: Prisma.OperationalDocumentListRelationFilter
   signedOperationalDocuments?: Prisma.OperationalDocumentListRelationFilter
@@ -453,9 +477,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
   createdStockMovements?: Prisma.StockMovementListRelationFilter
   receivedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
+  sentPaymentConfirmations?: Prisma.PaymentTransactionListRelationFilter
+  sentOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  signedInvoices?: Prisma.InvoiceListRelationFilter
+  acknowledgedInvoices?: Prisma.InvoiceListRelationFilter
+  signedOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationListRelationFilter
+  signedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderListRelationFilter
   wageAuditLogs?: Prisma.WageAuditLogListRelationFilter
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  cashflowsRecorded?: Prisma.CashflowListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -554,6 +587,8 @@ export type UserCreateInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -565,9 +600,18 @@ export type UserCreateInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -626,6 +670,8 @@ export type UserUncheckedCreateInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -637,9 +683,18 @@ export type UserUncheckedCreateInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUpdateInput = {
@@ -698,6 +753,8 @@ export type UserUpdateInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -709,9 +766,18 @@ export type UserUpdateInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -770,6 +836,8 @@ export type UserUncheckedUpdateInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -781,9 +849,18 @@ export type UserUncheckedUpdateInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1530,6 +1607,18 @@ export type UserUpdateOneRequiredWithoutCreatedDocumentTemplatesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedDocumentTemplatesInput, Prisma.UserUpdateWithoutCreatedDocumentTemplatesInput>, Prisma.UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput>
 }
 
+export type UserCreateNestedOneWithoutUploadedPurchaseOrderInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedPurchaseOrderInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSentPurchaseOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutSentPurchaseOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentPurchaseOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserCreateNestedOneWithoutCreatedPurchaseOrdersInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutCreatedPurchaseOrdersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedPurchaseOrdersInput
@@ -1546,6 +1635,26 @@ export type UserCreateNestedOneWithoutApprovedPurchaseOrdersInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutApprovedPurchaseOrdersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedPurchaseOrdersInput
   connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutUploadedPurchaseOrderInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedPurchaseOrderInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutUploadedPurchaseOrderInvoicesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUpdateWithoutUploadedPurchaseOrderInvoicesInput>, Prisma.UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput>
+}
+
+export type UserUpdateOneWithoutSentPurchaseOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutSentPurchaseOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentPurchaseOrdersInput
+  upsert?: Prisma.UserUpsertWithoutSentPurchaseOrdersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentPurchaseOrdersInput, Prisma.UserUpdateWithoutSentPurchaseOrdersInput>, Prisma.UserUncheckedUpdateWithoutSentPurchaseOrdersInput>
 }
 
 export type UserUpdateOneWithoutCreatedPurchaseOrdersNestedInput = {
@@ -1584,6 +1693,12 @@ export type UserCreateNestedOneWithoutProcessedPaymentTransactionsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutSentPaymentConfirmationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentPaymentConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentPaymentConfirmationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProcessedPaymentTransactionsInput, Prisma.UserUncheckedCreateWithoutProcessedPaymentTransactionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProcessedPaymentTransactionsInput
@@ -1592,6 +1707,16 @@ export type UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProcessedPaymentTransactionsInput, Prisma.UserUpdateWithoutProcessedPaymentTransactionsInput>, Prisma.UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput>
+}
+
+export type UserUpdateOneWithoutSentPaymentConfirmationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentPaymentConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentPaymentConfirmationsInput
+  upsert?: Prisma.UserUpsertWithoutSentPaymentConfirmationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentPaymentConfirmationsInput, Prisma.UserUpdateWithoutSentPaymentConfirmationsInput>, Prisma.UserUncheckedUpdateWithoutSentPaymentConfirmationsInput>
 }
 
 export type UserCreateNestedOneWithoutCreatedDeliveryOrdersInput = {
@@ -1603,6 +1728,18 @@ export type UserCreateNestedOneWithoutCreatedDeliveryOrdersInput = {
 export type UserCreateNestedOneWithoutReceivedDeliveryOrdersInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutReceivedDeliveryOrdersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedDeliveryOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSignedDeliveryOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutSignedDeliveryOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedDeliveryOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedDeliveryOrdersInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
@@ -1624,6 +1761,26 @@ export type UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedDeliveryOrdersInput, Prisma.UserUpdateWithoutReceivedDeliveryOrdersInput>, Prisma.UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput>
+}
+
+export type UserUpdateOneWithoutSignedDeliveryOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutSignedDeliveryOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedDeliveryOrdersInput
+  upsert?: Prisma.UserUpsertWithoutSignedDeliveryOrdersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSignedDeliveryOrdersInput, Prisma.UserUpdateWithoutSignedDeliveryOrdersInput>, Prisma.UserUncheckedUpdateWithoutSignedDeliveryOrdersInput>
+}
+
+export type UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedDeliveryOrdersInput
+  upsert?: Prisma.UserUpsertWithoutAcknowledgedDeliveryOrdersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUpdateWithoutAcknowledgedDeliveryOrdersInput>, Prisma.UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput>
 }
 
 export type UserCreateNestedOneWithoutCreatedVehicleTripLogsInput = {
@@ -1668,6 +1825,100 @@ export type UserUpdateOneWithoutReviewedVehicleFuelRequestsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedVehicleFuelRequestsInput, Prisma.UserUpdateWithoutReviewedVehicleFuelRequestsInput>, Prisma.UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput>
+}
+
+export type UserCreateNestedOneWithoutSignedInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedInvoicesInput, Prisma.UserUncheckedCreateWithoutSignedInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAcknowledgedInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedCreateWithoutAcknowledgedInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSignedInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedInvoicesInput, Prisma.UserUncheckedCreateWithoutSignedInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutSignedInvoicesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSignedInvoicesInput, Prisma.UserUpdateWithoutSignedInvoicesInput>, Prisma.UserUncheckedUpdateWithoutSignedInvoicesInput>
+}
+
+export type UserUpdateOneWithoutAcknowledgedInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedCreateWithoutAcknowledgedInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutAcknowledgedInvoicesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAcknowledgedInvoicesInput, Prisma.UserUpdateWithoutAcknowledgedInvoicesInput>, Prisma.UserUncheckedUpdateWithoutAcknowledgedInvoicesInput>
+}
+
+export type UserCreateNestedOneWithoutCashflowsRecordedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCashflowsRecordedInput, Prisma.UserUncheckedCreateWithoutCashflowsRecordedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCashflowsRecordedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCashflowsRecordedInput, Prisma.UserUncheckedCreateWithoutCashflowsRecordedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCashflowsRecordedInput
+  upsert?: Prisma.UserUpsertWithoutCashflowsRecordedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCashflowsRecordedInput, Prisma.UserUpdateWithoutCashflowsRecordedInput>, Prisma.UserUncheckedUpdateWithoutCashflowsRecordedInput>
+}
+
+export type UserCreateNestedOneWithoutSentOrderConfirmationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentOrderConfirmationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSignedOrderConfirmationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSignedOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedOrderConfirmationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAcknowledgedOrderConfirmationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedOrderConfirmationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSentOrderConfirmationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentOrderConfirmationsInput
+  upsert?: Prisma.UserUpsertWithoutSentOrderConfirmationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentOrderConfirmationsInput, Prisma.UserUpdateWithoutSentOrderConfirmationsInput>, Prisma.UserUncheckedUpdateWithoutSentOrderConfirmationsInput>
+}
+
+export type UserUpdateOneWithoutSignedOrderConfirmationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSignedOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSignedOrderConfirmationsInput
+  upsert?: Prisma.UserUpsertWithoutSignedOrderConfirmationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSignedOrderConfirmationsInput, Prisma.UserUpdateWithoutSignedOrderConfirmationsInput>, Prisma.UserUncheckedUpdateWithoutSignedOrderConfirmationsInput>
+}
+
+export type UserUpdateOneWithoutAcknowledgedOrderConfirmationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAcknowledgedOrderConfirmationsInput
+  upsert?: Prisma.UserUpsertWithoutAcknowledgedOrderConfirmationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUpdateWithoutAcknowledgedOrderConfirmationsInput>, Prisma.UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput>
 }
 
 export type UserCreateNestedOneWithoutIssuedDocumentsInput = {
@@ -1797,6 +2048,8 @@ export type UserCreateWithoutNotesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -1808,9 +2061,18 @@ export type UserCreateWithoutNotesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutNotesInput = {
@@ -1868,6 +2130,8 @@ export type UserUncheckedCreateWithoutNotesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -1879,9 +2143,18 @@ export type UserUncheckedCreateWithoutNotesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutNotesInput = {
@@ -1955,6 +2228,8 @@ export type UserUpdateWithoutNotesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -1966,9 +2241,18 @@ export type UserUpdateWithoutNotesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotesInput = {
@@ -2026,6 +2310,8 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -2037,9 +2323,18 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2098,6 +2393,8 @@ export type UserCreateWithoutNotificationsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -2109,8 +2406,17 @@ export type UserCreateWithoutNotificationsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2169,6 +2475,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -2180,8 +2488,17 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2256,6 +2573,8 @@ export type UserUpdateWithoutNotificationsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -2267,8 +2586,17 @@ export type UserUpdateWithoutNotificationsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2327,6 +2655,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -2338,8 +2668,17 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCalendarEventInput = {
@@ -2397,6 +2736,8 @@ export type UserCreateWithoutCalendarEventInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -2408,9 +2749,18 @@ export type UserCreateWithoutCalendarEventInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCalendarEventInput = {
@@ -2468,6 +2818,8 @@ export type UserUncheckedCreateWithoutCalendarEventInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -2479,9 +2831,18 @@ export type UserUncheckedCreateWithoutCalendarEventInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCalendarEventInput = {
@@ -2555,6 +2916,8 @@ export type UserUpdateWithoutCalendarEventInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -2566,9 +2929,18 @@ export type UserUpdateWithoutCalendarEventInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCalendarEventInput = {
@@ -2626,6 +2998,8 @@ export type UserUncheckedUpdateWithoutCalendarEventInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -2637,9 +3011,18 @@ export type UserUncheckedUpdateWithoutCalendarEventInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCalendarRemindersInput = {
@@ -2697,6 +3080,8 @@ export type UserCreateWithoutCalendarRemindersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -2708,9 +3093,18 @@ export type UserCreateWithoutCalendarRemindersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCalendarRemindersInput = {
@@ -2768,6 +3162,8 @@ export type UserUncheckedCreateWithoutCalendarRemindersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -2779,9 +3175,18 @@ export type UserUncheckedCreateWithoutCalendarRemindersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCalendarRemindersInput = {
@@ -2855,6 +3260,8 @@ export type UserUpdateWithoutCalendarRemindersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -2866,9 +3273,18 @@ export type UserUpdateWithoutCalendarRemindersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
@@ -2926,6 +3342,8 @@ export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -2937,9 +3355,18 @@ export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCalendarEventParticipantsInput = {
@@ -2997,6 +3424,8 @@ export type UserCreateWithoutCalendarEventParticipantsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -3008,9 +3437,18 @@ export type UserCreateWithoutCalendarEventParticipantsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
@@ -3068,6 +3506,8 @@ export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -3079,9 +3519,18 @@ export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCalendarEventParticipantsInput = {
@@ -3155,6 +3604,8 @@ export type UserUpdateWithoutCalendarEventParticipantsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -3166,9 +3617,18 @@ export type UserUpdateWithoutCalendarEventParticipantsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
@@ -3226,6 +3686,8 @@ export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -3237,9 +3699,18 @@ export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInput = {
@@ -3297,6 +3768,8 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -3308,9 +3781,18 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInput = {
@@ -3368,6 +3850,8 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverId
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -3379,9 +3863,18 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverId
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutMaterialRequest_MaterialRequest_approverIdToUserInput = {
@@ -3444,6 +3937,8 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -3455,9 +3950,18 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserInput = {
@@ -3515,6 +4019,8 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterI
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -3526,9 +4032,18 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterI
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutMaterialRequest_MaterialRequest_requesterIdToUserInput = {
@@ -3602,6 +4117,8 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -3613,9 +4130,18 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInput = {
@@ -3673,6 +4199,8 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverId
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -3684,9 +4212,18 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverId
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutMaterialRequest_MaterialRequest_requesterIdToUserInput = {
@@ -3755,6 +4292,8 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -3766,9 +4305,18 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserInput = {
@@ -3826,6 +4374,8 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterI
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -3837,9 +4387,18 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterI
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutSessionInput = {
@@ -3897,6 +4456,8 @@ export type UserCreateWithoutSessionInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -3908,9 +4469,18 @@ export type UserCreateWithoutSessionInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutSessionInput = {
@@ -3968,6 +4538,8 @@ export type UserUncheckedCreateWithoutSessionInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -3979,9 +4551,18 @@ export type UserUncheckedCreateWithoutSessionInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutSessionInput = {
@@ -4055,6 +4636,8 @@ export type UserUpdateWithoutSessionInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -4066,9 +4649,18 @@ export type UserUpdateWithoutSessionInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionInput = {
@@ -4126,6 +4718,8 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -4137,9 +4731,18 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutHabitsInput = {
@@ -4197,6 +4800,8 @@ export type UserCreateWithoutHabitsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -4208,9 +4813,18 @@ export type UserCreateWithoutHabitsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutHabitsInput = {
@@ -4268,6 +4882,8 @@ export type UserUncheckedCreateWithoutHabitsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -4279,9 +4895,18 @@ export type UserUncheckedCreateWithoutHabitsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutHabitsInput = {
@@ -4355,6 +4980,8 @@ export type UserUpdateWithoutHabitsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -4366,9 +4993,18 @@ export type UserUpdateWithoutHabitsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -4426,6 +5062,8 @@ export type UserUncheckedUpdateWithoutHabitsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -4437,9 +5075,18 @@ export type UserUncheckedUpdateWithoutHabitsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedWorkTasksInput = {
@@ -4497,6 +5144,8 @@ export type UserCreateWithoutCreatedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -4508,9 +5157,18 @@ export type UserCreateWithoutCreatedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
@@ -4568,6 +5226,8 @@ export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -4579,9 +5239,18 @@ export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedWorkTasksInput = {
@@ -4644,6 +5313,8 @@ export type UserCreateWithoutAssignedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -4655,9 +5326,18 @@ export type UserCreateWithoutAssignedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
@@ -4715,6 +5395,8 @@ export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -4726,9 +5408,18 @@ export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutAssignedWorkTasksInput = {
@@ -4802,6 +5493,8 @@ export type UserUpdateWithoutCreatedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -4813,9 +5506,18 @@ export type UserUpdateWithoutCreatedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
@@ -4873,6 +5575,8 @@ export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -4884,9 +5588,18 @@ export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutAssignedWorkTasksInput = {
@@ -4955,6 +5668,8 @@ export type UserUpdateWithoutAssignedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -4966,9 +5681,18 @@ export type UserUpdateWithoutAssignedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
@@ -5026,6 +5750,8 @@ export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -5037,9 +5763,18 @@ export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutWorkTaskMembershipsInput = {
@@ -5097,6 +5832,8 @@ export type UserCreateWithoutWorkTaskMembershipsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -5108,9 +5845,18 @@ export type UserCreateWithoutWorkTaskMembershipsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
@@ -5168,6 +5914,8 @@ export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -5179,9 +5927,18 @@ export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutWorkTaskMembershipsInput = {
@@ -5255,6 +6012,8 @@ export type UserUpdateWithoutWorkTaskMembershipsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -5266,9 +6025,18 @@ export type UserUpdateWithoutWorkTaskMembershipsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
@@ -5326,6 +6094,8 @@ export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -5337,9 +6107,18 @@ export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutTimesheetEntriesInput = {
@@ -5397,6 +6176,8 @@ export type UserCreateWithoutTimesheetEntriesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -5408,9 +6189,18 @@ export type UserCreateWithoutTimesheetEntriesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
@@ -5468,6 +6258,8 @@ export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -5479,9 +6271,18 @@ export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutTimesheetEntriesInput = {
@@ -5555,6 +6356,8 @@ export type UserUpdateWithoutTimesheetEntriesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -5566,9 +6369,18 @@ export type UserUpdateWithoutTimesheetEntriesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
@@ -5626,6 +6438,8 @@ export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -5637,9 +6451,18 @@ export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutAssignedProjectsInput = {
@@ -5697,6 +6520,8 @@ export type UserCreateWithoutAssignedProjectsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -5708,9 +6533,18 @@ export type UserCreateWithoutAssignedProjectsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutAssignedProjectsInput = {
@@ -5768,6 +6602,8 @@ export type UserUncheckedCreateWithoutAssignedProjectsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -5779,9 +6615,18 @@ export type UserUncheckedCreateWithoutAssignedProjectsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutAssignedProjectsInput = {
@@ -5855,6 +6700,8 @@ export type UserUpdateWithoutAssignedProjectsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -5866,9 +6713,18 @@ export type UserUpdateWithoutAssignedProjectsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
@@ -5926,6 +6782,8 @@ export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -5937,9 +6795,18 @@ export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutFieldSurveysInput = {
@@ -5997,6 +6864,8 @@ export type UserCreateWithoutFieldSurveysInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -6008,9 +6877,18 @@ export type UserCreateWithoutFieldSurveysInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutFieldSurveysInput = {
@@ -6068,6 +6946,8 @@ export type UserUncheckedCreateWithoutFieldSurveysInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -6079,9 +6959,18 @@ export type UserUncheckedCreateWithoutFieldSurveysInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutFieldSurveysInput = {
@@ -6155,6 +7044,8 @@ export type UserUpdateWithoutFieldSurveysInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -6166,9 +7057,18 @@ export type UserUpdateWithoutFieldSurveysInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFieldSurveysInput = {
@@ -6226,6 +7126,8 @@ export type UserUncheckedUpdateWithoutFieldSurveysInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -6237,9 +7139,18 @@ export type UserUncheckedUpdateWithoutFieldSurveysInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutProposedWorkPointWagesInput = {
@@ -6297,6 +7208,8 @@ export type UserCreateWithoutProposedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -6308,9 +7221,18 @@ export type UserCreateWithoutProposedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
@@ -6368,6 +7290,8 @@ export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -6379,9 +7303,18 @@ export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutProposedWorkPointWagesInput = {
@@ -6444,6 +7377,8 @@ export type UserCreateWithoutApprovedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -6455,9 +7390,18 @@ export type UserCreateWithoutApprovedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
@@ -6515,6 +7459,8 @@ export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -6526,9 +7472,18 @@ export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedWorkPointWagesInput = {
@@ -6602,6 +7557,8 @@ export type UserUpdateWithoutProposedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -6613,9 +7570,18 @@ export type UserUpdateWithoutProposedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
@@ -6673,6 +7639,8 @@ export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -6684,9 +7652,18 @@ export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutApprovedWorkPointWagesInput = {
@@ -6755,6 +7732,8 @@ export type UserUpdateWithoutApprovedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -6766,9 +7745,18 @@ export type UserUpdateWithoutApprovedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
@@ -6826,6 +7814,8 @@ export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -6837,9 +7827,18 @@ export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutDraftedBlueprintsInput = {
@@ -6897,6 +7896,8 @@ export type UserCreateWithoutDraftedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -6908,9 +7909,18 @@ export type UserCreateWithoutDraftedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
@@ -6968,6 +7978,8 @@ export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -6979,9 +7991,18 @@ export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutDraftedBlueprintsInput = {
@@ -7044,6 +8065,8 @@ export type UserCreateWithoutReviewedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -7055,9 +8078,18 @@ export type UserCreateWithoutReviewedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
@@ -7115,6 +8147,8 @@ export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -7126,9 +8160,18 @@ export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReviewedBlueprintsInput = {
@@ -7202,6 +8245,8 @@ export type UserUpdateWithoutDraftedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -7213,9 +8258,18 @@ export type UserUpdateWithoutDraftedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
@@ -7273,6 +8327,8 @@ export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -7284,9 +8340,18 @@ export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReviewedBlueprintsInput = {
@@ -7355,6 +8420,8 @@ export type UserUpdateWithoutReviewedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -7366,9 +8433,18 @@ export type UserUpdateWithoutReviewedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
@@ -7426,6 +8502,8 @@ export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -7437,9 +8515,18 @@ export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedStockMovementsInput = {
@@ -7498,6 +8585,8 @@ export type UserCreateWithoutCreatedStockMovementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -7508,9 +8597,18 @@ export type UserCreateWithoutCreatedStockMovementsInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
@@ -7569,6 +8667,8 @@ export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -7579,9 +8679,18 @@ export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedStockMovementsInput = {
@@ -7656,6 +8765,8 @@ export type UserUpdateWithoutCreatedStockMovementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -7666,9 +8777,18 @@ export type UserUpdateWithoutCreatedStockMovementsInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
@@ -7727,6 +8847,8 @@ export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -7737,9 +8859,18 @@ export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutStockPurchasesInput = {
@@ -7798,6 +8929,8 @@ export type UserCreateWithoutStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -7808,9 +8941,18 @@ export type UserCreateWithoutStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutStockPurchasesInput = {
@@ -7869,6 +9011,8 @@ export type UserUncheckedCreateWithoutStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -7879,9 +9023,18 @@ export type UserUncheckedCreateWithoutStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutStockPurchasesInput = {
@@ -7956,6 +9109,8 @@ export type UserUpdateWithoutStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -7966,9 +9121,18 @@ export type UserUpdateWithoutStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStockPurchasesInput = {
@@ -8027,6 +9191,8 @@ export type UserUncheckedUpdateWithoutStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -8037,9 +9203,18 @@ export type UserUncheckedUpdateWithoutStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
@@ -8097,6 +9272,8 @@ export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -8108,9 +9285,18 @@ export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
@@ -8168,6 +9354,8 @@ export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -8179,9 +9367,18 @@ export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedDirectStockPurchasesInput = {
@@ -8245,6 +9442,8 @@ export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -8255,9 +9454,18 @@ export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
@@ -8316,6 +9524,8 @@ export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -8326,9 +9536,18 @@ export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReceivedDirectStockPurchasesInput = {
@@ -8392,6 +9611,8 @@ export type UserCreateWithoutCreatedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -8402,9 +9623,18 @@ export type UserCreateWithoutCreatedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
@@ -8463,6 +9693,8 @@ export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -8473,9 +9705,18 @@ export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDirectStockPurchasesInput = {
@@ -8549,6 +9790,8 @@ export type UserUpdateWithoutApprovedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -8560,9 +9803,18 @@ export type UserUpdateWithoutApprovedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
@@ -8620,6 +9872,8 @@ export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -8631,9 +9885,18 @@ export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReceivedDirectStockPurchasesInput = {
@@ -8703,6 +9966,8 @@ export type UserUpdateWithoutReceivedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -8713,9 +9978,18 @@ export type UserUpdateWithoutReceivedDirectStockPurchasesInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
@@ -8774,6 +10048,8 @@ export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -8784,9 +10060,18 @@ export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutCreatedDirectStockPurchasesInput = {
@@ -8856,6 +10141,8 @@ export type UserUpdateWithoutCreatedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -8866,9 +10153,18 @@ export type UserUpdateWithoutCreatedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
@@ -8927,6 +10223,8 @@ export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -8937,9 +10235,18 @@ export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutWageAuditLogsInput = {
@@ -8998,6 +10305,8 @@ export type UserCreateWithoutWageAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -9009,8 +10318,17 @@ export type UserCreateWithoutWageAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutWageAuditLogsInput = {
@@ -9069,6 +10387,8 @@ export type UserUncheckedCreateWithoutWageAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -9080,8 +10400,17 @@ export type UserUncheckedCreateWithoutWageAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutWageAuditLogsInput = {
@@ -9156,6 +10485,8 @@ export type UserUpdateWithoutWageAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -9167,8 +10498,17 @@ export type UserUpdateWithoutWageAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
@@ -9227,6 +10567,8 @@ export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -9238,8 +10580,17 @@ export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
@@ -9298,6 +10649,8 @@ export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -9309,8 +10662,17 @@ export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
@@ -9369,6 +10731,8 @@ export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -9380,8 +10744,17 @@ export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProjectWageDisbursementsInput = {
@@ -9456,6 +10829,8 @@ export type UserUpdateWithoutCreatedProjectWageDisbursementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -9467,8 +10842,17 @@ export type UserUpdateWithoutCreatedProjectWageDisbursementsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
@@ -9527,6 +10911,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -9538,8 +10924,17 @@ export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedSubkonContractsInput = {
@@ -9597,6 +10992,8 @@ export type UserCreateWithoutCreatedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -9608,9 +11005,18 @@ export type UserCreateWithoutCreatedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
@@ -9668,6 +11074,8 @@ export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -9679,9 +11087,18 @@ export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSubkonContractsInput = {
@@ -9744,6 +11161,8 @@ export type UserCreateWithoutApprovedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -9755,9 +11174,18 @@ export type UserCreateWithoutApprovedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
@@ -9815,6 +11243,8 @@ export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -9826,9 +11256,18 @@ export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedSubkonContractsInput = {
@@ -9891,6 +11330,8 @@ export type UserCreateWithoutReleasedSubkonRetentionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -9902,9 +11343,18 @@ export type UserCreateWithoutReleasedSubkonRetentionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
@@ -9962,6 +11412,8 @@ export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -9973,9 +11425,18 @@ export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReleasedSubkonRetentionsInput = {
@@ -10049,6 +11510,8 @@ export type UserUpdateWithoutCreatedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -10060,9 +11523,18 @@ export type UserUpdateWithoutCreatedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
@@ -10120,6 +11592,8 @@ export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -10131,9 +11605,18 @@ export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutApprovedSubkonContractsInput = {
@@ -10202,6 +11685,8 @@ export type UserUpdateWithoutApprovedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -10213,9 +11698,18 @@ export type UserUpdateWithoutApprovedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
@@ -10273,6 +11767,8 @@ export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -10284,9 +11780,18 @@ export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReleasedSubkonRetentionsInput = {
@@ -10355,6 +11860,8 @@ export type UserUpdateWithoutReleasedSubkonRetentionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -10366,9 +11873,18 @@ export type UserUpdateWithoutReleasedSubkonRetentionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
@@ -10426,6 +11942,8 @@ export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -10437,9 +11955,18 @@ export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedSubkonTermynsInput = {
@@ -10497,6 +12024,8 @@ export type UserCreateWithoutCreatedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -10508,9 +12037,18 @@ export type UserCreateWithoutCreatedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
@@ -10568,6 +12106,8 @@ export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -10579,9 +12119,18 @@ export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSubkonTermynsInput = {
@@ -10644,6 +12193,8 @@ export type UserCreateWithoutVerifiedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -10655,9 +12206,18 @@ export type UserCreateWithoutVerifiedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
@@ -10715,6 +12275,8 @@ export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -10726,9 +12288,18 @@ export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutVerifiedSubkonTermynsInput = {
@@ -10791,6 +12362,8 @@ export type UserCreateWithoutReviewedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -10802,9 +12375,18 @@ export type UserCreateWithoutReviewedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
@@ -10862,6 +12444,8 @@ export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -10873,9 +12457,18 @@ export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReviewedSubkonTermynsInput = {
@@ -10938,6 +12531,8 @@ export type UserCreateWithoutApprovedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -10949,9 +12544,18 @@ export type UserCreateWithoutApprovedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
@@ -11009,6 +12613,8 @@ export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -11020,9 +12626,18 @@ export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedSubkonTermynsInput = {
@@ -11085,6 +12700,8 @@ export type UserCreateWithoutPaidSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -11096,9 +12713,18 @@ export type UserCreateWithoutPaidSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
@@ -11156,6 +12782,8 @@ export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -11167,9 +12795,18 @@ export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutPaidSubkonTermynsInput = {
@@ -11243,6 +12880,8 @@ export type UserUpdateWithoutCreatedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -11254,9 +12893,18 @@ export type UserUpdateWithoutCreatedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
@@ -11314,6 +12962,8 @@ export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -11325,9 +12975,18 @@ export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutVerifiedSubkonTermynsInput = {
@@ -11396,6 +13055,8 @@ export type UserUpdateWithoutVerifiedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -11407,9 +13068,18 @@ export type UserUpdateWithoutVerifiedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
@@ -11467,6 +13137,8 @@ export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -11478,9 +13150,18 @@ export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReviewedSubkonTermynsInput = {
@@ -11549,6 +13230,8 @@ export type UserUpdateWithoutReviewedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -11560,9 +13243,18 @@ export type UserUpdateWithoutReviewedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
@@ -11620,6 +13312,8 @@ export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -11631,9 +13325,18 @@ export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutApprovedSubkonTermynsInput = {
@@ -11702,6 +13405,8 @@ export type UserUpdateWithoutApprovedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -11713,9 +13418,18 @@ export type UserUpdateWithoutApprovedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
@@ -11773,6 +13487,8 @@ export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -11784,9 +13500,18 @@ export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutPaidSubkonTermynsInput = {
@@ -11855,6 +13580,8 @@ export type UserUpdateWithoutPaidSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -11866,9 +13593,18 @@ export type UserUpdateWithoutPaidSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
@@ -11926,6 +13662,8 @@ export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -11937,9 +13675,18 @@ export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedEquipmentLogsInput = {
@@ -11997,6 +13744,8 @@ export type UserCreateWithoutCreatedEquipmentLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -12008,9 +13757,18 @@ export type UserCreateWithoutCreatedEquipmentLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
@@ -12068,6 +13826,8 @@ export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -12079,9 +13839,18 @@ export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedEquipmentLogsInput = {
@@ -12155,6 +13924,8 @@ export type UserUpdateWithoutCreatedEquipmentLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -12166,9 +13937,18 @@ export type UserUpdateWithoutCreatedEquipmentLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
@@ -12226,6 +14006,8 @@ export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -12237,9 +14019,18 @@ export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedProjectAddendumsInput = {
@@ -12297,6 +14088,8 @@ export type UserCreateWithoutCreatedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -12308,9 +14101,18 @@ export type UserCreateWithoutCreatedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
@@ -12368,6 +14170,8 @@ export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -12379,9 +14183,18 @@ export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProjectAddendumsInput = {
@@ -12444,6 +14257,8 @@ export type UserCreateWithoutApprovedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -12455,9 +14270,18 @@ export type UserCreateWithoutApprovedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
@@ -12515,6 +14339,8 @@ export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -12526,9 +14352,18 @@ export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedProjectAddendumsInput = {
@@ -12602,6 +14437,8 @@ export type UserUpdateWithoutCreatedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -12613,9 +14450,18 @@ export type UserUpdateWithoutCreatedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
@@ -12673,6 +14519,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -12684,9 +14532,18 @@ export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutApprovedProjectAddendumsInput = {
@@ -12755,6 +14612,8 @@ export type UserUpdateWithoutApprovedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -12766,9 +14625,18 @@ export type UserUpdateWithoutApprovedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
@@ -12826,6 +14694,8 @@ export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -12837,9 +14707,18 @@ export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutApprovedBASTDocumentsInput = {
@@ -12897,6 +14776,8 @@ export type UserCreateWithoutApprovedBASTDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -12908,9 +14789,18 @@ export type UserCreateWithoutApprovedBASTDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
@@ -12968,6 +14858,8 @@ export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -12979,9 +14871,18 @@ export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedBASTDocumentsInput = {
@@ -13055,6 +14956,8 @@ export type UserUpdateWithoutApprovedBASTDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -13066,9 +14969,18 @@ export type UserUpdateWithoutApprovedBASTDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
@@ -13126,6 +15038,8 @@ export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -13137,9 +15051,18 @@ export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutTicketsInput = {
@@ -13197,6 +15120,8 @@ export type UserCreateWithoutTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -13208,9 +15133,18 @@ export type UserCreateWithoutTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutTicketsInput = {
@@ -13268,6 +15202,8 @@ export type UserUncheckedCreateWithoutTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -13279,9 +15215,18 @@ export type UserUncheckedCreateWithoutTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutTicketsInput = {
@@ -13345,6 +15290,8 @@ export type UserCreateWithoutAssignedMoverTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -13355,9 +15302,18 @@ export type UserCreateWithoutAssignedMoverTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
@@ -13416,6 +15372,8 @@ export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -13426,9 +15384,18 @@ export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutAssignedMoverTicketsInput = {
@@ -13502,6 +15469,8 @@ export type UserUpdateWithoutTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -13513,9 +15482,18 @@ export type UserUpdateWithoutTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTicketsInput = {
@@ -13573,6 +15551,8 @@ export type UserUncheckedUpdateWithoutTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -13584,9 +15564,18 @@ export type UserUncheckedUpdateWithoutTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutAssignedMoverTicketsInput = {
@@ -13656,6 +15645,8 @@ export type UserUpdateWithoutAssignedMoverTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -13666,9 +15657,18 @@ export type UserUpdateWithoutAssignedMoverTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
@@ -13727,6 +15727,8 @@ export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -13737,9 +15739,18 @@ export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentTemplatesInput = {
@@ -13797,6 +15808,8 @@ export type UserCreateWithoutCreatedDocumentTemplatesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -13808,9 +15821,18 @@ export type UserCreateWithoutCreatedDocumentTemplatesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
@@ -13868,6 +15890,8 @@ export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -13879,9 +15903,18 @@ export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentTemplatesInput = {
@@ -13955,6 +15988,8 @@ export type UserUpdateWithoutCreatedDocumentTemplatesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -13966,9 +16001,18 @@ export type UserUpdateWithoutCreatedDocumentTemplatesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
@@ -14026,6 +16070,8 @@ export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -14037,9 +16083,356 @@ export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserCreateWithoutUploadedPurchaseOrderInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutUploadedPurchaseOrderInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput>
+}
+
+export type UserCreateWithoutSentPurchaseOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSentPurchaseOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSentPurchaseOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutSentPurchaseOrdersInput>
 }
 
 export type UserCreateWithoutCreatedPurchaseOrdersInput = {
@@ -14097,6 +16490,8 @@ export type UserCreateWithoutCreatedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -14108,9 +16503,18 @@ export type UserCreateWithoutCreatedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
@@ -14168,6 +16572,8 @@ export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -14179,9 +16585,18 @@ export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPurchaseOrdersInput = {
@@ -14244,6 +16659,8 @@ export type UserCreateWithoutReviewedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -14255,9 +16672,18 @@ export type UserCreateWithoutReviewedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
@@ -14315,6 +16741,8 @@ export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -14326,9 +16754,18 @@ export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReviewedPurchaseOrdersInput = {
@@ -14391,6 +16828,8 @@ export type UserCreateWithoutApprovedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -14402,9 +16841,18 @@ export type UserCreateWithoutApprovedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
@@ -14462,6 +16910,8 @@ export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -14473,14 +16923,373 @@ export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutApprovedPurchaseOrdersInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutApprovedPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutApprovedPurchaseOrdersInput>
+}
+
+export type UserUpsertWithoutUploadedPurchaseOrderInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUploadedPurchaseOrderInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUploadedPurchaseOrderInvoicesInput, Prisma.UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput>
+}
+
+export type UserUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutSentPurchaseOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedUpdateWithoutSentPurchaseOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedCreateWithoutSentPurchaseOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentPurchaseOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentPurchaseOrdersInput, Prisma.UserUncheckedUpdateWithoutSentPurchaseOrdersInput>
+}
+
+export type UserUpdateWithoutSentPurchaseOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentPurchaseOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutCreatedPurchaseOrdersInput = {
@@ -14549,6 +17358,8 @@ export type UserUpdateWithoutCreatedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -14560,9 +17371,18 @@ export type UserUpdateWithoutCreatedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
@@ -14620,6 +17440,8 @@ export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -14631,9 +17453,18 @@ export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReviewedPurchaseOrdersInput = {
@@ -14702,6 +17533,8 @@ export type UserUpdateWithoutReviewedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -14713,9 +17546,18 @@ export type UserUpdateWithoutReviewedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
@@ -14773,6 +17615,8 @@ export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -14784,9 +17628,18 @@ export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutApprovedPurchaseOrdersInput = {
@@ -14855,6 +17708,8 @@ export type UserUpdateWithoutApprovedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -14866,9 +17721,18 @@ export type UserUpdateWithoutApprovedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
@@ -14926,6 +17790,8 @@ export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
   createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -14937,9 +17803,18 @@ export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutProcessedPaymentTransactionsInput = {
@@ -14997,6 +17872,8 @@ export type UserCreateWithoutProcessedPaymentTransactionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -15008,9 +17885,18 @@ export type UserCreateWithoutProcessedPaymentTransactionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
@@ -15068,6 +17954,8 @@ export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -15079,14 +17967,192 @@ export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutProcessedPaymentTransactionsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutProcessedPaymentTransactionsInput, Prisma.UserUncheckedCreateWithoutProcessedPaymentTransactionsInput>
+}
+
+export type UserCreateWithoutSentPaymentConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSentPaymentConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSentPaymentConfirmationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentPaymentConfirmationsInput>
 }
 
 export type UserUpsertWithoutProcessedPaymentTransactionsInput = {
@@ -15155,6 +18221,8 @@ export type UserUpdateWithoutProcessedPaymentTransactionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -15166,9 +18234,18 @@ export type UserUpdateWithoutProcessedPaymentTransactionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
@@ -15226,6 +18303,8 @@ export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -15237,9 +18316,193 @@ export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutSentPaymentConfirmationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSentPaymentConfirmationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentPaymentConfirmationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentPaymentConfirmationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentPaymentConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSentPaymentConfirmationsInput>
+}
+
+export type UserUpdateWithoutSentPaymentConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentPaymentConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedDeliveryOrdersInput = {
@@ -15298,6 +18561,8 @@ export type UserCreateWithoutCreatedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
@@ -15308,9 +18573,18 @@ export type UserCreateWithoutCreatedDeliveryOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
@@ -15369,6 +18643,8 @@ export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
@@ -15379,9 +18655,18 @@ export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDeliveryOrdersInput = {
@@ -15445,6 +18730,8 @@ export type UserCreateWithoutReceivedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -15455,9 +18742,18 @@ export type UserCreateWithoutReceivedDeliveryOrdersInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
@@ -15516,6 +18812,8 @@ export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -15526,14 +18824,361 @@ export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReceivedDeliveryOrdersInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutReceivedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutReceivedDeliveryOrdersInput>
+}
+
+export type UserCreateWithoutSignedDeliveryOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSignedDeliveryOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSignedDeliveryOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutSignedDeliveryOrdersInput>
+}
+
+export type UserCreateWithoutAcknowledgedDeliveryOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutAcknowledgedDeliveryOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput>
 }
 
 export type UserUpsertWithoutCreatedDeliveryOrdersInput = {
@@ -15603,6 +19248,8 @@ export type UserUpdateWithoutCreatedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
@@ -15613,9 +19260,18 @@ export type UserUpdateWithoutCreatedDeliveryOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
@@ -15674,6 +19330,8 @@ export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
@@ -15684,9 +19342,18 @@ export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReceivedDeliveryOrdersInput = {
@@ -15756,6 +19423,8 @@ export type UserUpdateWithoutReceivedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -15766,9 +19435,18 @@ export type UserUpdateWithoutReceivedDeliveryOrdersInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
@@ -15827,6 +19505,8 @@ export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -15837,9 +19517,368 @@ export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
   createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutSignedDeliveryOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedUpdateWithoutSignedDeliveryOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutSignedDeliveryOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSignedDeliveryOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSignedDeliveryOrdersInput, Prisma.UserUncheckedUpdateWithoutSignedDeliveryOrdersInput>
+}
+
+export type UserUpdateWithoutSignedDeliveryOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSignedDeliveryOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutAcknowledgedDeliveryOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAcknowledgedDeliveryOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedDeliveryOrdersInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput>
+}
+
+export type UserUpdateWithoutAcknowledgedDeliveryOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutCreatedVehicleTripLogsInput = {
@@ -15897,6 +19936,8 @@ export type UserCreateWithoutCreatedVehicleTripLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -15908,9 +19949,18 @@ export type UserCreateWithoutCreatedVehicleTripLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
@@ -15968,6 +20018,8 @@ export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -15979,9 +20031,18 @@ export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutCreatedVehicleTripLogsInput = {
@@ -16055,6 +20116,8 @@ export type UserUpdateWithoutCreatedVehicleTripLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -16066,9 +20129,18 @@ export type UserUpdateWithoutCreatedVehicleTripLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
@@ -16126,6 +20198,8 @@ export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -16137,9 +20211,18 @@ export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutVehicleFuelRequestsInput = {
@@ -16197,6 +20280,8 @@ export type UserCreateWithoutVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -16208,9 +20293,18 @@ export type UserCreateWithoutVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
@@ -16268,6 +20362,8 @@ export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -16279,9 +20375,18 @@ export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutVehicleFuelRequestsInput = {
@@ -16344,6 +20449,8 @@ export type UserCreateWithoutReviewedVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -16355,9 +20462,18 @@ export type UserCreateWithoutReviewedVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
@@ -16415,6 +20531,8 @@ export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -16426,9 +20544,18 @@ export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutReviewedVehicleFuelRequestsInput = {
@@ -16502,6 +20629,8 @@ export type UserUpdateWithoutVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -16513,9 +20642,18 @@ export type UserUpdateWithoutVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
@@ -16573,6 +20711,8 @@ export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -16584,9 +20724,18 @@ export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutReviewedVehicleFuelRequestsInput = {
@@ -16655,6 +20804,8 @@ export type UserUpdateWithoutReviewedVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -16666,9 +20817,18 @@ export type UserUpdateWithoutReviewedVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
@@ -16726,6 +20886,8 @@ export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -16737,9 +20899,2082 @@ export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserCreateWithoutSignedInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSignedInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSignedInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedInvoicesInput, Prisma.UserUncheckedCreateWithoutSignedInvoicesInput>
+}
+
+export type UserCreateWithoutAcknowledgedInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutAcknowledgedInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutAcknowledgedInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedCreateWithoutAcknowledgedInvoicesInput>
+}
+
+export type UserUpsertWithoutSignedInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSignedInvoicesInput, Prisma.UserUncheckedUpdateWithoutSignedInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedInvoicesInput, Prisma.UserUncheckedCreateWithoutSignedInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSignedInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSignedInvoicesInput, Prisma.UserUncheckedUpdateWithoutSignedInvoicesInput>
+}
+
+export type UserUpdateWithoutSignedInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSignedInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutAcknowledgedInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedCreateWithoutAcknowledgedInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAcknowledgedInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedInvoicesInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedInvoicesInput>
+}
+
+export type UserUpdateWithoutAcknowledgedInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAcknowledgedInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserCreateWithoutCashflowsRecordedInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCashflowsRecordedInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCashflowsRecordedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCashflowsRecordedInput, Prisma.UserUncheckedCreateWithoutCashflowsRecordedInput>
+}
+
+export type UserUpsertWithoutCashflowsRecordedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCashflowsRecordedInput, Prisma.UserUncheckedUpdateWithoutCashflowsRecordedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCashflowsRecordedInput, Prisma.UserUncheckedCreateWithoutCashflowsRecordedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCashflowsRecordedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCashflowsRecordedInput, Prisma.UserUncheckedUpdateWithoutCashflowsRecordedInput>
+}
+
+export type UserUpdateWithoutCashflowsRecordedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCashflowsRecordedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSentOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSentOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSentOrderConfirmationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentOrderConfirmationsInput>
+}
+
+export type UserCreateWithoutSignedOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutSignedOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutSignedOrderConfirmationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSignedOrderConfirmationsInput>
+}
+
+export type UserCreateWithoutAcknowledgedOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutAcknowledgedOrderConfirmationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput>
+}
+
+export type UserUpsertWithoutSentOrderConfirmationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSentOrderConfirmationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSentOrderConfirmationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentOrderConfirmationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSentOrderConfirmationsInput>
+}
+
+export type UserUpdateWithoutSentOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutSignedOrderConfirmationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSignedOrderConfirmationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutSignedOrderConfirmationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSignedOrderConfirmationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSignedOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutSignedOrderConfirmationsInput>
+}
+
+export type UserUpdateWithoutSignedOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSignedOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutAcknowledgedOrderConfirmationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAcknowledgedOrderConfirmationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAcknowledgedOrderConfirmationsInput, Prisma.UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput>
+}
+
+export type UserUpdateWithoutAcknowledgedOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutIssuedDocumentsInput = {
@@ -16798,6 +23033,8 @@ export type UserCreateWithoutIssuedDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -16808,9 +23045,18 @@ export type UserCreateWithoutIssuedDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
@@ -16869,6 +23115,8 @@ export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -16879,9 +23127,18 @@ export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutIssuedDocumentsInput = {
@@ -16956,6 +23213,8 @@ export type UserUpdateWithoutIssuedDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -16966,9 +23225,18 @@ export type UserUpdateWithoutIssuedDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
@@ -17027,6 +23295,8 @@ export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -17037,9 +23307,18 @@ export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutPreparedOperationalDocumentsInput = {
@@ -17098,6 +23377,8 @@ export type UserCreateWithoutPreparedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
@@ -17108,9 +23389,18 @@ export type UserCreateWithoutPreparedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
@@ -17169,6 +23459,8 @@ export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
@@ -17179,9 +23471,18 @@ export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutPreparedOperationalDocumentsInput = {
@@ -17245,6 +23546,8 @@ export type UserCreateWithoutSignedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
@@ -17255,9 +23558,18 @@ export type UserCreateWithoutSignedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
@@ -17316,6 +23628,8 @@ export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
@@ -17326,9 +23640,18 @@ export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutSignedOperationalDocumentsInput = {
@@ -17392,6 +23715,8 @@ export type UserCreateWithoutIssuedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -17402,9 +23727,18 @@ export type UserCreateWithoutIssuedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
@@ -17463,6 +23797,8 @@ export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -17473,9 +23809,18 @@ export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutIssuedOperationalDocumentsInput = {
@@ -17550,6 +23895,8 @@ export type UserUpdateWithoutPreparedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
@@ -17560,9 +23907,18 @@ export type UserUpdateWithoutPreparedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
@@ -17621,6 +23977,8 @@ export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
@@ -17631,9 +23989,18 @@ export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutSignedOperationalDocumentsInput = {
@@ -17703,6 +24070,8 @@ export type UserUpdateWithoutSignedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
@@ -17713,9 +24082,18 @@ export type UserUpdateWithoutSignedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
@@ -17774,6 +24152,8 @@ export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
@@ -17784,9 +24164,18 @@ export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUpsertWithoutIssuedOperationalDocumentsInput = {
@@ -17856,6 +24245,8 @@ export type UserUpdateWithoutIssuedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -17866,9 +24257,18 @@ export type UserUpdateWithoutIssuedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
@@ -17927,6 +24327,8 @@ export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -17937,9 +24339,18 @@ export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserCreateWithoutTicketAuditLogsInput = {
@@ -17997,6 +24408,8 @@ export type UserCreateWithoutTicketAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
@@ -18008,9 +24421,18 @@ export type UserCreateWithoutTicketAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
 }
 
 export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
@@ -18068,6 +24490,8 @@ export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
@@ -18079,9 +24503,18 @@ export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
   createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
 }
 
 export type UserCreateOrConnectWithoutTicketAuditLogsInput = {
@@ -18155,6 +24588,8 @@ export type UserUpdateWithoutTicketAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
@@ -18166,9 +24601,18 @@ export type UserUpdateWithoutTicketAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
@@ -18226,6 +24670,8 @@ export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
   createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
   approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
   signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
@@ -18237,9 +24683,18 @@ export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
   receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
   createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
   createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
 }
 
 
@@ -18289,6 +24744,8 @@ export type UserCountOutputType = {
   createdPurchaseOrders: number
   reviewedPurchaseOrders: number
   approvedPurchaseOrders: number
+  sentPurchaseOrders: number
+  uploadedPurchaseOrderInvoices: number
   createdDeliveryOrders: number
   preparedOperationalDocuments: number
   signedOperationalDocuments: number
@@ -18300,9 +24757,18 @@ export type UserCountOutputType = {
   receivedDirectStockPurchases: number
   createdStockMovements: number
   receivedDeliveryOrders: number
+  sentPaymentConfirmations: number
+  sentOrderConfirmations: number
+  signedInvoices: number
+  acknowledgedInvoices: number
+  signedOrderConfirmations: number
+  acknowledgedOrderConfirmations: number
+  signedDeliveryOrders: number
+  acknowledgedDeliveryOrders: number
   wageAuditLogs: number
   createdProjectWageDisbursements: number
   notifications: number
+  cashflowsRecorded: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -18347,6 +24813,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   createdPurchaseOrders?: boolean | UserCountOutputTypeCountCreatedPurchaseOrdersArgs
   reviewedPurchaseOrders?: boolean | UserCountOutputTypeCountReviewedPurchaseOrdersArgs
   approvedPurchaseOrders?: boolean | UserCountOutputTypeCountApprovedPurchaseOrdersArgs
+  sentPurchaseOrders?: boolean | UserCountOutputTypeCountSentPurchaseOrdersArgs
+  uploadedPurchaseOrderInvoices?: boolean | UserCountOutputTypeCountUploadedPurchaseOrderInvoicesArgs
   createdDeliveryOrders?: boolean | UserCountOutputTypeCountCreatedDeliveryOrdersArgs
   preparedOperationalDocuments?: boolean | UserCountOutputTypeCountPreparedOperationalDocumentsArgs
   signedOperationalDocuments?: boolean | UserCountOutputTypeCountSignedOperationalDocumentsArgs
@@ -18358,9 +24826,18 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   receivedDirectStockPurchases?: boolean | UserCountOutputTypeCountReceivedDirectStockPurchasesArgs
   createdStockMovements?: boolean | UserCountOutputTypeCountCreatedStockMovementsArgs
   receivedDeliveryOrders?: boolean | UserCountOutputTypeCountReceivedDeliveryOrdersArgs
+  sentPaymentConfirmations?: boolean | UserCountOutputTypeCountSentPaymentConfirmationsArgs
+  sentOrderConfirmations?: boolean | UserCountOutputTypeCountSentOrderConfirmationsArgs
+  signedInvoices?: boolean | UserCountOutputTypeCountSignedInvoicesArgs
+  acknowledgedInvoices?: boolean | UserCountOutputTypeCountAcknowledgedInvoicesArgs
+  signedOrderConfirmations?: boolean | UserCountOutputTypeCountSignedOrderConfirmationsArgs
+  acknowledgedOrderConfirmations?: boolean | UserCountOutputTypeCountAcknowledgedOrderConfirmationsArgs
+  signedDeliveryOrders?: boolean | UserCountOutputTypeCountSignedDeliveryOrdersArgs
+  acknowledgedDeliveryOrders?: boolean | UserCountOutputTypeCountAcknowledgedDeliveryOrdersArgs
   wageAuditLogs?: boolean | UserCountOutputTypeCountWageAuditLogsArgs
   createdProjectWageDisbursements?: boolean | UserCountOutputTypeCountCreatedProjectWageDisbursementsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  cashflowsRecorded?: boolean | UserCountOutputTypeCountCashflowsRecordedArgs
 }
 
 /**
@@ -18663,6 +25140,20 @@ export type UserCountOutputTypeCountApprovedPurchaseOrdersArgs<ExtArgs extends r
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountSentPurchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PurchaseOrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUploadedPurchaseOrderInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PurchaseOrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountCreatedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DeliveryOrderWhereInput
 }
@@ -18740,6 +25231,62 @@ export type UserCountOutputTypeCountReceivedDeliveryOrdersArgs<ExtArgs extends r
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountSentPaymentConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentTransactionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderConfirmationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSignedInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAcknowledgedInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSignedOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderConfirmationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAcknowledgedOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderConfirmationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSignedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeliveryOrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAcknowledgedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeliveryOrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountWageAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WageAuditLogWhereInput
 }
@@ -18756,6 +25303,13 @@ export type UserCountOutputTypeCountCreatedProjectWageDisbursementsArgs<ExtArgs 
  */
 export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCashflowsRecordedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CashflowWhereInput
 }
 
 
@@ -18815,6 +25369,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdPurchaseOrders?: boolean | Prisma.User$createdPurchaseOrdersArgs<ExtArgs>
   reviewedPurchaseOrders?: boolean | Prisma.User$reviewedPurchaseOrdersArgs<ExtArgs>
   approvedPurchaseOrders?: boolean | Prisma.User$approvedPurchaseOrdersArgs<ExtArgs>
+  sentPurchaseOrders?: boolean | Prisma.User$sentPurchaseOrdersArgs<ExtArgs>
+  uploadedPurchaseOrderInvoices?: boolean | Prisma.User$uploadedPurchaseOrderInvoicesArgs<ExtArgs>
   createdDeliveryOrders?: boolean | Prisma.User$createdDeliveryOrdersArgs<ExtArgs>
   preparedOperationalDocuments?: boolean | Prisma.User$preparedOperationalDocumentsArgs<ExtArgs>
   signedOperationalDocuments?: boolean | Prisma.User$signedOperationalDocumentsArgs<ExtArgs>
@@ -18826,9 +25382,18 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   receivedDirectStockPurchases?: boolean | Prisma.User$receivedDirectStockPurchasesArgs<ExtArgs>
   createdStockMovements?: boolean | Prisma.User$createdStockMovementsArgs<ExtArgs>
   receivedDeliveryOrders?: boolean | Prisma.User$receivedDeliveryOrdersArgs<ExtArgs>
+  sentPaymentConfirmations?: boolean | Prisma.User$sentPaymentConfirmationsArgs<ExtArgs>
+  sentOrderConfirmations?: boolean | Prisma.User$sentOrderConfirmationsArgs<ExtArgs>
+  signedInvoices?: boolean | Prisma.User$signedInvoicesArgs<ExtArgs>
+  acknowledgedInvoices?: boolean | Prisma.User$acknowledgedInvoicesArgs<ExtArgs>
+  signedOrderConfirmations?: boolean | Prisma.User$signedOrderConfirmationsArgs<ExtArgs>
+  acknowledgedOrderConfirmations?: boolean | Prisma.User$acknowledgedOrderConfirmationsArgs<ExtArgs>
+  signedDeliveryOrders?: boolean | Prisma.User$signedDeliveryOrdersArgs<ExtArgs>
+  acknowledgedDeliveryOrders?: boolean | Prisma.User$acknowledgedDeliveryOrdersArgs<ExtArgs>
   wageAuditLogs?: boolean | Prisma.User$wageAuditLogsArgs<ExtArgs>
   createdProjectWageDisbursements?: boolean | Prisma.User$createdProjectWageDisbursementsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  cashflowsRecorded?: boolean | Prisma.User$cashflowsRecordedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -18926,6 +25491,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdPurchaseOrders?: boolean | Prisma.User$createdPurchaseOrdersArgs<ExtArgs>
   reviewedPurchaseOrders?: boolean | Prisma.User$reviewedPurchaseOrdersArgs<ExtArgs>
   approvedPurchaseOrders?: boolean | Prisma.User$approvedPurchaseOrdersArgs<ExtArgs>
+  sentPurchaseOrders?: boolean | Prisma.User$sentPurchaseOrdersArgs<ExtArgs>
+  uploadedPurchaseOrderInvoices?: boolean | Prisma.User$uploadedPurchaseOrderInvoicesArgs<ExtArgs>
   createdDeliveryOrders?: boolean | Prisma.User$createdDeliveryOrdersArgs<ExtArgs>
   preparedOperationalDocuments?: boolean | Prisma.User$preparedOperationalDocumentsArgs<ExtArgs>
   signedOperationalDocuments?: boolean | Prisma.User$signedOperationalDocumentsArgs<ExtArgs>
@@ -18937,9 +25504,18 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   receivedDirectStockPurchases?: boolean | Prisma.User$receivedDirectStockPurchasesArgs<ExtArgs>
   createdStockMovements?: boolean | Prisma.User$createdStockMovementsArgs<ExtArgs>
   receivedDeliveryOrders?: boolean | Prisma.User$receivedDeliveryOrdersArgs<ExtArgs>
+  sentPaymentConfirmations?: boolean | Prisma.User$sentPaymentConfirmationsArgs<ExtArgs>
+  sentOrderConfirmations?: boolean | Prisma.User$sentOrderConfirmationsArgs<ExtArgs>
+  signedInvoices?: boolean | Prisma.User$signedInvoicesArgs<ExtArgs>
+  acknowledgedInvoices?: boolean | Prisma.User$acknowledgedInvoicesArgs<ExtArgs>
+  signedOrderConfirmations?: boolean | Prisma.User$signedOrderConfirmationsArgs<ExtArgs>
+  acknowledgedOrderConfirmations?: boolean | Prisma.User$acknowledgedOrderConfirmationsArgs<ExtArgs>
+  signedDeliveryOrders?: boolean | Prisma.User$signedDeliveryOrdersArgs<ExtArgs>
+  acknowledgedDeliveryOrders?: boolean | Prisma.User$acknowledgedDeliveryOrdersArgs<ExtArgs>
   wageAuditLogs?: boolean | Prisma.User$wageAuditLogsArgs<ExtArgs>
   createdProjectWageDisbursements?: boolean | Prisma.User$createdProjectWageDisbursementsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  cashflowsRecorded?: boolean | Prisma.User$cashflowsRecordedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -18989,6 +25565,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdPurchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     reviewedPurchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     approvedPurchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
+    sentPurchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
+    uploadedPurchaseOrderInvoices: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     createdDeliveryOrders: Prisma.$DeliveryOrderPayload<ExtArgs>[]
     preparedOperationalDocuments: Prisma.$OperationalDocumentPayload<ExtArgs>[]
     signedOperationalDocuments: Prisma.$OperationalDocumentPayload<ExtArgs>[]
@@ -19000,9 +25578,18 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     receivedDirectStockPurchases: Prisma.$DirectStockPurchasePayload<ExtArgs>[]
     createdStockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
     receivedDeliveryOrders: Prisma.$DeliveryOrderPayload<ExtArgs>[]
+    sentPaymentConfirmations: Prisma.$PaymentTransactionPayload<ExtArgs>[]
+    sentOrderConfirmations: Prisma.$OrderConfirmationPayload<ExtArgs>[]
+    signedInvoices: Prisma.$InvoicePayload<ExtArgs>[]
+    acknowledgedInvoices: Prisma.$InvoicePayload<ExtArgs>[]
+    signedOrderConfirmations: Prisma.$OrderConfirmationPayload<ExtArgs>[]
+    acknowledgedOrderConfirmations: Prisma.$OrderConfirmationPayload<ExtArgs>[]
+    signedDeliveryOrders: Prisma.$DeliveryOrderPayload<ExtArgs>[]
+    acknowledgedDeliveryOrders: Prisma.$DeliveryOrderPayload<ExtArgs>[]
     wageAuditLogs: Prisma.$WageAuditLogPayload<ExtArgs>[]
     createdProjectWageDisbursements: Prisma.$ProjectWageDisbursementPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    cashflowsRecorded: Prisma.$CashflowPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -19454,6 +26041,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdPurchaseOrders<T extends Prisma.User$createdPurchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPurchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedPurchaseOrders<T extends Prisma.User$reviewedPurchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedPurchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedPurchaseOrders<T extends Prisma.User$approvedPurchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedPurchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentPurchaseOrders<T extends Prisma.User$sentPurchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentPurchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  uploadedPurchaseOrderInvoices<T extends Prisma.User$uploadedPurchaseOrderInvoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedPurchaseOrderInvoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdDeliveryOrders<T extends Prisma.User$createdDeliveryOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDeliveryOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   preparedOperationalDocuments<T extends Prisma.User$preparedOperationalDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$preparedOperationalDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OperationalDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   signedOperationalDocuments<T extends Prisma.User$signedOperationalDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$signedOperationalDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OperationalDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -19465,9 +26054,18 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   receivedDirectStockPurchases<T extends Prisma.User$receivedDirectStockPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedDirectStockPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdStockMovements<T extends Prisma.User$createdStockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdStockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   receivedDeliveryOrders<T extends Prisma.User$receivedDeliveryOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedDeliveryOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentPaymentConfirmations<T extends Prisma.User$sentPaymentConfirmationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentPaymentConfirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentOrderConfirmations<T extends Prisma.User$sentOrderConfirmationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentOrderConfirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  signedInvoices<T extends Prisma.User$signedInvoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$signedInvoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acknowledgedInvoices<T extends Prisma.User$acknowledgedInvoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$acknowledgedInvoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  signedOrderConfirmations<T extends Prisma.User$signedOrderConfirmationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$signedOrderConfirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acknowledgedOrderConfirmations<T extends Prisma.User$acknowledgedOrderConfirmationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$acknowledgedOrderConfirmationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderConfirmationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  signedDeliveryOrders<T extends Prisma.User$signedDeliveryOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$signedDeliveryOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  acknowledgedDeliveryOrders<T extends Prisma.User$acknowledgedDeliveryOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$acknowledgedDeliveryOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wageAuditLogs<T extends Prisma.User$wageAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wageAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WageAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdProjectWageDisbursements<T extends Prisma.User$createdProjectWageDisbursementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdProjectWageDisbursementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWageDisbursementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cashflowsRecorded<T extends Prisma.User$cashflowsRecordedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cashflowsRecordedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CashflowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20888,6 +27486,54 @@ export type User$approvedPurchaseOrdersArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * User.sentPurchaseOrders
+ */
+export type User$sentPurchaseOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PurchaseOrder
+   */
+  select?: Prisma.PurchaseOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PurchaseOrder
+   */
+  omit?: Prisma.PurchaseOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PurchaseOrderInclude<ExtArgs> | null
+  where?: Prisma.PurchaseOrderWhereInput
+  orderBy?: Prisma.PurchaseOrderOrderByWithRelationInput | Prisma.PurchaseOrderOrderByWithRelationInput[]
+  cursor?: Prisma.PurchaseOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PurchaseOrderScalarFieldEnum | Prisma.PurchaseOrderScalarFieldEnum[]
+}
+
+/**
+ * User.uploadedPurchaseOrderInvoices
+ */
+export type User$uploadedPurchaseOrderInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PurchaseOrder
+   */
+  select?: Prisma.PurchaseOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PurchaseOrder
+   */
+  omit?: Prisma.PurchaseOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PurchaseOrderInclude<ExtArgs> | null
+  where?: Prisma.PurchaseOrderWhereInput
+  orderBy?: Prisma.PurchaseOrderOrderByWithRelationInput | Prisma.PurchaseOrderOrderByWithRelationInput[]
+  cursor?: Prisma.PurchaseOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PurchaseOrderScalarFieldEnum | Prisma.PurchaseOrderScalarFieldEnum[]
+}
+
+/**
  * User.createdDeliveryOrders
  */
 export type User$createdDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -21152,6 +27798,198 @@ export type User$receivedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * User.sentPaymentConfirmations
+ */
+export type User$sentPaymentConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentTransaction
+   */
+  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentTransaction
+   */
+  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
+  where?: Prisma.PaymentTransactionWhereInput
+  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
+}
+
+/**
+ * User.sentOrderConfirmations
+ */
+export type User$sentOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderConfirmation
+   */
+  select?: Prisma.OrderConfirmationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderConfirmation
+   */
+  omit?: Prisma.OrderConfirmationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderConfirmationInclude<ExtArgs> | null
+  where?: Prisma.OrderConfirmationWhereInput
+  orderBy?: Prisma.OrderConfirmationOrderByWithRelationInput | Prisma.OrderConfirmationOrderByWithRelationInput[]
+  cursor?: Prisma.OrderConfirmationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderConfirmationScalarFieldEnum | Prisma.OrderConfirmationScalarFieldEnum[]
+}
+
+/**
+ * User.signedInvoices
+ */
+export type User$signedInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.acknowledgedInvoices
+ */
+export type User$acknowledgedInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.signedOrderConfirmations
+ */
+export type User$signedOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderConfirmation
+   */
+  select?: Prisma.OrderConfirmationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderConfirmation
+   */
+  omit?: Prisma.OrderConfirmationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderConfirmationInclude<ExtArgs> | null
+  where?: Prisma.OrderConfirmationWhereInput
+  orderBy?: Prisma.OrderConfirmationOrderByWithRelationInput | Prisma.OrderConfirmationOrderByWithRelationInput[]
+  cursor?: Prisma.OrderConfirmationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderConfirmationScalarFieldEnum | Prisma.OrderConfirmationScalarFieldEnum[]
+}
+
+/**
+ * User.acknowledgedOrderConfirmations
+ */
+export type User$acknowledgedOrderConfirmationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderConfirmation
+   */
+  select?: Prisma.OrderConfirmationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderConfirmation
+   */
+  omit?: Prisma.OrderConfirmationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderConfirmationInclude<ExtArgs> | null
+  where?: Prisma.OrderConfirmationWhereInput
+  orderBy?: Prisma.OrderConfirmationOrderByWithRelationInput | Prisma.OrderConfirmationOrderByWithRelationInput[]
+  cursor?: Prisma.OrderConfirmationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderConfirmationScalarFieldEnum | Prisma.OrderConfirmationScalarFieldEnum[]
+}
+
+/**
+ * User.signedDeliveryOrders
+ */
+export type User$signedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeliveryOrder
+   */
+  select?: Prisma.DeliveryOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeliveryOrder
+   */
+  omit?: Prisma.DeliveryOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeliveryOrderInclude<ExtArgs> | null
+  where?: Prisma.DeliveryOrderWhereInput
+  orderBy?: Prisma.DeliveryOrderOrderByWithRelationInput | Prisma.DeliveryOrderOrderByWithRelationInput[]
+  cursor?: Prisma.DeliveryOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeliveryOrderScalarFieldEnum | Prisma.DeliveryOrderScalarFieldEnum[]
+}
+
+/**
+ * User.acknowledgedDeliveryOrders
+ */
+export type User$acknowledgedDeliveryOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeliveryOrder
+   */
+  select?: Prisma.DeliveryOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeliveryOrder
+   */
+  omit?: Prisma.DeliveryOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeliveryOrderInclude<ExtArgs> | null
+  where?: Prisma.DeliveryOrderWhereInput
+  orderBy?: Prisma.DeliveryOrderOrderByWithRelationInput | Prisma.DeliveryOrderOrderByWithRelationInput[]
+  cursor?: Prisma.DeliveryOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeliveryOrderScalarFieldEnum | Prisma.DeliveryOrderScalarFieldEnum[]
+}
+
+/**
  * User.wageAuditLogs
  */
 export type User$wageAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -21221,6 +28059,30 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.cashflowsRecorded
+ */
+export type User$cashflowsRecordedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Cashflow
+   */
+  select?: Prisma.CashflowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Cashflow
+   */
+  omit?: Prisma.CashflowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CashflowInclude<ExtArgs> | null
+  where?: Prisma.CashflowWhereInput
+  orderBy?: Prisma.CashflowOrderByWithRelationInput | Prisma.CashflowOrderByWithRelationInput[]
+  cursor?: Prisma.CashflowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CashflowScalarFieldEnum | Prisma.CashflowScalarFieldEnum[]
 }
 
 /**

@@ -42,6 +42,10 @@ export type DeliveryOrderMinAggregateOutputType = {
   poId: string | null
   createdById: string | null
   receivedById: string | null
+  signedById: string | null
+  signedAt: Date | null
+  acknowledgedById: string | null
+  acknowledgedAt: Date | null
   deliveryMethod: $Enums.DODeliveryMethod | null
   vehicleId: string | null
   vehiclePlateNumber: string | null
@@ -68,6 +72,10 @@ export type DeliveryOrderMaxAggregateOutputType = {
   poId: string | null
   createdById: string | null
   receivedById: string | null
+  signedById: string | null
+  signedAt: Date | null
+  acknowledgedById: string | null
+  acknowledgedAt: Date | null
   deliveryMethod: $Enums.DODeliveryMethod | null
   vehicleId: string | null
   vehiclePlateNumber: string | null
@@ -94,6 +102,10 @@ export type DeliveryOrderCountAggregateOutputType = {
   poId: number
   createdById: number
   receivedById: number
+  signedById: number
+  signedAt: number
+  acknowledgedById: number
+  acknowledgedAt: number
   deliveryMethod: number
   vehicleId: number
   vehiclePlateNumber: number
@@ -130,6 +142,10 @@ export type DeliveryOrderMinAggregateInputType = {
   poId?: true
   createdById?: true
   receivedById?: true
+  signedById?: true
+  signedAt?: true
+  acknowledgedById?: true
+  acknowledgedAt?: true
   deliveryMethod?: true
   vehicleId?: true
   vehiclePlateNumber?: true
@@ -156,6 +172,10 @@ export type DeliveryOrderMaxAggregateInputType = {
   poId?: true
   createdById?: true
   receivedById?: true
+  signedById?: true
+  signedAt?: true
+  acknowledgedById?: true
+  acknowledgedAt?: true
   deliveryMethod?: true
   vehicleId?: true
   vehiclePlateNumber?: true
@@ -182,6 +202,10 @@ export type DeliveryOrderCountAggregateInputType = {
   poId?: true
   createdById?: true
   receivedById?: true
+  signedById?: true
+  signedAt?: true
+  acknowledgedById?: true
+  acknowledgedAt?: true
   deliveryMethod?: true
   vehicleId?: true
   vehiclePlateNumber?: true
@@ -295,6 +319,10 @@ export type DeliveryOrderGroupByOutputType = {
   poId: string | null
   createdById: string | null
   receivedById: string | null
+  signedById: string | null
+  signedAt: Date | null
+  acknowledgedById: string | null
+  acknowledgedAt: Date | null
   deliveryMethod: $Enums.DODeliveryMethod
   vehicleId: string | null
   vehiclePlateNumber: string | null
@@ -344,6 +372,10 @@ export type DeliveryOrderWhereInput = {
   poId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   createdById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   receivedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
+  acknowledgedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFilter<"DeliveryOrder"> | $Enums.DODeliveryMethod
   vehicleId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   vehiclePlateNumber?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
@@ -364,6 +396,8 @@ export type DeliveryOrderWhereInput = {
   po?: Prisma.XOR<Prisma.PurchaseOrderNullableScalarRelationFilter, Prisma.PurchaseOrderWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  signedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  acknowledgedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   vehicle?: Prisma.XOR<Prisma.VehicleNullableScalarRelationFilter, Prisma.VehicleWhereInput> | null
   receiptPhotos?: Prisma.DeliveryOrderProofListRelationFilter
   items?: Prisma.DOItemListRelationFilter
@@ -379,6 +413,10 @@ export type DeliveryOrderOrderByWithRelationInput = {
   poId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  acknowledgedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   vehicleId?: Prisma.SortOrderInput | Prisma.SortOrder
   vehiclePlateNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -399,6 +437,8 @@ export type DeliveryOrderOrderByWithRelationInput = {
   po?: Prisma.PurchaseOrderOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   receivedBy?: Prisma.UserOrderByWithRelationInput
+  signedBy?: Prisma.UserOrderByWithRelationInput
+  acknowledgedBy?: Prisma.UserOrderByWithRelationInput
   vehicle?: Prisma.VehicleOrderByWithRelationInput
   receiptPhotos?: Prisma.DeliveryOrderProofOrderByRelationAggregateInput
   items?: Prisma.DOItemOrderByRelationAggregateInput
@@ -417,6 +457,10 @@ export type DeliveryOrderWhereUniqueInput = Prisma.AtLeast<{
   poId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   createdById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   receivedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
+  acknowledgedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFilter<"DeliveryOrder"> | $Enums.DODeliveryMethod
   vehicleId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   vehiclePlateNumber?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
@@ -437,6 +481,8 @@ export type DeliveryOrderWhereUniqueInput = Prisma.AtLeast<{
   po?: Prisma.XOR<Prisma.PurchaseOrderNullableScalarRelationFilter, Prisma.PurchaseOrderWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  signedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  acknowledgedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   vehicle?: Prisma.XOR<Prisma.VehicleNullableScalarRelationFilter, Prisma.VehicleWhereInput> | null
   receiptPhotos?: Prisma.DeliveryOrderProofListRelationFilter
   items?: Prisma.DOItemListRelationFilter
@@ -452,6 +498,10 @@ export type DeliveryOrderOrderByWithAggregationInput = {
   poId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  acknowledgedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   vehicleId?: Prisma.SortOrderInput | Prisma.SortOrder
   vehiclePlateNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -486,6 +536,10 @@ export type DeliveryOrderScalarWhereWithAggregatesInput = {
   poId?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
   createdById?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
   receivedById?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
+  signedById?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
+  signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DeliveryOrder"> | Date | string | null
+  acknowledgedById?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
+  acknowledgedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DeliveryOrder"> | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodWithAggregatesFilter<"DeliveryOrder"> | $Enums.DODeliveryMethod
   vehicleId?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
   vehiclePlateNumber?: Prisma.StringNullableWithAggregatesFilter<"DeliveryOrder"> | string | null
@@ -508,6 +562,8 @@ export type DeliveryOrderCreateInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -527,6 +583,8 @@ export type DeliveryOrderCreateInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -542,6 +600,10 @@ export type DeliveryOrderUncheckedCreateInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -568,6 +630,8 @@ export type DeliveryOrderUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -587,6 +651,8 @@ export type DeliveryOrderUpdateInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -602,6 +668,10 @@ export type DeliveryOrderUncheckedUpdateInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -632,6 +702,10 @@ export type DeliveryOrderCreateManyInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -654,6 +728,8 @@ export type DeliveryOrderUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -679,6 +755,10 @@ export type DeliveryOrderUncheckedUpdateManyInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -715,6 +795,10 @@ export type DeliveryOrderCountOrderByAggregateInput = {
   poId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
+  signedById?: Prisma.SortOrder
+  signedAt?: Prisma.SortOrder
+  acknowledgedById?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   vehicleId?: Prisma.SortOrder
   vehiclePlateNumber?: Prisma.SortOrder
@@ -745,6 +829,10 @@ export type DeliveryOrderMaxOrderByAggregateInput = {
   poId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
+  signedById?: Prisma.SortOrder
+  signedAt?: Prisma.SortOrder
+  acknowledgedById?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   vehicleId?: Prisma.SortOrder
   vehiclePlateNumber?: Prisma.SortOrder
@@ -771,6 +859,10 @@ export type DeliveryOrderMinOrderByAggregateInput = {
   poId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
+  signedById?: Prisma.SortOrder
+  signedAt?: Prisma.SortOrder
+  acknowledgedById?: Prisma.SortOrder
+  acknowledgedAt?: Prisma.SortOrder
   deliveryMethod?: Prisma.SortOrder
   vehicleId?: Prisma.SortOrder
   vehiclePlateNumber?: Prisma.SortOrder
@@ -817,6 +909,20 @@ export type DeliveryOrderCreateNestedManyWithoutReceivedByInput = {
   connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
 }
 
+export type DeliveryOrderCreateNestedManyWithoutSignedByInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput> | Prisma.DeliveryOrderCreateWithoutSignedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManySignedByInputEnvelope
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+}
+
+export type DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput> | Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManyAcknowledgedByInputEnvelope
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+}
+
 export type DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutCreatedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutCreatedByInput> | Prisma.DeliveryOrderCreateWithoutCreatedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutCreatedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutCreatedByInput[]
@@ -828,6 +934,20 @@ export type DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput = {
   create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutReceivedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutReceivedByInput> | Prisma.DeliveryOrderCreateWithoutReceivedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutReceivedByInput[]
   connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutReceivedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutReceivedByInput[]
   createMany?: Prisma.DeliveryOrderCreateManyReceivedByInputEnvelope
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+}
+
+export type DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput> | Prisma.DeliveryOrderCreateWithoutSignedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManySignedByInputEnvelope
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+}
+
+export type DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput> | Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManyAcknowledgedByInputEnvelope
   connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
 }
 
@@ -859,6 +979,34 @@ export type DeliveryOrderUpdateManyWithoutReceivedByNestedInput = {
   deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
 }
 
+export type DeliveryOrderUpdateManyWithoutSignedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput> | Prisma.DeliveryOrderCreateWithoutSignedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput[]
+  upsert?: Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutSignedByInput | Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutSignedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManySignedByInputEnvelope
+  set?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  delete?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  update?: Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutSignedByInput | Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutSignedByInput[]
+  updateMany?: Prisma.DeliveryOrderUpdateManyWithWhereWithoutSignedByInput | Prisma.DeliveryOrderUpdateManyWithWhereWithoutSignedByInput[]
+  deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
+}
+
+export type DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput> | Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput[]
+  upsert?: Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutAcknowledgedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManyAcknowledgedByInputEnvelope
+  set?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  delete?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  update?: Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutAcknowledgedByInput[]
+  updateMany?: Prisma.DeliveryOrderUpdateManyWithWhereWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpdateManyWithWhereWithoutAcknowledgedByInput[]
+  deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
+}
+
 export type DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput = {
   create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutCreatedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutCreatedByInput> | Prisma.DeliveryOrderCreateWithoutCreatedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutCreatedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutCreatedByInput[]
@@ -884,6 +1032,34 @@ export type DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput = {
   connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
   update?: Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutReceivedByInput | Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutReceivedByInput[]
   updateMany?: Prisma.DeliveryOrderUpdateManyWithWhereWithoutReceivedByInput | Prisma.DeliveryOrderUpdateManyWithWhereWithoutReceivedByInput[]
+  deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
+}
+
+export type DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput> | Prisma.DeliveryOrderCreateWithoutSignedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutSignedByInput[]
+  upsert?: Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutSignedByInput | Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutSignedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManySignedByInputEnvelope
+  set?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  delete?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  update?: Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutSignedByInput | Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutSignedByInput[]
+  updateMany?: Prisma.DeliveryOrderUpdateManyWithWhereWithoutSignedByInput | Prisma.DeliveryOrderUpdateManyWithWhereWithoutSignedByInput[]
+  deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
+}
+
+export type DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput> | Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput[] | Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput[]
+  connectOrCreate?: Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput | Prisma.DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput[]
+  upsert?: Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpsertWithWhereUniqueWithoutAcknowledgedByInput[]
+  createMany?: Prisma.DeliveryOrderCreateManyAcknowledgedByInputEnvelope
+  set?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  delete?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  connect?: Prisma.DeliveryOrderWhereUniqueInput | Prisma.DeliveryOrderWhereUniqueInput[]
+  update?: Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpdateWithWhereUniqueWithoutAcknowledgedByInput[]
+  updateMany?: Prisma.DeliveryOrderUpdateManyWithWhereWithoutAcknowledgedByInput | Prisma.DeliveryOrderUpdateManyWithWhereWithoutAcknowledgedByInput[]
   deleteMany?: Prisma.DeliveryOrderScalarWhereInput | Prisma.DeliveryOrderScalarWhereInput[]
 }
 
@@ -1083,6 +1259,8 @@ export type DeliveryOrderCreateWithoutCreatedByInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1101,6 +1279,8 @@ export type DeliveryOrderCreateWithoutCreatedByInput = {
   ticket?: Prisma.TicketCreateNestedOneWithoutDeliveryOrdersInput
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1115,6 +1295,10 @@ export type DeliveryOrderUncheckedCreateWithoutCreatedByInput = {
   ticketId?: string | null
   poId?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1151,6 +1335,8 @@ export type DeliveryOrderCreateWithoutReceivedByInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1169,6 +1355,8 @@ export type DeliveryOrderCreateWithoutReceivedByInput = {
   ticket?: Prisma.TicketCreateNestedOneWithoutDeliveryOrdersInput
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1183,6 +1371,10 @@ export type DeliveryOrderUncheckedCreateWithoutReceivedByInput = {
   ticketId?: string | null
   poId?: string | null
   createdById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1215,6 +1407,158 @@ export type DeliveryOrderCreateManyReceivedByInputEnvelope = {
   skipDuplicates?: boolean
 }
 
+export type DeliveryOrderCreateWithoutSignedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ticket?: Prisma.TicketCreateNestedOneWithoutDeliveryOrdersInput
+  po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
+  receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
+  vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
+  receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
+  items?: Prisma.DOItemCreateNestedManyWithoutDoInput
+  vehicleTripLog?: Prisma.VehicleTripLogCreateNestedOneWithoutDeliveryOrderInput
+  fuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutDeliveryOrderInput
+}
+
+export type DeliveryOrderUncheckedCreateWithoutSignedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  ticketId?: string | null
+  poId?: string | null
+  createdById?: string | null
+  receivedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehicleId?: string | null
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  receiptPhotos?: Prisma.DeliveryOrderProofUncheckedCreateNestedManyWithoutDeliveryOrderInput
+  items?: Prisma.DOItemUncheckedCreateNestedManyWithoutDoInput
+  vehicleTripLog?: Prisma.VehicleTripLogUncheckedCreateNestedOneWithoutDeliveryOrderInput
+  fuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutDeliveryOrderInput
+}
+
+export type DeliveryOrderCreateOrConnectWithoutSignedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput>
+}
+
+export type DeliveryOrderCreateManySignedByInputEnvelope = {
+  data: Prisma.DeliveryOrderCreateManySignedByInput | Prisma.DeliveryOrderCreateManySignedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type DeliveryOrderCreateWithoutAcknowledgedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ticket?: Prisma.TicketCreateNestedOneWithoutDeliveryOrdersInput
+  po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
+  receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
+  receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
+  items?: Prisma.DOItemCreateNestedManyWithoutDoInput
+  vehicleTripLog?: Prisma.VehicleTripLogCreateNestedOneWithoutDeliveryOrderInput
+  fuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutDeliveryOrderInput
+}
+
+export type DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  ticketId?: string | null
+  poId?: string | null
+  createdById?: string | null
+  receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehicleId?: string | null
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  receiptPhotos?: Prisma.DeliveryOrderProofUncheckedCreateNestedManyWithoutDeliveryOrderInput
+  items?: Prisma.DOItemUncheckedCreateNestedManyWithoutDoInput
+  vehicleTripLog?: Prisma.VehicleTripLogUncheckedCreateNestedOneWithoutDeliveryOrderInput
+  fuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutDeliveryOrderInput
+}
+
+export type DeliveryOrderCreateOrConnectWithoutAcknowledgedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput>
+}
+
+export type DeliveryOrderCreateManyAcknowledgedByInputEnvelope = {
+  data: Prisma.DeliveryOrderCreateManyAcknowledgedByInput | Prisma.DeliveryOrderCreateManyAcknowledgedByInput[]
+  skipDuplicates?: boolean
+}
+
 export type DeliveryOrderUpsertWithWhereUniqueWithoutCreatedByInput = {
   where: Prisma.DeliveryOrderWhereUniqueInput
   update: Prisma.XOR<Prisma.DeliveryOrderUpdateWithoutCreatedByInput, Prisma.DeliveryOrderUncheckedUpdateWithoutCreatedByInput>
@@ -1242,6 +1586,10 @@ export type DeliveryOrderScalarWhereInput = {
   poId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   createdById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   receivedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  signedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
+  acknowledgedById?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
+  acknowledgedAt?: Prisma.DateTimeNullableFilter<"DeliveryOrder"> | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFilter<"DeliveryOrder"> | $Enums.DODeliveryMethod
   vehicleId?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
   vehiclePlateNumber?: Prisma.StringNullableFilter<"DeliveryOrder"> | string | null
@@ -1276,10 +1624,44 @@ export type DeliveryOrderUpdateManyWithWhereWithoutReceivedByInput = {
   data: Prisma.XOR<Prisma.DeliveryOrderUpdateManyMutationInput, Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByInput>
 }
 
+export type DeliveryOrderUpsertWithWhereUniqueWithoutSignedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.DeliveryOrderUpdateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedUpdateWithoutSignedByInput>
+  create: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutSignedByInput>
+}
+
+export type DeliveryOrderUpdateWithWhereUniqueWithoutSignedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.DeliveryOrderUpdateWithoutSignedByInput, Prisma.DeliveryOrderUncheckedUpdateWithoutSignedByInput>
+}
+
+export type DeliveryOrderUpdateManyWithWhereWithoutSignedByInput = {
+  where: Prisma.DeliveryOrderScalarWhereInput
+  data: Prisma.XOR<Prisma.DeliveryOrderUpdateManyMutationInput, Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByInput>
+}
+
+export type DeliveryOrderUpsertWithWhereUniqueWithoutAcknowledgedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  update: Prisma.XOR<Prisma.DeliveryOrderUpdateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedUpdateWithoutAcknowledgedByInput>
+  create: Prisma.XOR<Prisma.DeliveryOrderCreateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedCreateWithoutAcknowledgedByInput>
+}
+
+export type DeliveryOrderUpdateWithWhereUniqueWithoutAcknowledgedByInput = {
+  where: Prisma.DeliveryOrderWhereUniqueInput
+  data: Prisma.XOR<Prisma.DeliveryOrderUpdateWithoutAcknowledgedByInput, Prisma.DeliveryOrderUncheckedUpdateWithoutAcknowledgedByInput>
+}
+
+export type DeliveryOrderUpdateManyWithWhereWithoutAcknowledgedByInput = {
+  where: Prisma.DeliveryOrderScalarWhereInput
+  data: Prisma.XOR<Prisma.DeliveryOrderUpdateManyMutationInput, Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByInput>
+}
+
 export type DeliveryOrderCreateWithoutTicketInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1298,6 +1680,8 @@ export type DeliveryOrderCreateWithoutTicketInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1312,6 +1696,10 @@ export type DeliveryOrderUncheckedCreateWithoutTicketInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1364,6 +1752,8 @@ export type DeliveryOrderCreateWithoutPoInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1382,6 +1772,8 @@ export type DeliveryOrderCreateWithoutPoInput = {
   ticket?: Prisma.TicketCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1396,6 +1788,10 @@ export type DeliveryOrderUncheckedCreateWithoutPoInput = {
   ticketId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1448,6 +1844,8 @@ export type DeliveryOrderCreateWithoutReceiptPhotosInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1467,6 +1865,8 @@ export type DeliveryOrderCreateWithoutReceiptPhotosInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
   vehicleTripLog?: Prisma.VehicleTripLogCreateNestedOneWithoutDeliveryOrderInput
@@ -1481,6 +1881,10 @@ export type DeliveryOrderUncheckedCreateWithoutReceiptPhotosInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1522,6 +1926,8 @@ export type DeliveryOrderUpdateWithoutReceiptPhotosInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1541,6 +1947,8 @@ export type DeliveryOrderUpdateWithoutReceiptPhotosInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
   vehicleTripLog?: Prisma.VehicleTripLogUpdateOneWithoutDeliveryOrderNestedInput
@@ -1555,6 +1963,10 @@ export type DeliveryOrderUncheckedUpdateWithoutReceiptPhotosInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1580,6 +1992,8 @@ export type DeliveryOrderCreateWithoutVehicleInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1599,6 +2013,8 @@ export type DeliveryOrderCreateWithoutVehicleInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
   vehicleTripLog?: Prisma.VehicleTripLogCreateNestedOneWithoutDeliveryOrderInput
@@ -1613,6 +2029,10 @@ export type DeliveryOrderUncheckedCreateWithoutVehicleInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1664,6 +2084,8 @@ export type DeliveryOrderCreateWithoutVehicleTripLogInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1683,6 +2105,8 @@ export type DeliveryOrderCreateWithoutVehicleTripLogInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1697,6 +2121,10 @@ export type DeliveryOrderUncheckedCreateWithoutVehicleTripLogInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1738,6 +2166,8 @@ export type DeliveryOrderUpdateWithoutVehicleTripLogInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1757,6 +2187,8 @@ export type DeliveryOrderUpdateWithoutVehicleTripLogInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -1771,6 +2203,10 @@ export type DeliveryOrderUncheckedUpdateWithoutVehicleTripLogInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1796,6 +2232,8 @@ export type DeliveryOrderCreateWithoutFuelRequestsInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1815,6 +2253,8 @@ export type DeliveryOrderCreateWithoutFuelRequestsInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   items?: Prisma.DOItemCreateNestedManyWithoutDoInput
@@ -1829,6 +2269,10 @@ export type DeliveryOrderUncheckedCreateWithoutFuelRequestsInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -1870,6 +2314,8 @@ export type DeliveryOrderUpdateWithoutFuelRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1889,6 +2335,8 @@ export type DeliveryOrderUpdateWithoutFuelRequestsInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -1903,6 +2351,10 @@ export type DeliveryOrderUncheckedUpdateWithoutFuelRequestsInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1928,6 +2380,8 @@ export type DeliveryOrderCreateWithoutItemsInput = {
   id?: string
   publicCode: string
   doNumber: string
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1947,6 +2401,8 @@ export type DeliveryOrderCreateWithoutItemsInput = {
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutDeliveryOrdersInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedDeliveryOrdersInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDeliveryOrdersInput
+  signedBy?: Prisma.UserCreateNestedOneWithoutSignedDeliveryOrdersInput
+  acknowledgedBy?: Prisma.UserCreateNestedOneWithoutAcknowledgedDeliveryOrdersInput
   vehicle?: Prisma.VehicleCreateNestedOneWithoutDeliveryOrdersInput
   receiptPhotos?: Prisma.DeliveryOrderProofCreateNestedManyWithoutDeliveryOrderInput
   vehicleTripLog?: Prisma.VehicleTripLogCreateNestedOneWithoutDeliveryOrderInput
@@ -1961,6 +2417,10 @@ export type DeliveryOrderUncheckedCreateWithoutItemsInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -2002,6 +2462,8 @@ export type DeliveryOrderUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2021,6 +2483,8 @@ export type DeliveryOrderUpdateWithoutItemsInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   vehicleTripLog?: Prisma.VehicleTripLogUpdateOneWithoutDeliveryOrderNestedInput
@@ -2035,6 +2499,10 @@ export type DeliveryOrderUncheckedUpdateWithoutItemsInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2063,6 +2531,10 @@ export type DeliveryOrderCreateManyCreatedByInput = {
   ticketId?: string | null
   poId?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -2088,6 +2560,68 @@ export type DeliveryOrderCreateManyReceivedByInput = {
   ticketId?: string | null
   poId?: string | null
   createdById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehicleId?: string | null
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryOrderCreateManySignedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  ticketId?: string | null
+  poId?: string | null
+  createdById?: string | null
+  receivedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
+  deliveryMethod?: $Enums.DODeliveryMethod
+  vehicleId?: string | null
+  vehiclePlateNumber?: string | null
+  departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: string | null
+  vehiclePlate?: string | null
+  driverName?: string | null
+  driverIdentityNumber?: string | null
+  driverPhone?: string | null
+  receiverName?: string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  deliveryReceiptUrl?: string | null
+  status?: $Enums.DOStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryOrderCreateManyAcknowledgedByInput = {
+  id?: string
+  publicCode: string
+  doNumber: string
+  ticketId?: string | null
+  poId?: string | null
+  createdById?: string | null
+  receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -2110,6 +2644,8 @@ export type DeliveryOrderUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2128,6 +2664,8 @@ export type DeliveryOrderUpdateWithoutCreatedByInput = {
   ticket?: Prisma.TicketUpdateOneWithoutDeliveryOrdersNestedInput
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -2142,6 +2680,10 @@ export type DeliveryOrderUncheckedUpdateWithoutCreatedByInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2171,6 +2713,10 @@ export type DeliveryOrderUncheckedUpdateManyWithoutCreatedByInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2193,6 +2739,8 @@ export type DeliveryOrderUpdateWithoutReceivedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2211,6 +2759,8 @@ export type DeliveryOrderUpdateWithoutReceivedByInput = {
   ticket?: Prisma.TicketUpdateOneWithoutDeliveryOrdersNestedInput
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -2225,6 +2775,10 @@ export type DeliveryOrderUncheckedUpdateWithoutReceivedByInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2254,6 +2808,200 @@ export type DeliveryOrderUncheckedUpdateManyWithoutReceivedByInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryOrderUpdateWithoutSignedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ticket?: Prisma.TicketUpdateOneWithoutDeliveryOrdersNestedInput
+  po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
+  receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
+  vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
+  receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
+  items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
+  vehicleTripLog?: Prisma.VehicleTripLogUpdateOneWithoutDeliveryOrderNestedInput
+  fuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutDeliveryOrderNestedInput
+}
+
+export type DeliveryOrderUncheckedUpdateWithoutSignedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  receiptPhotos?: Prisma.DeliveryOrderProofUncheckedUpdateManyWithoutDeliveryOrderNestedInput
+  items?: Prisma.DOItemUncheckedUpdateManyWithoutDoNestedInput
+  vehicleTripLog?: Prisma.VehicleTripLogUncheckedUpdateOneWithoutDeliveryOrderNestedInput
+  fuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutDeliveryOrderNestedInput
+}
+
+export type DeliveryOrderUncheckedUpdateManyWithoutSignedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryOrderUpdateWithoutAcknowledgedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ticket?: Prisma.TicketUpdateOneWithoutDeliveryOrdersNestedInput
+  po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
+  receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
+  receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
+  items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
+  vehicleTripLog?: Prisma.VehicleTripLogUpdateOneWithoutDeliveryOrderNestedInput
+  fuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutDeliveryOrderNestedInput
+}
+
+export type DeliveryOrderUncheckedUpdateWithoutAcknowledgedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
+  vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  vehicleDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehiclePlate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverIdentityNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiverName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryReceiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDOStatusFieldUpdateOperationsInput | $Enums.DOStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  receiptPhotos?: Prisma.DeliveryOrderProofUncheckedUpdateManyWithoutDeliveryOrderNestedInput
+  items?: Prisma.DOItemUncheckedUpdateManyWithoutDoNestedInput
+  vehicleTripLog?: Prisma.VehicleTripLogUncheckedUpdateOneWithoutDeliveryOrderNestedInput
+  fuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutDeliveryOrderNestedInput
+}
+
+export type DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  publicCode?: Prisma.StringFieldUpdateOperationsInput | string
+  doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2279,6 +3027,10 @@ export type DeliveryOrderCreateManyTicketInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -2301,6 +3053,8 @@ export type DeliveryOrderUpdateWithoutTicketInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2319,6 +3073,8 @@ export type DeliveryOrderUpdateWithoutTicketInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -2333,6 +3089,10 @@ export type DeliveryOrderUncheckedUpdateWithoutTicketInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2362,6 +3122,10 @@ export type DeliveryOrderUncheckedUpdateManyWithoutTicketInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2387,6 +3151,10 @@ export type DeliveryOrderCreateManyPoInput = {
   ticketId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehicleId?: string | null
   vehiclePlateNumber?: string | null
@@ -2409,6 +3177,8 @@ export type DeliveryOrderUpdateWithoutPoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2427,6 +3197,8 @@ export type DeliveryOrderUpdateWithoutPoInput = {
   ticket?: Prisma.TicketUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   vehicle?: Prisma.VehicleUpdateOneWithoutDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
@@ -2441,6 +3213,10 @@ export type DeliveryOrderUncheckedUpdateWithoutPoInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2470,6 +3246,10 @@ export type DeliveryOrderUncheckedUpdateManyWithoutPoInput = {
   ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehicleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2496,6 +3276,10 @@ export type DeliveryOrderCreateManyVehicleInput = {
   poId?: string | null
   createdById?: string | null
   receivedById?: string | null
+  signedById?: string | null
+  signedAt?: Date | string | null
+  acknowledgedById?: string | null
+  acknowledgedAt?: Date | string | null
   deliveryMethod?: $Enums.DODeliveryMethod
   vehiclePlateNumber?: string | null
   departureKilometer?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2517,6 +3301,8 @@ export type DeliveryOrderUpdateWithoutVehicleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   publicCode?: Prisma.StringFieldUpdateOperationsInput | string
   doNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2536,6 +3322,8 @@ export type DeliveryOrderUpdateWithoutVehicleInput = {
   po?: Prisma.PurchaseOrderUpdateOneWithoutDeliveryOrdersNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedDeliveryOrdersNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDeliveryOrdersNestedInput
+  signedBy?: Prisma.UserUpdateOneWithoutSignedDeliveryOrdersNestedInput
+  acknowledgedBy?: Prisma.UserUpdateOneWithoutAcknowledgedDeliveryOrdersNestedInput
   receiptPhotos?: Prisma.DeliveryOrderProofUpdateManyWithoutDeliveryOrderNestedInput
   items?: Prisma.DOItemUpdateManyWithoutDoNestedInput
   vehicleTripLog?: Prisma.VehicleTripLogUpdateOneWithoutDeliveryOrderNestedInput
@@ -2550,6 +3338,10 @@ export type DeliveryOrderUncheckedUpdateWithoutVehicleInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2579,6 +3371,10 @@ export type DeliveryOrderUncheckedUpdateManyWithoutVehicleInput = {
   poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acknowledgedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveryMethod?: Prisma.EnumDODeliveryMethodFieldUpdateOperationsInput | $Enums.DODeliveryMethod
   vehiclePlateNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departureKilometer?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2653,6 +3449,10 @@ export type DeliveryOrderSelect<ExtArgs extends runtime.Types.Extensions.Interna
   poId?: boolean
   createdById?: boolean
   receivedById?: boolean
+  signedById?: boolean
+  signedAt?: boolean
+  acknowledgedById?: boolean
+  acknowledgedAt?: boolean
   deliveryMethod?: boolean
   vehicleId?: boolean
   vehiclePlateNumber?: boolean
@@ -2673,6 +3473,8 @@ export type DeliveryOrderSelect<ExtArgs extends runtime.Types.Extensions.Interna
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
   receiptPhotos?: boolean | Prisma.DeliveryOrder$receiptPhotosArgs<ExtArgs>
   items?: boolean | Prisma.DeliveryOrder$itemsArgs<ExtArgs>
@@ -2689,6 +3491,10 @@ export type DeliveryOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   poId?: boolean
   createdById?: boolean
   receivedById?: boolean
+  signedById?: boolean
+  signedAt?: boolean
+  acknowledgedById?: boolean
+  acknowledgedAt?: boolean
   deliveryMethod?: boolean
   vehicleId?: boolean
   vehiclePlateNumber?: boolean
@@ -2709,6 +3515,8 @@ export type DeliveryOrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
 }, ExtArgs["result"]["deliveryOrder"]>
 
@@ -2720,6 +3528,10 @@ export type DeliveryOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   poId?: boolean
   createdById?: boolean
   receivedById?: boolean
+  signedById?: boolean
+  signedAt?: boolean
+  acknowledgedById?: boolean
+  acknowledgedAt?: boolean
   deliveryMethod?: boolean
   vehicleId?: boolean
   vehiclePlateNumber?: boolean
@@ -2740,6 +3552,8 @@ export type DeliveryOrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
 }, ExtArgs["result"]["deliveryOrder"]>
 
@@ -2751,6 +3565,10 @@ export type DeliveryOrderSelectScalar = {
   poId?: boolean
   createdById?: boolean
   receivedById?: boolean
+  signedById?: boolean
+  signedAt?: boolean
+  acknowledgedById?: boolean
+  acknowledgedAt?: boolean
   deliveryMethod?: boolean
   vehicleId?: boolean
   vehiclePlateNumber?: boolean
@@ -2769,12 +3587,14 @@ export type DeliveryOrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DeliveryOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicCode" | "doNumber" | "ticketId" | "poId" | "createdById" | "receivedById" | "deliveryMethod" | "vehicleId" | "vehiclePlateNumber" | "departureKilometer" | "vehicleDocumentNumber" | "vehiclePlate" | "driverName" | "driverIdentityNumber" | "driverPhone" | "receiverName" | "receivedAt" | "arrivalPhotoUrl" | "deliveryReceiptUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryOrder"]>
+export type DeliveryOrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicCode" | "doNumber" | "ticketId" | "poId" | "createdById" | "receivedById" | "signedById" | "signedAt" | "acknowledgedById" | "acknowledgedAt" | "deliveryMethod" | "vehicleId" | "vehiclePlateNumber" | "departureKilometer" | "vehicleDocumentNumber" | "vehiclePlate" | "driverName" | "driverIdentityNumber" | "driverPhone" | "receiverName" | "receivedAt" | "arrivalPhotoUrl" | "deliveryReceiptUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryOrder"]>
 export type DeliveryOrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ticket?: boolean | Prisma.DeliveryOrder$ticketArgs<ExtArgs>
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
   receiptPhotos?: boolean | Prisma.DeliveryOrder$receiptPhotosArgs<ExtArgs>
   items?: boolean | Prisma.DeliveryOrder$itemsArgs<ExtArgs>
@@ -2787,6 +3607,8 @@ export type DeliveryOrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Type
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
 }
 export type DeliveryOrderIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2794,6 +3616,8 @@ export type DeliveryOrderIncludeUpdateManyAndReturn<ExtArgs extends runtime.Type
   po?: boolean | Prisma.DeliveryOrder$poArgs<ExtArgs>
   createdBy?: boolean | Prisma.DeliveryOrder$createdByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DeliveryOrder$receivedByArgs<ExtArgs>
+  signedBy?: boolean | Prisma.DeliveryOrder$signedByArgs<ExtArgs>
+  acknowledgedBy?: boolean | Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>
   vehicle?: boolean | Prisma.DeliveryOrder$vehicleArgs<ExtArgs>
 }
 
@@ -2804,6 +3628,8 @@ export type $DeliveryOrderPayload<ExtArgs extends runtime.Types.Extensions.Inter
     po: Prisma.$PurchaseOrderPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs> | null
     receivedBy: Prisma.$UserPayload<ExtArgs> | null
+    signedBy: Prisma.$UserPayload<ExtArgs> | null
+    acknowledgedBy: Prisma.$UserPayload<ExtArgs> | null
     vehicle: Prisma.$VehiclePayload<ExtArgs> | null
     receiptPhotos: Prisma.$DeliveryOrderProofPayload<ExtArgs>[]
     items: Prisma.$DOItemPayload<ExtArgs>[]
@@ -2818,6 +3644,10 @@ export type $DeliveryOrderPayload<ExtArgs extends runtime.Types.Extensions.Inter
     poId: string | null
     createdById: string | null
     receivedById: string | null
+    signedById: string | null
+    signedAt: Date | null
+    acknowledgedById: string | null
+    acknowledgedAt: Date | null
     deliveryMethod: $Enums.DODeliveryMethod
     vehicleId: string | null
     vehiclePlateNumber: string | null
@@ -3232,6 +4062,8 @@ export interface Prisma__DeliveryOrderClient<T, Null = never, ExtArgs extends ru
   po<T extends Prisma.DeliveryOrder$poArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$poArgs<ExtArgs>>): Prisma.Prisma__PurchaseOrderClient<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.DeliveryOrder$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   receivedBy<T extends Prisma.DeliveryOrder$receivedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$receivedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  signedBy<T extends Prisma.DeliveryOrder$signedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$signedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  acknowledgedBy<T extends Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$acknowledgedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   vehicle<T extends Prisma.DeliveryOrder$vehicleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$vehicleArgs<ExtArgs>>): Prisma.Prisma__VehicleClient<runtime.Types.Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   receiptPhotos<T extends Prisma.DeliveryOrder$receiptPhotosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$receiptPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryOrderProofPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   items<T extends Prisma.DeliveryOrder$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeliveryOrder$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DOItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3273,6 +4105,10 @@ export interface DeliveryOrderFieldRefs {
   readonly poId: Prisma.FieldRef<"DeliveryOrder", 'String'>
   readonly createdById: Prisma.FieldRef<"DeliveryOrder", 'String'>
   readonly receivedById: Prisma.FieldRef<"DeliveryOrder", 'String'>
+  readonly signedById: Prisma.FieldRef<"DeliveryOrder", 'String'>
+  readonly signedAt: Prisma.FieldRef<"DeliveryOrder", 'DateTime'>
+  readonly acknowledgedById: Prisma.FieldRef<"DeliveryOrder", 'String'>
+  readonly acknowledgedAt: Prisma.FieldRef<"DeliveryOrder", 'DateTime'>
   readonly deliveryMethod: Prisma.FieldRef<"DeliveryOrder", 'DODeliveryMethod'>
   readonly vehicleId: Prisma.FieldRef<"DeliveryOrder", 'String'>
   readonly vehiclePlateNumber: Prisma.FieldRef<"DeliveryOrder", 'String'>
@@ -3750,6 +4586,44 @@ export type DeliveryOrder$createdByArgs<ExtArgs extends runtime.Types.Extensions
  * DeliveryOrder.receivedBy
  */
 export type DeliveryOrder$receivedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * DeliveryOrder.signedBy
+ */
+export type DeliveryOrder$signedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * DeliveryOrder.acknowledgedBy
+ */
+export type DeliveryOrder$acknowledgedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

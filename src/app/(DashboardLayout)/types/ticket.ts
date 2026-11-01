@@ -84,6 +84,17 @@ export type TicketRow = {
     status: POStatus;
     createdAt: string;
     paidAt?: string | null;
+    vendorInvoiceUrl?: string | null;
+    vendorPoSentAt?: string | null;
+    invoiceId?: string | null;
+    includeTax?: boolean;
+    items?: {
+      itemCode: string | null;
+      itemName: string;
+      quantity: number;
+      unit: string;
+      unitPrice: number;
+    }[];
   }[];
   directStockPurchases?: {
     id: string;

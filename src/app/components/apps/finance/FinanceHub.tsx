@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useState, useTransition, type FormEvent } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import { reviewPurchaseOrder } from "@/app/actions/orders";
 import {
   completeVehicleFuelRequestReview,
@@ -17,9 +17,9 @@ import {
   submitPaymentRecord,
 } from "@/app/actions/tickets";
 import type { TicketActionResult } from "@/app/actions/tickets";
-import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
 import FinanceDashboard, {
-  type FinanceDashboardCategory,
+  type FinanceDashboardTransaction,
+  type FinanceExpenseCategory,
   type FinanceDashboardMonth,
 } from "@/app/components/apps/finance/FinanceDashboard";
 import PaymentModal, {
@@ -27,10 +27,18 @@ import PaymentModal, {
 } from "@/app/components/apps/finance/PaymentModal";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import FinancePaymentProofReplacement from "@/app/components/apps/finance/FinancePaymentProofReplacement";
+import FinanceLedger, {
+  type FinanceCashflowRow,
+  type FinanceHistoricalPayment,
+} from "@/app/components/apps/finance/FinanceLedger";
+import type {
+  FinanceAccountOption,
+  FinanceProjectOption,
+} from "@/app/components/apps/finance/IncomingFundModal";
 import DocumentPdfGenerator, {
   type DocumentTemplateOption,
 } from "@/app/components/apps/documents/DocumentPdfGenerator";
-import PurchaseOrderTemplate from "@/components/documents/PurchaseOrderTemplate";
+import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
 import VehicleTripLogTable from "@/app/components/apps/logistics/VehicleTripLogTable";
 import type { VehicleTripLogRow } from "@/lib/vehicle-trip-types";
 import type { VehicleFuelRequestView } from "@/lib/vehicle-fuel-types";
@@ -55,6 +63,9 @@ import { Label } from "@/components/ui/label";
 import {
   GlobalModal,
 } from "@/components/ui/global-modal";
+import DocumentSignoffQueue, {
+  type DocumentSignoffTask,
+} from "@/app/components/apps/documents/DocumentSignoffQueue";
 import {
   Tabs,
   TabsContent,
@@ -82,6 +93,7 @@ import {
   History,
   ReceiptText,
   Search,
+  Wallet,
 } from "lucide-react";
 
 type FinanceOrder = {
@@ -95,6 +107,7 @@ type FinanceOrder = {
   createdAt: string;
   paidAt?: string | null;
   paymentReceiptUrl?: string | null;
+  vendorInvoiceUrl: string | null;
   paymentMethod: "CASH" | "TRANSFER";
   paymentBankName: string | null;
   paymentAccountNumber: string | null;
@@ -212,6 +225,46 @@ const currency = (amount: number | string | null) =>
         maximumFractionDigits: 0,
       }).format(Number(amount));
 
+function FinanceAccountField({
+  id,
+  accounts,
+  disabled,
+  required = true,
+}: {
+  id: string;
+  accounts: FinanceAccountOption[];
+  disabled: boolean;
+  required?: boolean;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>Dibayar Dari (Buku Bank/Kas)</Label>
+      <select
+        id={id}
+        name="financeAccountId"
+        required={required}
+        defaultValue=""
+        disabled={disabled || accounts.length === 0}
+        className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
+      >
+        <option value="" disabled>
+          Pilih akun sumber pembayaran
+        </option>
+        {accounts.map((account) => (
+          <option key={account.id} value={account.id}>
+            {account.accountName} · {currency(account.balance)}
+          </option>
+        ))}
+      </select>
+      {accounts.length === 0 && (
+        <p className="text-sm text-destructive" role="alert">
+          Buat buku bank/kas terlebih dahulu di tab Buku Kas &amp; Arus Dana.
+        </p>
+      )}
+    </div>
+  );
+}
+
 const PAYMENT_HISTORY_PAGE_SIZE = 10;
 
 function getPaymentHistoryPageNumbers(
@@ -244,6 +297,7 @@ const isPdfReceipt = (url: string) =>
 
 export default function FinanceHub({
   purchaseOrders,
+  documentSignoffTasks,
   standalonePayments,
   directPurchases,
   tickets,
@@ -258,9 +312,17 @@ export default function FinanceHub({
   cloudinaryCloudName,
   cloudinaryApiKey,
   dashboardMonths,
-  dashboardCategories,
+  financeAccounts,
+  cashflows,
+  historicalPayments,
+  financeProjects,
+  dashboardTransactions,
+  expenseCategories,
+  monthInflow,
+  monthOutflow,
 }: {
   purchaseOrders: FinanceOrder[];
+  documentSignoffTasks: DocumentSignoffTask[];
   standalonePayments: FinanceOrder[];
   directPurchases: FinanceDirectPurchase[];
   tickets: FinanceTicket[];
@@ -275,7 +337,14 @@ export default function FinanceHub({
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
   dashboardMonths: FinanceDashboardMonth[];
-  dashboardCategories: FinanceDashboardCategory[];
+  financeAccounts: FinanceAccountOption[];
+  cashflows: FinanceCashflowRow[];
+  historicalPayments: FinanceHistoricalPayment[];
+  financeProjects: FinanceProjectOption[];
+  dashboardTransactions: FinanceDashboardTransaction[];
+  expenseCategories: FinanceExpenseCategory[];
+  monthInflow: number;
+  monthOutflow: number;
 }) {
   const router = useRouter();
   const legacyOperationalTabs = ["subcontract", "fuel-logs", "fuel-requests"];
@@ -286,11 +355,39 @@ export default function FinanceHub({
     payment: "payment",
     history: "history",
     operations: "operations",
+    ledger: "ledger",
   };
   const resolvedTab = legacyOperationalTabs.includes(initialTab ?? "")
     ? "operations"
     : tabAliases[initialTab ?? ""] ?? "check";
   const [activeTab, setActiveTab] = useState(resolvedTab);
+  const [navigationRequest, setNavigationRequest] = useState(0);
+  const [ledgerFundMode, setLedgerFundMode] = useState<
+    "incoming" | "transfer" | null
+  >(null);
+  const [ledgerTypeFilter, setLedgerTypeFilter] = useState<"IN" | "OUT" | null>(
+    null,
+  );
+  useEffect(() => {
+    const targetId =
+      activeTab === "ledger"
+        ? "finance-ledger-tab"
+        : activeTab === "payment"
+          ? "finance-payment-tab"
+          : activeTab === "history"
+            ? "finance-history-tab"
+            : null;
+    if (!targetId) return;
+
+    const scrollTimer = window.setTimeout(() => {
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    }, 50);
+
+    return () => window.clearTimeout(scrollTimer);
+  }, [activeTab, navigationRequest]);
   const [operationsTab, setOperationsTab] = useState(
     legacyOperationalTabs.includes(initialTab ?? "")
       ? initialTab!
@@ -605,14 +702,23 @@ export default function FinanceHub({
         ? POPaymentMethod.TRANSFER
         : POPaymentMethod.CASH;
     const transferProof = data.get("transferProof");
+    const financeAccountId = String(data.get("financeAccountId") ?? "");
     const input = {
       disbursementMethod,
       transferDestination: String(data.get("transferDestination") ?? ""),
+      financeAccountId,
       financeNote: String(data.get("financeNote") ?? ""),
       ...(transferProof instanceof File && transferProof.size > 0
         ? { transferProof }
         : {}),
     };
+    if (
+      approve &&
+      !financeAccountId
+    ) {
+      setMessage("Pilih buku kas/bank sumber dana BBM terlebih dahulu.");
+      return;
+    }
     if (
       approve &&
       disbursementMethod === POPaymentMethod.TRANSFER &&
@@ -671,9 +777,17 @@ export default function FinanceHub({
       setMessage("Pilih PO/tiket dan unggah bukti pembayaran terlebih dahulu.");
       return;
     }
+    const formData = new FormData(event.currentTarget);
     const transferDestination = String(
-      new FormData(event.currentTarget).get("transferDestination") ?? "",
+      formData.get("transferDestination") ?? "",
     );
+    const financeAccountId = String(
+      formData.get("financeAccountId") ?? "",
+    );
+    if (!financeAccountId) {
+      setMessage("Pilih buku kas/bank sumber pembayaran terlebih dahulu.");
+      return;
+    }
     const amount = paymentAmount ? Number(paymentAmount) : undefined;
     setMessage("");
     startTransition(async () => {
@@ -693,6 +807,7 @@ export default function FinanceHub({
           target,
           proofOfTransferUrl: receiptUrl,
           transferDestination,
+          financeAccountId,
           paymentType,
           amount,
         });
@@ -715,6 +830,7 @@ export default function FinanceHub({
     transferDestination: string,
     type: PaymentType,
     amount: number,
+    financeAccountId: string,
   ): Promise<TicketActionResult> => {
     if (!selectedPaymentRow) {
       return { success: false, message: "Tagihan tidak ditemukan." };
@@ -731,6 +847,7 @@ export default function FinanceHub({
         ? { proofOfTransferUrl: proof }
         : { file: proof }),
       transferDestination,
+      financeAccountId,
       paymentType: type,
       amount,
     });
@@ -746,9 +863,20 @@ export default function FinanceHub({
       setMessage("Pilih bukti transfer termin terlebih dahulu.");
       return;
     }
+    const financeAccountId = String(
+      new FormData(event.currentTarget).get("financeAccountId") ?? "",
+    );
+    if (!financeAccountId) {
+      setMessage("Pilih buku kas/bank sumber pembayaran termin terlebih dahulu.");
+      return;
+    }
     startTransition(async () => {
       try {
-        const result = await paySubkonTermyn(termynId, file);
+        const result = await paySubkonTermyn(
+          termynId,
+          file,
+          financeAccountId,
+        );
         setMessage(result.message);
         if (result.success) {
           setTermynReceipts((current) => {
@@ -775,9 +903,20 @@ export default function FinanceHub({
       setMessage("Pilih bukti transfer retensi terlebih dahulu.");
       return;
     }
+    const financeAccountId = String(
+      new FormData(event.currentTarget).get("financeAccountId") ?? "",
+    );
+    if (!financeAccountId) {
+      setMessage("Pilih buku kas/bank sumber pencairan retensi terlebih dahulu.");
+      return;
+    }
     startTransition(async () => {
       try {
-        const result = await releaseSubkonRetention(contractId, file);
+        const result = await releaseSubkonRetention(
+          contractId,
+          file,
+          financeAccountId,
+        );
         setMessage(result.message);
         if (result.success) router.refresh();
       } catch (error) {
@@ -872,9 +1011,15 @@ export default function FinanceHub({
     );
   };
 
-  const navigateFromDashboard = (tab: "check" | "payment" | "history") => {
+  const navigateFromDashboard = (
+    tab: "check" | "payment" | "history" | "ledger",
+    cashflowType?: "IN" | "OUT" | null,
+  ) => {
     setActiveTab(tab);
-    if (tab === "check") {
+    setNavigationRequest((request) => request + 1);
+    if (tab === "ledger") {
+      setLedgerTypeFilter(cashflowType ?? null);
+    } else if (tab === "check") {
       setReviewSearch("");
     } else if (tab === "payment") {
       setPaymentQueueSearch("");
@@ -884,13 +1029,14 @@ export default function FinanceHub({
     }
   };
 
+  const openIncomingFund = () => {
+    setActiveTab("ledger");
+    setLedgerTypeFilter(null);
+    setLedgerFundMode("incoming");
+  };
+
   return (
     <div className="space-y-5">
-      <ErpHubBrand
-        title="Finance Command Hub"
-        description="Workspace terpadu untuk pemeriksaan PO, pencairan, bukti transfer, dan kendali biaya."
-      />
-
       <FinanceDashboard
         reviewCount={purchaseOrders.length}
         pendingPaymentCount={pendingPaymentCount}
@@ -900,8 +1046,19 @@ export default function FinanceHub({
           0,
         )}
         months={dashboardMonths}
-        categories={dashboardCategories}
+        accounts={financeAccounts}
+        transactions={dashboardTransactions}
+        expenseCategories={expenseCategories}
+        monthInflow={monthInflow}
+        monthOutflow={monthOutflow}
         onNavigate={navigateFromDashboard}
+        onOpenIncoming={openIncomingFund}
+      />
+
+      <DocumentSignoffQueue
+        tasks={documentSignoffTasks}
+        title="Tanda Tangan & Konfirmasi Dokumen"
+        description="Invoice ditandatangani Keuangan lalu diketahui Direktur. KO dan DO ditandatangani Logistik lalu diketahui Keuangan."
       />
 
       <Tabs
@@ -909,7 +1066,7 @@ export default function FinanceHub({
         onValueChange={setActiveTab}
         className="space-y-5"
       >
-        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl border border-border/70 bg-muted/40 p-2 min-[480px]:grid-cols-2 xl:grid-cols-4">
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl border border-border/70 bg-muted/40 p-2 min-[480px]:grid-cols-2 xl:grid-cols-5">
           <TabsTrigger
             value="check"
             className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -935,6 +1092,14 @@ export default function FinanceHub({
             <Badge variant="secondary">{paymentHistoryRows.length}</Badge>
           </TabsTrigger>
           <TabsTrigger
+            value="ledger"
+            className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+          >
+            <Wallet className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1">4. Buku Kas &amp; Arus Dana</span>
+            <Badge variant="secondary">{cashflows.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger
             value="operations"
             className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
           >
@@ -945,6 +1110,27 @@ export default function FinanceHub({
             </Badge>
           </TabsTrigger>
         </TabsList>
+
+        <div id="finance-ledger-tab">
+          <TabsContent value="ledger">
+            <FinanceLedger
+              accounts={financeAccounts}
+              cashflows={cashflows}
+              historicalPayments={historicalPayments}
+              projects={financeProjects}
+              cloudinaryCloudName={cloudinaryCloudName}
+              cloudinaryApiKey={cloudinaryApiKey}
+              canManage={
+                role === UserRole.FINANCE ||
+                role === UserRole.ADMINISTRATIONS
+              }
+              fundMode={ledgerFundMode}
+              onFundModeChange={setLedgerFundMode}
+              typeFilter={ledgerTypeFilter}
+              onTypeFilterChange={setLedgerTypeFilter}
+            />
+          </TabsContent>
+        </div>
 
         <TabsContent value="check">
           <Card>
@@ -1035,25 +1221,26 @@ export default function FinanceHub({
           </Card>
         </TabsContent>
 
-        <TabsContent value="payment">
-          <Card>
-            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <CardTitle>Tagihan & Pembelian Disetujui</CardTitle>
-              <div className="relative w-full sm:max-w-xs">
-                <Search
-                  className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <Input
-                  value={paymentQueueSearch}
-                  onChange={(event) => setPaymentQueueSearch(event.target.value)}
-                  placeholder="Cari tagihan atau vendor..."
-                  aria-label="Cari antrean pembayaran"
-                  className="pl-9"
-                />
-              </div>
-            </CardHeader>
-            <CardContent>
+        <div id="finance-payment-tab">
+          <TabsContent value="payment">
+            <Card>
+              <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <CardTitle>Tagihan & Pembelian Disetujui</CardTitle>
+                <div className="relative w-full sm:max-w-xs">
+                  <Search
+                    className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    value={paymentQueueSearch}
+                    onChange={(event) => setPaymentQueueSearch(event.target.value)}
+                    placeholder="Cari tagihan atau vendor..."
+                    aria-label="Cari antrean pembayaran"
+                    className="pl-9"
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
               <div className="overflow-x-auto rounded-lg border">
                 <Table>
                   <TableHeader>
@@ -1166,12 +1353,14 @@ export default function FinanceHub({
                   </TableBody>
                 </Table>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </div>
 
-        <TabsContent value="history">
-          <Card>
+        <div id="finance-history-tab">
+          <TabsContent value="history">
+            <Card>
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>Riwayat & Bukti Transfer</CardTitle>
               <div className="relative w-full sm:max-w-xs">
@@ -1357,8 +1546,9 @@ export default function FinanceHub({
                 </nav>
               </div>
             </CardContent>
-          </Card>
-        </TabsContent>
+            </Card>
+          </TabsContent>
+        </div>
 
         <TabsContent value="operations">
           <Tabs
@@ -1428,6 +1618,11 @@ export default function FinanceHub({
                       className="mt-3 flex flex-wrap items-end gap-3"
                       onSubmit={(event) => submitTermynPayment(event, termyn.id)}
                     >
+                      <FinanceAccountField
+                        id={`termyn-account-${termyn.id}`}
+                        accounts={financeAccounts}
+                        disabled={isPending}
+                      />
                       <label className="space-y-1 text-sm">
                         Bukti pembayaran (PDF/JPG/PNG/WEBP, maks. 5 MB)
                         <Input
@@ -1445,7 +1640,13 @@ export default function FinanceHub({
                           }}
                         />
                       </label>
-                      <Button disabled={!termynReceipts[termyn.id] || isPending}>
+                      <Button
+                        disabled={
+                          !termynReceipts[termyn.id] ||
+                          financeAccounts.length === 0 ||
+                          isPending
+                        }
+                      >
                         Bayar Termin Bersih
                       </Button>
                     </form>
@@ -1474,6 +1675,11 @@ export default function FinanceHub({
                       className="mt-3 flex flex-wrap items-end gap-3"
                       onSubmit={(event) => submitRetentionRelease(event, contract.id)}
                     >
+                      <FinanceAccountField
+                        id={`retention-account-${contract.id}`}
+                        accounts={financeAccounts}
+                        disabled={isPending}
+                      />
                       <label className="space-y-1 text-sm">
                         Bukti transfer retensi
                         <Input
@@ -1492,7 +1698,11 @@ export default function FinanceHub({
                         />
                       </label>
                       <Button
-                        disabled={!retentionReceipts[contract.id] || isPending}
+                        disabled={
+                          !retentionReceipts[contract.id] ||
+                          financeAccounts.length === 0 ||
+                          isPending
+                        }
                       >
                         Catat Pencairan Retensi
                       </Button>
@@ -1642,6 +1852,12 @@ export default function FinanceHub({
                         submitFuelRequestDecision(event, request.id)
                       }
                     >
+                      <FinanceAccountField
+                        id={`fuel-account-${request.id}`}
+                        accounts={financeAccounts}
+                        disabled={isPending}
+                        required={false}
+                      />
                       <label className="grid gap-1 text-sm">
                         Metode penyaluran dana
                         <select
@@ -1719,7 +1935,7 @@ export default function FinanceHub({
                           type="submit"
                           name="decision"
                           value="approve"
-                          disabled={isPending}
+                          disabled={isPending || financeAccounts.length === 0}
                         >
                           {isPending ? "Memproses..." : "Setujui & Catat Pencairan"}
                         </Button>
@@ -1829,30 +2045,10 @@ export default function FinanceHub({
                 <p className="text-sm">
                   Vendor: <strong>{previewOrder.vendorName}</strong>
                 </p>
-                <DocumentPdfGenerator
-                  key={`PO:${previewOrder.id}`}
-                  recordType="PO"
-                  recordId={previewOrder.id}
-                  documentNumber={previewOrder.poNumber}
-                  templates={documentTemplates}
+                <UniversalDocumentPreview
+                  title={`Purchase Order ${previewOrder.poNumber}`}
+                  src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(previewOrder.publicCode)}`}
                 />
-                <div className="max-h-[65vh] overflow-auto rounded-lg border bg-slate-100 p-3">
-                  <PurchaseOrderTemplate
-                    poNumber={previewOrder.poNumber}
-                    date={new Date(previewOrder.createdAt).toLocaleDateString("id-ID")}
-                    vendorName={previewOrder.vendorName}
-                    vendorAddress={previewOrder.vendorAddress}
-                    vendorContact={previewOrder.vendorContact}
-                    vendorPhone={previewOrder.vendorPhone}
-                    paymentMethod={previewOrder.paymentMethod}
-                    paymentBankName={previewOrder.paymentBankName ?? ""}
-                    paymentAccountNumber={previewOrder.paymentAccountNumber ?? ""}
-                    paymentAccountName={previewOrder.paymentAccountName ?? ""}
-                    paymentTerms={previewOrder.paymentTerms ?? ""}
-                    includeTax={previewOrder.includeTax}
-                    items={previewOrder.items}
-                  />
-                </div>
               </>
             )}
             {activeStandaloneOrder && isPaymentSettled && (
@@ -1873,6 +2069,18 @@ export default function FinanceHub({
                   </a>
                 )}
               </div>
+            )}
+            {activeStandaloneOrder?.vendorInvoiceUrl && (
+              <Button asChild size="sm" variant="outline">
+                <a
+                  href={photoDownloadHref(activeStandaloneOrder.vendorInvoiceUrl)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ExternalLink className="mr-2 size-4" aria-hidden="true" />
+                  Lihat invoice/bon dari Logistik
+                </a>
+              </Button>
             )}
             {activeStandaloneOrder && role === UserRole.FINANCE && !isPaymentSettled && (
               <form className="space-y-3" onSubmit={submitPayment}>
@@ -1951,6 +2159,11 @@ export default function FinanceHub({
                     disabled={isPending}
                   />
                 </div>
+                <FinanceAccountField
+                  id="standalone-po-finance-account"
+                  accounts={financeAccounts}
+                  disabled={isPending}
+                />
                 <div className="space-y-2">
                   <Label>Bukti pembayaran</Label>
                   <FinancePaymentProofUpload
@@ -1965,6 +2178,7 @@ export default function FinanceHub({
                   type="submit"
                   disabled={
                     !receiptUrl ||
+                    financeAccounts.length === 0 ||
                     isPending ||
                     (paymentType !== PaymentType.FULL_PAYMENT &&
                       (!paymentAmount || Number(paymentAmount) <= 0))
@@ -2002,7 +2216,7 @@ export default function FinanceHub({
                   </Badge>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[420px] text-left text-sm">
+                  <table className="app-data-table w-full min-w-[420px] text-left text-sm">
                     <thead>
                       <tr className="border-b text-muted-foreground">
                         <th className="py-2 pr-3">Barang</th>
@@ -2095,6 +2309,11 @@ export default function FinanceHub({
                         disabled={isPending}
                       />
                     </div>
+                    <FinanceAccountField
+                      id="direct-purchase-finance-account"
+                      accounts={financeAccounts}
+                      disabled={isPending}
+                    />
                     <div className="space-y-2">
                       <Label>Bukti pembayaran</Label>
                       <FinancePaymentProofUpload
@@ -2109,6 +2328,7 @@ export default function FinanceHub({
                       type="submit"
                       disabled={
                         !receiptUrl ||
+                        financeAccounts.length === 0 ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
                           (!paymentAmount || Number(paymentAmount) <= 0))
@@ -2140,6 +2360,16 @@ export default function FinanceHub({
                     Total dibayar: <strong>{currency(paidAmount)}</strong> ·
                     Sisa tagihan: <strong>{currency(remainingAmount)}</strong>
                   </p>
+                  {activeTicket.purchaseReceiptUrl && (
+                    <a
+                      className="font-medium text-primary underline"
+                      href={photoDownloadHref(activeTicket.purchaseReceiptUrl)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Lihat invoice/bon dari Logistik
+                    </a>
+                  )}
                 </div>
                 <DocumentPdfGenerator
                   key={`TICKET:${activeTicket.id}`}
@@ -2214,6 +2444,11 @@ export default function FinanceHub({
                         disabled={isPending}
                       />
                     </div>
+                    <FinanceAccountField
+                      id="ticket-finance-account"
+                      accounts={financeAccounts}
+                      disabled={isPending}
+                    />
                     <div className="space-y-2">
                       <Label>Bukti transfer</Label>
                       <FinancePaymentProofUpload
@@ -2228,6 +2463,7 @@ export default function FinanceHub({
                       type="submit"
                       disabled={
                         !receiptUrl ||
+                        financeAccounts.length === 0 ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
                           (!paymentAmount || Number(paymentAmount) <= 0))
@@ -2249,7 +2485,7 @@ export default function FinanceHub({
               <section className="space-y-2 rounded-lg border p-4">
                 <h3 className="font-semibold">Riwayat Pembayaran</h3>
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[540px] text-left text-sm">
+                  <table className="app-data-table w-full min-w-[540px] text-left text-sm">
                     <thead>
                       <tr className="border-b text-muted-foreground">
                         <th className="py-2 pr-3">Tanggal</th>
@@ -2319,6 +2555,7 @@ export default function FinanceHub({
           if (!open) setPaymentModalSelection(null);
         }}
         target={selectedPaymentRow}
+        accounts={financeAccounts}
         onPay={submitModalPayment}
         cloudinaryCloudName={cloudinaryCloudName}
         cloudinaryApiKey={cloudinaryApiKey}

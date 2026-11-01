@@ -51,6 +51,12 @@ import {
 } from "@/lib/ticket-receipts";
 import { isFinancePaymentProofUrl } from "@/lib/finance-payment-proofs";
 import { FINANCE_PAYMENT_PROOF_CLOUDINARY_FOLDER } from "@/lib/finance-payment-proof-config";
+import {
+  vendorInvoiceInputSchema,
+  type VendorInvoiceInput,
+} from "@/lib/invoice-input";
+import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
+import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
 
 async function storeFinancePaymentProof(proof: File | string): Promise<string> {
   if (typeof proof === "string") {
@@ -106,6 +112,7 @@ export type TicketActionResult = {
   ticketNumber?: string;
   purchaseNumber?: string;
   documentNumber?: string;
+  invoiceId?: string;
   publicCode?: string;
   movers?: { id: string; name: string }[];
   vehicles?: {
@@ -794,6 +801,7 @@ export async function createDirectStockPurchase(input: {
           createdById: session.user.id,
           items: { create: items },
         },
+        select: { id: true },
       });
       if (ticket) {
         await transaction.ticketAuditLog.create({
@@ -1378,6 +1386,15 @@ export async function createTicket(
     isFieldRequest &&
     input.fieldCategory !== undefined &&
     input.fieldCategory !== TicketFieldCategory.DIRECT_STORE;
+  const isOperationalFunding =
+    requestCategory === TicketRequestCategory.OPS;
+  const requiresRequestedAmount =
+    requiresRecipientPayment || isOperationalFunding;
+  let operationalRecipient: {
+    name: string;
+    bankName: string;
+    accountNumber: string;
+  } | null = null;
   const expectedType =
     requestCategory === TicketRequestCategory.OPS
       ? TicketType.OPERATIONAL
@@ -1433,6 +1450,46 @@ export async function createTicket(
         "Permintaan biaya lapangan tidak boleh berisi rincian material.",
       );
     }
+  } else if (isOperationalFunding) {
+    if (
+      typeof input.requestedAmount !== "number" ||
+      !Number.isSafeInteger(input.requestedAmount) ||
+      input.requestedAmount <= 0 ||
+      input.requestedAmount > Number.MAX_SAFE_INTEGER
+    ) {
+      return actionFailure(
+        "Jumlah dana operasional harus berupa angka lebih besar dari 0.",
+      );
+    }
+    if (input.items.length > 0) {
+      return actionFailure(
+        "Permintaan dana operasional tidak boleh berisi rincian material.",
+      );
+    }
+    const requesterProfile = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        name: true,
+        bankName: true,
+        bankAccountName: true,
+        bankAccountNumber: true,
+      },
+    });
+    if (
+      !requesterProfile?.bankName?.trim() ||
+      !requesterProfile.bankAccountName?.trim() ||
+      !requesterProfile.bankAccountNumber ||
+      !/^[0-9]{6,30}$/.test(requesterProfile.bankAccountNumber)
+    ) {
+      return actionFailure(
+        "Lengkapi nama bank, nama pemilik rekening, dan nomor rekening di Profil Saya sebelum mengajukan dana operasional.",
+      );
+    }
+    operationalRecipient = {
+      name: requesterProfile.bankAccountName.trim(),
+      bankName: requesterProfile.bankName.trim(),
+      accountNumber: requesterProfile.bankAccountNumber,
+    };
   } else if (input.items.length < 1) {
     return actionFailure("Tambahkan setidaknya satu rincian item.");
   }
@@ -1590,7 +1647,7 @@ export async function createTicket(
   }
 
   const pricedItems = items.filter((item) => item.estimatedCost !== undefined && item.estimatedCost !== null);
-  let totalAmount: Prisma.Decimal | null = requiresRecipientPayment
+  let totalAmount: Prisma.Decimal | null = requiresRequestedAmount
     ? new Prisma.Decimal(input.requestedAmount!.toString()).toDecimalPlaces(
         2,
         Prisma.Decimal.ROUND_HALF_UP,
@@ -1629,17 +1686,19 @@ export async function createTicket(
           priority: input.priority,
           status: TicketStatus.DRAFT,
           totalAmount,
-          requestedAmount: requiresRecipientPayment
+          requestedAmount: requiresRequestedAmount
             ? input.requestedAmount!
             : null,
           attachmentUrl: input.attachmentUrl?.trim() || null,
           recipientName: requiresRecipientPayment
             ? input.recipientName!.trim()
-            : null,
-          bankName: requiresRecipientPayment ? input.bankName!.trim() : null,
+            : operationalRecipient?.name ?? null,
+          bankName: requiresRecipientPayment
+            ? input.bankName!.trim()
+            : operationalRecipient?.bankName ?? null,
           accountNumber: requiresRecipientPayment
             ? input.accountNumber!.trim()
-            : null,
+            : operationalRecipient?.accountNumber ?? null,
           requesterId: session.user.id,
           moverAssigneeId: moverAssignee?.id ?? null,
           projectId: input.projectId || null,
@@ -1782,6 +1841,7 @@ export async function processLogisticsMaterial(
     driverPhone: string;
   },
   vehicleId?: string,
+  invoiceInput?: VendorInvoiceInput,
 ): Promise<TicketActionResult> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -1808,7 +1868,7 @@ export async function processLogisticsMaterial(
 
   const approvedPurchaseOrder = await prisma.purchaseOrder.findFirst({
     where: { ticketId, status: POStatus.APPROVED },
-    select: { poNumber: true, paidAt: true },
+    select: { poNumber: true, paidAt: true, vendorPoSentAt: true },
   });
   if (!approvedPurchaseOrder) {
     return actionFailure(
@@ -1820,35 +1880,164 @@ export async function processLogisticsMaterial(
       `PO ${approvedPurchaseOrder.poNumber} sudah dibayar dan masuk ke stok gudang. Terbitkan DO melalui opsi stok gudang.`,
     );
   }
-  if (!file) {
-    return actionFailure("Unggah invoice atau nota pembelian terlebih dahulu.");
+  if (!approvedPurchaseOrder.vendorPoSentAt) {
+    return actionFailure("Logistik harus mengirim PO ke vendor sebelum mengunggah invoice.");
+  }
+  if (!invoiceInput) {
+    return actionFailure("Lengkapi data invoice dan unggah dokumen melalui Cloudinary.");
   }
 
-  const result = await transitionWithReceipt({
-    ticketId,
-    file,
-    role: UserRole.LOGISTICS,
-    expectedStatuses: [TicketStatus.PROCESSED_LOGISTIC],
-    nextStatus: TicketStatus.WAITING_FINANCE_PAYMENT,
-    receiptField: "purchaseReceiptUrl",
-    action: "LOGISTICS_BUY_STORE",
-    notes: `PO ${approvedPurchaseOrder.poNumber} telah direalisasikan; invoice diteruskan ke Keuangan.`,
-    requireMaterialPurchase: false,
-    ticketType: TicketType.MATERIAL,
-    notifications: [
-      {
+  const parsedInvoice = vendorInvoiceInputSchema.safeParse(invoiceInput);
+  if (
+    !parsedInvoice.success ||
+    !isPurchaseOrderInvoiceUrl(parsedInvoice.data.documentUrl)
+  ) {
+    return actionFailure("Data invoice tidak valid atau file bukan dari Cloudinary.");
+  }
+
+  let invoiceId: string;
+  try {
+    invoiceId = await prisma.$transaction(async (transaction) => {
+      await lockTicketFulfillment(transaction, ticketId);
+      const ticket = await transaction.ticket.findUnique({
+        where: { id: ticketId },
+        select: {
+          id: true,
+          ticketNumber: true,
+          status: true,
+          type: true,
+          title: true,
+          projectId: true,
+          purchaseReceiptUrl: true,
+          purchaseOrders: {
+            where: { status: POStatus.APPROVED },
+            orderBy: { createdAt: "desc" },
+            take: 1,
+            select: {
+              id: true,
+              poNumber: true,
+              vendorName: true,
+              vendorPoSentAt: true,
+              paidAt: true,
+              paymentTransactions: {
+                where: { status: PaymentStatus.PAID },
+                select: { id: true },
+                take: 1,
+              },
+              items: {
+                orderBy: { id: "asc" },
+                select: {
+                  itemCode: true,
+                  itemName: true,
+                  quantity: true,
+                  unit: true,
+                  unitPrice: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!ticket || ticket.type !== TicketType.MATERIAL) {
+        throw new Error("Tiket material tidak ditemukan.");
+      }
+      if (ticket.status !== TicketStatus.PROCESSED_LOGISTIC) {
+        throw new Error("Tiket tidak lagi berada di antrean Logistik.");
+      }
+      if (ticket.purchaseReceiptUrl) {
+        throw new Error("Invoice/bon untuk tiket ini sudah pernah dikirim.");
+      }
+      const order = ticket.purchaseOrders[0];
+      if (!order || order.paidAt || order.paymentTransactions.length > 0) {
+        throw new Error("PO tidak ditemukan atau pembayaran sudah dimulai.");
+      }
+      if (!order.vendorPoSentAt) {
+        throw new Error("Logistik harus mengirim PO ke vendor sebelum mengunggah invoice.");
+      }
+      const items = parsedInvoice.data.items.map((item) => ({
+        ...item,
+        itemCode: item.itemCode?.trim() || null,
+        totalPrice: item.quantity * item.unitPrice,
+      }));
+      const subTotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
+      const tax = parsedInvoice.data.tax ?? 0;
+      const deduction = parsedInvoice.data.deduction ?? 0;
+      const grandTotal = subTotal + tax - deduction;
+      if (!Number.isFinite(grandTotal) || grandTotal <= 0) {
+        throw new Error("Total invoice harus lebih besar dari nol.");
+      }
+      const update = await transaction.ticket.updateMany({
+        where: {
+          id: ticketId,
+          type: TicketType.MATERIAL,
+          status: TicketStatus.PROCESSED_LOGISTIC,
+          purchaseReceiptUrl: null,
+        },
+        data: {
+          status: TicketStatus.WAITING_FINANCE_PAYMENT,
+          purchaseReceiptUrl: parsedInvoice.data.documentUrl,
+          updatedAt: new Date(),
+        },
+      });
+      if (update.count !== 1) {
+        throw new Error("Status tiket berubah. Muat ulang sebelum mengirim invoice.");
+      }
+      const invoice = await transaction.invoice.create({
+        data: {
+          publicCode: await generateAvailablePublicCode(transaction),
+          invoiceNumber: parsedInvoice.data.invoiceNumber,
+          poId: order.id,
+          projectId: ticket.projectId,
+          vendorName: order.vendorName,
+          periodOrDate: parsedInvoice.data.periodOrDate?.trim() || null,
+          paymentMethod: parsedInvoice.data.paymentMethod?.trim() || null,
+          bankAccount: parsedInvoice.data.bankAccount?.trim() || null,
+          documentUrl: parsedInvoice.data.documentUrl,
+          subTotal,
+          tax,
+          deduction,
+          grandTotal,
+          status: "UNPAID",
+          items: { create: items },
+        },
+        select: { id: true },
+      });
+      await transaction.ticketAuditLog.create({
+        data: {
+          id: randomUUID(),
+          ticketId,
+          userId: session.user.id,
+          action: "LOGISTICS_BUY_STORE",
+          notes: `Invoice ${parsedInvoice.data.invoiceNumber} PO ${order.poNumber} diteruskan ke Keuangan.`,
+        },
+      });
+      await sendNotification({
         roleTarget: UserRole.FINANCE,
         title: "Invoice PO Siap Dibayar",
-        message: `Invoice PO #${approvedPurchaseOrder.poNumber} sudah diunggah Logistik dan siap diproses.`,
+        message: `Invoice ${parsedInvoice.data.invoiceNumber} untuk PO #${order.poNumber} siap diperiksa dan diproses.`,
         actionUrl: `/apps/finance?tab=payments&openSheet=${encodeURIComponent(ticketId)}`,
         type: NotificationType.APPROVAL,
-      },
-    ],
-  });
-  if (result.success) {
-    revalidatePath("/apps/orders");
+        database: transaction,
+      });
+      return invoice.id;
+    });
+  } catch (error) {
+    console.error("Ticket purchase order invoice submission failed:", error);
+    return actionFailure(
+      error instanceof Error
+        ? error.message
+        : "Invoice gagal dikirim ke Keuangan. Silakan coba kembali.",
+    );
   }
-  return result;
+  revalidatePath("/apps/logistics");
+  revalidatePath("/apps/finance");
+  revalidatePath("/apps/tickets");
+  revalidatePath("/apps/orders");
+  return {
+    success: true,
+    message: `Invoice ${parsedInvoice.data.invoiceNumber} PO ${approvedPurchaseOrder.poNumber} berhasil dikirim ke Keuangan.`,
+    invoiceId,
+  };
 }
 
 export async function fulfillTicketItemsFromStock(
@@ -2261,7 +2450,7 @@ export async function createLogisticsPurchaseOrderForTicket(
       }
       const selectedStockItems = await transaction.stockItem.findMany({
         where: { id: { in: [...new Set(items.map((item) => item.stockItemId))] } },
-        select: { id: true, name: true, unit: true },
+        select: { id: true, sku: true, name: true, unit: true },
       });
       const selectedStockById = new Map(
         selectedStockItems.map((item) => [item.id, item]),
@@ -2288,6 +2477,7 @@ export async function createLogisticsPurchaseOrderForTicket(
         id: randomUUID(),
         ticketItemId: item.ticketItemId!,
         stockItemId: item.stockItemId,
+        itemCode: selectedStockById.get(item.stockItemId)?.sku ?? null,
         itemName: item.itemName.trim(),
         quantity: item.quantity,
         unit: item.unit.trim(),
@@ -2321,6 +2511,7 @@ export async function createLogisticsPurchaseOrderForTicket(
           items: {
             create: poItems.map((item) => ({
               id: item.id,
+              itemCode: item.itemCode,
               stockItemId: item.stockItemId,
               itemName: item.itemName,
               quantity: item.quantity,
@@ -2432,6 +2623,7 @@ async function createWarehouseDeliveryOrder(
               unit: true,
               status: true,
               categoryHint: true,
+              poItem: { select: { itemCode: true } },
             },
             orderBy: { id: "asc" },
           },
@@ -2645,6 +2837,7 @@ async function createWarehouseDeliveryOrder(
           data: {
             id: randomUUID(),
             doId: deliveryOrder.id,
+            itemCode: item.poItem?.itemCode ?? null,
             itemName: item.itemName,
             qtyOrdered: item.quantity,
             qtyDelivered: item.quantity,
@@ -2749,6 +2942,7 @@ export async function processFinancePayment(
   ticketId: string,
   proof: File | string,
   transferDestination: string,
+  financeAccountId: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
 ): Promise<TicketActionResult> {
@@ -2759,8 +2953,13 @@ export async function processFinancePayment(
   if (session.user.role !== UserRole.FINANCE) {
     return actionFailure("Hanya Keuangan yang dapat menyelesaikan pembayaran.");
   }
-  if (!isBoundedText(transferDestination, 300)) {
-    return actionFailure("Keterangan tujuan transfer wajib diisi.");
+  if (
+    !isBoundedText(transferDestination, 300) ||
+    !isBoundedText(financeAccountId, 100)
+  ) {
+    return actionFailure(
+      "Keterangan tujuan transfer dan buku bank/kas sumber wajib dipilih.",
+    );
   }
   if (
     (!(proof instanceof File) &&
@@ -2793,6 +2992,8 @@ export async function processFinancePayment(
       const ticket = await transaction.ticket.findUnique({
         where: { id: ticketId },
         select: {
+          ticketNumber: true,
+          title: true,
           type: true,
           status: true,
           isApprovedByDirector: true,
@@ -2810,15 +3011,38 @@ export async function processFinancePayment(
               status: true,
               includeTax: true,
               vendorName: true,
+              paymentTerms: true,
               items: {
                 select: {
                   id: true,
+                  itemCode: true,
                   stockItemId: true,
                   itemName: true,
                   quantity: true,
                   unit: true,
                   unitPrice: true,
                   totalPrice: true,
+                },
+              },
+              invoices: {
+                orderBy: { createdAt: "desc" },
+                take: 1,
+                select: {
+                  subTotal: true,
+                  tax: true,
+                  deduction: true,
+                  grandTotal: true,
+                  items: {
+                    orderBy: { id: "asc" },
+                    select: {
+                      itemCode: true,
+                      description: true,
+                      quantity: true,
+                      unit: true,
+                      unitPrice: true,
+                      totalPrice: true,
+                    },
+                  },
                 },
               },
             },
@@ -2854,8 +3078,12 @@ export async function processFinancePayment(
       if (order && order.status !== POStatus.APPROVED) {
         throw new Error("PO belum disetujui Direktur.");
       }
+      if (order && !ticket.purchaseReceiptUrl) {
+        throw new Error("Logistik harus mengunggah invoice/bon sebelum pembayaran PO.");
+      }
       const invoiceTotal = order
-        ? Math.round(
+        ? order.invoices[0]?.grandTotal ??
+          Math.round(
             order.items.reduce((sum, item) => sum + item.totalPrice, 0) *
               (order.includeTax ? 1.11 : 1) *
               100,
@@ -2879,10 +3107,14 @@ export async function processFinancePayment(
       );
       const { amount, remainingAfter: newRemaining, isFullyPaid } = allocation;
       const now = new Date();
-      await transaction.paymentTransaction.create({
+      const confirmationOrderNumber = order
+        ? await nextDocumentNumber(transaction, "KO")
+        : null;
+      const payment = await transaction.paymentTransaction.create({
         data: {
           poId: order?.id,
           ticketId: order ? undefined : ticketId,
+          confirmationOrderNumber,
           paymentType,
           amount,
           transferDestination: transferDestination.trim(),
@@ -2891,7 +3123,63 @@ export async function processFinancePayment(
           proofOfTransferUrl: receiptUrl,
           paidAt: now,
         },
+        select: { id: true },
       });
+      await recordFinanceCashflowOutflow(transaction, {
+        paymentTransactionId: payment.id,
+        financeAccountId,
+        amount,
+        sourceDesc: `Pembayaran ${order?.poNumber ?? ticket.ticketNumber} · ${ticket.title}`,
+        projectId: ticket.projectId,
+        paymentMethod: "TRANSFER",
+        proofUrl: receiptUrl,
+        recordedBy: session.user.id,
+      });
+
+      if (order && confirmationOrderNumber) {
+        const invoice = order.invoices[0];
+        const subtotal =
+          invoice?.subTotal ??
+          order.items.reduce((sum, item) => sum + item.totalPrice, 0);
+        const tax =
+          invoice?.tax ??
+          (order.includeTax ? Math.round(subtotal * 0.11 * 100) / 100 : 0);
+        await transaction.orderConfirmation.create({
+          data: {
+            publicCode: await generateAvailablePublicCode(transaction),
+            koNumber: confirmationOrderNumber,
+            poId: order.id,
+            paymentTransactionId: payment.id,
+            paymentTerms: order.paymentTerms,
+            paymentType,
+            paymentAmount: amount,
+            transferDestination: transferDestination.trim(),
+            proofOfTransferUrl: receiptUrl,
+            paidAt: now,
+            subTotal: subtotal,
+            tax,
+            grandTotal: invoice?.grandTotal ?? subtotal + tax,
+            items: {
+              create: order.items.map((item) => ({
+                itemCode: item.itemCode,
+                description: item.itemName,
+                quantity: item.quantity,
+                unit: item.unit,
+                unitPrice: item.unitPrice,
+                totalPrice: item.totalPrice,
+              })),
+            },
+          },
+        });
+        if (invoice) {
+          await transaction.invoice.updateMany({
+            where: { poId: order.id, status: { not: "PAID" } },
+            data: {
+              status: isFullyPaid ? "PAID" : "PARTIAL",
+            },
+          });
+        }
+      }
 
       if (order && isFullyPaid) {
         await transaction.purchaseOrder.update({
@@ -2963,6 +3251,16 @@ export async function processFinancePayment(
           notes: `${paymentType === PaymentType.DOWN_PAYMENT ? "DP" : paymentType === PaymentType.PROGRESS_PAYMENT ? "Pembayaran termin" : "Pelunasan"} sebesar Rp${amount.toLocaleString("id-ID")}; sisa tagihan Rp${newRemaining.toLocaleString("id-ID")}.`,
         },
       });
+      if (order && confirmationOrderNumber) {
+        await sendNotification({
+          roleTarget: UserRole.LOGISTICS,
+          title: "KO Siap Dikirim ke Vendor",
+          message: `KO ${confirmationOrderNumber} untuk pembayaran ${paymentType === PaymentType.DOWN_PAYMENT ? "DP" : paymentType === PaymentType.PROGRESS_PAYMENT ? "termin" : "pelunasan"} PO #${order.poNumber} siap diteruskan bersama bukti transfer.`,
+          actionUrl: "/apps/logistics?tab=documents",
+          type: NotificationType.SUCCESS,
+          database: transaction,
+        });
+      }
       if (order && isFullyPaid) {
         await sendNotification({
           roleTarget: UserRole.LOGISTICS,
@@ -3006,6 +3304,7 @@ export async function processFinanceStandalonePurchaseOrderPayment(
   publicCode: string,
   proof: File | string,
   transferDestination: string,
+  financeAccountId: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
 ): Promise<TicketActionResult> {
@@ -3016,8 +3315,13 @@ export async function processFinanceStandalonePurchaseOrderPayment(
   if (!isValidPublicCode(publicCode)) {
     return actionFailure("Kode Purchase Order tidak valid.");
   }
-  if (!isBoundedText(transferDestination, 300)) {
-    return actionFailure("Keterangan tujuan transfer wajib diisi.");
+  if (
+    !isBoundedText(transferDestination, 300) ||
+    !isBoundedText(financeAccountId, 100)
+  ) {
+    return actionFailure(
+      "Keterangan tujuan transfer dan buku bank/kas sumber wajib dipilih.",
+    );
   }
   if (
     !(proof instanceof File) &&
@@ -3051,14 +3355,39 @@ export async function processFinanceStandalonePurchaseOrderPayment(
         where: { publicCode },
         select: {
           id: true,
+          projectId: true,
           poNumber: true,
           vendorName: true,
           status: true,
           ticketId: true,
+          vendorInvoiceUrl: true,
           includeTax: true,
+          paymentTerms: true,
+          invoices: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+            select: {
+              subTotal: true,
+              tax: true,
+              deduction: true,
+              grandTotal: true,
+              items: {
+                orderBy: { id: "asc" },
+                select: {
+                  itemCode: true,
+                  description: true,
+                  quantity: true,
+                  unit: true,
+                  unitPrice: true,
+                  totalPrice: true,
+                },
+              },
+            },
+          },
           items: {
             orderBy: { id: "asc" },
             select: {
+              itemCode: true,
               stockItemId: true,
               itemName: true,
               quantity: true,
@@ -3075,6 +3404,9 @@ export async function processFinanceStandalonePurchaseOrderPayment(
       if (order.status !== POStatus.APPROVED) {
         throw new Error("PO belum disetujui Direktur.");
       }
+      if (!order.vendorInvoiceUrl) {
+        throw new Error("Logistik harus mengunggah invoice/bon sebelum pembayaran PO.");
+      }
       await transaction.$queryRaw<{ locked: boolean }[]>`
         WITH payment_lock AS MATERIALIZED (
           SELECT pg_advisory_xact_lock(
@@ -3083,12 +3415,15 @@ export async function processFinanceStandalonePurchaseOrderPayment(
         )
         SELECT TRUE AS locked FROM payment_lock
       `;
-      const subtotal = order.items.reduce(
+      const subtotal = order.invoices[0]?.subTotal ?? order.items.reduce(
         (sum, item) => sum + item.totalPrice,
         0,
       );
+      const tax =
+        order.invoices[0]?.tax ??
+        Math.round(subtotal * (order.includeTax ? 0.11 : 0) * 100) / 100;
       const total =
-        Math.round(subtotal * (order.includeTax ? 1.11 : 1) * 100) / 100;
+        order.invoices[0]?.grandTotal ?? subtotal + tax;
       const paymentHistory = await transaction.paymentTransaction.aggregate({
         where: { poId: order.id, status: PaymentStatus.PAID },
         _sum: { amount: true },
@@ -3101,9 +3436,14 @@ export async function processFinanceStandalonePurchaseOrderPayment(
       );
       const { amount, isFullyPaid } = allocation;
       const now = new Date();
-      await transaction.paymentTransaction.create({
+      const confirmationOrderNumber = await nextDocumentNumber(
+        transaction,
+        "KO",
+      );
+      const payment = await transaction.paymentTransaction.create({
         data: {
           poId: order.id,
+          confirmationOrderNumber,
           paymentType,
           amount,
           transferDestination: transferDestination.trim(),
@@ -3112,7 +3452,52 @@ export async function processFinanceStandalonePurchaseOrderPayment(
           proofOfTransferUrl: receiptUrl,
           paidAt: now,
         },
+        select: { id: true },
       });
+      await recordFinanceCashflowOutflow(transaction, {
+        paymentTransactionId: payment.id,
+        financeAccountId,
+        amount,
+        sourceDesc: `Pembayaran ${order.poNumber} · ${order.vendorName}`,
+        projectId: order.projectId,
+        paymentMethod: "TRANSFER",
+        proofUrl: receiptUrl,
+        recordedBy: session.user.id,
+      });
+      const invoice = order.invoices[0];
+      await transaction.orderConfirmation.create({
+        data: {
+          publicCode: await generateAvailablePublicCode(transaction),
+          koNumber: confirmationOrderNumber,
+          poId: order.id,
+          paymentTransactionId: payment.id,
+          paymentTerms: order.paymentTerms,
+          paymentType,
+          paymentAmount: amount,
+          transferDestination: transferDestination.trim(),
+          proofOfTransferUrl: receiptUrl,
+          paidAt: now,
+          subTotal: subtotal,
+          tax,
+          grandTotal: invoice?.grandTotal ?? total,
+          items: {
+            create: order.items.map((item) => ({
+              itemCode: item.itemCode,
+              description: item.itemName,
+              quantity: item.quantity,
+              unit: item.unit,
+              unitPrice: item.unitPrice,
+              totalPrice: item.totalPrice,
+            })),
+          },
+        },
+      });
+      if (invoice) {
+        await transaction.invoice.updateMany({
+          where: { poId: order.id, status: { not: "PAID" } },
+          data: { status: isFullyPaid ? "PAID" : "PARTIAL" },
+        });
+      }
 
       if (isFullyPaid) {
         await transaction.purchaseOrder.update({
@@ -3132,6 +3517,15 @@ export async function processFinanceStandalonePurchaseOrderPayment(
           items: order.items,
         });
       }
+
+      await sendNotification({
+        roleTarget: UserRole.LOGISTICS,
+        title: "KO Siap Dikirim ke Vendor",
+        message: `KO ${confirmationOrderNumber} untuk pembayaran ${paymentType === PaymentType.DOWN_PAYMENT ? "DP" : paymentType === PaymentType.PROGRESS_PAYMENT ? "termin" : "pelunasan"} PO #${order.poNumber} siap diteruskan bersama bukti transfer.`,
+        actionUrl: "/apps/logistics?tab=documents",
+        type: NotificationType.SUCCESS,
+        database: transaction,
+      });
 
       if (isFullyPaid) {
         await sendNotification({
@@ -3159,6 +3553,8 @@ export async function processFinanceStandalonePurchaseOrderPayment(
           error.message.startsWith("Total tagihan") ||
           error.message.startsWith("Tagihan sudah lunas.") ||
           error.message.startsWith("Nominal") ||
+          error.message.startsWith("Saldo buku bank/kas") ||
+          error.message.startsWith("Buku bank/kas sumber") ||
           error.message.startsWith("Barang ") ||
           error.message.startsWith("PO tidak memiliki rincian") ||
           error.message.startsWith("Status pembayaran PO"))
@@ -3185,6 +3581,7 @@ export async function processFinanceDirectStockPurchasePayment(
   purchaseId: string,
   proof: File | string,
   transferDestination: string,
+  financeAccountId: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
 ): Promise<TicketActionResult> {
@@ -3197,8 +3594,13 @@ export async function processFinanceDirectStockPurchasePayment(
   if (typeof purchaseId !== "string" || !purchaseId.trim()) {
     return actionFailure("Data pembelian tidak valid.");
   }
-  if (!isBoundedText(transferDestination, 300)) {
-    return actionFailure("Keterangan tujuan transfer wajib diisi.");
+  if (
+    !isBoundedText(transferDestination, 300) ||
+    !isBoundedText(financeAccountId, 100)
+  ) {
+    return actionFailure(
+      "Keterangan tujuan transfer dan buku bank/kas sumber wajib dipilih.",
+    );
   }
   if (
     (!(proof instanceof File) &&
@@ -3230,10 +3632,12 @@ export async function processFinanceDirectStockPurchasePayment(
         select: {
           id: true,
           purchaseNumber: true,
+          vendorName: true,
           totalAmount: true,
           isApprovedByDirector: true,
           status: true,
           ticketId: true,
+          ticket: { select: { projectId: true } },
         },
       });
       if (!purchase) throw new Error("Pembelian langsung tidak ditemukan.");
@@ -3264,7 +3668,7 @@ export async function processFinanceDirectStockPurchasePayment(
       );
       const { amount, isFullyPaid } = allocation;
       const now = new Date();
-      await transaction.paymentTransaction.create({
+      const payment = await transaction.paymentTransaction.create({
         data: {
           directStockPurchaseId: purchase.id,
           paymentType,
@@ -3275,6 +3679,17 @@ export async function processFinanceDirectStockPurchasePayment(
           proofOfTransferUrl: receiptUrl,
           paidAt: now,
         },
+        select: { id: true },
+      });
+      await recordFinanceCashflowOutflow(transaction, {
+        paymentTransactionId: payment.id,
+        financeAccountId,
+        amount,
+        sourceDesc: `Pembelian langsung ${purchase.purchaseNumber} · ${purchase.vendorName}`,
+        projectId: purchase.ticket?.projectId,
+        paymentMethod: "TRANSFER",
+        proofUrl: receiptUrl,
+        recordedBy: session.user.id,
       });
       if (purchase.ticketId) {
         const paymentLabel =
@@ -3330,6 +3745,8 @@ export async function processFinanceDirectStockPurchasePayment(
           error.message ===
             "Pembelian langsung wajib disetujui Direktur sebelum pembayaran." ||
         error.message === "Pembelian langsung ini sudah lunas." ||
+          error.message.startsWith("Saldo buku bank/kas") ||
+          error.message.startsWith("Buku bank/kas sumber") ||
           error.message.startsWith("Total tagihan") ||
           error.message.startsWith("Tagihan sudah lunas.") ||
           error.message.startsWith("Nominal pembayaran"))
@@ -3361,6 +3778,7 @@ export async function submitPaymentRecord(input: {
   file?: File;
   proofOfTransferUrl?: string;
   transferDestination: string;
+  financeAccountId: string;
   paymentType: PaymentType;
   amount?: number;
 }): Promise<TicketActionResult> {
@@ -3377,6 +3795,7 @@ export async function submitPaymentRecord(input: {
         !isFinancePaymentProofUrl(input.proofOfTransferUrl))) ||
     (Boolean(input.file) === Boolean(input.proofOfTransferUrl)) ||
     !isBoundedText(input.transferDestination, 300) ||
+    !isBoundedText(input.financeAccountId, 100) ||
     !Object.values(PaymentType).includes(input.paymentType)
   ) {
     return actionFailure("Data pembayaran atau bukti transfer tidak valid.");
@@ -3390,6 +3809,7 @@ export async function submitPaymentRecord(input: {
       input.target.id,
       proof,
       input.transferDestination,
+      input.financeAccountId,
       input.paymentType,
       input.amount,
     );
@@ -3399,6 +3819,7 @@ export async function submitPaymentRecord(input: {
       input.target.id,
       proof,
       input.transferDestination,
+      input.financeAccountId,
       input.paymentType,
       input.amount,
     );
@@ -3408,6 +3829,7 @@ export async function submitPaymentRecord(input: {
       input.target.id,
       proof,
       input.transferDestination,
+      input.financeAccountId,
       input.paymentType,
       input.amount,
     );

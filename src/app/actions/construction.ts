@@ -22,6 +22,7 @@ import {
   generateAvailablePublicCode,
   isValidPublicCode,
 } from "@/lib/documents/random-code";
+import { nextDocumentNumber } from "@/lib/documents/numbering";
 import {
   BlueprintFileValidationError,
   saveBlueprintFile,
@@ -30,6 +31,7 @@ import {
   removeTicketReceipt,
   saveTicketReceipt,
 } from "@/lib/ticket-receipts";
+import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
 
 export type ConstructionActionResult = {
   success: boolean;
@@ -465,6 +467,10 @@ export async function submitSubkonTermyn(
           status: true,
           contractValue: true,
           retentionPct: true,
+          contractNumber: true,
+          subkonName: true,
+          workScope: true,
+          projectId: true,
           project: { select: { fieldPicId: true } },
           termyns: { select: { claimedPercent: true } },
         },
@@ -497,16 +503,43 @@ export async function submitSubkonTermyn(
       const count = await transaction.subkonTermyn.count({
         where: { subkonContractId: contract.id },
       });
-      await transaction.subkonTermyn.create({
+      const termynNumber = count + 1;
+      const termyn = await transaction.subkonTermyn.create({
         data: {
           subkonContractId: contract.id,
-          termynNumber: count + 1,
+          termynNumber,
           claimedPercent: new Prisma.Decimal(claimedPercent),
           grossAmount,
           retentionAmount,
           netAmount: grossAmount.minus(retentionAmount),
           status: SubkonTermynStatus.SUBMITTED,
           createdById: session.user.id,
+        },
+        select: { id: true },
+      });
+      const invoiceNumber = await nextDocumentNumber(transaction, "INV");
+      await transaction.invoice.create({
+        data: {
+          publicCode: await generateAvailablePublicCode(transaction),
+          invoiceNumber,
+          projectId: contract.projectId,
+          subkonTermynId: termyn.id,
+          vendorName: contract.subkonName,
+          periodOrDate: `Termin ${termynNumber} · progres ${claimedPercent}%`,
+          subTotal: grossAmount.toNumber(),
+          tax: 0,
+          deduction: retentionAmount.toNumber(),
+          grandTotal: grossAmount.minus(retentionAmount).toNumber(),
+          status: "UNPAID",
+          items: {
+            create: {
+              description: contract.workScope,
+              quantity: 1,
+              unit: `Termin ${termynNumber}`,
+              unitPrice: grossAmount.toNumber(),
+              totalPrice: grossAmount.toNumber(),
+            },
+          },
         },
       });
     });
@@ -645,13 +678,16 @@ export async function approveSubkonTermyn(id: string) {
 export async function paySubkonTermyn(
   id: string,
   file: File,
+  financeAccountId: string,
 ): Promise<ConstructionActionResult> {
   const session = await auth();
   if (!session?.user?.id) return failure("Silakan masuk untuk memproses pembayaran termin.");
   if (session.user.role !== UserRole.FINANCE) {
     return failure("Hanya Keuangan yang dapat membayar termin.");
   }
-  if (!validId(id)) return failure("Data termin tidak valid.");
+  if (!validId(id) || !validId(financeAccountId)) {
+    return failure("Data termin atau buku kas/bank tidak valid.");
+  }
   const current = await prisma.subkonTermyn.findUnique({
     where: { id },
     select: { status: true },
@@ -665,19 +701,95 @@ export async function paySubkonTermyn(
   } catch (error) {
     return failure(error instanceof Error ? error.message : "Bukti pembayaran tidak valid.");
   }
-  const result = await transitionSubkonTermyn(
-    id,
-    SubkonTermynStatus.APPROVED,
-    SubkonTermynStatus.PAID,
-    [UserRole.FINANCE],
-    "paidById",
-    "paidAt",
-    proofUrl,
-  );
-  if (!result.success) {
-    console.error("Subcontract payment proof stored but termyn transition failed:", id);
+  try {
+    await prisma.$transaction(async (transaction) => {
+      const transitioned = await transaction.subkonTermyn.updateMany({
+        where: { id, status: SubkonTermynStatus.APPROVED },
+        data: {
+          status: SubkonTermynStatus.PAID,
+          paidById: session.user.id,
+          paidAt: new Date(),
+          paymentProofUrl: proofUrl,
+        },
+      });
+      if (transitioned.count !== 1) {
+        throw new Error("Termin tidak ditemukan atau statusnya telah berubah.");
+      }
+      const termyn = await transaction.subkonTermyn.findUniqueOrThrow({
+        where: { id },
+        select: {
+          id: true,
+          termynNumber: true,
+          claimedPercent: true,
+          grossAmount: true,
+          retentionAmount: true,
+          netAmount: true,
+          invoice: { select: { id: true } },
+          subkonContract: {
+            select: {
+              projectId: true,
+              contractNumber: true,
+              subkonName: true,
+              workScope: true,
+            },
+          },
+        },
+      });
+      await recordFinanceCashflowOutflow(transaction, {
+        financeAccountId,
+        amount: termyn.netAmount.toNumber(),
+        sourceDesc: `Pembayaran Termin ${termyn.termynNumber} · ${termyn.subkonContract.contractNumber} · ${termyn.subkonContract.subkonName}`,
+        projectId: termyn.subkonContract.projectId,
+        paymentMethod: "TRANSFER",
+        proofUrl,
+        recordedBy: session.user.id,
+      });
+      if (termyn.invoice) {
+        await transaction.invoice.update({
+          where: { id: termyn.invoice.id },
+          data: { status: "PAID" },
+        });
+      } else {
+        const invoiceNumber = await nextDocumentNumber(transaction, "INV");
+        await transaction.invoice.create({
+          data: {
+            publicCode: await generateAvailablePublicCode(transaction),
+            invoiceNumber,
+            projectId: termyn.subkonContract.projectId,
+            subkonTermynId: termyn.id,
+            vendorName: termyn.subkonContract.subkonName,
+            periodOrDate: `Termin ${termyn.termynNumber} · progres ${termyn.claimedPercent.toString()}%`,
+            subTotal: termyn.grossAmount.toNumber(),
+            tax: 0,
+            deduction: termyn.retentionAmount.toNumber(),
+            grandTotal: termyn.netAmount.toNumber(),
+            status: "PAID",
+            items: {
+              create: {
+                description: termyn.subkonContract.workScope,
+                quantity: 1,
+                unit: `Termin ${termyn.termynNumber}`,
+                unitPrice: termyn.grossAmount.toNumber(),
+                totalPrice: termyn.grossAmount.toNumber(),
+              },
+            },
+          },
+        });
+      }
+    });
+  } catch (error) {
+    try {
+      await removeTicketReceipt(proofUrl);
+    } catch (cleanupError) {
+      console.error("Failed to remove unused subcontract payment proof:", cleanupError);
+    }
+    console.error("Subcontract termyn payment failed:", error);
+    return failure(
+      error instanceof Error ? error.message : "Pembayaran termin gagal disimpan.",
+    );
   }
-  return result;
+  revalidateConstruction();
+  return { success: true, message: "Pembayaran termin berhasil dicatat." };
 }
 
 const addendumSchema = z.object({
@@ -951,16 +1063,22 @@ export async function approveBAST(
 export async function releaseSubkonRetention(
   contractId: string,
   file: File,
+  financeAccountId: string,
 ): Promise<ConstructionActionResult> {
   const session = await auth();
   if (!session?.user?.id) return failure("Silakan masuk untuk mencairkan retensi.");
   if (session.user.role !== UserRole.FINANCE) {
     return failure("Hanya Keuangan yang dapat mencairkan retensi.");
   }
-  if (!validId(contractId)) return failure("Data kontrak subkon tidak valid.");
+  if (!validId(contractId) || !validId(financeAccountId)) {
+    return failure("Data kontrak atau buku kas/bank tidak valid.");
+  }
   const contract = await prisma.subkonContract.findUnique({
     where: { id: contractId },
     select: {
+      contractNumber: true,
+      subkonName: true,
+      projectId: true,
       retentionReleasedAt: true,
       termyns: { select: { status: true, retentionAmount: true } },
       project: {
@@ -1003,21 +1121,44 @@ export async function releaseSubkonRetention(
   } catch (error) {
     return failure(error instanceof Error ? error.message : "Bukti transfer tidak valid.");
   }
-  const result = await prisma.subkonContract.updateMany({
-    where: { id: contractId, retentionReleasedAt: null },
-    data: {
-      retentionReleasedAt: new Date(),
-      retentionReleasedById: session.user.id,
-      retentionReleaseProofUrl: proofUrl,
-    },
-  });
-  if (result.count !== 1) {
+  try {
+    await prisma.$transaction(async (transaction) => {
+      const result = await transaction.subkonContract.updateMany({
+        where: { id: contractId, retentionReleasedAt: null },
+        data: {
+          retentionReleasedAt: new Date(),
+          retentionReleasedById: session.user.id,
+          retentionReleaseProofUrl: proofUrl,
+        },
+      });
+      if (result.count !== 1) {
+        throw new Error("Retensi sudah dicairkan oleh proses lain.");
+      }
+      await recordFinanceCashflowOutflow(transaction, {
+        financeAccountId,
+        amount: totalRetention.toNumber(),
+        sourceDesc: `Pencairan retensi ${contract.contractNumber} · ${contract.subkonName}`,
+        projectId: contract.projectId,
+        paymentMethod: "TRANSFER",
+        proofUrl,
+        recordedBy: session.user.id,
+      });
+    });
+  } catch (error) {
     try {
       await removeTicketReceipt(proofUrl);
-    } catch (error) {
-      console.error("Removing orphaned subcontract retention proof failed:", error);
+    } catch (cleanupError) {
+      console.error("Removing orphaned subcontract retention proof failed:", cleanupError);
     }
-    return failure("Retensi sudah dicairkan oleh proses lain.");
+    console.error("Subcontract retention release failed:", error);
+    return failure(
+      error instanceof Error &&
+        (error.message.startsWith("Retensi sudah") ||
+          error.message.startsWith("Saldo buku bank/kas") ||
+          error.message.startsWith("Buku bank/kas sumber"))
+        ? error.message
+        : "Pencairan retensi gagal disimpan. Silakan coba kembali.",
+    );
   }
   revalidateConstruction();
   return {

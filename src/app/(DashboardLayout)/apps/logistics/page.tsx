@@ -277,7 +277,10 @@ export default async function LogisticsPage({
     projects,
     stockItems,
     purchaseOrders,
+    purchaseOrderConfirmations,
     deliveryOrders,
+    unsignedOrderConfirmations,
+    unsignedDeliveryOrders,
     equipmentLogs,
     equipmentMasters,
     vendors,
@@ -399,6 +402,55 @@ export default async function LogisticsPage({
         status: true,
         createdAt: true,
         ticketId: true,
+        vendorInvoiceUrl: true,
+        vendorPoSentAt: true,
+        includeTax: true,
+        items: {
+          orderBy: { id: "asc" },
+          select: {
+            itemCode: true,
+            itemName: true,
+            quantity: true,
+            unit: true,
+            unitPrice: true,
+          },
+        },
+        invoices: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: { id: true, documentUrl: true },
+        },
+      },
+    }),
+    prisma.paymentTransaction.findMany({
+      where: {
+        poId: { not: null },
+        status: PaymentStatus.PAID,
+        confirmationOrderNumber: { not: null },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        confirmationOrderNumber: true,
+        paymentType: true,
+        amount: true,
+        transferDestination: true,
+        proofOfTransferUrl: true,
+        paidAt: true,
+        vendorSentAt: true,
+        vendorSentBy: { select: { name: true } },
+        po: {
+          select: {
+            poNumber: true,
+            vendorName: true,
+            vendorInvoiceUrl: true,
+            items: {
+              select: { itemName: true, quantity: true, unit: true },
+              orderBy: { id: "asc" },
+            },
+          },
+        },
       },
     }),
     prisma.deliveryOrder.findMany({
@@ -417,6 +469,35 @@ export default async function LogisticsPage({
         vehiclePlateNumber: true,
       },
     }),
+    session.user.role === UserRole.LOGISTICS
+      ? prisma.orderConfirmation.findMany({
+          where: { signedAt: null },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            koNumber: true,
+            signedBy: { select: { name: true } },
+            signedAt: true,
+            acknowledgedBy: { select: { name: true } },
+            acknowledgedAt: true,
+          },
+        })
+      : Promise.resolve([]),
+    session.user.role === UserRole.LOGISTICS
+      ? prisma.deliveryOrder.findMany({
+          where: { signedAt: null },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            publicCode: true,
+            doNumber: true,
+            signedBy: { select: { name: true } },
+            signedAt: true,
+            acknowledgedBy: { select: { name: true } },
+            acknowledgedAt: true,
+          },
+        })
+      : Promise.resolve([]),
     prisma.equipmentLog.findMany({
       orderBy: [{ date: "desc" }, { createdAt: "desc" }],
       take: 100,
@@ -613,6 +694,55 @@ export default async function LogisticsPage({
             quantity: item.quantity.toString(),
           })),
         }))}
+        purchaseOrderConfirmations={purchaseOrderConfirmations.flatMap(
+          (payment) =>
+            payment.confirmationOrderNumber &&
+            payment.proofOfTransferUrl &&
+            payment.po
+              ? [{
+                  id: payment.id,
+                  confirmationOrderNumber: payment.confirmationOrderNumber,
+                  paymentType: payment.paymentType,
+                  amount: Number(payment.amount),
+                  transferDestination: payment.transferDestination,
+                  proofOfTransferUrl: payment.proofOfTransferUrl,
+                  paidAt: payment.paidAt?.toISOString() ?? null,
+                  vendorSentAt: payment.vendorSentAt?.toISOString() ?? null,
+                  vendorSentBy: payment.vendorSentBy,
+                  po: {
+                    ...payment.po,
+                    items: payment.po.items.map((item) => ({
+                      ...item,
+                      quantity: Number(item.quantity),
+                    })),
+                  },
+                }]
+              : [],
+        )}
+        documentSignoffTasks={[
+          ...unsignedOrderConfirmations.map((document) => ({
+            id: document.id,
+            kind: "KO" as const,
+            number: document.koNumber,
+            action: "sign" as const,
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=KO&id=${encodeURIComponent(document.id)}`,
+          })),
+          ...unsignedDeliveryOrders.map((document) => ({
+            id: document.id,
+            kind: "DO" as const,
+            number: document.doNumber,
+            action: "sign" as const,
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(document.publicCode)}`,
+          })),
+        ]}
         initialTab={tab}
         initialOpenSheet={openSheet}
         stockItems={stockItems.map((item) => ({
@@ -623,8 +753,23 @@ export default async function LogisticsPage({
           createdAt: item.createdAt.toISOString(),
         }))}
         purchaseOrders={purchaseOrders.map((order) => ({
-          ...order,
+          id: order.id,
+          publicCode: order.publicCode,
+          poNumber: order.poNumber,
+          vendorName: order.vendorName,
+          status: order.status,
           createdAt: order.createdAt.toISOString(),
+          ticketId: order.ticketId,
+          vendorInvoiceUrl:
+            order.vendorInvoiceUrl ?? order.invoices[0]?.documentUrl ?? null,
+          invoiceId: order.invoices[0]?.id ?? null,
+          vendorPoSentAt: order.vendorPoSentAt?.toISOString() ?? null,
+          includeTax: order.includeTax,
+          items: order.items.map((item) => ({
+            ...item,
+            quantity: Number(item.quantity),
+            unitPrice: Number(item.unitPrice),
+          })),
         }))}
         deliveryOrders={deliveryOrders.map((order) => ({
           id: order.id,

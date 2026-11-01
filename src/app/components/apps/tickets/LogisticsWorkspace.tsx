@@ -84,13 +84,13 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const statusLabels: Record<TicketStatus, string> = {
   [TicketStatus.DRAFT]: "Draf",
-  [TicketStatus.PENDING_DIRECTOR]: "Menunggu Direktur",
+  [TicketStatus.PENDING_DIRECTOR]: "Menunggu persetujuan Direktur",
   [TicketStatus.APPROVED_DIR]: "Disetujui Direktur",
-  [TicketStatus.PROCESSED_FINANCE]: "Diproses Keuangan",
+  [TicketStatus.PROCESSED_FINANCE]: "Diproses Finance",
   [TicketStatus.PROCESSED_LOGISTIC]: "Diproses Logistik",
   [TicketStatus.ASSIGNED_TO_MOVER]: "Ditugaskan ke Mover",
   [TicketStatus.IN_TRANSIT]: "Dalam perjalanan (ekspedisi)",
-  [TicketStatus.WAITING_FINANCE_PAYMENT]: "Menunggu Pembayaran",
+  [TicketStatus.WAITING_FINANCE_PAYMENT]: "Menunggu pembayaran Finance",
   [TicketStatus.COMPLETED]: "Selesai",
   [TicketStatus.REJECTED]: "Ditolak",
 };
@@ -2022,6 +2022,8 @@ export default function LogisticsWorkspace({
             projects={projects}
             vendors={vendors}
             stockItems={stockItems}
+            cloudinaryCloudName={cloudinaryCloudName}
+            cloudinaryApiKey={cloudinaryApiKey}
             role={role}
             ticketSearch={search}
             searchTickets={setSearch}

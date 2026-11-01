@@ -46,6 +46,9 @@ export type PaymentTransactionMinAggregateOutputType = {
   processedById: string | null
   proofOfTransferUrl: string | null
   paidAt: Date | null
+  confirmationOrderNumber: string | null
+  vendorSentAt: Date | null
+  vendorSentById: string | null
   createdAt: Date | null
 }
 
@@ -61,6 +64,9 @@ export type PaymentTransactionMaxAggregateOutputType = {
   processedById: string | null
   proofOfTransferUrl: string | null
   paidAt: Date | null
+  confirmationOrderNumber: string | null
+  vendorSentAt: Date | null
+  vendorSentById: string | null
   createdAt: Date | null
 }
 
@@ -76,6 +82,9 @@ export type PaymentTransactionCountAggregateOutputType = {
   processedById: number
   proofOfTransferUrl: number
   paidAt: number
+  confirmationOrderNumber: number
+  vendorSentAt: number
+  vendorSentById: number
   createdAt: number
   _all: number
 }
@@ -101,6 +110,9 @@ export type PaymentTransactionMinAggregateInputType = {
   processedById?: true
   proofOfTransferUrl?: true
   paidAt?: true
+  confirmationOrderNumber?: true
+  vendorSentAt?: true
+  vendorSentById?: true
   createdAt?: true
 }
 
@@ -116,6 +128,9 @@ export type PaymentTransactionMaxAggregateInputType = {
   processedById?: true
   proofOfTransferUrl?: true
   paidAt?: true
+  confirmationOrderNumber?: true
+  vendorSentAt?: true
+  vendorSentById?: true
   createdAt?: true
 }
 
@@ -131,6 +146,9 @@ export type PaymentTransactionCountAggregateInputType = {
   processedById?: true
   proofOfTransferUrl?: true
   paidAt?: true
+  confirmationOrderNumber?: true
+  vendorSentAt?: true
+  vendorSentById?: true
   createdAt?: true
   _all?: true
 }
@@ -233,6 +251,9 @@ export type PaymentTransactionGroupByOutputType = {
   processedById: string | null
   proofOfTransferUrl: string | null
   paidAt: Date | null
+  confirmationOrderNumber: string | null
+  vendorSentAt: Date | null
+  vendorSentById: string | null
   createdAt: Date
   _count: PaymentTransactionCountAggregateOutputType | null
   _avg: PaymentTransactionAvgAggregateOutputType | null
@@ -271,11 +292,17 @@ export type PaymentTransactionWhereInput = {
   processedById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   proofOfTransferUrl?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  confirmationOrderNumber?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
+  vendorSentAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  vendorSentById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PaymentTransaction"> | Date | string
   po?: Prisma.XOR<Prisma.PurchaseOrderNullableScalarRelationFilter, Prisma.PurchaseOrderWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   directStockPurchase?: Prisma.XOR<Prisma.DirectStockPurchaseNullableScalarRelationFilter, Prisma.DirectStockPurchaseWhereInput> | null
   processedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  vendorSentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  orderConfirmation?: Prisma.XOR<Prisma.OrderConfirmationNullableScalarRelationFilter, Prisma.OrderConfirmationWhereInput> | null
+  cashflow?: Prisma.XOR<Prisma.CashflowNullableScalarRelationFilter, Prisma.CashflowWhereInput> | null
 }
 
 export type PaymentTransactionOrderByWithRelationInput = {
@@ -290,15 +317,22 @@ export type PaymentTransactionOrderByWithRelationInput = {
   processedById?: Prisma.SortOrderInput | Prisma.SortOrder
   proofOfTransferUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmationOrderNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorSentById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   po?: Prisma.PurchaseOrderOrderByWithRelationInput
   ticket?: Prisma.TicketOrderByWithRelationInput
   directStockPurchase?: Prisma.DirectStockPurchaseOrderByWithRelationInput
   processedBy?: Prisma.UserOrderByWithRelationInput
+  vendorSentBy?: Prisma.UserOrderByWithRelationInput
+  orderConfirmation?: Prisma.OrderConfirmationOrderByWithRelationInput
+  cashflow?: Prisma.CashflowOrderByWithRelationInput
 }
 
 export type PaymentTransactionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  confirmationOrderNumber?: string
   AND?: Prisma.PaymentTransactionWhereInput | Prisma.PaymentTransactionWhereInput[]
   OR?: Prisma.PaymentTransactionWhereInput[]
   NOT?: Prisma.PaymentTransactionWhereInput | Prisma.PaymentTransactionWhereInput[]
@@ -312,12 +346,17 @@ export type PaymentTransactionWhereUniqueInput = Prisma.AtLeast<{
   processedById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   proofOfTransferUrl?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  vendorSentAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  vendorSentById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PaymentTransaction"> | Date | string
   po?: Prisma.XOR<Prisma.PurchaseOrderNullableScalarRelationFilter, Prisma.PurchaseOrderWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   directStockPurchase?: Prisma.XOR<Prisma.DirectStockPurchaseNullableScalarRelationFilter, Prisma.DirectStockPurchaseWhereInput> | null
   processedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id">
+  vendorSentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  orderConfirmation?: Prisma.XOR<Prisma.OrderConfirmationNullableScalarRelationFilter, Prisma.OrderConfirmationWhereInput> | null
+  cashflow?: Prisma.XOR<Prisma.CashflowNullableScalarRelationFilter, Prisma.CashflowWhereInput> | null
+}, "id" | "confirmationOrderNumber">
 
 export type PaymentTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -331,6 +370,9 @@ export type PaymentTransactionOrderByWithAggregationInput = {
   processedById?: Prisma.SortOrderInput | Prisma.SortOrder
   proofOfTransferUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmationOrderNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorSentById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.PaymentTransactionCountOrderByAggregateInput
   _avg?: Prisma.PaymentTransactionAvgOrderByAggregateInput
@@ -354,6 +396,9 @@ export type PaymentTransactionScalarWhereWithAggregatesInput = {
   processedById?: Prisma.StringNullableWithAggregatesFilter<"PaymentTransaction"> | string | null
   proofOfTransferUrl?: Prisma.StringNullableWithAggregatesFilter<"PaymentTransaction"> | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PaymentTransaction"> | Date | string | null
+  confirmationOrderNumber?: Prisma.StringNullableWithAggregatesFilter<"PaymentTransaction"> | string | null
+  vendorSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PaymentTransaction"> | Date | string | null
+  vendorSentById?: Prisma.StringNullableWithAggregatesFilter<"PaymentTransaction"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentTransaction"> | Date | string
 }
 
@@ -365,11 +410,16 @@ export type PaymentTransactionCreateInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
   directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
   processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUncheckedCreateInput = {
@@ -384,7 +434,12 @@ export type PaymentTransactionUncheckedCreateInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUpdateInput = {
@@ -395,11 +450,16 @@ export type PaymentTransactionUpdateInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
   directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
   processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateInput = {
@@ -414,7 +474,12 @@ export type PaymentTransactionUncheckedUpdateInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionCreateManyInput = {
@@ -429,6 +494,9 @@ export type PaymentTransactionCreateManyInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
 }
 
@@ -440,6 +508,8 @@ export type PaymentTransactionUpdateManyMutationInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -455,6 +525,9 @@ export type PaymentTransactionUncheckedUpdateManyInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -480,6 +553,9 @@ export type PaymentTransactionCountOrderByAggregateInput = {
   processedById?: Prisma.SortOrder
   proofOfTransferUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  confirmationOrderNumber?: Prisma.SortOrder
+  vendorSentAt?: Prisma.SortOrder
+  vendorSentById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -499,6 +575,9 @@ export type PaymentTransactionMaxOrderByAggregateInput = {
   processedById?: Prisma.SortOrder
   proofOfTransferUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  confirmationOrderNumber?: Prisma.SortOrder
+  vendorSentAt?: Prisma.SortOrder
+  vendorSentById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -514,11 +593,19 @@ export type PaymentTransactionMinOrderByAggregateInput = {
   processedById?: Prisma.SortOrder
   proofOfTransferUrl?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  confirmationOrderNumber?: Prisma.SortOrder
+  vendorSentAt?: Prisma.SortOrder
+  vendorSentById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type PaymentTransactionSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+}
+
+export type PaymentTransactionNullableScalarRelationFilter = {
+  is?: Prisma.PaymentTransactionWhereInput | null
+  isNot?: Prisma.PaymentTransactionWhereInput | null
 }
 
 export type PaymentTransactionCreateNestedManyWithoutProcessedByInput = {
@@ -528,10 +615,24 @@ export type PaymentTransactionCreateNestedManyWithoutProcessedByInput = {
   connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
 }
 
+export type PaymentTransactionCreateNestedManyWithoutVendorSentByInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput> | Prisma.PaymentTransactionCreateWithoutVendorSentByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput[]
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput | Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput[]
+  createMany?: Prisma.PaymentTransactionCreateManyVendorSentByInputEnvelope
+  connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+}
+
 export type PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput = {
   create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutProcessedByInput, Prisma.PaymentTransactionUncheckedCreateWithoutProcessedByInput> | Prisma.PaymentTransactionCreateWithoutProcessedByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutProcessedByInput[]
   connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutProcessedByInput | Prisma.PaymentTransactionCreateOrConnectWithoutProcessedByInput[]
   createMany?: Prisma.PaymentTransactionCreateManyProcessedByInputEnvelope
+  connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+}
+
+export type PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput> | Prisma.PaymentTransactionCreateWithoutVendorSentByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput[]
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput | Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput[]
+  createMany?: Prisma.PaymentTransactionCreateManyVendorSentByInputEnvelope
   connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
 }
 
@@ -549,6 +650,20 @@ export type PaymentTransactionUpdateManyWithoutProcessedByNestedInput = {
   deleteMany?: Prisma.PaymentTransactionScalarWhereInput | Prisma.PaymentTransactionScalarWhereInput[]
 }
 
+export type PaymentTransactionUpdateManyWithoutVendorSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput> | Prisma.PaymentTransactionCreateWithoutVendorSentByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput[]
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput | Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput[]
+  upsert?: Prisma.PaymentTransactionUpsertWithWhereUniqueWithoutVendorSentByInput | Prisma.PaymentTransactionUpsertWithWhereUniqueWithoutVendorSentByInput[]
+  createMany?: Prisma.PaymentTransactionCreateManyVendorSentByInputEnvelope
+  set?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  disconnect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  delete?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  update?: Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutVendorSentByInput | Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutVendorSentByInput[]
+  updateMany?: Prisma.PaymentTransactionUpdateManyWithWhereWithoutVendorSentByInput | Prisma.PaymentTransactionUpdateManyWithWhereWithoutVendorSentByInput[]
+  deleteMany?: Prisma.PaymentTransactionScalarWhereInput | Prisma.PaymentTransactionScalarWhereInput[]
+}
+
 export type PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput = {
   create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutProcessedByInput, Prisma.PaymentTransactionUncheckedCreateWithoutProcessedByInput> | Prisma.PaymentTransactionCreateWithoutProcessedByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutProcessedByInput[]
   connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutProcessedByInput | Prisma.PaymentTransactionCreateOrConnectWithoutProcessedByInput[]
@@ -560,6 +675,20 @@ export type PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput =
   connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
   update?: Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutProcessedByInput | Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutProcessedByInput[]
   updateMany?: Prisma.PaymentTransactionUpdateManyWithWhereWithoutProcessedByInput | Prisma.PaymentTransactionUpdateManyWithWhereWithoutProcessedByInput[]
+  deleteMany?: Prisma.PaymentTransactionScalarWhereInput | Prisma.PaymentTransactionScalarWhereInput[]
+}
+
+export type PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput> | Prisma.PaymentTransactionCreateWithoutVendorSentByInput[] | Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput[]
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput | Prisma.PaymentTransactionCreateOrConnectWithoutVendorSentByInput[]
+  upsert?: Prisma.PaymentTransactionUpsertWithWhereUniqueWithoutVendorSentByInput | Prisma.PaymentTransactionUpsertWithWhereUniqueWithoutVendorSentByInput[]
+  createMany?: Prisma.PaymentTransactionCreateManyVendorSentByInputEnvelope
+  set?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  disconnect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  delete?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  connect?: Prisma.PaymentTransactionWhereUniqueInput | Prisma.PaymentTransactionWhereUniqueInput[]
+  update?: Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutVendorSentByInput | Prisma.PaymentTransactionUpdateWithWhereUniqueWithoutVendorSentByInput[]
+  updateMany?: Prisma.PaymentTransactionUpdateManyWithWhereWithoutVendorSentByInput | Prisma.PaymentTransactionUpdateManyWithWhereWithoutVendorSentByInput[]
   deleteMany?: Prisma.PaymentTransactionScalarWhereInput | Prisma.PaymentTransactionScalarWhereInput[]
 }
 
@@ -697,6 +826,38 @@ export type EnumPaymentStatusFieldUpdateOperationsInput = {
   set?: $Enums.PaymentStatus
 }
 
+export type PaymentTransactionCreateNestedOneWithoutCashflowInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedCreateWithoutCashflowInput>
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutCashflowInput
+  connect?: Prisma.PaymentTransactionWhereUniqueInput
+}
+
+export type PaymentTransactionUpdateOneWithoutCashflowNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedCreateWithoutCashflowInput>
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutCashflowInput
+  upsert?: Prisma.PaymentTransactionUpsertWithoutCashflowInput
+  disconnect?: Prisma.PaymentTransactionWhereInput | boolean
+  delete?: Prisma.PaymentTransactionWhereInput | boolean
+  connect?: Prisma.PaymentTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentTransactionUpdateToOneWithWhereWithoutCashflowInput, Prisma.PaymentTransactionUpdateWithoutCashflowInput>, Prisma.PaymentTransactionUncheckedUpdateWithoutCashflowInput>
+}
+
+export type PaymentTransactionCreateNestedOneWithoutOrderConfirmationInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedCreateWithoutOrderConfirmationInput>
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutOrderConfirmationInput
+  connect?: Prisma.PaymentTransactionWhereUniqueInput
+}
+
+export type PaymentTransactionUpdateOneWithoutOrderConfirmationNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedCreateWithoutOrderConfirmationInput>
+  connectOrCreate?: Prisma.PaymentTransactionCreateOrConnectWithoutOrderConfirmationInput
+  upsert?: Prisma.PaymentTransactionUpsertWithoutOrderConfirmationInput
+  disconnect?: Prisma.PaymentTransactionWhereInput | boolean
+  delete?: Prisma.PaymentTransactionWhereInput | boolean
+  connect?: Prisma.PaymentTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentTransactionUpdateToOneWithWhereWithoutOrderConfirmationInput, Prisma.PaymentTransactionUpdateWithoutOrderConfirmationInput>, Prisma.PaymentTransactionUncheckedUpdateWithoutOrderConfirmationInput>
+}
+
 export type PaymentTransactionCreateWithoutProcessedByInput = {
   id?: string
   paymentType: $Enums.PaymentType
@@ -705,10 +866,15 @@ export type PaymentTransactionCreateWithoutProcessedByInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
   directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUncheckedCreateWithoutProcessedByInput = {
@@ -722,7 +888,12 @@ export type PaymentTransactionUncheckedCreateWithoutProcessedByInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionCreateOrConnectWithoutProcessedByInput = {
@@ -732,6 +903,54 @@ export type PaymentTransactionCreateOrConnectWithoutProcessedByInput = {
 
 export type PaymentTransactionCreateManyProcessedByInputEnvelope = {
   data: Prisma.PaymentTransactionCreateManyProcessedByInput | Prisma.PaymentTransactionCreateManyProcessedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentTransactionCreateWithoutVendorSentByInput = {
+  id?: string
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  createdAt?: Date | string
+  po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
+  directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
+  processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionUncheckedCreateWithoutVendorSentByInput = {
+  id?: string
+  poId?: string | null
+  ticketId?: string | null
+  directStockPurchaseId?: string | null
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  processedById?: string | null
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionCreateOrConnectWithoutVendorSentByInput = {
+  where: Prisma.PaymentTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput>
+}
+
+export type PaymentTransactionCreateManyVendorSentByInputEnvelope = {
+  data: Prisma.PaymentTransactionCreateManyVendorSentByInput | Prisma.PaymentTransactionCreateManyVendorSentByInput[]
   skipDuplicates?: boolean
 }
 
@@ -766,7 +985,26 @@ export type PaymentTransactionScalarWhereInput = {
   processedById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   proofOfTransferUrl?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  confirmationOrderNumber?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
+  vendorSentAt?: Prisma.DateTimeNullableFilter<"PaymentTransaction"> | Date | string | null
+  vendorSentById?: Prisma.StringNullableFilter<"PaymentTransaction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PaymentTransaction"> | Date | string
+}
+
+export type PaymentTransactionUpsertWithWhereUniqueWithoutVendorSentByInput = {
+  where: Prisma.PaymentTransactionWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedUpdateWithoutVendorSentByInput>
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedCreateWithoutVendorSentByInput>
+}
+
+export type PaymentTransactionUpdateWithWhereUniqueWithoutVendorSentByInput = {
+  where: Prisma.PaymentTransactionWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutVendorSentByInput, Prisma.PaymentTransactionUncheckedUpdateWithoutVendorSentByInput>
+}
+
+export type PaymentTransactionUpdateManyWithWhereWithoutVendorSentByInput = {
+  where: Prisma.PaymentTransactionScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentTransactionUpdateManyMutationInput, Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByInput>
 }
 
 export type PaymentTransactionCreateWithoutDirectStockPurchaseInput = {
@@ -777,10 +1015,15 @@ export type PaymentTransactionCreateWithoutDirectStockPurchaseInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
   ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
   processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUncheckedCreateWithoutDirectStockPurchaseInput = {
@@ -794,7 +1037,12 @@ export type PaymentTransactionUncheckedCreateWithoutDirectStockPurchaseInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionCreateOrConnectWithoutDirectStockPurchaseInput = {
@@ -831,10 +1079,15 @@ export type PaymentTransactionCreateWithoutTicketInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
   po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
   directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
   processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUncheckedCreateWithoutTicketInput = {
@@ -848,7 +1101,12 @@ export type PaymentTransactionUncheckedCreateWithoutTicketInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionCreateOrConnectWithoutTicketInput = {
@@ -885,10 +1143,15 @@ export type PaymentTransactionCreateWithoutPoInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
   ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
   directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
   processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionUncheckedCreateWithoutPoInput = {
@@ -902,7 +1165,12 @@ export type PaymentTransactionUncheckedCreateWithoutPoInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
 }
 
 export type PaymentTransactionCreateOrConnectWithoutPoInput = {
@@ -931,6 +1199,190 @@ export type PaymentTransactionUpdateManyWithWhereWithoutPoInput = {
   data: Prisma.XOR<Prisma.PaymentTransactionUpdateManyMutationInput, Prisma.PaymentTransactionUncheckedUpdateManyWithoutPoInput>
 }
 
+export type PaymentTransactionCreateWithoutCashflowInput = {
+  id?: string
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  createdAt?: Date | string
+  po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
+  directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
+  processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  orderConfirmation?: Prisma.OrderConfirmationCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionUncheckedCreateWithoutCashflowInput = {
+  id?: string
+  poId?: string | null
+  ticketId?: string | null
+  directStockPurchaseId?: string | null
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  processedById?: string | null
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
+  createdAt?: Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionCreateOrConnectWithoutCashflowInput = {
+  where: Prisma.PaymentTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedCreateWithoutCashflowInput>
+}
+
+export type PaymentTransactionUpsertWithoutCashflowInput = {
+  update: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedUpdateWithoutCashflowInput>
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedCreateWithoutCashflowInput>
+  where?: Prisma.PaymentTransactionWhereInput
+}
+
+export type PaymentTransactionUpdateToOneWithWhereWithoutCashflowInput = {
+  where?: Prisma.PaymentTransactionWhereInput
+  data: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutCashflowInput, Prisma.PaymentTransactionUncheckedUpdateWithoutCashflowInput>
+}
+
+export type PaymentTransactionUpdateWithoutCashflowInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
+  directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
+  processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+}
+
+export type PaymentTransactionUncheckedUpdateWithoutCashflowInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directStockPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+}
+
+export type PaymentTransactionCreateWithoutOrderConfirmationInput = {
+  id?: string
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  createdAt?: Date | string
+  po?: Prisma.PurchaseOrderCreateNestedOneWithoutPaymentTransactionsInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutPaymentTransactionsInput
+  directStockPurchase?: Prisma.DirectStockPurchaseCreateNestedOneWithoutPaymentTransactionsInput
+  processedBy?: Prisma.UserCreateNestedOneWithoutProcessedPaymentTransactionsInput
+  vendorSentBy?: Prisma.UserCreateNestedOneWithoutSentPaymentConfirmationsInput
+  cashflow?: Prisma.CashflowCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionUncheckedCreateWithoutOrderConfirmationInput = {
+  id?: string
+  poId?: string | null
+  ticketId?: string | null
+  directStockPurchaseId?: string | null
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  processedById?: string | null
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
+  createdAt?: Date | string
+  cashflow?: Prisma.CashflowUncheckedCreateNestedOneWithoutPaymentTransactionInput
+}
+
+export type PaymentTransactionCreateOrConnectWithoutOrderConfirmationInput = {
+  where: Prisma.PaymentTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedCreateWithoutOrderConfirmationInput>
+}
+
+export type PaymentTransactionUpsertWithoutOrderConfirmationInput = {
+  update: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedUpdateWithoutOrderConfirmationInput>
+  create: Prisma.XOR<Prisma.PaymentTransactionCreateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedCreateWithoutOrderConfirmationInput>
+  where?: Prisma.PaymentTransactionWhereInput
+}
+
+export type PaymentTransactionUpdateToOneWithWhereWithoutOrderConfirmationInput = {
+  where?: Prisma.PaymentTransactionWhereInput
+  data: Prisma.XOR<Prisma.PaymentTransactionUpdateWithoutOrderConfirmationInput, Prisma.PaymentTransactionUncheckedUpdateWithoutOrderConfirmationInput>
+}
+
+export type PaymentTransactionUpdateWithoutOrderConfirmationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
+  directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
+  processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
+}
+
+export type PaymentTransactionUncheckedUpdateWithoutOrderConfirmationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directStockPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+}
+
 export type PaymentTransactionCreateManyProcessedByInput = {
   id?: string
   poId?: string | null
@@ -942,6 +1394,26 @@ export type PaymentTransactionCreateManyProcessedByInput = {
   status?: $Enums.PaymentStatus
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
+  createdAt?: Date | string
+}
+
+export type PaymentTransactionCreateManyVendorSentByInput = {
+  id?: string
+  poId?: string | null
+  ticketId?: string | null
+  directStockPurchaseId?: string | null
+  paymentType: $Enums.PaymentType
+  amount: number
+  transferDestination: string
+  status?: $Enums.PaymentStatus
+  processedById?: string | null
+  proofOfTransferUrl?: string | null
+  paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -953,10 +1425,15 @@ export type PaymentTransactionUpdateWithoutProcessedByInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
   directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateWithoutProcessedByInput = {
@@ -970,7 +1447,12 @@ export type PaymentTransactionUncheckedUpdateWithoutProcessedByInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateManyWithoutProcessedByInput = {
@@ -984,6 +1466,64 @@ export type PaymentTransactionUncheckedUpdateManyWithoutProcessedByInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentTransactionUpdateWithoutVendorSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
+  directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
+  processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
+}
+
+export type PaymentTransactionUncheckedUpdateWithoutVendorSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directStockPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+}
+
+export type PaymentTransactionUncheckedUpdateManyWithoutVendorSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  poId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  directStockPurchaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  transferDestination?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -998,6 +1538,9 @@ export type PaymentTransactionCreateManyDirectStockPurchaseInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
 }
 
@@ -1009,10 +1552,15 @@ export type PaymentTransactionUpdateWithoutDirectStockPurchaseInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
   processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateWithoutDirectStockPurchaseInput = {
@@ -1026,7 +1574,12 @@ export type PaymentTransactionUncheckedUpdateWithoutDirectStockPurchaseInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateManyWithoutDirectStockPurchaseInput = {
@@ -1040,6 +1593,9 @@ export type PaymentTransactionUncheckedUpdateManyWithoutDirectStockPurchaseInput
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1054,6 +1610,9 @@ export type PaymentTransactionCreateManyTicketInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
 }
 
@@ -1065,10 +1624,15 @@ export type PaymentTransactionUpdateWithoutTicketInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   po?: Prisma.PurchaseOrderUpdateOneWithoutPaymentTransactionsNestedInput
   directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
   processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateWithoutTicketInput = {
@@ -1082,7 +1646,12 @@ export type PaymentTransactionUncheckedUpdateWithoutTicketInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateManyWithoutTicketInput = {
@@ -1096,6 +1665,9 @@ export type PaymentTransactionUncheckedUpdateManyWithoutTicketInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1110,6 +1682,9 @@ export type PaymentTransactionCreateManyPoInput = {
   processedById?: string | null
   proofOfTransferUrl?: string | null
   paidAt?: Date | string | null
+  confirmationOrderNumber?: string | null
+  vendorSentAt?: Date | string | null
+  vendorSentById?: string | null
   createdAt?: Date | string
 }
 
@@ -1121,10 +1696,15 @@ export type PaymentTransactionUpdateWithoutPoInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticket?: Prisma.TicketUpdateOneWithoutPaymentTransactionsNestedInput
   directStockPurchase?: Prisma.DirectStockPurchaseUpdateOneWithoutPaymentTransactionsNestedInput
   processedBy?: Prisma.UserUpdateOneWithoutProcessedPaymentTransactionsNestedInput
+  vendorSentBy?: Prisma.UserUpdateOneWithoutSentPaymentConfirmationsNestedInput
+  orderConfirmation?: Prisma.OrderConfirmationUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateWithoutPoInput = {
@@ -1138,7 +1718,12 @@ export type PaymentTransactionUncheckedUpdateWithoutPoInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderConfirmation?: Prisma.OrderConfirmationUncheckedUpdateOneWithoutPaymentTransactionNestedInput
+  cashflow?: Prisma.CashflowUncheckedUpdateOneWithoutPaymentTransactionNestedInput
 }
 
 export type PaymentTransactionUncheckedUpdateManyWithoutPoInput = {
@@ -1152,6 +1737,9 @@ export type PaymentTransactionUncheckedUpdateManyWithoutPoInput = {
   processedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proofOfTransferUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmationOrderNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorSentById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1169,11 +1757,17 @@ export type PaymentTransactionSelect<ExtArgs extends runtime.Types.Extensions.In
   processedById?: boolean
   proofOfTransferUrl?: boolean
   paidAt?: boolean
+  confirmationOrderNumber?: boolean
+  vendorSentAt?: boolean
+  vendorSentById?: boolean
   createdAt?: boolean
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
+  orderConfirmation?: boolean | Prisma.PaymentTransaction$orderConfirmationArgs<ExtArgs>
+  cashflow?: boolean | Prisma.PaymentTransaction$cashflowArgs<ExtArgs>
 }, ExtArgs["result"]["paymentTransaction"]>
 
 export type PaymentTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1188,11 +1782,15 @@ export type PaymentTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.
   processedById?: boolean
   proofOfTransferUrl?: boolean
   paidAt?: boolean
+  confirmationOrderNumber?: boolean
+  vendorSentAt?: boolean
+  vendorSentById?: boolean
   createdAt?: boolean
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
 }, ExtArgs["result"]["paymentTransaction"]>
 
 export type PaymentTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1207,11 +1805,15 @@ export type PaymentTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.
   processedById?: boolean
   proofOfTransferUrl?: boolean
   paidAt?: boolean
+  confirmationOrderNumber?: boolean
+  vendorSentAt?: boolean
+  vendorSentById?: boolean
   createdAt?: boolean
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
 }, ExtArgs["result"]["paymentTransaction"]>
 
 export type PaymentTransactionSelectScalar = {
@@ -1226,27 +1828,35 @@ export type PaymentTransactionSelectScalar = {
   processedById?: boolean
   proofOfTransferUrl?: boolean
   paidAt?: boolean
+  confirmationOrderNumber?: boolean
+  vendorSentAt?: boolean
+  vendorSentById?: boolean
   createdAt?: boolean
 }
 
-export type PaymentTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "poId" | "ticketId" | "directStockPurchaseId" | "paymentType" | "amount" | "transferDestination" | "status" | "processedById" | "proofOfTransferUrl" | "paidAt" | "createdAt", ExtArgs["result"]["paymentTransaction"]>
+export type PaymentTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "poId" | "ticketId" | "directStockPurchaseId" | "paymentType" | "amount" | "transferDestination" | "status" | "processedById" | "proofOfTransferUrl" | "paidAt" | "confirmationOrderNumber" | "vendorSentAt" | "vendorSentById" | "createdAt", ExtArgs["result"]["paymentTransaction"]>
 export type PaymentTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
+  orderConfirmation?: boolean | Prisma.PaymentTransaction$orderConfirmationArgs<ExtArgs>
+  cashflow?: boolean | Prisma.PaymentTransaction$cashflowArgs<ExtArgs>
 }
 export type PaymentTransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
 }
 export type PaymentTransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   po?: boolean | Prisma.PaymentTransaction$poArgs<ExtArgs>
   ticket?: boolean | Prisma.PaymentTransaction$ticketArgs<ExtArgs>
   directStockPurchase?: boolean | Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>
   processedBy?: boolean | Prisma.PaymentTransaction$processedByArgs<ExtArgs>
+  vendorSentBy?: boolean | Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>
 }
 
 export type $PaymentTransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1256,6 +1866,9 @@ export type $PaymentTransactionPayload<ExtArgs extends runtime.Types.Extensions.
     ticket: Prisma.$TicketPayload<ExtArgs> | null
     directStockPurchase: Prisma.$DirectStockPurchasePayload<ExtArgs> | null
     processedBy: Prisma.$UserPayload<ExtArgs> | null
+    vendorSentBy: Prisma.$UserPayload<ExtArgs> | null
+    orderConfirmation: Prisma.$OrderConfirmationPayload<ExtArgs> | null
+    cashflow: Prisma.$CashflowPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1269,6 +1882,9 @@ export type $PaymentTransactionPayload<ExtArgs extends runtime.Types.Extensions.
     processedById: string | null
     proofOfTransferUrl: string | null
     paidAt: Date | null
+    confirmationOrderNumber: string | null
+    vendorSentAt: Date | null
+    vendorSentById: string | null
     createdAt: Date
   }, ExtArgs["result"]["paymentTransaction"]>
   composites: {}
@@ -1668,6 +2284,9 @@ export interface Prisma__PaymentTransactionClient<T, Null = never, ExtArgs exten
   ticket<T extends Prisma.PaymentTransaction$ticketArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$ticketArgs<ExtArgs>>): Prisma.Prisma__TicketClient<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   directStockPurchase<T extends Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$directStockPurchaseArgs<ExtArgs>>): Prisma.Prisma__DirectStockPurchaseClient<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   processedBy<T extends Prisma.PaymentTransaction$processedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$processedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vendorSentBy<T extends Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$vendorSentByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  orderConfirmation<T extends Prisma.PaymentTransaction$orderConfirmationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$orderConfirmationArgs<ExtArgs>>): Prisma.Prisma__OrderConfirmationClient<runtime.Types.Result.GetResult<Prisma.$OrderConfirmationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  cashflow<T extends Prisma.PaymentTransaction$cashflowArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentTransaction$cashflowArgs<ExtArgs>>): Prisma.Prisma__CashflowClient<runtime.Types.Result.GetResult<Prisma.$CashflowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1708,6 +2327,9 @@ export interface PaymentTransactionFieldRefs {
   readonly processedById: Prisma.FieldRef<"PaymentTransaction", 'String'>
   readonly proofOfTransferUrl: Prisma.FieldRef<"PaymentTransaction", 'String'>
   readonly paidAt: Prisma.FieldRef<"PaymentTransaction", 'DateTime'>
+  readonly confirmationOrderNumber: Prisma.FieldRef<"PaymentTransaction", 'String'>
+  readonly vendorSentAt: Prisma.FieldRef<"PaymentTransaction", 'DateTime'>
+  readonly vendorSentById: Prisma.FieldRef<"PaymentTransaction", 'String'>
   readonly createdAt: Prisma.FieldRef<"PaymentTransaction", 'DateTime'>
 }
     
@@ -2183,6 +2805,63 @@ export type PaymentTransaction$processedByArgs<ExtArgs extends runtime.Types.Ext
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * PaymentTransaction.vendorSentBy
+ */
+export type PaymentTransaction$vendorSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * PaymentTransaction.orderConfirmation
+ */
+export type PaymentTransaction$orderConfirmationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderConfirmation
+   */
+  select?: Prisma.OrderConfirmationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderConfirmation
+   */
+  omit?: Prisma.OrderConfirmationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderConfirmationInclude<ExtArgs> | null
+  where?: Prisma.OrderConfirmationWhereInput
+}
+
+/**
+ * PaymentTransaction.cashflow
+ */
+export type PaymentTransaction$cashflowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Cashflow
+   */
+  select?: Prisma.CashflowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Cashflow
+   */
+  omit?: Prisma.CashflowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CashflowInclude<ExtArgs> | null
+  where?: Prisma.CashflowWhereInput
 }
 
 /**

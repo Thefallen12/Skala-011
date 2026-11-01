@@ -24,13 +24,13 @@ import { categoryForTicket } from "./ticket-statistics";
 
 const statusLabels: Record<TicketStatus, string> = {
   DRAFT: "Draft",
-  PENDING_DIRECTOR: "Menunggu Direktur",
+  PENDING_DIRECTOR: "Menunggu persetujuan Direktur",
   APPROVED_DIR: "Disetujui Direktur",
-  PROCESSED_FINANCE: "Diproses Keuangan",
+  PROCESSED_FINANCE: "Diproses Finance",
   PROCESSED_LOGISTIC: "Diproses Logistik",
   ASSIGNED_TO_MOVER: "Ditugaskan ke Mover",
   IN_TRANSIT: "Dalam perjalanan (ekspedisi)",
-  WAITING_FINANCE_PAYMENT: "Menunggu Pembayaran",
+  WAITING_FINANCE_PAYMENT: "Menunggu pembayaran Finance",
   COMPLETED: "Selesai",
   REJECTED: "Ditolak",
 };

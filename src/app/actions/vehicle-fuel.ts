@@ -19,6 +19,7 @@ import {
   VEHICLE_FUEL_EFFICIENCY_KM_PER_LITER,
   VEHICLE_FUEL_PRICE_PER_LITER,
 } from "@/lib/vehicle-fuel";
+import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
 
 export type VehicleFuelActionResult = {
   success: boolean;
@@ -427,6 +428,7 @@ export async function processVehicleFuelRequest(
   input?: {
     disbursementMethod?: POPaymentMethod;
     transferDestination?: string;
+    financeAccountId?: string;
     transferProof?: File;
     financeNote?: string;
   },
@@ -445,6 +447,9 @@ export async function processVehicleFuelRequest(
     (input?.transferDestination !== undefined &&
       (typeof input.transferDestination !== "string" ||
         input.transferDestination.length > 300)) ||
+    (input?.financeAccountId !== undefined &&
+      (typeof input.financeAccountId !== "string" ||
+        input.financeAccountId.length > 100)) ||
     (input?.financeNote !== undefined &&
       (typeof input.financeNote !== "string" ||
         input.financeNote.length > 1000)) ||
@@ -454,6 +459,7 @@ export async function processVehicleFuelRequest(
       (!input ||
         !Object.values(POPaymentMethod).includes(input.disbursementMethod!) ||
         !isBoundedText(input.transferDestination, 300) ||
+        !isBoundedText(input.financeAccountId, 100) ||
         (input.disbursementMethod === POPaymentMethod.TRANSFER &&
           !isTransferProof(input.transferProof)) ||
         (input.disbursementMethod === POPaymentMethod.CASH &&
@@ -488,6 +494,8 @@ export async function processVehicleFuelRequest(
         select: {
           status: true,
           afterFillingPhotoUrl: true,
+          requestedAmount: true,
+          projectId: true,
           deliveryOrder: { select: { doNumber: true } },
           requestedById: true,
         },
@@ -518,6 +526,20 @@ export async function processVehicleFuelRequest(
         },
       });
       if (result.count !== 1) return false;
+      if (approve) {
+        await recordFinanceCashflowOutflow(transaction, {
+          financeAccountId: input!.financeAccountId!,
+          amount: request.requestedAmount.toNumber(),
+          sourceDesc: `Reimbursement BBM ${request.deliveryOrder.doNumber}`,
+          projectId: request.projectId,
+          paymentMethod:
+            input!.disbursementMethod === POPaymentMethod.CASH
+              ? "CASH"
+              : "TRANSFER",
+          proofUrl: transferProofUrl,
+          recordedBy: session.user.id,
+        });
+      }
       await sendNotification({
         userId: request.requestedById,
         title: approve ? "Dana BBM Disetujui" : "Request BBM Ditolak",
@@ -543,7 +565,13 @@ export async function processVehicleFuelRequest(
       }
     }
     console.error("Vehicle fuel request processing failed:", error);
-    return fail("Request BBM gagal diproses. Silakan coba kembali.");
+    return fail(
+      error instanceof Error &&
+        (error.message.startsWith("Saldo buku bank/kas") ||
+          error.message.startsWith("Buku bank/kas sumber"))
+        ? error.message
+        : "Request BBM gagal diproses. Silakan coba kembali.",
+    );
   }
 
   revalidatePath("/apps/finance");

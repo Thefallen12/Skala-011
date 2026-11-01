@@ -81,6 +81,28 @@ const ticketFormSchema = z
     recipientName: z.string().optional(),
     bankName: z.string().optional(),
     accountNumber: z.string().optional(),
+    operationalRequestType: z.enum(["GENERAL", "SURVEY"]),
+    operationalAmount: z
+      .number()
+      .finite()
+      .int()
+      .positive()
+      .max(Number.MAX_SAFE_INTEGER)
+      .optional(),
+    surveyConsumptionAmount: z
+      .number()
+      .finite()
+      .int()
+      .min(0)
+      .max(Number.MAX_SAFE_INTEGER)
+      .optional(),
+    surveyFuelAmount: z
+      .number()
+      .finite()
+      .int()
+      .min(0)
+      .max(Number.MAX_SAFE_INTEGER)
+      .optional(),
     requestedAmount: z
       .number()
       .finite()
@@ -153,6 +175,8 @@ const ticketFormSchema = z
       values.requestCategory === TicketRequestCategory.FIELD &&
       values.fieldCategory !== undefined &&
       values.fieldCategory !== TicketFieldCategory.DIRECT_STORE;
+    const isOperationalFunding =
+      values.requestCategory === TicketRequestCategory.OPS;
     if (requiresRecipientPayment) {
       if (!values.recipientName?.trim() || values.recipientName.trim().length > 120) {
         context.addIssue({
@@ -181,6 +205,32 @@ const ticketFormSchema = z
           path: ["requestedAmount"],
           message: "Biaya harus lebih besar dari 0.",
         });
+      }
+    } else if (isOperationalFunding) {
+      if (values.operationalRequestType === "GENERAL") {
+        if (values.operationalAmount === undefined) {
+          context.addIssue({
+            code: "custom",
+            path: ["operationalAmount"],
+            message: "Jumlah dana operasional harus lebih besar dari 0.",
+          });
+        }
+      } else {
+        const consumptionAmount = values.surveyConsumptionAmount;
+        const fuelAmount = values.surveyFuelAmount;
+        if (
+          consumptionAmount === undefined ||
+          fuelAmount === undefined ||
+          consumptionAmount + fuelAmount <= 0 ||
+          !Number.isSafeInteger(consumptionAmount + fuelAmount)
+        ) {
+          context.addIssue({
+            code: "custom",
+            path: ["surveyConsumptionAmount"],
+            message:
+              "Isi biaya konsumsi dan BBM dengan benar; total harus lebih besar dari 0.",
+          });
+        }
       }
     } else {
       if (values.items.length === 0) {
@@ -295,6 +345,10 @@ export default function CreateTicketModal({
       recipientName: "",
       bankName: "",
       accountNumber: "",
+      operationalRequestType: "GENERAL",
+      operationalAmount: undefined,
+      surveyConsumptionAmount: 0,
+      surveyFuelAmount: 0,
       requestedAmount: undefined,
     },
   });
@@ -314,6 +368,22 @@ export default function CreateTicketModal({
     control: form.control,
     name: "requestedAmount",
   });
+  const operationalRequestType = useWatch({
+    control: form.control,
+    name: "operationalRequestType",
+  });
+  const watchedOperationalAmount = useWatch({
+    control: form.control,
+    name: "operationalAmount",
+  });
+  const watchedSurveyConsumptionAmount = useWatch({
+    control: form.control,
+    name: "surveyConsumptionAmount",
+  });
+  const watchedSurveyFuelAmount = useWatch({
+    control: form.control,
+    name: "surveyFuelAmount",
+  });
   const showMoverSelection =
     requesterRole === UserRole.FIELD_TEAM &&
     (requestCategory === TicketRequestCategory.MATERIAL ||
@@ -322,6 +392,14 @@ export default function CreateTicketModal({
     requestCategory === TicketRequestCategory.FIELD &&
     fieldCategory !== undefined &&
     fieldCategory !== TicketFieldCategory.DIRECT_STORE;
+  const isOperationalFunding =
+    requestCategory === TicketRequestCategory.OPS;
+  const requiresFundingRequest =
+    requiresRecipientPayment || isOperationalFunding;
+  const operationalRequestedAmount =
+    operationalRequestType === "SURVEY"
+      ? (watchedSurveyConsumptionAmount ?? 0) + (watchedSurveyFuelAmount ?? 0)
+      : watchedOperationalAmount ?? 0;
   const watchedItems = useWatch({ control: form.control, name: "items" });
   const usesItemDeliveryDates =
     requestCategory === TicketRequestCategory.MATERIAL ||
@@ -363,11 +441,30 @@ export default function CreateTicketModal({
       ? fieldCategoryLabels[values.fieldCategory]
       : undefined;
     const firstItemName = values.items[0]?.itemName?.trim() ?? "";
-    const title = requiresRecipientPayment
+    const operationalRequestLabel =
+      values.operationalRequestType === "SURVEY"
+        ? "Biaya Survei Lapangan"
+        : "Dana Operasional";
+    const operationalAmount =
+      values.operationalRequestType === "SURVEY"
+        ? (values.surveyConsumptionAmount ?? 0) +
+          (values.surveyFuelAmount ?? 0)
+        : values.operationalAmount;
+    const title = isOperationalFunding
+      ? `Operasional: ${operationalRequestLabel}`
+      : requiresRecipientPayment
       ? `${subCategoryLabel}: ${values.recipientName?.trim()}`.slice(0, 160)
       : `${categoryLabel}: ${firstItemName}`.slice(0, 160);
     const description = [
       `Jenis permintaan: ${categoryLabel}`,
+      isOperationalFunding
+        ? `Keperluan: ${operationalRequestLabel}`
+        : null,
+      isOperationalFunding && values.operationalRequestType === "SURVEY"
+        ? `Biaya konsumsi: ${formatCurrency(values.surveyConsumptionAmount ?? 0)}\nBiaya BBM: ${formatCurrency(values.surveyFuelAmount ?? 0)}`
+        : isOperationalFunding
+          ? `Jumlah dana: ${formatCurrency(values.operationalAmount ?? 0)}`
+          : null,
       subCategoryLabel ? `Sub-menu lapangan: ${subCategoryLabel}` : null,
       initialWageRequest
         ? `Proyek: ${initialWageRequest.projectTitle}\nTitik kerja: ${initialWageRequest.workPointTitle}`
@@ -425,8 +522,10 @@ export default function CreateTicketModal({
           : undefined,
         requestedAmount: requiresRecipientPayment
           ? values.requestedAmount
-          : undefined,
-        items: requiresRecipientPayment
+          : isOperationalFunding
+            ? operationalAmount
+            : undefined,
+        items: requiresFundingRequest
           ? []
           : values.items.map((item) => ({
               ...(item.stockItemId
@@ -502,6 +601,26 @@ export default function CreateTicketModal({
         title="Tambah tiket ERP"
         description="Isi proyek, jenis permintaan, data penerima atau rincian item, prioritas, dan tanggal kebutuhan."
         className="max-w-4xl"
+        footer={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={form.formState.isSubmitting}
+            >
+              Batal
+            </Button>
+            <Button
+              type="submit"
+              form="ticket-form"
+              disabled={form.formState.isSubmitting}
+              aria-busy={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Mengirim..." : "Simpan draft"}
+            </Button>
+          </>
+        }
       >
         {error && (
           <p
@@ -513,7 +632,7 @@ export default function CreateTicketModal({
           </p>
         )}
 
-        <form onSubmit={submit} className="space-y-5">
+        <form id="ticket-form" onSubmit={submit} className="space-y-5">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="ticket-project">Pilih Proyek</Label>
@@ -802,6 +921,129 @@ export default function CreateTicketModal({
                     )}
                   </div>
                 </div>
+              </div>
+            ) : isOperationalFunding ? (
+              <div className="space-y-4 rounded-md border p-4">
+                <div>
+                  <h3 className="font-semibold">Permintaan Dana Operasional</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Permintaan operasional berupa dana dan tidak menggunakan
+                    daftar material atau stok gudang. Tujuan transfer otomatis
+                    menggunakan data rekening pemohon di Profil Saya.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="ticket-operational-request-type">
+                    Keperluan Dana
+                  </Label>
+                  <Controller
+                    control={form.control}
+                    name="operationalRequestType"
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id="ticket-operational-request-type"
+                          className="w-full md:max-w-[calc(50%-0.5rem)]"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="GENERAL">
+                            Dana Operasional
+                          </SelectItem>
+                          <SelectItem value="SURVEY">
+                            Biaya Survei Lapangan
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+                {operationalRequestType === "SURVEY" ? (
+                  <>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-survey-consumption">
+                          Biaya Konsumsi (Rp)
+                        </Label>
+                        <Input
+                          id="ticket-survey-consumption"
+                          type="number"
+                          min="0"
+                          step="1"
+                          inputMode="numeric"
+                          placeholder="0"
+                          aria-invalid={
+                            !!form.formState.errors.surveyConsumptionAmount
+                          }
+                          {...form.register("surveyConsumptionAmount", {
+                            setValueAs: (value) =>
+                              value === "" ? undefined : Number(value),
+                          })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-survey-fuel">
+                          Biaya BBM (Rp)
+                        </Label>
+                        <Input
+                          id="ticket-survey-fuel"
+                          type="number"
+                          min="0"
+                          step="1"
+                          inputMode="numeric"
+                          placeholder="0"
+                          aria-invalid={
+                            !!form.formState.errors.surveyFuelAmount
+                          }
+                          {...form.register("surveyFuelAmount", {
+                            setValueAs: (value) =>
+                              value === "" ? undefined : Number(value),
+                          })}
+                        />
+                      </div>
+                    </div>
+                    {(form.formState.errors.surveyConsumptionAmount ||
+                      form.formState.errors.surveyFuelAmount) && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.surveyConsumptionAmount?.message ??
+                          form.formState.errors.surveyFuelAmount?.message}
+                      </p>
+                    )}
+                    <p className="text-right font-semibold">
+                      Total dana survei: {formatCurrency(operationalRequestedAmount)}
+                    </p>
+                  </>
+                ) : (
+                  <div className="space-y-2 md:max-w-[calc(50%-0.5rem)]">
+                    <Label htmlFor="ticket-operational-amount">
+                      Jumlah Dana Operasional (Rp)
+                    </Label>
+                    <Input
+                      id="ticket-operational-amount"
+                      type="number"
+                      min="1"
+                      step="1"
+                      inputMode="numeric"
+                      placeholder="Masukkan jumlah dana"
+                      aria-invalid={
+                        !!form.formState.errors.operationalAmount
+                      }
+                      {...form.register("operationalAmount", {
+                        setValueAs: (value) =>
+                          value === "" ? undefined : Number(value),
+                      })}
+                    />
+                    {form.formState.errors.operationalAmount && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.operationalAmount.message}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <>
@@ -1261,23 +1503,6 @@ export default function CreateTicketModal({
             </div>
           )}
 
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setOpen(false)}
-              disabled={form.formState.isSubmitting}
-            >
-              Batal
-            </Button>
-            <Button
-              type="submit"
-              disabled={form.formState.isSubmitting}
-              aria-busy={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Mengirim..." : "Simpan draft"}
-            </Button>
-          </div>
         </form>
       </GlobalModal>
     </>

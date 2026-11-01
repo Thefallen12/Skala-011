@@ -39,6 +39,7 @@ export type DOItemSumAggregateOutputType = {
 export type DOItemMinAggregateOutputType = {
   id: string | null
   doId: string | null
+  itemCode: string | null
   itemName: string | null
   qtyOrdered: number | null
   qtyDelivered: number | null
@@ -49,6 +50,7 @@ export type DOItemMinAggregateOutputType = {
 export type DOItemMaxAggregateOutputType = {
   id: string | null
   doId: string | null
+  itemCode: string | null
   itemName: string | null
   qtyOrdered: number | null
   qtyDelivered: number | null
@@ -59,6 +61,7 @@ export type DOItemMaxAggregateOutputType = {
 export type DOItemCountAggregateOutputType = {
   id: number
   doId: number
+  itemCode: number
   itemName: number
   qtyOrdered: number
   qtyDelivered: number
@@ -81,6 +84,7 @@ export type DOItemSumAggregateInputType = {
 export type DOItemMinAggregateInputType = {
   id?: true
   doId?: true
+  itemCode?: true
   itemName?: true
   qtyOrdered?: true
   qtyDelivered?: true
@@ -91,6 +95,7 @@ export type DOItemMinAggregateInputType = {
 export type DOItemMaxAggregateInputType = {
   id?: true
   doId?: true
+  itemCode?: true
   itemName?: true
   qtyOrdered?: true
   qtyDelivered?: true
@@ -101,6 +106,7 @@ export type DOItemMaxAggregateInputType = {
 export type DOItemCountAggregateInputType = {
   id?: true
   doId?: true
+  itemCode?: true
   itemName?: true
   qtyOrdered?: true
   qtyDelivered?: true
@@ -198,6 +204,7 @@ export type DOItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type DOItemGroupByOutputType = {
   id: string
   doId: string
+  itemCode: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -231,6 +238,7 @@ export type DOItemWhereInput = {
   NOT?: Prisma.DOItemWhereInput | Prisma.DOItemWhereInput[]
   id?: Prisma.StringFilter<"DOItem"> | string
   doId?: Prisma.StringFilter<"DOItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"DOItem"> | string | null
   itemName?: Prisma.StringFilter<"DOItem"> | string
   qtyOrdered?: Prisma.FloatFilter<"DOItem"> | number
   qtyDelivered?: Prisma.FloatFilter<"DOItem"> | number
@@ -243,6 +251,7 @@ export type DOItemWhereInput = {
 export type DOItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   doId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrderInput | Prisma.SortOrder
   itemName?: Prisma.SortOrder
   qtyOrdered?: Prisma.SortOrder
   qtyDelivered?: Prisma.SortOrder
@@ -258,6 +267,7 @@ export type DOItemWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DOItemWhereInput[]
   NOT?: Prisma.DOItemWhereInput | Prisma.DOItemWhereInput[]
   doId?: Prisma.StringFilter<"DOItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"DOItem"> | string | null
   itemName?: Prisma.StringFilter<"DOItem"> | string
   qtyOrdered?: Prisma.FloatFilter<"DOItem"> | number
   qtyDelivered?: Prisma.FloatFilter<"DOItem"> | number
@@ -270,6 +280,7 @@ export type DOItemWhereUniqueInput = Prisma.AtLeast<{
 export type DOItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   doId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrderInput | Prisma.SortOrder
   itemName?: Prisma.SortOrder
   qtyOrdered?: Prisma.SortOrder
   qtyDelivered?: Prisma.SortOrder
@@ -288,6 +299,7 @@ export type DOItemScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DOItemScalarWhereWithAggregatesInput | Prisma.DOItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DOItem"> | string
   doId?: Prisma.StringWithAggregatesFilter<"DOItem"> | string
+  itemCode?: Prisma.StringNullableWithAggregatesFilter<"DOItem"> | string | null
   itemName?: Prisma.StringWithAggregatesFilter<"DOItem"> | string
   qtyOrdered?: Prisma.FloatWithAggregatesFilter<"DOItem"> | number
   qtyDelivered?: Prisma.FloatWithAggregatesFilter<"DOItem"> | number
@@ -297,6 +309,7 @@ export type DOItemScalarWhereWithAggregatesInput = {
 
 export type DOItemCreateInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -309,6 +322,7 @@ export type DOItemCreateInput = {
 export type DOItemUncheckedCreateInput = {
   id?: string
   doId: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -319,6 +333,7 @@ export type DOItemUncheckedCreateInput = {
 
 export type DOItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -331,6 +346,7 @@ export type DOItemUpdateInput = {
 export type DOItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   doId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -342,6 +358,7 @@ export type DOItemUncheckedUpdateInput = {
 export type DOItemCreateManyInput = {
   id?: string
   doId: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -351,6 +368,7 @@ export type DOItemCreateManyInput = {
 
 export type DOItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -361,6 +379,7 @@ export type DOItemUpdateManyMutationInput = {
 export type DOItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   doId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -381,6 +400,7 @@ export type DOItemOrderByRelationAggregateInput = {
 export type DOItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   doId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   qtyOrdered?: Prisma.SortOrder
   qtyDelivered?: Prisma.SortOrder
@@ -396,6 +416,7 @@ export type DOItemAvgOrderByAggregateInput = {
 export type DOItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   doId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   qtyOrdered?: Prisma.SortOrder
   qtyDelivered?: Prisma.SortOrder
@@ -406,6 +427,7 @@ export type DOItemMaxOrderByAggregateInput = {
 export type DOItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   doId?: Prisma.SortOrder
+  itemCode?: Prisma.SortOrder
   itemName?: Prisma.SortOrder
   qtyOrdered?: Prisma.SortOrder
   qtyDelivered?: Prisma.SortOrder
@@ -483,6 +505,7 @@ export type DOItemUpdateOneWithoutTicketItemsNestedInput = {
 
 export type DOItemCreateWithoutDoInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -493,6 +516,7 @@ export type DOItemCreateWithoutDoInput = {
 
 export type DOItemUncheckedCreateWithoutDoInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -533,6 +557,7 @@ export type DOItemScalarWhereInput = {
   NOT?: Prisma.DOItemScalarWhereInput | Prisma.DOItemScalarWhereInput[]
   id?: Prisma.StringFilter<"DOItem"> | string
   doId?: Prisma.StringFilter<"DOItem"> | string
+  itemCode?: Prisma.StringNullableFilter<"DOItem"> | string | null
   itemName?: Prisma.StringFilter<"DOItem"> | string
   qtyOrdered?: Prisma.FloatFilter<"DOItem"> | number
   qtyDelivered?: Prisma.FloatFilter<"DOItem"> | number
@@ -542,6 +567,7 @@ export type DOItemScalarWhereInput = {
 
 export type DOItemCreateWithoutTicketItemsInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -553,6 +579,7 @@ export type DOItemCreateWithoutTicketItemsInput = {
 export type DOItemUncheckedCreateWithoutTicketItemsInput = {
   id?: string
   doId: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -578,6 +605,7 @@ export type DOItemUpdateToOneWithWhereWithoutTicketItemsInput = {
 
 export type DOItemUpdateWithoutTicketItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -589,6 +617,7 @@ export type DOItemUpdateWithoutTicketItemsInput = {
 export type DOItemUncheckedUpdateWithoutTicketItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   doId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -598,6 +627,7 @@ export type DOItemUncheckedUpdateWithoutTicketItemsInput = {
 
 export type DOItemCreateManyDoInput = {
   id?: string
+  itemCode?: string | null
   itemName: string
   qtyOrdered: number
   qtyDelivered: number
@@ -607,6 +637,7 @@ export type DOItemCreateManyDoInput = {
 
 export type DOItemUpdateWithoutDoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -617,6 +648,7 @@ export type DOItemUpdateWithoutDoInput = {
 
 export type DOItemUncheckedUpdateWithoutDoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -627,6 +659,7 @@ export type DOItemUncheckedUpdateWithoutDoInput = {
 
 export type DOItemUncheckedUpdateManyWithoutDoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   itemName?: Prisma.StringFieldUpdateOperationsInput | string
   qtyOrdered?: Prisma.FloatFieldUpdateOperationsInput | number
   qtyDelivered?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -668,6 +701,7 @@ export type DOItemCountOutputTypeCountTicketItemsArgs<ExtArgs extends runtime.Ty
 export type DOItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   doId?: boolean
+  itemCode?: boolean
   itemName?: boolean
   qtyOrdered?: boolean
   qtyDelivered?: boolean
@@ -681,6 +715,7 @@ export type DOItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type DOItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   doId?: boolean
+  itemCode?: boolean
   itemName?: boolean
   qtyOrdered?: boolean
   qtyDelivered?: boolean
@@ -692,6 +727,7 @@ export type DOItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type DOItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   doId?: boolean
+  itemCode?: boolean
   itemName?: boolean
   qtyOrdered?: boolean
   qtyDelivered?: boolean
@@ -703,6 +739,7 @@ export type DOItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type DOItemSelectScalar = {
   id?: boolean
   doId?: boolean
+  itemCode?: boolean
   itemName?: boolean
   qtyOrdered?: boolean
   qtyDelivered?: boolean
@@ -710,7 +747,7 @@ export type DOItemSelectScalar = {
   remarks?: boolean
 }
 
-export type DOItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "doId" | "itemName" | "qtyOrdered" | "qtyDelivered" | "unit" | "remarks", ExtArgs["result"]["dOItem"]>
+export type DOItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "doId" | "itemCode" | "itemName" | "qtyOrdered" | "qtyDelivered" | "unit" | "remarks", ExtArgs["result"]["dOItem"]>
 export type DOItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   do?: boolean | Prisma.DeliveryOrderDefaultArgs<ExtArgs>
   ticketItems?: boolean | Prisma.DOItem$ticketItemsArgs<ExtArgs>
@@ -732,6 +769,7 @@ export type $DOItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     doId: string
+    itemCode: string | null
     itemName: string
     qtyOrdered: number
     qtyDelivered: number
@@ -1164,6 +1202,7 @@ export interface Prisma__DOItemClient<T, Null = never, ExtArgs extends runtime.T
 export interface DOItemFieldRefs {
   readonly id: Prisma.FieldRef<"DOItem", 'String'>
   readonly doId: Prisma.FieldRef<"DOItem", 'String'>
+  readonly itemCode: Prisma.FieldRef<"DOItem", 'String'>
   readonly itemName: Prisma.FieldRef<"DOItem", 'String'>
   readonly qtyOrdered: Prisma.FieldRef<"DOItem", 'Float'>
   readonly qtyDelivered: Prisma.FieldRef<"DOItem", 'Float'>

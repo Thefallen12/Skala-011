@@ -33,6 +33,10 @@ export default async function VerifyDeliveryOrderPage({
       receivedAt: true,
       receivedBy: { select: { name: true } },
       receiverName: true,
+      signedAt: true,
+      signedBy: { select: { name: true } },
+      acknowledgedAt: true,
+      acknowledgedBy: { select: { name: true } },
       po: {
         select: {
           poNumber: true,
@@ -45,6 +49,8 @@ export default async function VerifyDeliveryOrderPage({
 
   const isDelivered = deliveryOrder.status === DOStatus.DELIVERED;
   const isPoApproved = deliveryOrder.po?.status === POStatus.APPROVED;
+  const isVerified =
+    Boolean(deliveryOrder.signedAt) && Boolean(deliveryOrder.acknowledgedAt);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-2xl items-center p-4">
@@ -59,15 +65,15 @@ export default async function VerifyDeliveryOrderPage({
         </div>
         <p
           className={`mb-6 rounded-md p-4 font-semibold ${
-            isDelivered
+            isVerified
               ? "bg-emerald-50 text-emerald-800"
               : "bg-amber-50 text-amber-800"
           }`}
           role="status"
         >
-          {isDelivered
-            ? "Delivery Order tercatat telah diterima."
-            : "Delivery Order tercatat pada sistem; status pengiriman belum selesai."}
+          {isVerified
+            ? "Dokumen valid: telah ditandatangani Logistik dan diketahui Keuangan."
+            : "Dokumen belum valid: tanda tangan Logistik dan konfirmasi Keuangan harus lengkap."}
         </p>
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -86,6 +92,26 @@ export default async function VerifyDeliveryOrderPage({
             <dt className="text-sm text-muted-foreground">Tanggal dibuat</dt>
             <dd className="mt-1 font-semibold">
               {deliveryOrder.createdAt.toLocaleDateString("id-ID")}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm text-muted-foreground">
+              Ditandatangani Logistik
+            </dt>
+            <dd className="mt-1 font-semibold">
+              {deliveryOrder.signedBy?.name ?? "Belum ditandatangani"}
+              {deliveryOrder.signedAt
+                ? ` · ${deliveryOrder.signedAt.toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })}`
+                : ""}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm text-muted-foreground">Diketahui Keuangan</dt>
+            <dd className="mt-1 font-semibold">
+              {deliveryOrder.acknowledgedBy?.name ?? "Belum dikonfirmasi"}
+              {deliveryOrder.acknowledgedAt
+                ? ` · ${deliveryOrder.acknowledgedAt.toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })}`
+                : ""}
             </dd>
           </div>
           {deliveryOrder.po && (

@@ -560,6 +560,9 @@ main {
 :root {
   --radius: 10px;
   --background: #f5f7fb;
+  --ambient-background:
+    radial-gradient(ellipse 75% 55% at 0% 0%, rgb(59 130 246 / 9%), transparent 72%),
+    radial-gradient(ellipse 60% 50% at 100% 8%, rgb(249 115 22 / 7%), transparent 74%);
   --foreground: #162338;
   --card: var(--white);
   --card-foreground: #162338;
@@ -620,6 +623,9 @@ main {
 
 .dark {
   --background: #0b1220;
+  --ambient-background:
+    radial-gradient(ellipse 75% 55% at 0% 0%, rgb(37 99 235 / 14%), transparent 72%),
+    radial-gradient(ellipse 60% 50% at 100% 8%, rgb(234 88 12 / 9%), transparent 74%);
   --foreground: #f1f5f9;
   --card: #142036;
   --card-foreground: #f1f5f9;
@@ -683,6 +689,8 @@ main {
   }
   body {
     @apply bg-background text-foreground;
+    background-image: var(--ambient-background);
+    background-attachment: fixed;
   }
   select {
     color-scheme: light;
@@ -776,6 +784,30 @@ main {
 
   .sales-overview select{
     @apply pr-9!;
+  }
+
+  .app-data-table {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .app-data-table thead {
+    @apply bg-muted/50 text-muted-foreground;
+  }
+
+  .app-data-table th {
+    @apply h-11 whitespace-nowrap px-3 text-left align-middle font-semibold sm:px-4;
+  }
+
+  .app-data-table tbody tr {
+    @apply border-b border-border transition-colors hover:bg-muted/40;
+  }
+
+  .app-data-table tbody tr:last-child {
+    @apply border-b-0;
+  }
+
+  .app-data-table td {
+    @apply align-middle p-3 sm:p-4;
   }
 
 }

@@ -1,13 +1,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 import type { ApexOptions } from "apexcharts";
 import {
-  ClipboardCheck,
+  ArrowDownLeft,
+  ArrowDownToLine,
+  ArrowUpRight,
   Clock3,
+  ExternalLink,
+  ReceiptText,
   Wallet,
-  WalletCards,
 } from "lucide-react";
+import type { FinanceAccountOption } from "@/app/components/apps/finance/IncomingFundModal";
 import { Button } from "@/components/ui/button";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -15,18 +20,32 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export type FinanceDashboardMonth = {
   key: string;
   label: string;
-  paymentCount: number;
-  totalPaid: number;
+  inflow: number;
+  outflow: number;
 };
 
-export type FinanceDashboardCategory = {
-  kind: string;
+export type FinanceDashboardTransaction = {
+  id: string;
+  createdAt: string;
+  type: "IN" | "OUT";
+  category: string;
+  sourceDesc: string;
+  paymentMethod: string;
+  counterparty: string;
+  accountOrDestination: string;
+  projectName: string | null;
+  amount: number;
+  proofUrl: string | null;
+};
+
+export type FinanceExpenseCategory = {
+  kind: "ticket" | "purchase-order" | "direct-material";
   label: string;
-  paymentCount: number;
-  totalPaid: number;
+  amount: number;
 };
 
-const colors = ["#f28c1b", "#14b8a6", "#8b5cf6", "#38bdf8"];
+const colors = ["#3b82f6", "#60a5fa", "#93c5fd"];
+
 const compactCurrency = (value: number) =>
   `Rp ${new Intl.NumberFormat("id-ID", {
     notation: "compact",
@@ -40,245 +59,384 @@ const currency = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
+function escapeCsv(value: string | number): string {
+  const text = String(value).replaceAll('"', '""');
+  return `"${text}"`;
+}
+
 export default function FinanceDashboard({
   reviewCount,
   pendingPaymentCount,
   outstandingAmount,
+  accounts,
+  transactions,
   months,
-  categories,
+  expenseCategories,
+  monthInflow,
+  monthOutflow,
   onNavigate,
+  onOpenIncoming,
 }: {
   reviewCount: number;
   pendingPaymentCount: number;
   outstandingAmount: number;
+  accounts: FinanceAccountOption[];
+  transactions: FinanceDashboardTransaction[];
   months: FinanceDashboardMonth[];
-  categories: FinanceDashboardCategory[];
-  onNavigate: (tab: "check" | "payment" | "history") => void;
+  expenseCategories: FinanceExpenseCategory[];
+  monthInflow: number;
+  monthOutflow: number;
+  onNavigate: (
+    tab: "check" | "payment" | "history" | "ledger",
+    cashflowType?: "IN" | "OUT" | null,
+  ) => void;
+  onOpenIncoming: () => void;
 }) {
-  const totalPaid = months.reduce((total, month) => total + month.totalPaid, 0);
-  const totalTransactions = months.reduce(
-    (total, month) => total + month.paymentCount,
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+  const chartTextColor = isDark ? "#a7b5c8" : "#64748b";
+  const totalBalance = accounts.reduce(
+    (total, account) => total + account.balance,
     0,
   );
-  const populatedCategories = categories.filter(
-    (category) => category.paymentCount > 0,
+  const recentTransactions = transactions.slice(0, 5);
+  const populatedExpenseCategories = expenseCategories.filter(
+    (category) => category.amount > 0,
   );
-
+  const expenseTotal = populatedExpenseCategories.reduce(
+    (total, category) => total + category.amount,
+    0,
+  );
+  const hasTrend = months.some((month) => month.inflow > 0 || month.outflow > 0);
+  const trendSeries: ApexAxisChartSeries = [
+    {
+      name: "Dana Masuk (Inflow)",
+      type: "area",
+      data: months.map((month) => month.inflow),
+    },
+    {
+      name: "Dana Keluar (Outflow)",
+      type: "area",
+      data: months.map((month) => month.outflow),
+    },
+  ];
   const trendOptions: ApexOptions = {
     chart: {
-      type: "line",
+      type: "area",
       toolbar: { show: false },
       fontFamily: "inherit",
-      foreColor: "#8da6c4",
+      foreColor: chartTextColor,
       zoom: { enabled: false },
+      background: "transparent",
     },
-    colors: [colors[2], colors[0]],
+    colors: ["#3b82f6", "#f97345"],
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: [3, 3] },
-    markers: { size: 3, hover: { size: 5 } },
-    grid: { borderColor: "rgba(141,166,196,0.18)", strokeDashArray: 4 },
+    fill: {
+      type: "gradient",
+      gradient: {
+        opacityFrom: 0.55,
+        opacityTo: 0.08,
+        stops: [0, 90, 100],
+      },
+    },
+    grid: {
+      borderColor: isDark
+        ? "rgba(148,163,184,0.16)"
+        : "rgba(100,116,139,0.2)",
+      strokeDashArray: 4,
+    },
     xaxis: {
       categories: months.map((month) => month.label),
       axisBorder: { show: false },
       axisTicks: { show: false },
     },
-    yaxis: [
-      {
-        seriesName: "Nilai pembayaran",
-        title: { text: "Nilai (Rp)" },
-        labels: { formatter: compactCurrency },
-      },
-      {
-        seriesName: "Jumlah transaksi",
-        opposite: true,
-        min: 0,
-        forceNiceScale: true,
-        title: { text: "Transaksi" },
-        labels: { formatter: (value) => `${Math.round(value)}` },
-      },
-    ],
+    yaxis: {
+      min: 0,
+      labels: { formatter: compactCurrency },
+    },
     tooltip: {
       shared: true,
       intersect: false,
-      theme: "dark",
-      y: [
-        { formatter: currency },
-        { formatter: (value) => `${value} transaksi` },
-      ],
+      theme: isDark ? "dark" : "light",
+      y: { formatter: currency },
     },
-    legend: { position: "top", horizontalAlign: "left" },
+    legend: { position: "top", horizontalAlign: "right" },
   };
-
-  const trendSeries: ApexAxisChartSeries = [
-    {
-      name: "Nilai pembayaran",
-      type: "line",
-      data: months.map((month) => month.totalPaid),
-    },
-    {
-      name: "Jumlah transaksi",
-      type: "line",
-      data: months.map((month) => month.paymentCount),
-    },
-  ];
-
   const distributionOptions: ApexOptions = {
-    chart: { type: "donut", fontFamily: "inherit", foreColor: "#8da6c4" },
+    chart: {
+      type: "radialBar",
+      fontFamily: "inherit",
+      foreColor: chartTextColor,
+      background: "transparent",
+    },
     colors,
-    labels: populatedCategories.map((category) => category.label),
-    dataLabels: { enabled: false },
-    legend: { show: false },
-    stroke: { colors: ["#112d50"] },
+    labels: populatedExpenseCategories.map((category) => category.label),
     plotOptions: {
-      pie: {
-        donut: {
-          size: "70%",
-          labels: {
+      radialBar: {
+        startAngle: -110,
+        endAngle: 250,
+        hollow: { size: "28%", background: "transparent" },
+        track: {
+          background: isDark
+            ? "rgba(148,163,184,0.12)"
+            : "rgba(100,116,139,0.16)",
+          margin: 5,
+          strokeWidth: "90%",
+        },
+        dataLabels: {
+          name: { show: false },
+          value: { show: false },
+          total: {
             show: true,
-            name: { show: true, offsetY: 18 },
-            value: {
-              show: true,
-              offsetY: -10,
-              formatter: (value) => `${value} transaksi`,
-            },
-            total: {
-              show: true,
-              label: "Total transaksi",
-              formatter: () => `${totalTransactions}`,
-            },
+            label: "Total pengeluaran",
+            color: chartTextColor,
+            formatter: () => compactCurrency(expenseTotal),
           },
         },
       },
     },
+    stroke: { lineCap: "round" },
+    legend: { show: false },
     tooltip: {
-      y: { formatter: (value) => `${value} transaksi` },
+      y: {
+        formatter: (percentage, options) => {
+          const index = options.seriesIndex;
+          const category = populatedExpenseCategories[index];
+          return category
+            ? `${currency(category.amount)} (${percentage.toFixed(1)}%)`
+            : `${percentage.toFixed(1)}%`;
+        },
+      },
     },
   };
+  const expenseSeries =
+    expenseTotal > 0
+      ? populatedExpenseCategories.map((category) =>
+          Math.round((category.amount / expenseTotal) * 1000) / 10,
+        )
+      : [];
 
-  const metricCards = [
+  const downloadReport = () => {
+    const header = [
+      "Tanggal",
+      "Tipe",
+      "Deskripsi",
+      "Metode",
+      "Pengirim",
+      "Akun",
+      "Proyek",
+      "Nominal",
+    ];
+    const rows = transactions.map((transaction) => [
+      new Date(transaction.createdAt).toLocaleString("id-ID"),
+      transaction.type === "IN" ? "Dana Masuk" : "Pengeluaran",
+      `${transaction.category} · ${transaction.sourceDesc}`,
+      transaction.paymentMethod,
+      transaction.counterparty,
+      transaction.accountOrDestination,
+      transaction.projectName ?? "",
+      transaction.amount,
+    ]);
+    const csv = [header, ...rows]
+      .map((row) => row.map(escapeCsv).join(","))
+      .join("\r\n");
+    const blob = new Blob(["\uFEFF", csv], {
+      type: "text/csv;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `laporan-keuangan-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const summaryCards = [
     {
-      label: "Perlu Diperiksa",
-      value: `${reviewCount}`,
-      description: "PO menunggu pemeriksaan Keuangan",
-      icon: ClipboardCheck,
-      color: "text-orange-700 dark:text-orange-300",
-      style: "border-orange-200 bg-orange-50 text-orange-950 hover:bg-orange-100 dark:border-orange-800 dark:bg-orange-950/40 dark:text-orange-100 dark:hover:bg-orange-950/60",
-      tab: "check" as const,
-    },
-    {
-      label: "Antrean Pembayaran",
-      value: `${pendingPaymentCount}`,
-      description: "Tagihan yang masih perlu dicairkan",
-      icon: Clock3,
-      color: "text-amber-700 dark:text-amber-300",
-      style: "border-amber-200 bg-amber-50 text-amber-950 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100 dark:hover:bg-amber-950/60",
-      tab: "payment" as const,
-    },
-    {
-      label: "Sisa Tagihan",
-      value: compactCurrency(outstandingAmount),
-      description: "Nilai pembayaran yang masih terbuka",
+      title: "Total Saldo (All Accounts)",
+      value: currency(totalBalance),
+      note: `${accounts.length} rekening / buku kas`,
       icon: Wallet,
-      color: "text-teal-700 dark:text-teal-300",
-      style: "border-teal-200 bg-teal-50 text-teal-950 hover:bg-teal-100 dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-100 dark:hover:bg-teal-950/60",
-      tab: "payment" as const,
+      cashflowType: null,
+      tone:
+        "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-400/20 dark:bg-blue-500/10 dark:text-blue-300",
     },
     {
-      label: "Dibayarkan · 12 Bulan",
-      value: compactCurrency(totalPaid),
-      description: `${totalTransactions} transaksi berhasil`,
-      icon: WalletCards,
-      color: "text-violet-700 dark:text-violet-300",
-      style: "border-violet-200 bg-violet-50 text-violet-950 hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-100 dark:hover:bg-violet-950/60",
-      tab: "history" as const,
+      title: "Total Pemasukan (Inflow)",
+      value: currency(monthInflow),
+      note: "Bulan berjalan",
+      icon: ArrowDownLeft,
+      cashflowType: "IN",
+      tone:
+        "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-400/20 dark:bg-amber-500/10 dark:text-amber-300",
     },
-  ];
+    {
+      title: "Total Pengeluaran (Outflow)",
+      value: currency(monthOutflow),
+      note: "Bulan berjalan",
+      icon: ArrowUpRight,
+      cashflowType: "OUT",
+      tone:
+        "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-400/20 dark:bg-rose-500/10 dark:text-rose-300",
+    },
+  ] as const;
 
   return (
-    <div className="space-y-5">
-      <section
-        className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4"
-        aria-label="Ringkasan keuangan"
-      >
-        {metricCards.map((metric) => {
-          const Icon = metric.icon;
+    <section className="space-y-4 rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-sm sm:p-6">
+      <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Finance Hub &amp; Arus Kas
+          </h1>
+          <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+            Analisis arus kas dan buku bank. Dana keluar hanya diproses untuk
+            permintaan atau tagihan yang tercatat dan menunggu pembayaran.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            onClick={onOpenIncoming}
+            className="bg-secondary text-secondary-foreground hover:bg-secondaryemphasis"
+          >
+            <ArrowDownLeft className="mr-2 size-4" aria-hidden="true" />
+            Input Dana Masuk
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={downloadReport}
+            disabled={transactions.length === 0}
+            className="border-border bg-transparent text-foreground hover:bg-muted hover:text-foreground"
+          >
+            <ArrowDownToLine className="mr-2 size-4" aria-hidden="true" />
+            Unduh Laporan
+          </Button>
+        </div>
+      </header>
+
+      <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+        {summaryCards.map((item) => {
+          const Icon = item.icon;
           return (
-            <Button
-              key={metric.label}
+            <button
               type="button"
-              variant="ghost"
-              onClick={() => onNavigate(metric.tab)}
-              className={`h-auto min-h-28 justify-start rounded-lg border p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${metric.style}`}
+              key={item.title}
+              onClick={() => onNavigate("ledger", item.cashflowType)}
+              aria-label={`Buka buku kas: ${item.title}`}
+              className={`min-w-0 rounded-xl border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${item.tone}`}
             >
-              <span className="flex w-full min-w-0 items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-black/5 dark:bg-black/20">
-                  <Icon className={`size-5 ${metric.color}`} aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className={`block truncate text-sm font-medium ${metric.color}`}>
-                    {metric.label}
-                  </span>
-                  <span className="mt-1 block truncate text-2xl font-bold tabular-nums text-foreground">
-                    {metric.value}
-                  </span>
-                  <span className="mt-1 block truncate text-xs text-muted-foreground">
-                    {metric.description}
-                  </span>
-                </span>
-              </span>
-            </Button>
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-medium text-foreground">{item.title}</p>
+                <Icon className="size-5 shrink-0" aria-hidden="true" />
+              </div>
+              <p className="mt-2 truncate text-xl font-bold tabular-nums text-foreground sm:text-2xl">
+                {item.value}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">{item.note}</p>
+            </button>
           );
         })}
-      </section>
+        <button
+          type="button"
+          onClick={() => onNavigate("history")}
+          aria-label="Buka riwayat dan bukti transfer"
+          className="min-w-0 rounded-xl border border-violet-200 bg-violet-50 p-4 text-left text-violet-900 transition hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-200 dark:hover:bg-violet-500/15"
+        >
+          <span className="flex items-start justify-between gap-3">
+            <span className="text-sm font-medium text-violet-800 dark:text-slate-300">
+              Hutang / Sisa Tagihan
+            </span>
+            <Clock3 className="size-5 shrink-0 text-violet-300" aria-hidden="true" />
+          </span>
+          <span className="mt-2 block truncate text-xl font-bold tabular-nums text-foreground sm:text-2xl">
+            {currency(outstandingAmount)}
+          </span>
+          <span className="mt-1 block text-xs text-muted-foreground">
+            Dibayar bertahap melalui DP, Termin, atau Pelunasan
+          </span>
+        </button>
+      </div>
 
-      <section className="grid gap-4 xl:grid-cols-12">
-        <article className="overflow-hidden rounded-lg border border-border bg-card xl:col-span-8">
-          <header className="border-b border-border px-5 py-4">
-            <h2 className="font-semibold">Tren Pembayaran</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Nilai pencairan dan jumlah transaksi selama 12 bulan terakhir
-            </p>
+      <div className="grid gap-4 xl:grid-cols-12">
+        <article className="overflow-hidden rounded-xl border border-border bg-card xl:col-span-7">
+          <header className="flex flex-wrap items-start justify-between gap-2 border-b border-border px-4 py-3 sm:px-5">
+            <div>
+              <h2 className="font-semibold">Tren Arus Kas (Inflow vs Outflow)</h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Pergerakan dana selama enam bulan terakhir
+              </p>
+            </div>
+            <div className="flex gap-4 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-blue-400" />
+                Dana Masuk
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-orange-400" />
+                Dana Keluar
+              </span>
+            </div>
           </header>
-          {totalTransactions > 0 ? (
-            <div className="p-3 sm:p-5">
+          {hasTrend ? (
+            <div className="px-2 py-3 sm:px-4">
               <Chart
                 options={trendOptions}
                 series={trendSeries}
-                type="line"
-                height={320}
+                type="area"
+                height={230}
                 width="100%"
               />
             </div>
           ) : (
-            <p className="flex min-h-[320px] items-center justify-center px-6 text-center text-sm text-muted-foreground">
-              Belum ada pembayaran pada periode 12 bulan terakhir.
+            <p className="flex min-h-[230px] items-center justify-center px-6 text-center text-sm text-muted-foreground">
+              Belum ada arus kas pada periode enam bulan terakhir.
             </p>
           )}
+          <p className="border-t border-border px-5 py-3 text-xs text-muted-foreground">
+            Antrean:{" "}
+            <button
+              type="button"
+              onClick={() => onNavigate("check")}
+              className="font-semibold text-primary hover:underline"
+            >
+              {reviewCount} PO perlu diperiksa
+            </button>
+            <span className="px-2 text-muted-foreground">·</span>
+            <button
+              type="button"
+              onClick={() => onNavigate("payment")}
+              className="font-semibold text-secondary hover:underline"
+            >
+              {pendingPaymentCount} pembayaran menunggu
+            </button>
+            <span className="px-2 text-muted-foreground">·</span>
+            Sisa tagihan {compactCurrency(outstandingAmount)}
+          </p>
         </article>
 
-        <article className="overflow-hidden rounded-lg border border-border bg-card xl:col-span-4">
-          <header className="border-b border-border px-5 py-4">
-            <h2 className="font-semibold">Distribusi Pembayaran</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Berdasarkan jenis transaksi · 12 bulan terakhir
+        <article className="overflow-hidden rounded-xl border border-border bg-card xl:col-span-5">
+          <header className="border-b border-border px-4 py-3 sm:px-5">
+            <h2 className="font-semibold">Distribusi Pengeluaran</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Tiket, PO, dan Belanja Material Langsung yang sudah dibayar
             </p>
           </header>
-          {totalTransactions > 0 ? (
+          {expenseSeries.length ? (
             <>
               <Chart
                 options={distributionOptions}
-                series={populatedCategories.map(
-                  (category) => category.paymentCount,
-                )}
-                type="donut"
-                height={230}
+                series={expenseSeries}
+                type="radialBar"
+                height={220}
                 width="100%"
               />
-              <ul className="space-y-3 px-5 pb-5">
-                {populatedCategories.map((category, index) => (
+              <ul className="grid gap-x-4 gap-y-2 px-4 pb-4 sm:grid-cols-2">
+                {populatedExpenseCategories.map((category, index) => (
                   <li
                     key={category.kind}
-                    className="flex items-center justify-between gap-3 text-sm"
+                    className="flex min-w-0 items-center justify-between gap-2 text-xs"
                   >
                     <span className="flex min-w-0 items-center gap-2">
                       <span
@@ -286,27 +444,147 @@ export default function FinanceDashboard({
                         style={{ backgroundColor: colors[index % colors.length] }}
                         aria-hidden="true"
                       />
-                      <span className="truncate">{category.label}</span>
+                      <span className="truncate text-foreground">
+                        {category.label}
+                      </span>
                     </span>
-                    <span className="shrink-0 text-right">
-                      <span className="block font-medium tabular-nums">
-                        {category.paymentCount} transaksi
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {compactCurrency(category.totalPaid)}
-                      </span>
+                    <span className="shrink-0 font-medium tabular-nums text-foreground">
+                      {compactCurrency(category.amount)}
                     </span>
                   </li>
                 ))}
               </ul>
             </>
           ) : (
-            <p className="flex min-h-[320px] items-center justify-center px-6 text-center text-sm text-muted-foreground">
-              Belum ada data pembayaran untuk ditampilkan.
+            <p className="flex min-h-[280px] items-center justify-center px-6 text-center text-sm text-muted-foreground">
+              Belum ada pembayaran lunas dari Tiket, PO, atau Belanja Material Langsung.
             </p>
           )}
         </article>
-      </section>
-    </div>
+      </div>
+
+      <article className="overflow-hidden rounded-xl border border-border bg-card">
+        <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-5">
+          <div className="flex items-center gap-2">
+            <ReceiptText className="size-4 text-blue-300" aria-hidden="true" />
+            <div>
+              <h2 className="font-semibold">Daftar Transaksi Terbaru (Arus Kas)</h2>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Menampilkan hingga lima dari 200 transaksi terbaru
+              </p>
+            </div>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => onNavigate("history")}
+            className="shrink-0 text-primary hover:bg-muted hover:text-primary"
+          >
+            Riwayat pembayaran
+            <ExternalLink className="ml-1 size-3.5" aria-hidden="true" />
+          </Button>
+        </header>
+        <div className="overflow-x-auto">
+          <table className="app-data-table w-full min-w-[760px] text-left text-xs sm:text-sm">
+            <thead className="bg-muted/70 text-muted-foreground">
+              <tr>
+                <th className="px-4 py-2.5 font-medium">Tanggal &amp; Waktu</th>
+                <th className="px-4 py-2.5 font-medium">Deskripsi &amp; Kategori</th>
+                <th className="px-4 py-2.5 font-medium">Metode / Termin &amp; Bukti</th>
+                <th className="px-4 py-2.5 font-medium">Pihak &amp; Rekening Tujuan</th>
+                <th className="px-4 py-2.5 text-right font-medium">Status &amp; Jumlah</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {recentTransactions.map((transaction) => (
+                <tr
+                  key={`${transaction.type}-${transaction.id}`}
+                  className="text-foreground"
+                >
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <span className="block text-foreground">
+                      {new Date(transaction.createdAt).toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="mt-0.5 block text-muted-foreground">
+                      {new Date(transaction.createdAt).toLocaleTimeString("id-ID", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </td>
+                  <td className="max-w-[280px] px-4 py-3">
+                    <span className="block truncate font-medium text-foreground">
+                      {transaction.sourceDesc}
+                    </span>
+                    <span className="mt-0.5 block truncate text-muted-foreground">
+                      {transaction.projectName || transaction.category}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <span className="block">
+                      {transaction.paymentMethod}
+                    </span>
+                    {transaction.proofUrl && (
+                      <a
+                        href={transaction.proofUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-1 inline-flex items-center gap-1 text-blue-300 hover:underline"
+                      >
+                        <ExternalLink className="size-3" aria-hidden="true" />
+                        Lihat bukti
+                      </a>
+                    )}
+                  </td>
+                  <td className="max-w-[220px] px-4 py-3">
+                    <span className="block truncate">
+                      {transaction.counterparty}
+                    </span>
+                    <span className="mt-0.5 block truncate text-muted-foreground">
+                      {transaction.accountOrDestination}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-right">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${
+                        transaction.type === "IN"
+                          ? "bg-emerald-500/15 text-emerald-300"
+                          : "bg-rose-500/15 text-rose-300"
+                      }`}
+                    >
+                      {transaction.type === "IN" ? (
+                        <ArrowDownLeft className="size-3" aria-hidden="true" />
+                      ) : (
+                        <ArrowUpRight className="size-3" aria-hidden="true" />
+                      )}
+                      {transaction.type === "IN" ? "Masuk" : "Keluar"}
+                    </span>
+                    <span className="mt-1 block font-semibold tabular-nums text-foreground">
+                      {transaction.type === "IN" ? "+" : "-"}
+                      {currency(transaction.amount)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {recentTransactions.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-4 py-10 text-center text-muted-foreground"
+                  >
+                    Belum ada transaksi arus kas.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
   );
 }

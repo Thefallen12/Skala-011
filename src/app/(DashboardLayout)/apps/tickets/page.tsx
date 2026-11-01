@@ -2,15 +2,10 @@ import TicketsApp from "@/app/components/apps/tickets";
 import CreateTicketModal from "@/app/components/apps/tickets/CreateTicketModal";
 import BreadcrumbComp from "../../layout/shared/breadcrumb/BreadcrumbComp";
 import type { Metadata } from "next";
-import type { Prisma } from "@/generated/prisma/client";
-import {
-  PaymentStatus,
-  TicketStatus,
-  TicketType,
-  UserRole,
-} from "@/generated/prisma/enums";
+import { PaymentStatus, UserRole } from "@/generated/prisma/enums";
 import { auth } from "../../../../../auth";
 import { prisma } from "@/lib/prisma";
+import { getTicketPageVisibilityWhere } from "@/lib/ticket-visibility";
 import type { TicketRow } from "../../types/ticket";
 import { redirect } from "next/navigation";
 export const metadata: Metadata = {
@@ -29,9 +24,9 @@ const BCrumb = [
 const Tickets = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ openSheet?: string }>;
+  searchParams: Promise<{ openSheet?: string; filter?: string }>;
 }) => {
-  const { openSheet } = await searchParams;
+  const { openSheet, filter } = await searchParams;
   const session = await auth();
   if (!session?.user) {
     redirect("/auth/login");
@@ -40,87 +35,24 @@ const Tickets = async ({
     redirect("/apps/logistics");
   }
 
-  let where: Prisma.TicketWhereInput;
-  const requesterDraft: Prisma.TicketWhereInput = {
-    status: TicketStatus.DRAFT,
-    requesterId: session.user.id,
-  };
-  switch (session.user.role) {
-    case UserRole.DIRECTOR:
-      where = {
-        OR: [
-          { status: TicketStatus.PENDING_DIRECTOR },
-          { status: TicketStatus.COMPLETED },
-          requesterDraft,
-        ],
-      };
-      break;
-    case UserRole.DEPUTY_DIRECTOR:
-      where = {
-        OR: [
-          {
-            status: TicketStatus.COMPLETED,
-            auditLogs: {
-              some: { action: "FINANCE_PAYMENT_COMPLETED" },
-            },
-          },
-          requesterDraft,
-        ],
-      };
-      break;
-    case UserRole.KOORDINATOR:
-      where = {
-        OR: [
-          { status: TicketStatus.PENDING_DIRECTOR },
-          requesterDraft,
-        ],
-      };
-      break;
-    case UserRole.FINANCE:
-      where = {
-        OR: [
-          { status: TicketStatus.WAITING_FINANCE_PAYMENT },
-          { status: TicketStatus.PROCESSED_FINANCE },
-          {
-            status: TicketStatus.COMPLETED,
-            OR: [
-              { type: { in: [TicketType.COST, TicketType.OPERATIONAL] } },
-              { type: TicketType.MATERIAL, transferReceiptUrl: { not: null } },
-            ],
-          },
-          requesterDraft,
-        ],
-      };
-      break;
-    case UserRole.LOGISTICS:
-      where = {
-        OR: [
-          { status: TicketStatus.PROCESSED_LOGISTIC },
-          { status: TicketStatus.ASSIGNED_TO_MOVER },
-          { status: TicketStatus.IN_TRANSIT },
-          {
-            status: TicketStatus.WAITING_FINANCE_PAYMENT,
-            type: TicketType.MATERIAL,
-            purchaseReceiptUrl: { not: null },
-          },
-          { status: TicketStatus.COMPLETED, type: TicketType.MATERIAL },
-          requesterDraft,
-        ],
-      };
-      break;
-    case UserRole.ADMINISTRATIONS:
-      where = {};
-      break;
-    default:
-      where = { requesterId: session.user.id };
-  }
+  const where = getTicketPageVisibilityWhere(
+    session.user.role,
+    session.user.id,
+  );
 
   const [tickets, projects, stockItems, movers] = await Promise.all([
     prisma.ticket.findMany({
       where,
       orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
       include: {
-        requester: { select: { name: true } },
+        requester: {
+          select: {
+            name: true,
+            bankName: true,
+            bankAccountName: true,
+            bankAccountNumber: true,
+          },
+        },
         project: { select: { title: true, kelompokTani: true } },
         items: {
           select: {
@@ -153,7 +85,25 @@ const Tickets = async ({
             status: true,
             createdAt: true,
             paidAt: true,
-            items: { select: { totalPrice: true } },
+            vendorInvoiceUrl: true,
+            vendorPoSentAt: true,
+            includeTax: true,
+            items: {
+              orderBy: { id: "asc" },
+              select: {
+                itemCode: true,
+                itemName: true,
+                quantity: true,
+                unit: true,
+                unitPrice: true,
+                totalPrice: true,
+              },
+            },
+            invoices: {
+              orderBy: { createdAt: "desc" },
+              take: 1,
+              select: { id: true, documentUrl: true },
+            },
             paymentTransactions: {
               where: { status: PaymentStatus.PAID },
               orderBy: { createdAt: "desc" },
@@ -239,6 +189,12 @@ const Tickets = async ({
       : Promise.resolve([]),
   ]);
 
+  const canViewPaymentDetails =
+    session.user.role === UserRole.FINANCE ||
+    session.user.role === UserRole.DIRECTOR ||
+    session.user.role === UserRole.ADMINISTRATIONS;
+  const canViewTicketPaymentDetails = (requesterId: string) =>
+    canViewPaymentDetails || requesterId === session.user.id;
   const ticketRows: TicketRow[] = tickets.map((ticket) => ({
     id: ticket.id,
     ticketNumber: ticket.ticketNumber,
@@ -262,29 +218,17 @@ const Tickets = async ({
     purchaseReceiptUrl: ticket.purchaseReceiptUrl,
     transferReceiptUrl: ticket.transferReceiptUrl,
     deliveryReceiptUrl: ticket.deliveryReceiptUrl,
-    recipientName:
-      session.user.role === UserRole.FINANCE ||
-      session.user.role === UserRole.DIRECTOR ||
-      session.user.role === UserRole.ADMINISTRATIONS ||
-      ticket.requesterId === session.user.id
-        ? ticket.recipientName
-        : null,
-    bankName:
-      session.user.role === UserRole.FINANCE ||
-      session.user.role === UserRole.DIRECTOR ||
-      session.user.role === UserRole.ADMINISTRATIONS ||
-      ticket.requesterId === session.user.id
-        ? ticket.bankName
-        : null,
-    accountNumber:
-      session.user.role === UserRole.FINANCE ||
-      session.user.role === UserRole.DIRECTOR ||
-      session.user.role === UserRole.ADMINISTRATIONS ||
-      ticket.requesterId === session.user.id
-        ? ticket.accountNumber
-        : null,
+    recipientName: canViewTicketPaymentDetails(ticket.requesterId)
+      ? ticket.recipientName ?? ticket.requester.bankAccountName
+      : null,
+    bankName: canViewTicketPaymentDetails(ticket.requesterId)
+      ? ticket.bankName ?? ticket.requester.bankName
+      : null,
+    accountNumber: canViewTicketPaymentDetails(ticket.requesterId)
+      ? ticket.accountNumber ?? ticket.requester.bankAccountNumber
+      : null,
     createdAt: ticket.createdAt.toISOString(),
-    requester: ticket.requester,
+    requester: { name: ticket.requester.name },
     project: ticket.project,
     items: ticket.items.map((item) => ({
       ...item,
@@ -297,9 +241,29 @@ const Tickets = async ({
       createdAt: audit.createdAt.toISOString(),
     })),
     purchaseOrders: ticket.purchaseOrders.map((purchaseOrder) => ({
-      ...purchaseOrder,
+      publicCode: purchaseOrder.publicCode,
+      poNumber: purchaseOrder.poNumber,
+      vendorName: purchaseOrder.vendorName,
+      paymentBankName: purchaseOrder.paymentBankName,
+      paymentAccountNumber: purchaseOrder.paymentAccountNumber,
+      paymentAccountName: purchaseOrder.paymentAccountName,
+      status: purchaseOrder.status,
       createdAt: purchaseOrder.createdAt.toISOString(),
       paidAt: purchaseOrder.paidAt?.toISOString() ?? null,
+      vendorInvoiceUrl:
+        purchaseOrder.vendorInvoiceUrl ??
+        purchaseOrder.invoices[0]?.documentUrl ??
+        null,
+      vendorPoSentAt: purchaseOrder.vendorPoSentAt?.toISOString() ?? null,
+      invoiceId: purchaseOrder.invoices[0]?.id ?? null,
+      includeTax: purchaseOrder.includeTax,
+      items: purchaseOrder.items.map((item) => ({
+        itemCode: item.itemCode,
+        itemName: item.itemName,
+        quantity: Number(item.quantity),
+        unit: item.unit,
+        unitPrice: Number(item.unitPrice),
+      })),
     })),
     directStockPurchases: ticket.directStockPurchases.map((purchase) => ({
       ...purchase,
@@ -367,6 +331,7 @@ const Tickets = async ({
         projects={projects}
         role={session.user.role}
         initialOpenSheet={openSheet}
+        initialFilter={filter}
       />
     </>
   );

@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
 import { Autoplay, FreeMode } from "swiper/modules";
-import type { Swiper as SwiperInstance } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import {
@@ -119,41 +117,34 @@ const DashboardCardLink = ({
 };
 
 const TopCards = ({ cards }: { cards: readonly DashboardCard[] }) => {
-  const swiperRef = useRef<SwiperInstance | null>(null);
-
   return (
-    <>
-      <div className="grid w-full min-w-0 grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:hidden">
-        {cards.map((card, index) => (
-          <DashboardCardLink card={card} index={index} key={card.title} />
-        ))}
-      </div>
-      <Swiper
-        slidesPerView={4}
-        spaceBetween={18}
-        loop={cards.length > 4}
-        freeMode
-        grabCursor
-        speed={5000}
-        autoplay={{ delay: 0, disableOnInteraction: false }}
-        modules={[Autoplay, FreeMode]}
-        breakpoints={{
-          1200: { slidesPerView: 5, spaceBetween: 16 },
-        }}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-        onPointerEnter={() => swiperRef.current?.autoplay.pause()}
-        onPointerLeave={() => swiperRef.current?.autoplay.resume()}
-        className="mySwiper hidden min-w-0 lg:block"
-      >
-        {cards.map((card, index) => (
-          <SwiperSlide key={card.title} className="h-auto">
-            <DashboardCardLink card={card} index={index} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
+    <Swiper
+      slidesPerView={1.15}
+      spaceBetween={12}
+      loop={cards.length > 5}
+      freeMode
+      grabCursor
+      speed={5000}
+      autoplay={{
+        delay: 1,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: false,
+      }}
+      modules={[Autoplay, FreeMode]}
+      breakpoints={{
+        480: { slidesPerView: 2, spaceBetween: 12 },
+        768: { slidesPerView: 3, spaceBetween: 16 },
+        1024: { slidesPerView: 4, spaceBetween: 16 },
+        1200: { slidesPerView: 5, spaceBetween: 16 },
+      }}
+      className="mySwiper w-full min-w-0"
+    >
+      {cards.map((card, index) => (
+        <SwiperSlide key={card.title} className="h-auto">
+          <DashboardCardLink card={card} index={index} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 };
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { TicketActionResult } from "@/app/actions/tickets";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
+import type { FinanceAccountOption } from "@/app/components/apps/finance/IncomingFundModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GlobalModal } from "@/components/ui/global-modal";
@@ -41,6 +42,7 @@ export default function PaymentModal({
   open,
   onOpenChange,
   target,
+  accounts,
   onPay,
   cloudinaryCloudName,
   cloudinaryApiKey,
@@ -48,6 +50,7 @@ export default function PaymentModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   target: PaymentModalTarget | null;
+  accounts: FinanceAccountOption[];
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
   onPay: (
@@ -55,6 +58,7 @@ export default function PaymentModal({
     transferDestination: string,
     paymentType: PaymentType,
     amount: number,
+    financeAccountId: string,
   ) => Promise<TicketActionResult>;
 }) {
   const router = useRouter();
@@ -70,9 +74,8 @@ export default function PaymentModal({
   const [destination, setDestination] = useState(
     target?.transferDestination ?? "",
   );
-  const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const pdfInputRef = useRef<HTMLInputElement>(null);
+  const [financeAccountId, setFinanceAccountId] = useState("");
+  const [proofUrl, setProofUrl] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [isMessageError, setIsMessageError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -91,9 +94,12 @@ export default function PaymentModal({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const proof = receiptUrl ?? pdfFile;
-    if (!target || !proof) {
-      setMessage("Pilih bukti transfer terlebih dahulu.");
+    if (!target || !proofUrl || !financeAccountId) {
+      setMessage(
+        !financeAccountId
+          ? "Pilih buku kas/bank sumber pembayaran."
+          : "Pilih bukti transfer terlebih dahulu.",
+      );
       setIsMessageError(true);
       return;
     }
@@ -122,10 +128,11 @@ export default function PaymentModal({
     setIsPending(true);
     try {
       const result = await onPay(
-        proof,
+        proofUrl,
         destination.trim(),
         paymentType,
         transferAmount,
+        financeAccountId,
       );
       setMessage(result.message);
       setIsMessageError(!result.success);
@@ -145,9 +152,7 @@ export default function PaymentModal({
       );
       setAmount(String(updatedRemaining));
       setPaymentType(PaymentType.FULL_PAYMENT);
-      setReceiptUrl(null);
-      setPdfFile(null);
-      if (pdfInputRef.current) pdfInputRef.current.value = "";
+      setProofUrl(null);
       router.refresh();
     } catch (error) {
       console.error("Finance payment submission failed:", error);
@@ -173,10 +178,8 @@ export default function PaymentModal({
       isOpen={open}
       onClose={() => {
         if (isPending) return;
-        setReceiptUrl(null);
-        setPdfFile(null);
+        setProofUrl(null);
         setMessage("");
-        if (pdfInputRef.current) pdfInputRef.current.value = "";
         onOpenChange(false);
       }}
       title="Bayar / Transfer"
@@ -190,15 +193,15 @@ export default function PaymentModal({
         {target && (
           <form className="space-y-4" onSubmit={submit}>
             <section className="grid gap-2 rounded-lg border p-4 text-sm sm:grid-cols-3">
-              <p>
+              <div>
                 Tagihan
                 <strong className="mt-1 block">{currency(target.grandTotal)}</strong>
-              </p>
-              <p>
+              </div>
+              <div>
                 Total Terbayar
                 <strong className="mt-1 block">{currency(paidAmount)}</strong>
-              </p>
-              <p>
+              </div>
+              <div>
                 Sisa Hutang
                 <strong className="mt-1 block">{currency(remainingAmount)}</strong>
                 <Badge
@@ -213,7 +216,7 @@ export default function PaymentModal({
                 >
                   {paymentStatus}
                 </Badge>
-              </p>
+              </div>
             </section>
             {!isSettled ? (
               <>
@@ -268,6 +271,33 @@ export default function PaymentModal({
                   </div>
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="payment-modal-finance-account">
+                    Dibayar Dari (Buku Bank/Kas)
+                  </Label>
+                  <Select
+                    value={financeAccountId}
+                    onValueChange={setFinanceAccountId}
+                    disabled={isPending || accounts.length === 0}
+                  >
+                    <SelectTrigger id="payment-modal-finance-account">
+                      <SelectValue placeholder="Pilih akun sumber pembayaran" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {accounts.map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.accountName} · {currency(account.balance)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {accounts.length === 0 && (
+                    <p className="text-sm text-destructive" role="alert">
+                      Buat buku bank/kas terlebih dahulu di tab Buku Kas &amp;
+                      Arus Dana.
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="payment-modal-destination">
                     Ditransfer Ke (Bank/Rekening/Atas Nama)
                   </Label>
@@ -284,58 +314,20 @@ export default function PaymentModal({
                 <div className="space-y-2">
                   <Label>Bukti Transfer</Label>
                   <FinancePaymentProofUpload
-                    value={receiptUrl}
+                    value={proofUrl}
                     onChange={(url) => {
-                      setReceiptUrl(url);
-                      if (url) {
-                        setPdfFile(null);
-                        if (pdfInputRef.current) pdfInputRef.current.value = "";
-                      }
+                      setProofUrl(url);
+                      setMessage("");
+                      setIsMessageError(false);
                     }}
                     cloudinaryCloudName={cloudinaryCloudName}
                     cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
                   />
-                  <label className="grid gap-2 text-sm">
-                    Atau pilih PDF bukti transfer privat (maksimal 5 MB)
-                    <Input
-                      ref={pdfInputRef}
-                      type="file"
-                      accept="application/pdf,.pdf"
-                      disabled={isPending}
-                      onChange={(event) => {
-                        const selected = event.target.files?.[0] ?? null;
-                        if (
-                          selected &&
-                          (selected.type !== "application/pdf" ||
-                            selected.size > 5 * 1024 * 1024)
-                        ) {
-                          setPdfFile(null);
-                          event.target.value = "";
-                          setMessage(
-                            selected.size > 5 * 1024 * 1024
-                              ? "Ukuran PDF maksimal 5 MB."
-                              : "Format file harus PDF.",
-                          );
-                          setIsMessageError(true);
-                          return;
-                        }
-                        setMessage("");
-                        setIsMessageError(false);
-                        setPdfFile(selected);
-                        if (selected) setReceiptUrl(null);
-                      }}
-                    />
-                    {pdfFile && (
-                      <span className="text-xs text-muted-foreground" role="status">
-                        PDF dipilih: {pdfFile.name}
-                      </span>
-                    )}
-                  </label>
                 </div>
                 <Button
                   type="submit"
-                  disabled={isPending || (!receiptUrl && !pdfFile)}
+                  disabled={isPending || !proofUrl || !financeAccountId}
                 >
                   {isPending ? "Memproses..." : "Simpan Pembayaran"}
                 </Button>

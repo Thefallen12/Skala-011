@@ -74,12 +74,12 @@ const Header = ({
   return (
     <>
       <header
-        className={`sticky top-0 z-20 border-b border-border bg-background text-foreground ${
+        className={`sticky top-0 z-20 border-b border-border bg-background/75 text-foreground backdrop-blur-xl ${
           isSticky ? "shadow-md" : "shadow-sm"
         }`}
       >
         <nav
-          className="flex min-h-16 min-w-0 max-w-full! items-center justify-between gap-1 rounded-none bg-background px-2 py-3 sm:gap-3 sm:px-6 sm:pe-10"
+          className="flex min-h-16 min-w-0 max-w-full! items-center justify-between gap-1 rounded-none bg-transparent px-2 py-3 sm:gap-3 sm:px-6 sm:pe-10"
         >
           {/* Mobile Toggle Icon */}
           <div

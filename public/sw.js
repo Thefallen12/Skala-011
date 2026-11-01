@@ -1,4 +1,4 @@
-const CACHE_NAME = 'skala-prioritas-static-v2';
+const CACHE_NAME = 'skala-prioritas-static-v3';
 const PUBLIC_ASSET_PATTERN = /\.(?:avif|css|eot|gif|ico|jpe?g|js|mjs|png|svg|ttf|webp|woff2?)$/i;
 
 self.addEventListener('install', (event) => {
@@ -40,6 +40,21 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     (async () => {
+      if (isNextStaticAsset) {
+        try {
+          const response = await fetch(request);
+          if (response.ok && response.type === 'basic') {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, response.clone());
+          }
+          return response;
+        } catch (error) {
+          const cachedResponse = await caches.match(request);
+          if (cachedResponse) return cachedResponse;
+          throw error;
+        }
+      }
+
       const cachedResponse = await caches.match(request);
       if (cachedResponse) return cachedResponse;
 

@@ -59,15 +59,28 @@ import {
 
 const statusLabels: Record<TicketStatus, string> = {
   DRAFT: "Draft",
-  PENDING_DIRECTOR: "Menunggu Direktur",
+  PENDING_DIRECTOR: "Menunggu persetujuan Direktur",
   APPROVED_DIR: "Disetujui Direktur",
-  PROCESSED_FINANCE: "Diproses Keuangan",
+  PROCESSED_FINANCE: "Diproses Finance",
   PROCESSED_LOGISTIC: "Diproses Logistik",
   ASSIGNED_TO_MOVER: "Ditugaskan ke Mover",
   IN_TRANSIT: "Dalam perjalanan (ekspedisi)",
-  WAITING_FINANCE_PAYMENT: "Menunggu Pembayaran",
+  WAITING_FINANCE_PAYMENT: "Menunggu pembayaran Finance",
   COMPLETED: "Selesai",
   REJECTED: "Ditolak",
+};
+
+const nextStepLabels: Record<TicketStatus, string> = {
+  DRAFT: "Pemohon perlu mengajukan tiket.",
+  PENDING_DIRECTOR: "Menunggu Direktur menyetujui tiket.",
+  APPROVED_DIR: "Menunggu Finance memproses kebutuhan.",
+  PROCESSED_FINANCE: "Menunggu Logistik menyiapkan barang atau pengiriman.",
+  PROCESSED_LOGISTIC: "Menunggu proses pengiriman atau konfirmasi kebutuhan.",
+  ASSIGNED_TO_MOVER: "Menunggu Mover mengambil dan mengantar barang.",
+  IN_TRANSIT: "Menunggu barang tiba dan diterima.",
+  WAITING_FINANCE_PAYMENT: "Menunggu Finance melakukan pembayaran.",
+  COMPLETED: "Seluruh proses tiket telah selesai.",
+  REJECTED: "Tiket ditolak dan tidak dilanjutkan.",
 };
 
 const statusVariants: Record<
@@ -213,6 +226,8 @@ export default function TicketListing({
   vendors = [],
   stockItems = [],
   vehicles = [],
+  cloudinaryCloudName = "",
+  cloudinaryApiKey = "",
   role,
   ticketSearch,
   searchTickets,
@@ -224,6 +239,8 @@ export default function TicketListing({
   vendors?: TicketVendorOption[];
   stockItems?: TicketStockItemOption[];
   vehicles?: VehicleSummary[];
+  cloudinaryCloudName?: string;
+  cloudinaryApiKey?: string;
   role: TicketPageRole;
   ticketSearch: string;
   searchTickets: (term: string) => void;
@@ -450,7 +467,7 @@ export default function TicketListing({
     });
   };
 
-  const printPurchaseOrder = async (ticketId: string) => {
+  const printPurchaseOrder = async (ticketId: string, publicCode?: string) => {
     const pdfWindow = window.open("", "_blank");
     if (!pdfWindow) {
       setPrintMessage("Izinkan pop-up browser untuk membuka PDF PO.");
@@ -458,11 +475,15 @@ export default function TicketListing({
     }
     setPrintMessage("Menyiapkan PDF Purchase Order...");
     try {
-      const response = await fetch("/api/documents/po", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ticketId }),
-      });
+      const response = publicCode
+        ? await fetch(
+            `/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(publicCode)}`,
+          )
+        : await fetch("/api/documents/po", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ticketId }),
+          });
       if (!response.ok) {
         const body: unknown = await response.json();
         const errorMessage =
@@ -705,6 +726,15 @@ export default function TicketListing({
                   <p className="text-sm">
                     Total estimasi: {formatCurrency(selectedTicket.totalAmount)}
                   </p>
+                  <div className="rounded-md border border-warning/30 bg-lightwarning p-3">
+                    <p className="text-sm font-semibold">Tahap proses saat ini</p>
+                    <p className="mt-1 text-sm">
+                      {statusLabels[selectedTicket.status]}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {nextStepLabels[selectedTicket.status]}
+                    </p>
+                  </div>
                   {(selectedTicket.directStockPurchases?.length ?? 0) > 0 && (
                     <div className="space-y-2 rounded-md border p-3">
                       <h4 className="font-semibold">Pembelian Langsung Terkait</h4>
@@ -752,7 +782,12 @@ export default function TicketListing({
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={() => printPurchaseOrder(selectedTicket.id)}
+                          onClick={() =>
+                            printPurchaseOrder(
+                              selectedTicket.id,
+                              selectedTicket.purchaseOrders?.[0]?.publicCode,
+                            )
+                          }
                         >
                           <Printer className="mr-2 h-4 w-4" />
                           Cetak PO
@@ -808,7 +843,7 @@ export default function TicketListing({
                         })()}
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full min-w-[640px] text-left text-sm">
+                        <table className="app-data-table w-full min-w-[640px] text-left text-sm">
                           <thead>
                             <tr className="border-b text-muted-foreground">
                               <th className="py-2 pr-3">Tanggal</th>
@@ -1310,6 +1345,8 @@ export default function TicketListing({
             vendors={vendors}
             stockItems={stockItems}
             vehicles={vehicles}
+            cloudinaryCloudName={cloudinaryCloudName}
+            cloudinaryApiKey={cloudinaryApiKey}
             onOpenChange={(open) => {
               if (!open) setWorkflowTicket(null);
             }}

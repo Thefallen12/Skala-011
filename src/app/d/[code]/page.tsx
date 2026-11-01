@@ -172,6 +172,7 @@ export default async function OrderEditPage({
         items: {
           select: {
             id: true,
+            itemCode: true,
             itemName: true,
             qtyOrdered: true,
             qtyDelivered: true,
@@ -371,7 +372,7 @@ export default async function OrderEditPage({
           }))}
           qrDataUrl={await makeQrDataUrl(
             code,
-            `/api/documents/do?publicCode=${encodeURIComponent(code)}`,
+            `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(code)}`,
           )}
         />
       </main>

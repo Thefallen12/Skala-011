@@ -9,7 +9,7 @@ export default function VehicleTripLogTable({
 }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[900px] text-sm">
+      <table className="app-data-table w-full min-w-[900px] text-sm">
         <thead className="bg-[#102A4D] text-left text-white">
           <tr>
             <th className="p-3">Tanggal / Proyek</th>

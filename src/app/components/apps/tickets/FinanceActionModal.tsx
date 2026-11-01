@@ -1,13 +1,21 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import { submitPaymentRecord } from "@/app/actions/tickets";
+import { listFinanceAccountsForPayments } from "@/app/actions/finance-cashflow";
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { PaymentType } from "@/generated/prisma/enums";
 import type { TicketRow } from "@/app/(DashboardLayout)/types/ticket";
+
+type FinanceAccountOption = {
+  id: string;
+  accountName: string;
+  balance: number;
+};
 
 const formatCurrency = (amount: string | null) =>
   amount === null
@@ -46,7 +54,28 @@ export default function FinanceActionModal({
   );
   const [paymentAmount, setPaymentAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [accounts, setAccounts] = useState<FinanceAccountOption[]>([]);
+  const [accountsLoading, setAccountsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!open) return;
+    let active = true;
+    listFinanceAccountsForPayments()
+      .then((result) => {
+        if (active) setAccounts(result);
+      })
+      .catch((error) => {
+        console.error("Finance account list failed to load:", error);
+        if (active) setMessage("Daftar buku kas/bank gagal dimuat.");
+      })
+      .finally(() => {
+        if (active) setAccountsLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [open]);
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -55,6 +84,13 @@ export default function FinanceActionModal({
     const transferDestination = String(
       formData.get("transferDestination") ?? "",
     );
+    const financeAccountId = String(
+      formData.get("financeAccountId") ?? "",
+    );
+    if (!financeAccountId) {
+      setMessage("Pilih buku kas/bank sumber pembayaran terlebih dahulu.");
+      return;
+    }
     setMessage("");
     startTransition(async () => {
       try {
@@ -62,6 +98,7 @@ export default function FinanceActionModal({
           target: { kind: "ticket", id: ticket.id },
           file,
           transferDestination,
+          financeAccountId,
           paymentType,
           amount: paymentAmount ? Number(paymentAmount) : undefined,
         });
@@ -150,6 +187,35 @@ export default function FinanceActionModal({
               disabled={isPending}
             />
           </label>
+          <div className="space-y-2">
+            <Label htmlFor="ticket-finance-account">
+              Dibayar Dari (Buku Bank/Kas)
+            </Label>
+            <select
+              id="ticket-finance-account"
+              name="financeAccountId"
+              required
+              defaultValue=""
+              disabled={isPending || accountsLoading || accounts.length === 0}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
+            >
+              <option value="" disabled>
+                {accountsLoading
+                  ? "Memuat akun..."
+                  : "Pilih akun sumber pembayaran"}
+              </option>
+              {accounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.accountName} · {formatCurrency(String(account.balance))}
+                </option>
+              ))}
+            </select>
+            {accounts.length === 0 && !accountsLoading && (
+              <p className="text-sm text-destructive" role="alert">
+                Belum ada akun. Tambahkan buku bank/kas dari Finance Hub.
+              </p>
+            )}
+          </div>
           <fieldset className="space-y-2 rounded-md border p-3 text-sm">
             <legend className="px-1 font-medium">Skema pembayaran</legend>
             <label className="flex items-center gap-2">
@@ -212,6 +278,8 @@ export default function FinanceActionModal({
               disabled={
                 !file ||
                 isPending ||
+                accountsLoading ||
+                accounts.length === 0 ||
                 (paymentType !== PaymentType.FULL_PAYMENT &&
                   (!paymentAmount || Number(paymentAmount) <= 0))
               }

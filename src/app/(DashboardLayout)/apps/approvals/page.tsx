@@ -107,7 +107,14 @@ export default async function ApprovalsPage({
             bankName: true,
             accountNumber: true,
             createdAt: true,
-            requester: { select: { name: true } },
+            requester: {
+              select: {
+                name: true,
+                bankName: true,
+                bankAccountName: true,
+                bankAccountNumber: true,
+              },
+            },
             project: { select: { title: true, kelompokTani: true } },
             items: { select: { itemName: true, quantity: true, unit: true } },
           },
@@ -331,9 +338,11 @@ export default async function ApprovalsPage({
             ticket.totalAmount?.toString() ??
             ticket.requestedAmount?.toString() ??
             null,
-          recipientName: ticket.recipientName,
-          bankName: ticket.bankName,
-          accountNumber: ticket.accountNumber,
+          recipientName:
+            ticket.recipientName ?? ticket.requester.bankAccountName,
+          bankName: ticket.bankName ?? ticket.requester.bankName,
+          accountNumber:
+            ticket.accountNumber ?? ticket.requester.bankAccountNumber,
           createdAt: ticket.createdAt.toISOString(),
           requesterName: ticket.requester.name,
           projectName: ticket.project

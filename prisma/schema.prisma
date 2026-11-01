@@ -336,6 +336,8 @@ model User {
   createdPurchaseOrders                             PurchaseOrder[]               @relation("PurchaseOrderCreator")
   reviewedPurchaseOrders                            PurchaseOrder[]               @relation("PurchaseOrderReviewer")
   approvedPurchaseOrders                            PurchaseOrder[]               @relation("PurchaseOrderApprover")
+  sentPurchaseOrders                                PurchaseOrder[]               @relation("PurchaseOrderVendorSender")
+  uploadedPurchaseOrderInvoices                     PurchaseOrder[]               @relation("PurchaseOrderInvoiceUploader")
   createdDeliveryOrders                             DeliveryOrder[]               @relation("DeliveryOrderCreator")
   preparedOperationalDocuments                      OperationalDocument[]         @relation("OperationalDocumentPreparer")
   signedOperationalDocuments                        OperationalDocument[]         @relation("OperationalDocumentSigner")
@@ -347,9 +349,18 @@ model User {
   receivedDirectStockPurchases                      DirectStockPurchase[]         @relation("DirectStockPurchaseReceiver")
   createdStockMovements                             StockMovement[]               @relation("StockMovementCreator")
   receivedDeliveryOrders                            DeliveryOrder[]               @relation("DeliveryOrderReceiver")
+  sentPaymentConfirmations                          PaymentTransaction[]          @relation("PaymentTransactionVendorSender")
+  sentOrderConfirmations                            OrderConfirmation[]           @relation("OrderConfirmationVendorSender")
+  signedInvoices                                    Invoice[]                     @relation("InvoiceSigner")
+  acknowledgedInvoices                              Invoice[]                     @relation("InvoiceAcknowledger")
+  signedOrderConfirmations                          OrderConfirmation[]           @relation("OrderConfirmationSigner")
+  acknowledgedOrderConfirmations                    OrderConfirmation[]           @relation("OrderConfirmationAcknowledger")
+  signedDeliveryOrders                              DeliveryOrder[]               @relation("DeliveryOrderSigner")
+  acknowledgedDeliveryOrders                        DeliveryOrder[]               @relation("DeliveryOrderAcknowledger")
   wageAuditLogs                                     WageAuditLog[]                @relation("WageAuditChanger")
   createdProjectWageDisbursements                   ProjectWageDisbursement[]     @relation("ProjectWageDisbursementCreator")
   notifications                                     Notification[]                @relation("UserNotifications")
+  cashflowsRecorded                                 Cashflow[]                    @relation("CashflowRecorder")
 }
 
 model UserNote {
@@ -594,6 +605,9 @@ model Project {
   timesheetEntries    TimesheetEntry[]
   blueprints          Blueprint[]
   subkonContracts     SubkonContract[]
+  purchaseOrders      PurchaseOrder[]
+  invoices            Invoice[]
+  cashflows           Cashflow[]
   equipmentLogs       EquipmentLog[]
   vehicleTripLogs     VehicleTripLog[]
   vehicleFuelRequests VehicleFuelRequest[]
@@ -990,6 +1004,7 @@ model SubkonTermyn {
   approvedAt          DateTime?
   paidById            String?
   paidBy              User?              @relation("SubkonTermynPayer", fields: [paidById], references: [id], onDelete: SetNull)
+  invoice             Invoice?
   paidAt              DateTime?
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
@@ -1145,41 +1160,53 @@ model DocumentTemplate {
 }
 
 model PurchaseOrder {
-  id                   String               @id @default(cuid())
-  publicCode           String               @unique
-  poNumber             String               @unique
-  vendorName           String
-  paymentMethod        POPaymentMethod      @default(CASH)
-  paymentBankName      String?
-  paymentAccountNumber String?
-  paymentAccountName   String?
-  paymentTerms         String?
-  includeTax           Boolean              @default(false)
-  transferDestination  String?
-  paymentReceiptUrl    String?
-  paidAt               DateTime?
-  status               POStatus             @default(DRAFT)
-  createdById          String?
-  createdBy            User?                @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  vendorId             String?
-  vendor               Vendor?              @relation(fields: [vendorId], references: [id], onDelete: SetNull)
-  reviewedById         String?
-  reviewedBy           User?                @relation("PurchaseOrderReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
-  reviewedAt           DateTime?
-  approvedById         String?
-  approvedBy           User?                @relation("PurchaseOrderApprover", fields: [approvedById], references: [id], onDelete: Restrict)
-  approvedAt           DateTime?
-  ticketId             String?
-  ticket               Ticket?              @relation(fields: [ticketId], references: [id], onDelete: SetNull)
-  items                POItem[]
-  deliveryOrders       DeliveryOrder[]
-  stockPurchases       StockPurchase[]
-  paymentTransactions  PaymentTransaction[]
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
+  id                        String               @id @default(cuid())
+  publicCode                String               @unique
+  poNumber                  String               @unique
+  projectId                 String?
+  project                   Project?             @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  vendorName                String
+  paymentMethod             POPaymentMethod      @default(CASH)
+  paymentBankName           String?
+  paymentAccountNumber      String?
+  paymentAccountName        String?
+  paymentTerms              String?
+  includeTax                Boolean              @default(false)
+  transferDestination       String?
+  paymentReceiptUrl         String?
+  vendorInvoiceUrl          String?
+  vendorInvoiceUploadedAt   DateTime?
+  vendorInvoiceUploadedById String?
+  vendorInvoiceUploadedBy   User?                @relation("PurchaseOrderInvoiceUploader", fields: [vendorInvoiceUploadedById], references: [id], onDelete: SetNull)
+  vendorPoSentAt            DateTime?
+  vendorPoSentById          String?
+  vendorPoSentBy            User?                @relation("PurchaseOrderVendorSender", fields: [vendorPoSentById], references: [id], onDelete: SetNull)
+  paidAt                    DateTime?
+  status                    POStatus             @default(DRAFT)
+  createdById               String?
+  createdBy                 User?                @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  vendorId                  String?
+  vendor                    Vendor?              @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  reviewedById              String?
+  reviewedBy                User?                @relation("PurchaseOrderReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt                DateTime?
+  approvedById              String?
+  approvedBy                User?                @relation("PurchaseOrderApprover", fields: [approvedById], references: [id], onDelete: Restrict)
+  approvedAt                DateTime?
+  ticketId                  String?
+  ticket                    Ticket?              @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  items                     POItem[]
+  invoices                  Invoice[]
+  confirmations             OrderConfirmation[]
+  deliveryOrders            DeliveryOrder[]
+  stockPurchases            StockPurchase[]
+  paymentTransactions       PaymentTransaction[]
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @updatedAt
 
   @@index([status, updatedAt])
   @@index([ticketId])
+  @@index([projectId])
   @@index([createdById])
   @@index([reviewedById])
   @@index([approvedById])
@@ -1187,27 +1214,34 @@ model PurchaseOrder {
 }
 
 model PaymentTransaction {
-  id                    String               @id @default(cuid())
-  poId                  String?
-  po                    PurchaseOrder?       @relation(fields: [poId], references: [id], onDelete: SetNull)
-  ticketId              String?
-  ticket                Ticket?              @relation(fields: [ticketId], references: [id], onDelete: SetNull)
-  directStockPurchaseId String?
-  directStockPurchase   DirectStockPurchase? @relation(fields: [directStockPurchaseId], references: [id], onDelete: SetNull)
-  paymentType           PaymentType
-  amount                Float
-  transferDestination   String
-  status                PaymentStatus        @default(PENDING)
-  processedById         String?
-  processedBy           User?                @relation("PaymentTransactionProcessor", fields: [processedById], references: [id], onDelete: SetNull)
-  proofOfTransferUrl    String?
-  paidAt                DateTime?
-  createdAt             DateTime             @default(now())
+  id                      String               @id @default(cuid())
+  poId                    String?
+  po                      PurchaseOrder?       @relation(fields: [poId], references: [id], onDelete: SetNull)
+  ticketId                String?
+  ticket                  Ticket?              @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  directStockPurchaseId   String?
+  directStockPurchase     DirectStockPurchase? @relation(fields: [directStockPurchaseId], references: [id], onDelete: SetNull)
+  paymentType             PaymentType
+  amount                  Float
+  transferDestination     String
+  status                  PaymentStatus        @default(PENDING)
+  processedById           String?
+  processedBy             User?                @relation("PaymentTransactionProcessor", fields: [processedById], references: [id], onDelete: SetNull)
+  proofOfTransferUrl      String?
+  paidAt                  DateTime?
+  confirmationOrderNumber String?              @unique
+  vendorSentAt            DateTime?
+  vendorSentById          String?
+  vendorSentBy            User?                @relation("PaymentTransactionVendorSender", fields: [vendorSentById], references: [id], onDelete: SetNull)
+  orderConfirmation       OrderConfirmation?
+  cashflow                Cashflow?
+  createdAt               DateTime             @default(now())
 
   @@index([poId, status, createdAt])
   @@index([ticketId, status, createdAt])
   @@index([directStockPurchaseId, status, createdAt])
   @@index([processedById])
+  @@index([vendorSentAt, createdAt])
 }
 
 model DeliveryOrder {
@@ -1222,6 +1256,12 @@ model DeliveryOrder {
   createdBy             User?                @relation("DeliveryOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
   receivedById          String?
   receivedBy            User?                @relation("DeliveryOrderReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
+  signedById            String?
+  signedBy              User?                @relation("DeliveryOrderSigner", fields: [signedById], references: [id], onDelete: SetNull)
+  signedAt              DateTime?
+  acknowledgedById      String?
+  acknowledgedBy        User?                @relation("DeliveryOrderAcknowledger", fields: [acknowledgedById], references: [id], onDelete: SetNull)
+  acknowledgedAt        DateTime?
   deliveryMethod        DODeliveryMethod     @default(INTERNAL_MOVER)
   vehicleId             String?
   vehicle               Vehicle?             @relation("DeliveryOrderVehicle", fields: [vehicleId], references: [id], onDelete: SetNull)
@@ -1249,6 +1289,8 @@ model DeliveryOrder {
   @@index([ticketId])
   @@index([createdById])
   @@index([receivedById])
+  @@index([signedById])
+  @@index([acknowledgedById])
   @@index([vehicleId, status])
 }
 
@@ -1346,6 +1388,7 @@ model POItem {
   id          String        @id @default(cuid())
   poId        String
   po          PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  itemCode    String?
   stockItemId String?
   stockItem   StockItem?    @relation(fields: [stockItemId], references: [id], onDelete: SetNull)
   itemName    String
@@ -1363,6 +1406,7 @@ model DOItem {
   id           String        @id @default(cuid())
   doId         String
   do           DeliveryOrder @relation(fields: [doId], references: [id], onDelete: Cascade)
+  itemCode     String?
   itemName     String
   qtyOrdered   Float
   qtyDelivered Float
@@ -1371,6 +1415,141 @@ model DOItem {
   ticketItems  TicketItem[]
 
   @@index([doId])
+}
+
+model Invoice {
+  id               String         @id @default(cuid())
+  publicCode       String?        @unique
+  invoiceNumber    String         @unique
+  poId             String?
+  po               PurchaseOrder? @relation(fields: [poId], references: [id], onDelete: SetNull)
+  projectId        String?
+  project          Project?       @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  subkonTermynId   String?        @unique
+  subkonTermyn     SubkonTermyn?  @relation(fields: [subkonTermynId], references: [id], onDelete: SetNull)
+  vendorName       String
+  periodOrDate     String?
+  paymentMethod    String?
+  bankAccount      String?
+  documentUrl      String?
+  subTotal         Float
+  tax              Float?
+  deduction        Float?
+  grandTotal       Float
+  status           String         @default("UNPAID")
+  signedById       String?
+  signedBy         User?          @relation("InvoiceSigner", fields: [signedById], references: [id], onDelete: SetNull)
+  signedAt         DateTime?
+  acknowledgedById String?
+  acknowledgedBy   User?          @relation("InvoiceAcknowledger", fields: [acknowledgedById], references: [id], onDelete: SetNull)
+  acknowledgedAt   DateTime?
+  items            InvoiceItem[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([poId, status, createdAt])
+  @@index([projectId, createdAt])
+  @@index([signedById])
+  @@index([acknowledgedById])
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  itemCode    String?
+  description String
+  quantity    Float
+  unit        String
+  unitPrice   Float
+  totalPrice  Float
+
+  @@index([invoiceId])
+}
+
+model FinanceAccount {
+  id            String     @id @default(cuid())
+  accountName   String
+  accountNumber String?
+  holderName    String
+  balance       Float      @default(0)
+  transactions  Cashflow[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Cashflow {
+  id                   String              @id @default(cuid())
+  type                 String
+  amount               Float
+  sourceDesc           String
+  projectId            String?
+  project              Project?            @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  paymentMethod        String
+  senderName           String?
+  proofUrl             String?
+  accountId            String
+  account              FinanceAccount      @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  recordedBy           String
+  recorder             User                @relation("CashflowRecorder", fields: [recordedBy], references: [id], onDelete: Restrict)
+  transferGroupId      String?
+  paymentTransactionId String?             @unique
+  paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
+  createdAt            DateTime            @default(now())
+
+  @@index([accountId, createdAt])
+  @@index([projectId, createdAt])
+  @@index([transferGroupId])
+}
+
+model OrderConfirmation {
+  id                   String              @id @default(cuid())
+  publicCode           String?             @unique
+  koNumber             String              @unique
+  poId                 String
+  po                   PurchaseOrder       @relation(fields: [poId], references: [id], onDelete: Cascade)
+  paymentTransactionId String?             @unique
+  paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
+  estDelivery          String?
+  paymentTerms         String?
+  paymentType          String?
+  paymentAmount        Float?
+  transferDestination  String?
+  proofOfTransferUrl   String?
+  paidAt               DateTime?
+  vendorSentAt         DateTime?
+  vendorSentById       String?
+  vendorSentBy         User?               @relation("OrderConfirmationVendorSender", fields: [vendorSentById], references: [id], onDelete: SetNull)
+  signedById           String?
+  signedBy             User?               @relation("OrderConfirmationSigner", fields: [signedById], references: [id], onDelete: SetNull)
+  signedAt             DateTime?
+  acknowledgedById     String?
+  acknowledgedBy       User?               @relation("OrderConfirmationAcknowledger", fields: [acknowledgedById], references: [id], onDelete: SetNull)
+  acknowledgedAt       DateTime?
+  subTotal             Float
+  tax                  Float?
+  grandTotal           Float
+  items                KOItem[]
+  createdAt            DateTime            @default(now())
+
+  @@index([poId, createdAt])
+  @@index([vendorSentAt, createdAt])
+  @@index([signedById])
+  @@index([acknowledgedById])
+}
+
+model KOItem {
+  id          String            @id @default(cuid())
+  koId        String
+  ko          OrderConfirmation @relation(fields: [koId], references: [id], onDelete: Cascade)
+  itemCode    String?
+  description String
+  quantity    Float
+  unit        String
+  unitPrice   Float
+  totalPrice  Float
+
+  @@index([koId])
 }
 
 model IssuedDocument {

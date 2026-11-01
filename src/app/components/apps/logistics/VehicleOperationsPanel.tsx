@@ -162,7 +162,7 @@ export default function VehicleOperationsPanel({
         <section className="space-y-3">
           <h3 className="font-semibold text-primary">Daftar Kendaraan Aktif</h3>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-sm">
+            <table className="app-data-table w-full min-w-[720px] text-sm">
               <thead className="bg-[#102A4D] text-left text-white">
                 <tr>
                   <th className="p-3">No. Plat</th>

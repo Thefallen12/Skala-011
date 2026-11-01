@@ -5,6 +5,8 @@ type PublicCodeClient = Pick<
   Prisma.TransactionClient,
   | "purchaseOrder"
   | "deliveryOrder"
+  | "invoice"
+  | "orderConfirmation"
   | "blueprint"
   | "subkonContract"
   | "bASTDocument"
@@ -33,6 +35,8 @@ export async function generateAvailablePublicCode(
     const [
       purchaseOrder,
       deliveryOrder,
+      invoice,
+      orderConfirmation,
       blueprint,
       subkonContract,
       bastDocument,
@@ -42,6 +46,14 @@ export async function generateAvailablePublicCode(
         select: { id: true },
       }),
       client.deliveryOrder.findUnique({
+        where: { publicCode },
+        select: { id: true },
+      }),
+      client.invoice.findUnique({
+        where: { publicCode },
+        select: { id: true },
+      }),
+      client.orderConfirmation.findUnique({
         where: { publicCode },
         select: { id: true },
       }),
@@ -61,6 +73,8 @@ export async function generateAvailablePublicCode(
     if (
       !purchaseOrder &&
       !deliveryOrder &&
+      !invoice &&
+      !orderConfirmation &&
       !blueprint &&
       !subkonContract &&
       !bastDocument

@@ -25,14 +25,7 @@ import {
   Undo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -506,15 +499,36 @@ export default function WordToolbar({
         </Popover>
       </div>
 
-      <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{isImageSelected ? "Atur Gambar" : "Sisipkan Gambar"}</DialogTitle>
-            <DialogDescription>
-            Unggah file PNG/JPEG/WebP hingga 2 MB atau URL HTTPS dengan akses
-            CORS. URL akan disimpan sebagai gambar tersemat di template.
-            </DialogDescription>
-          </DialogHeader>
+      <GlobalModal
+        isOpen={imageDialogOpen}
+        onClose={() => setImageDialogOpen(false)}
+        title={isImageSelected ? "Atur Gambar" : "Sisipkan Gambar"}
+        description="Unggah file PNG/JPEG/WebP hingga 2 MB atau URL HTTPS dengan akses CORS. URL akan disimpan sebagai gambar tersemat di template."
+        className="sm:max-w-xl"
+        footerNote=""
+        footer={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isUploadingImage}
+              onClick={() => setImageDialogOpen(false)}
+            >
+              Batal
+            </Button>
+            <Button
+              type="button"
+              disabled={isUploadingImage}
+              onClick={(event) => {
+                event.preventDefault();
+                void saveImage();
+              }}
+            >
+              {isImageSelected ? "Simpan Gambar" : "Sisipkan"}
+            </Button>
+          </>
+        }
+      >
           <div className="space-y-3">
             <Input
               type="url"
@@ -624,20 +638,7 @@ export default function WordToolbar({
             )}
             {imageError && <p className="text-sm text-destructive" role="alert">{imageError}</p>}
           </div>
-          <DialogFooter>
-            <Button
-              type="button"
-              disabled={isUploadingImage}
-              onClick={(event) => {
-                event.preventDefault();
-                void saveImage();
-              }}
-            >
-              {isImageSelected ? "Simpan Gambar" : "Sisipkan"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      </GlobalModal>
     </div>
   );
 }

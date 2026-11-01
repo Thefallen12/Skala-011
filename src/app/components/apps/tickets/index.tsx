@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { Activity, ChartNoAxesCombined, SearchCheck } from "lucide-react";
 import CardBox from "@/app/components/shared/CardBox";
@@ -52,7 +52,8 @@ function requiresRoleAction(role: TicketPageRole, ticket: TicketRow): boolean {
     case UserRole.FINANCE:
       return (
         ticket.status === TicketStatus.WAITING_FINANCE_PAYMENT ||
-        ticket.status === TicketStatus.PROCESSED_FINANCE
+        ticket.status === TicketStatus.PROCESSED_FINANCE ||
+        ticket.status === TicketStatus.PROCESSED_LOGISTIC
       );
     case UserRole.LOGISTICS:
       return (
@@ -76,19 +77,40 @@ function requiresRoleAction(role: TicketPageRole, ticket: TicketRow): boolean {
   }
 }
 
+function isTicketStatus(value: string | undefined): value is TicketStatus {
+  return value !== undefined && Object.values(TicketStatus).some(
+    (status) => status === value,
+  );
+}
+
 export default function TicketsApp({
   tickets,
   projects,
   role,
   initialOpenSheet,
+  initialFilter,
 }: {
   tickets: TicketRow[];
   projects: TicketProjectOption[];
   role: TicketPageRole;
   initialOpenSheet?: string;
+  initialFilter?: string;
 }) {
-  const [filter, setFilter] = useState("ALL");
+  const [filter, setFilter] = useState(() =>
+    initialFilter === "ACTIVE" || initialFilter === "ACTION_REQUIRED" ||
+    isTicketStatus(initialFilter)
+      ? initialFilter
+      : "ALL",
+  );
   const [ticketSearch, setTicketSearch] = useState("");
+
+  useEffect(() => {
+    if (!initialFilter) return;
+    document.getElementById("ticket-directory")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [initialFilter]);
 
   const actionRequired = useMemo(
     () => tickets.filter((ticket) => requiresRoleAction(role, ticket)),
@@ -111,6 +133,10 @@ export default function TicketsApp({
     return tickets.filter((ticket) => {
       const matchesFilter =
         filter === "ALL" ||
+        (filter === "ACTIVE" &&
+          ticket.status !== TicketStatus.DRAFT &&
+          ticket.status !== TicketStatus.COMPLETED &&
+          ticket.status !== TicketStatus.REJECTED) ||
         (filter === "ACTION_REQUIRED"
           ? actionRequiredIds.has(ticket.id)
           : ticket.status === filter);
@@ -123,9 +149,21 @@ export default function TicketsApp({
     });
   }, [actionRequiredIds, filter, ticketSearch, tickets]);
 
+  const selectTicketFilter = (nextFilter: string) => {
+    setFilter(nextFilter);
+    document.getElementById("ticket-directory")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   const focusTicket = (ticketNumber: string) => {
     setFilter("ALL");
     setTicketSearch(ticketNumber);
+    document.getElementById("ticket-directory")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
@@ -133,7 +171,7 @@ export default function TicketsApp({
       <TicketFilter
         tickets={tickets}
         activeFilter={filter}
-        setFilter={setFilter}
+        setFilter={selectTicketFilter}
         actionRequiredCount={actionRequired.length}
       />
 
@@ -190,11 +228,14 @@ export default function TicketsApp({
         tickets={tickets}
         actionRequired={actionRequired}
         onSelectTicket={focusTicket}
-        onFilter={setFilter}
+        onFilter={selectTicketFilter}
       />
 
       <CardBox className="overflow-hidden">
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
+        <div
+          id="ticket-directory"
+          className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4"
+        >
           <div>
             <h3 className="font-semibold">Direktori Tiket</h3>
             <p className="mt-1 text-sm text-muted-foreground">

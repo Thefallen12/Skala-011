@@ -137,7 +137,7 @@ export default function ProjectFormModal({
       onClose={() => onOpenChange(false)}
       title={project ? "Edit proyek" : "Tambah proyek"}
       description="Lengkapi informasi proyek. Kolom bertanda wajib harus diisi."
-      className="max-w-3xl"
+      className="max-w-4xl"
       footer={
         <>
           <Button

@@ -889,7 +889,7 @@ export default function MoverWorkspace({
               <CardTitle>Riwayat Log Anda</CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
-              <table className="w-full min-w-[620px] text-sm">
+              <table className="app-data-table w-full min-w-[620px] text-sm">
                 <thead className="text-left">
                   <tr className="border-b">
                     <th className="p-2">Tanggal / Proyek</th>

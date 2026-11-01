@@ -101,6 +101,12 @@ export const ModelName = {
   VehicleFuelRequest: 'VehicleFuelRequest',
   POItem: 'POItem',
   DOItem: 'DOItem',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  FinanceAccount: 'FinanceAccount',
+  Cashflow: 'Cashflow',
+  OrderConfirmation: 'OrderConfirmation',
+  KOItem: 'KOItem',
   IssuedDocument: 'IssuedDocument',
   OperationalDocument: 'OperationalDocument',
   TicketItem: 'TicketItem',
@@ -820,6 +826,7 @@ export const PurchaseOrderScalarFieldEnum = {
   id: 'id',
   publicCode: 'publicCode',
   poNumber: 'poNumber',
+  projectId: 'projectId',
   vendorName: 'vendorName',
   paymentMethod: 'paymentMethod',
   paymentBankName: 'paymentBankName',
@@ -829,6 +836,11 @@ export const PurchaseOrderScalarFieldEnum = {
   includeTax: 'includeTax',
   transferDestination: 'transferDestination',
   paymentReceiptUrl: 'paymentReceiptUrl',
+  vendorInvoiceUrl: 'vendorInvoiceUrl',
+  vendorInvoiceUploadedAt: 'vendorInvoiceUploadedAt',
+  vendorInvoiceUploadedById: 'vendorInvoiceUploadedById',
+  vendorPoSentAt: 'vendorPoSentAt',
+  vendorPoSentById: 'vendorPoSentById',
   paidAt: 'paidAt',
   status: 'status',
   createdById: 'createdById',
@@ -857,6 +869,9 @@ export const PaymentTransactionScalarFieldEnum = {
   processedById: 'processedById',
   proofOfTransferUrl: 'proofOfTransferUrl',
   paidAt: 'paidAt',
+  confirmationOrderNumber: 'confirmationOrderNumber',
+  vendorSentAt: 'vendorSentAt',
+  vendorSentById: 'vendorSentById',
   createdAt: 'createdAt'
 } as const
 
@@ -871,6 +886,10 @@ export const DeliveryOrderScalarFieldEnum = {
   poId: 'poId',
   createdById: 'createdById',
   receivedById: 'receivedById',
+  signedById: 'signedById',
+  signedAt: 'signedAt',
+  acknowledgedById: 'acknowledgedById',
+  acknowledgedAt: 'acknowledgedAt',
   deliveryMethod: 'deliveryMethod',
   vehicleId: 'vehicleId',
   vehiclePlateNumber: 'vehiclePlateNumber',
@@ -971,6 +990,7 @@ export type VehicleFuelRequestScalarFieldEnum = (typeof VehicleFuelRequestScalar
 export const POItemScalarFieldEnum = {
   id: 'id',
   poId: 'poId',
+  itemCode: 'itemCode',
   stockItemId: 'stockItemId',
   itemName: 'itemName',
   quantity: 'quantity',
@@ -985,6 +1005,7 @@ export type POItemScalarFieldEnum = (typeof POItemScalarFieldEnum)[keyof typeof 
 export const DOItemScalarFieldEnum = {
   id: 'id',
   doId: 'doId',
+  itemCode: 'itemCode',
   itemName: 'itemName',
   qtyOrdered: 'qtyOrdered',
   qtyDelivered: 'qtyDelivered',
@@ -993,6 +1014,122 @@ export const DOItemScalarFieldEnum = {
 } as const
 
 export type DOItemScalarFieldEnum = (typeof DOItemScalarFieldEnum)[keyof typeof DOItemScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  publicCode: 'publicCode',
+  invoiceNumber: 'invoiceNumber',
+  poId: 'poId',
+  projectId: 'projectId',
+  subkonTermynId: 'subkonTermynId',
+  vendorName: 'vendorName',
+  periodOrDate: 'periodOrDate',
+  paymentMethod: 'paymentMethod',
+  bankAccount: 'bankAccount',
+  documentUrl: 'documentUrl',
+  subTotal: 'subTotal',
+  tax: 'tax',
+  deduction: 'deduction',
+  grandTotal: 'grandTotal',
+  status: 'status',
+  signedById: 'signedById',
+  signedAt: 'signedAt',
+  acknowledgedById: 'acknowledgedById',
+  acknowledgedAt: 'acknowledgedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  itemCode: 'itemCode',
+  description: 'description',
+  quantity: 'quantity',
+  unit: 'unit',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const FinanceAccountScalarFieldEnum = {
+  id: 'id',
+  accountName: 'accountName',
+  accountNumber: 'accountNumber',
+  holderName: 'holderName',
+  balance: 'balance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FinanceAccountScalarFieldEnum = (typeof FinanceAccountScalarFieldEnum)[keyof typeof FinanceAccountScalarFieldEnum]
+
+
+export const CashflowScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  amount: 'amount',
+  sourceDesc: 'sourceDesc',
+  projectId: 'projectId',
+  paymentMethod: 'paymentMethod',
+  senderName: 'senderName',
+  proofUrl: 'proofUrl',
+  accountId: 'accountId',
+  recordedBy: 'recordedBy',
+  transferGroupId: 'transferGroupId',
+  paymentTransactionId: 'paymentTransactionId',
+  createdAt: 'createdAt'
+} as const
+
+export type CashflowScalarFieldEnum = (typeof CashflowScalarFieldEnum)[keyof typeof CashflowScalarFieldEnum]
+
+
+export const OrderConfirmationScalarFieldEnum = {
+  id: 'id',
+  publicCode: 'publicCode',
+  koNumber: 'koNumber',
+  poId: 'poId',
+  paymentTransactionId: 'paymentTransactionId',
+  estDelivery: 'estDelivery',
+  paymentTerms: 'paymentTerms',
+  paymentType: 'paymentType',
+  paymentAmount: 'paymentAmount',
+  transferDestination: 'transferDestination',
+  proofOfTransferUrl: 'proofOfTransferUrl',
+  paidAt: 'paidAt',
+  vendorSentAt: 'vendorSentAt',
+  vendorSentById: 'vendorSentById',
+  signedById: 'signedById',
+  signedAt: 'signedAt',
+  acknowledgedById: 'acknowledgedById',
+  acknowledgedAt: 'acknowledgedAt',
+  subTotal: 'subTotal',
+  tax: 'tax',
+  grandTotal: 'grandTotal',
+  createdAt: 'createdAt'
+} as const
+
+export type OrderConfirmationScalarFieldEnum = (typeof OrderConfirmationScalarFieldEnum)[keyof typeof OrderConfirmationScalarFieldEnum]
+
+
+export const KOItemScalarFieldEnum = {
+  id: 'id',
+  koId: 'koId',
+  itemCode: 'itemCode',
+  description: 'description',
+  quantity: 'quantity',
+  unit: 'unit',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice'
+} as const
+
+export type KOItemScalarFieldEnum = (typeof KOItemScalarFieldEnum)[keyof typeof KOItemScalarFieldEnum]
 
 
 export const IssuedDocumentScalarFieldEnum = {

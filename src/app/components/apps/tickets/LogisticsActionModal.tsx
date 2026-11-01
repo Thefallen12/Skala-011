@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CldUploadWidget } from "next-cloudinary";
+import { ExternalLink, Upload } from "lucide-react";
 import { POStatus } from "@/generated/prisma/enums";
+import type { VendorInvoiceInput } from "@/lib/invoice-input";
+import { PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER } from "@/lib/purchase-order-invoice-config";
 import type { VehicleSummary } from "@/app/actions/vehicles";
 import {
   processLogisticsMaterial,
@@ -20,6 +24,31 @@ import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import InvoiceDetailsFields, {
+  type InvoiceDraft,
+} from "@/app/components/apps/logistics/InvoiceDetailsFields";
+
+function createInvoiceDraft(
+  items: NonNullable<
+    NonNullable<TicketRow["purchaseOrders"]>[number]["items"]
+  > = [],
+): InvoiceDraft {
+  return {
+    invoiceNumber: "",
+    periodOrDate: new Date().toLocaleDateString("id-ID"),
+    paymentMethod: "",
+    bankAccount: "",
+    tax: 0,
+    deduction: 0,
+    items: items.map((item) => ({
+      itemCode: item.itemCode ?? "",
+      description: item.itemName,
+      quantity: item.quantity,
+      unit: item.unit,
+      unitPrice: item.unitPrice,
+    })),
+  };
+}
 
 export default function LogisticsActionModal({
   open,
@@ -27,6 +56,8 @@ export default function LogisticsActionModal({
   vendors,
   stockItems,
   vehicles,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
   onOpenChange,
   onSuccess,
 }: {
@@ -47,13 +78,18 @@ export default function LogisticsActionModal({
     unitPrice: string;
   }[];
   vehicles: VehicleSummary[];
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
 }) {
   const [actionType, setActionType] = useState<
     "READY_WAREHOUSE" | "BUY_STORE"
   >("READY_WAREHOUSE");
-  const [file, setFile] = useState<File | null>(null);
+  const [invoiceDocumentUrl, setInvoiceDocumentUrl] = useState("");
+  const [invoiceDraft, setInvoiceDraft] = useState<InvoiceDraft>(() =>
+    createInvoiceDraft(ticket.purchaseOrders?.[0]?.items),
+  );
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
   const [externalDelivery, setExternalDelivery] = useState({
     vehicleDocumentNumber: "",
@@ -71,6 +107,11 @@ export default function LogisticsActionModal({
     latestPurchaseOrder?.status === POStatus.APPROVED;
   const purchaseOrderPaid = Boolean(latestPurchaseOrder?.paidAt);
 
+  useEffect(() => {
+    setInvoiceDocumentUrl("");
+    setInvoiceDraft(createInvoiceDraft(latestPurchaseOrder?.items));
+  }, [latestPurchaseOrder?.publicCode]);
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (actionType === "BUY_STORE" && !latestPurchaseOrder) return;
@@ -81,8 +122,13 @@ export default function LogisticsActionModal({
       return;
     }
     if (actionType === "BUY_STORE" && !purchaseOrderApproved) return;
-    if (actionType === "BUY_STORE" && !file) {
-      setMessage("Unggah invoice atau nota pembelian terlebih dahulu.");
+    if (
+      actionType === "BUY_STORE" &&
+      purchaseOrderApproved &&
+      !purchaseOrderPaid &&
+      (!invoiceDraft.invoiceNumber.trim() || !invoiceDocumentUrl)
+    ) {
+      setMessage("Isi nomor invoice dan unggah dokumen melalui Cloudinary.");
       return;
     }
     if (
@@ -114,17 +160,23 @@ export default function LogisticsActionModal({
         const result = await processLogisticsMaterial(
           ticket.id,
           actionType,
-          actionType === "BUY_STORE" ? file ?? undefined : undefined,
+          undefined,
           actionType === "READY_WAREHOUSE" && purchaseOrderPaid
             ? externalDelivery
             : undefined,
           actionType === "READY_WAREHOUSE" && !purchaseOrderPaid
             ? selectedVehicleId
             : undefined,
+          actionType === "BUY_STORE"
+            ? ({
+                ...invoiceDraft,
+                documentUrl: invoiceDocumentUrl,
+              } satisfies VendorInvoiceInput)
+            : undefined,
         );
         setMessage(result.message);
         if (result.success) {
-          setFile(null);
+          setInvoiceDocumentUrl("");
           setSelectedVehicleId("");
           setExternalDelivery({
             vehicleDocumentNumber: "",
@@ -150,7 +202,7 @@ export default function LogisticsActionModal({
     <GlobalModal
       isOpen={open}
       onClose={() => {
-        setFile(null);
+        setInvoiceDocumentUrl("");
         setSelectedVehicleId("");
         setMessage("");
         setExternalDelivery({
@@ -417,25 +469,89 @@ export default function LogisticsActionModal({
                   Invoice dapat dikirim ke Keuangan setelah PO disetujui.
                 </p>
               ) : (
-                <label className="block space-y-2 text-sm font-medium">
-                  Upload invoice / nota pembelian
-                  <Input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,application/pdf"
-                    required
-                    disabled={isPending}
-                    onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-                  />
-                </label>
+                <div className="space-y-4">
+                  {latestPurchaseOrder.invoiceId && (
+                    <Button asChild size="sm" variant="outline">
+                      <a
+                        href={`/api/documents/transactions?kind=INVOICE&id=${encodeURIComponent(latestPurchaseOrder.invoiceId)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <ExternalLink className="mr-2 size-4" aria-hidden="true" />
+                        Cetak Invoice Vendor
+                      </a>
+                    </Button>
+                  )}
+                  {!latestPurchaseOrder.vendorInvoiceUrl && (
+                    <>
+                      <InvoiceDetailsFields
+                        idPrefix={`ticket-invoice-${ticket.id}`}
+                        value={invoiceDraft}
+                        onChange={setInvoiceDraft}
+                      />
+                      {cloudinaryCloudName && cloudinaryApiKey ? (
+                        <CldUploadWidget
+                          config={{
+                            cloud: {
+                              cloudName: cloudinaryCloudName,
+                              apiKey: cloudinaryApiKey,
+                            },
+                          }}
+                          signatureEndpoint="/api/cloudinary/purchase-order-invoice-signature"
+                          options={{
+                            folder: PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+                            resourceType: "auto",
+                            sources: ["local", "camera"],
+                            multiple: false,
+                            maxFiles: 1,
+                            maxFileSize: 5 * 1024 * 1024,
+                            clientAllowedFormats: ["pdf", "jpg", "jpeg", "png", "webp"],
+                            showPoweredBy: false,
+                          }}
+                          onSuccess={(result) => {
+                            if (
+                              result.event === "success" &&
+                              typeof result.info === "object" &&
+                              result.info !== null &&
+                              "secure_url" in result.info &&
+                              typeof result.info.secure_url === "string"
+                            ) {
+                              setInvoiceDocumentUrl(result.info.secure_url);
+                              setMessage("Dokumen invoice berhasil diunggah.");
+                            }
+                          }}
+                          onError={(error) => {
+                            console.error("Ticket PO invoice upload failed:", error);
+                            setMessage("Invoice gagal diunggah melalui Cloudinary.");
+                          }}
+                        >
+                          {({ open }) => (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              disabled={isPending}
+                              onClick={() => open()}
+                            >
+                              <Upload className="mr-2 size-4" aria-hidden="true" />
+                              {invoiceDocumentUrl ? "Ganti Invoice Cloudinary" : "Unggah Invoice via Cloudinary"}
+                            </Button>
+                          )}
+                        </CldUploadWidget>
+                      ) : (
+                        <p className="text-sm text-destructive" role="alert">
+                          Konfigurasi Cloudinary belum tersedia untuk upload invoice.
+                        </p>
+                      )}
+                      {invoiceDocumentUrl && (
+                        <p className="text-xs text-muted-foreground">
+                          Dokumen terunggah. Simpan untuk mengirim invoice ke Keuangan.
+                        </p>
+                      )}
+                    </>
+                  )}
+                </div>
               )}
             </section>
-          )}
-          {actionType === "BUY_STORE" &&
-            purchaseOrderApproved &&
-            file && (
-            <label className="block space-y-2 text-sm font-medium">
-              Invoice terpilih: {file.name}
-            </label>
           )}
             </>
           )}
@@ -461,7 +577,8 @@ export default function LogisticsActionModal({
                   (actionType === "BUY_STORE" &&
                     purchaseOrderApproved &&
                     !purchaseOrderPaid &&
-                    !file)
+                    (!invoiceDraft.invoiceNumber.trim() ||
+                      !invoiceDocumentUrl))
                 }
               >
                 {isPending

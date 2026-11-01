@@ -358,6 +358,7 @@ export type SubkonTermynWhereInput = {
   financeReviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   paidBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
 }
 
 export type SubkonTermynOrderByWithRelationInput = {
@@ -387,6 +388,7 @@ export type SubkonTermynOrderByWithRelationInput = {
   financeReviewedBy?: Prisma.UserOrderByWithRelationInput
   approvedBy?: Prisma.UserOrderByWithRelationInput
   paidBy?: Prisma.UserOrderByWithRelationInput
+  invoice?: Prisma.InvoiceOrderByWithRelationInput
 }
 
 export type SubkonTermynWhereUniqueInput = Prisma.AtLeast<{
@@ -420,6 +422,7 @@ export type SubkonTermynWhereUniqueInput = Prisma.AtLeast<{
   financeReviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   paidBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
 }, "id" | "subkonContractId_termynNumber">
 
 export type SubkonTermynOrderByWithAggregationInput = {
@@ -497,6 +500,7 @@ export type SubkonTermynCreateInput = {
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateInput = {
@@ -520,6 +524,7 @@ export type SubkonTermynUncheckedCreateInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUpdateInput = {
@@ -543,6 +548,7 @@ export type SubkonTermynUpdateInput = {
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateInput = {
@@ -566,6 +572,7 @@ export type SubkonTermynUncheckedUpdateInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynCreateManyInput = {
@@ -729,6 +736,11 @@ export type SubkonTermynSumOrderByAggregateInput = {
   grossAmount?: Prisma.SortOrder
   retentionAmount?: Prisma.SortOrder
   netAmount?: Prisma.SortOrder
+}
+
+export type SubkonTermynNullableScalarRelationFilter = {
+  is?: Prisma.SubkonTermynWhereInput | null
+  isNot?: Prisma.SubkonTermynWhereInput | null
 }
 
 export type SubkonTermynCreateNestedManyWithoutCreatedByInput = {
@@ -987,6 +999,22 @@ export type EnumSubkonTermynStatusFieldUpdateOperationsInput = {
   set?: $Enums.SubkonTermynStatus
 }
 
+export type SubkonTermynCreateNestedOneWithoutInvoiceInput = {
+  create?: Prisma.XOR<Prisma.SubkonTermynCreateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.SubkonTermynCreateOrConnectWithoutInvoiceInput
+  connect?: Prisma.SubkonTermynWhereUniqueInput
+}
+
+export type SubkonTermynUpdateOneWithoutInvoiceNestedInput = {
+  create?: Prisma.XOR<Prisma.SubkonTermynCreateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.SubkonTermynCreateOrConnectWithoutInvoiceInput
+  upsert?: Prisma.SubkonTermynUpsertWithoutInvoiceInput
+  disconnect?: Prisma.SubkonTermynWhereInput | boolean
+  delete?: Prisma.SubkonTermynWhereInput | boolean
+  connect?: Prisma.SubkonTermynWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubkonTermynUpdateToOneWithWhereWithoutInvoiceInput, Prisma.SubkonTermynUpdateWithoutInvoiceInput>, Prisma.SubkonTermynUncheckedUpdateWithoutInvoiceInput>
+}
+
 export type SubkonTermynCreateWithoutCreatedByInput = {
   id?: string
   termynNumber: number
@@ -1007,6 +1035,7 @@ export type SubkonTermynCreateWithoutCreatedByInput = {
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutCreatedByInput = {
@@ -1029,6 +1058,7 @@ export type SubkonTermynUncheckedCreateWithoutCreatedByInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutCreatedByInput = {
@@ -1061,6 +1091,7 @@ export type SubkonTermynCreateWithoutFieldVerifiedByInput = {
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutFieldVerifiedByInput = {
@@ -1083,6 +1114,7 @@ export type SubkonTermynUncheckedCreateWithoutFieldVerifiedByInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutFieldVerifiedByInput = {
@@ -1115,6 +1147,7 @@ export type SubkonTermynCreateWithoutFinanceReviewedByInput = {
   fieldVerifiedBy?: Prisma.UserCreateNestedOneWithoutVerifiedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutFinanceReviewedByInput = {
@@ -1137,6 +1170,7 @@ export type SubkonTermynUncheckedCreateWithoutFinanceReviewedByInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutFinanceReviewedByInput = {
@@ -1169,6 +1203,7 @@ export type SubkonTermynCreateWithoutApprovedByInput = {
   fieldVerifiedBy?: Prisma.UserCreateNestedOneWithoutVerifiedSubkonTermynsInput
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutApprovedByInput = {
@@ -1191,6 +1226,7 @@ export type SubkonTermynUncheckedCreateWithoutApprovedByInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutApprovedByInput = {
@@ -1223,6 +1259,7 @@ export type SubkonTermynCreateWithoutPaidByInput = {
   fieldVerifiedBy?: Prisma.UserCreateNestedOneWithoutVerifiedSubkonTermynsInput
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutPaidByInput = {
@@ -1245,6 +1282,7 @@ export type SubkonTermynUncheckedCreateWithoutPaidByInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutPaidByInput = {
@@ -1383,6 +1421,7 @@ export type SubkonTermynCreateWithoutSubkonContractInput = {
   financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
   paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynUncheckedCreateWithoutSubkonContractInput = {
@@ -1405,6 +1444,7 @@ export type SubkonTermynUncheckedCreateWithoutSubkonContractInput = {
   paidAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubkonTermynInput
 }
 
 export type SubkonTermynCreateOrConnectWithoutSubkonContractInput = {
@@ -1431,6 +1471,114 @@ export type SubkonTermynUpdateWithWhereUniqueWithoutSubkonContractInput = {
 export type SubkonTermynUpdateManyWithWhereWithoutSubkonContractInput = {
   where: Prisma.SubkonTermynScalarWhereInput
   data: Prisma.XOR<Prisma.SubkonTermynUpdateManyMutationInput, Prisma.SubkonTermynUncheckedUpdateManyWithoutSubkonContractInput>
+}
+
+export type SubkonTermynCreateWithoutInvoiceInput = {
+  id?: string
+  termynNumber: number
+  claimedPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  retentionAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.SubkonTermynStatus
+  paymentProofUrl?: string | null
+  fieldVerifiedAt?: Date | string | null
+  financeReviewedAt?: Date | string | null
+  approvedAt?: Date | string | null
+  paidAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subkonContract: Prisma.SubkonContractCreateNestedOneWithoutTermynsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedSubkonTermynsInput
+  fieldVerifiedBy?: Prisma.UserCreateNestedOneWithoutVerifiedSubkonTermynsInput
+  financeReviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedSubkonTermynsInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedSubkonTermynsInput
+  paidBy?: Prisma.UserCreateNestedOneWithoutPaidSubkonTermynsInput
+}
+
+export type SubkonTermynUncheckedCreateWithoutInvoiceInput = {
+  id?: string
+  subkonContractId: string
+  termynNumber: number
+  claimedPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grossAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  retentionAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.SubkonTermynStatus
+  paymentProofUrl?: string | null
+  createdById: string
+  fieldVerifiedById?: string | null
+  fieldVerifiedAt?: Date | string | null
+  financeReviewedById?: string | null
+  financeReviewedAt?: Date | string | null
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  paidById?: string | null
+  paidAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubkonTermynCreateOrConnectWithoutInvoiceInput = {
+  where: Prisma.SubkonTermynWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubkonTermynCreateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedCreateWithoutInvoiceInput>
+}
+
+export type SubkonTermynUpsertWithoutInvoiceInput = {
+  update: Prisma.XOR<Prisma.SubkonTermynUpdateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedUpdateWithoutInvoiceInput>
+  create: Prisma.XOR<Prisma.SubkonTermynCreateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedCreateWithoutInvoiceInput>
+  where?: Prisma.SubkonTermynWhereInput
+}
+
+export type SubkonTermynUpdateToOneWithWhereWithoutInvoiceInput = {
+  where?: Prisma.SubkonTermynWhereInput
+  data: Prisma.XOR<Prisma.SubkonTermynUpdateWithoutInvoiceInput, Prisma.SubkonTermynUncheckedUpdateWithoutInvoiceInput>
+}
+
+export type SubkonTermynUpdateWithoutInvoiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  termynNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  claimedPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  retentionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumSubkonTermynStatusFieldUpdateOperationsInput | $Enums.SubkonTermynStatus
+  paymentProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  financeReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subkonContract?: Prisma.SubkonContractUpdateOneRequiredWithoutTermynsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedSubkonTermynsNestedInput
+  fieldVerifiedBy?: Prisma.UserUpdateOneWithoutVerifiedSubkonTermynsNestedInput
+  financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
+  paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+}
+
+export type SubkonTermynUncheckedUpdateWithoutInvoiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subkonContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  termynNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  claimedPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grossAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  retentionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  netAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumSubkonTermynStatusFieldUpdateOperationsInput | $Enums.SubkonTermynStatus
+  paymentProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldVerifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  financeReviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financeReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SubkonTermynCreateManyCreatedByInput = {
@@ -1563,6 +1711,7 @@ export type SubkonTermynUpdateWithoutCreatedByInput = {
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutCreatedByInput = {
@@ -1585,6 +1734,7 @@ export type SubkonTermynUncheckedUpdateWithoutCreatedByInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1629,6 +1779,7 @@ export type SubkonTermynUpdateWithoutFieldVerifiedByInput = {
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutFieldVerifiedByInput = {
@@ -1651,6 +1802,7 @@ export type SubkonTermynUncheckedUpdateWithoutFieldVerifiedByInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByInput = {
@@ -1695,6 +1847,7 @@ export type SubkonTermynUpdateWithoutFinanceReviewedByInput = {
   fieldVerifiedBy?: Prisma.UserUpdateOneWithoutVerifiedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutFinanceReviewedByInput = {
@@ -1717,6 +1870,7 @@ export type SubkonTermynUncheckedUpdateWithoutFinanceReviewedByInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByInput = {
@@ -1761,6 +1915,7 @@ export type SubkonTermynUpdateWithoutApprovedByInput = {
   fieldVerifiedBy?: Prisma.UserUpdateOneWithoutVerifiedSubkonTermynsNestedInput
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutApprovedByInput = {
@@ -1783,6 +1938,7 @@ export type SubkonTermynUncheckedUpdateWithoutApprovedByInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutApprovedByInput = {
@@ -1827,6 +1983,7 @@ export type SubkonTermynUpdateWithoutPaidByInput = {
   fieldVerifiedBy?: Prisma.UserUpdateOneWithoutVerifiedSubkonTermynsNestedInput
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutPaidByInput = {
@@ -1849,6 +2006,7 @@ export type SubkonTermynUncheckedUpdateWithoutPaidByInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutPaidByInput = {
@@ -1915,6 +2073,7 @@ export type SubkonTermynUpdateWithoutSubkonContractInput = {
   financeReviewedBy?: Prisma.UserUpdateOneWithoutReviewedSubkonTermynsNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedSubkonTermynsNestedInput
   paidBy?: Prisma.UserUpdateOneWithoutPaidSubkonTermynsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateWithoutSubkonContractInput = {
@@ -1937,6 +2096,7 @@ export type SubkonTermynUncheckedUpdateWithoutSubkonContractInput = {
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubkonTermynNestedInput
 }
 
 export type SubkonTermynUncheckedUpdateManyWithoutSubkonContractInput = {
@@ -1990,6 +2150,7 @@ export type SubkonTermynSelect<ExtArgs extends runtime.Types.Extensions.Internal
   financeReviewedBy?: boolean | Prisma.SubkonTermyn$financeReviewedByArgs<ExtArgs>
   approvedBy?: boolean | Prisma.SubkonTermyn$approvedByArgs<ExtArgs>
   paidBy?: boolean | Prisma.SubkonTermyn$paidByArgs<ExtArgs>
+  invoice?: boolean | Prisma.SubkonTermyn$invoiceArgs<ExtArgs>
 }, ExtArgs["result"]["subkonTermyn"]>
 
 export type SubkonTermynSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2081,6 +2242,7 @@ export type SubkonTermynInclude<ExtArgs extends runtime.Types.Extensions.Interna
   financeReviewedBy?: boolean | Prisma.SubkonTermyn$financeReviewedByArgs<ExtArgs>
   approvedBy?: boolean | Prisma.SubkonTermyn$approvedByArgs<ExtArgs>
   paidBy?: boolean | Prisma.SubkonTermyn$paidByArgs<ExtArgs>
+  invoice?: boolean | Prisma.SubkonTermyn$invoiceArgs<ExtArgs>
 }
 export type SubkonTermynIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subkonContract?: boolean | Prisma.SubkonContractDefaultArgs<ExtArgs>
@@ -2108,6 +2270,7 @@ export type $SubkonTermynPayload<ExtArgs extends runtime.Types.Extensions.Intern
     financeReviewedBy: Prisma.$UserPayload<ExtArgs> | null
     approvedBy: Prisma.$UserPayload<ExtArgs> | null
     paidBy: Prisma.$UserPayload<ExtArgs> | null
+    invoice: Prisma.$InvoicePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2530,6 +2693,7 @@ export interface Prisma__SubkonTermynClient<T, Null = never, ExtArgs extends run
   financeReviewedBy<T extends Prisma.SubkonTermyn$financeReviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubkonTermyn$financeReviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   approvedBy<T extends Prisma.SubkonTermyn$approvedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubkonTermyn$approvedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   paidBy<T extends Prisma.SubkonTermyn$paidByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubkonTermyn$paidByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invoice<T extends Prisma.SubkonTermyn$invoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubkonTermyn$invoiceArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3053,6 +3217,25 @@ export type SubkonTermyn$paidByArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * SubkonTermyn.invoice
+ */
+export type SubkonTermyn$invoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
 }
 
 /**

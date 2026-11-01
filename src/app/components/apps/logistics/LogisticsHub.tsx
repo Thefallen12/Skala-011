@@ -10,6 +10,13 @@ import {
 } from "@/app/actions/construction";
 import { createVendor, updateVendor } from "@/app/actions/vendors";
 import LogisticsWorkspace from "@/app/components/apps/tickets/LogisticsWorkspace";
+import DocumentSignoffQueue, {
+  type DocumentSignoffTask,
+} from "@/app/components/apps/documents/DocumentSignoffQueue";
+import PurchaseOrderConfirmationQueue, {
+  type PurchaseOrderConfirmationRow,
+} from "@/app/components/apps/logistics/PurchaseOrderConfirmationQueue";
+import PurchaseOrderInvoiceUpload from "@/app/components/apps/logistics/PurchaseOrderInvoiceUpload";
 import VehicleFleetPanel from "@/app/components/apps/logistics/VehicleFleetPanel";
 import VehicleOperationsPanel from "@/app/components/apps/logistics/VehicleOperationsPanel";
 import type { VehicleSummary } from "@/app/actions/vehicles";
@@ -96,6 +103,17 @@ type HubPurchaseOrder = {
   status: string;
   createdAt: string;
   ticketId: string | null;
+  vendorInvoiceUrl: string | null;
+  invoiceId: string | null;
+  vendorPoSentAt: string | null;
+  includeTax: boolean;
+  items: {
+    itemCode: string | null;
+    itemName: string;
+    quantity: number;
+    unit: string;
+    unitPrice: number;
+  }[];
 };
 
 type HubDeliveryOrder = {
@@ -145,6 +163,8 @@ export default function LogisticsHub({
   vendors,
   stockItems,
   stockPurchases,
+  purchaseOrderConfirmations,
+  documentSignoffTasks,
   cloudinaryCloudName,
   cloudinaryApiKey,
   purchaseOrders,
@@ -162,6 +182,8 @@ export default function LogisticsHub({
   vendors: LogisticsVendor[];
   stockItems: LogisticsStockItem[];
   stockPurchases: DirectStockPurchaseRow[];
+  purchaseOrderConfirmations: PurchaseOrderConfirmationRow[];
+  documentSignoffTasks: DocumentSignoffTask[];
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
   purchaseOrders: HubPurchaseOrder[];
@@ -345,7 +367,13 @@ export default function LogisticsHub({
       </TabsContent>
 
       <TabsContent value="documents">
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="space-y-5">
+          <DocumentSignoffQueue
+            tasks={documentSignoffTasks}
+            title="Tanda Tangan Dokumen Logistik"
+            description="Logistik menandatangani KO dan DO. QR verifikasi menjadi valid setelah Keuangan menyelesaikan konfirmasi."
+          />
+          <div className="grid gap-5 xl:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle>Purchase Order</CardTitle>
@@ -367,6 +395,27 @@ export default function LogisticsHub({
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
                       <Badge variant="lightSuccess">Disetujui Eksekutif</Badge>
+                      {role === UserRole.LOGISTICS ? (
+                        <PurchaseOrderInvoiceUpload
+                          publicCode={order.publicCode}
+                          invoiceUrl={order.vendorInvoiceUrl}
+                          invoiceId={order.invoiceId}
+                          vendorPoSentAt={order.vendorPoSentAt}
+                          ticketLinked={Boolean(order.ticketId)}
+                          items={order.items}
+                          includeTax={order.includeTax}
+                          cloudinaryCloudName={cloudinaryCloudName}
+                          cloudinaryApiKey={cloudinaryApiKey}
+                        />
+                      ) : (
+                        <Badge
+                          variant={order.vendorPoSentAt ? "lightSuccess" : "outline"}
+                        >
+                          {order.vendorPoSentAt
+                            ? "PO dikirim ke vendor"
+                            : "Menunggu pengiriman PO"}
+                        </Badge>
+                      )}
                       <Button
                         variant="outline"
                         size="sm"
@@ -439,6 +488,16 @@ export default function LogisticsHub({
               )}
             </CardContent>
           </Card>
+          {role === UserRole.LOGISTICS && (
+            <Card className="xl:col-span-2">
+              <CardContent className="pt-6">
+                <PurchaseOrderConfirmationQueue
+                  rows={purchaseOrderConfirmations}
+                />
+              </CardContent>
+            </Card>
+          )}
+          </div>
         </div>
       </TabsContent>
 
@@ -567,7 +626,7 @@ export default function LogisticsHub({
               </ul>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] text-sm">
+              <table className="app-data-table w-full min-w-[760px] text-sm">
                 <thead className="bg-[#102A4D] text-left text-white">
                   <tr>
                     <th className="p-3">Tanggal / Proyek</th>
