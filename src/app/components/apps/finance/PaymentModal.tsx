@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { TicketActionResult } from "@/app/actions/tickets";
+import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,12 +48,16 @@ export default function PaymentModal({
   onOpenChange,
   target,
   onPay,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   target: PaymentModalTarget | null;
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
   onPay: (
-    file: File,
+    proofOfTransferUrl: string,
     transferDestination: string,
     paymentType: PaymentType,
     amount: number,
@@ -71,7 +76,7 @@ export default function PaymentModal({
   const [destination, setDestination] = useState(
     target?.transferDestination ?? "",
   );
-  const [receipt, setReceipt] = useState<File | null>(null);
+  const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [isMessageError, setIsMessageError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -90,7 +95,7 @@ export default function PaymentModal({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!target || !receipt) {
+    if (!target || !receiptUrl) {
       setMessage("Pilih bukti transfer terlebih dahulu.");
       setIsMessageError(true);
       return;
@@ -120,7 +125,7 @@ export default function PaymentModal({
     setIsPending(true);
     try {
       const result = await onPay(
-        receipt,
+        receiptUrl,
         destination.trim(),
         paymentType,
         transferAmount,
@@ -143,11 +148,7 @@ export default function PaymentModal({
       );
       setAmount(String(updatedRemaining));
       setPaymentType(PaymentType.FULL_PAYMENT);
-      setReceipt(null);
-      const fileInput = document.getElementById(
-        "payment-modal-receipt",
-      ) as HTMLInputElement | null;
-      if (fileInput) fileInput.value = "";
+      setReceiptUrl(null);
       router.refresh();
     } catch (error) {
       console.error("Finance payment submission failed:", error);
@@ -274,24 +275,16 @@ export default function PaymentModal({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="payment-modal-receipt">
-                    Upload Struk/Bukti Transfer
-                  </Label>
-                  <Input
-                    id="payment-modal-receipt"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,application/pdf"
-                    required
+                  <Label>Bukti Transfer</Label>
+                  <FinancePaymentProofUpload
+                    value={receiptUrl}
+                    onChange={setReceiptUrl}
+                    cloudinaryCloudName={cloudinaryCloudName}
+                    cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
-                    onChange={(event) =>
-                      setReceipt(event.target.files?.[0] ?? null)
-                    }
                   />
-                  <p className="text-xs text-muted-foreground">
-                    PDF/JPG/PNG/WEBP, maksimal 5 MB.
-                  </p>
                 </div>
-                <Button type="submit" disabled={isPending || !receipt}>
+                <Button type="submit" disabled={isPending || !receiptUrl}>
                   {isPending ? "Memproses..." : "Simpan Pembayaran"}
                 </Button>
               </>

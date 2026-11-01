@@ -77,6 +77,7 @@ export default async function LogisticsStockPage({
             createdAt: true,
             receivedAt: true,
             arrivalPhotoUrl: true,
+            receivedPhotos: true,
             paymentTransactions: {
               where: { status: PaymentStatus.PAID },
               select: { proofOfTransferUrl: true },
@@ -118,6 +119,8 @@ export default async function LogisticsStockPage({
         initialAction={initialAction}
         purchaseTickets={purchaseTickets}
         vendors={vendors}
+        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         stockItems={stockItems.map((item) => ({
           ...item,
           stockQuantity: item.stockQuantity.toString(),

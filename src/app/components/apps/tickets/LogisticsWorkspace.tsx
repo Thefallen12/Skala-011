@@ -8,8 +8,10 @@ import {
   type FormEvent,
 } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CldUploadWidget } from "next-cloudinary";
 import {
   AlertTriangle,
   Boxes,
@@ -26,6 +28,7 @@ import {
   Search,
   Trash2,
   Truck,
+  X,
 } from "lucide-react";
 import CardBox from "@/app/components/shared/CardBox";
 import TicketListing from "@/app/components/apps/tickets/TicketListing";
@@ -38,6 +41,10 @@ import type {
   TicketRow,
 } from "@/app/(DashboardLayout)/types/ticket";
 import { TicketStatus } from "@/generated/prisma/enums";
+import {
+  DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER,
+  MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS,
+} from "@/lib/direct-stock-purchase-photo-config";
 import { getJakartaDateKey, shiftDateKey } from "@/lib/habit-date";
 import {
   deleteLogisticsStockItem,
@@ -154,6 +161,7 @@ type DirectStockPurchaseRow = {
   createdAt: string;
   receivedAt: string | null;
   arrivalPhotoUrl: string | null;
+  receivedPhotos: string[];
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
   ticket: { id: string; ticketNumber: string; title: string } | null;
@@ -183,6 +191,8 @@ export default function LogisticsWorkspace({
   stockItems = [],
   stockPurchases = [],
   purchaseTickets = [],
+  cloudinaryCloudName = "",
+  cloudinaryApiKey = "",
   initialAction,
   initialOpenSheet,
 }: {
@@ -195,6 +205,8 @@ export default function LogisticsWorkspace({
   stockItems?: LogisticsStockItem[];
   stockPurchases?: DirectStockPurchaseRow[];
   purchaseTickets?: PurchaseTicketOption[];
+  cloudinaryCloudName?: string;
+  cloudinaryApiKey?: string;
   initialAction?: "ticket" | "stock-purchase";
   initialOpenSheet?: string;
 }) {
@@ -207,6 +219,7 @@ export default function LogisticsWorkspace({
   const [receivingPurchaseSubmitting, setReceivingPurchaseSubmitting] =
     useState(false);
   const [receivingPurchaseError, setReceivingPurchaseError] = useState("");
+  const [receivingPhotos, setReceivingPhotos] = useState<string[]>([]);
   const [stockQuery, setStockQuery] = useState("");
   const [stockFilter, setStockFilter] = useState("ALL");
   const [stockPage, setStockPage] = useState(1);
@@ -476,16 +489,19 @@ export default function LogisticsWorkspace({
   const submitStockPurchaseReceipt = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
+    const formData = new FormData(form);
+    receivingPhotos.forEach((photo) => formData.append("receivedPhotos", photo));
     setReceivingPurchaseError("");
     setReceivingPurchaseSubmitting(true);
     try {
-      const result = await receiveDirectStockPurchase(new FormData(form));
+      const result = await receiveDirectStockPurchase(formData);
       if (!result.success) {
         setReceivingPurchaseError(result.message);
         return;
       }
       setStockNotice(result.message);
       setReceivingPurchase(null);
+      setReceivingPhotos([]);
       router.refresh();
     } catch (error) {
       console.error("Receiving direct stock purchase failed:", error);
@@ -1252,7 +1268,14 @@ export default function LogisticsWorkspace({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stockPurchases.map((purchase) => (
+                {stockPurchases.map((purchase) => {
+                  const receiptPhotos =
+                    purchase.receivedPhotos.length > 0
+                      ? purchase.receivedPhotos
+                      : purchase.arrivalPhotoUrl
+                        ? [purchase.arrivalPhotoUrl]
+                        : [];
+                  return (
                   <TableRow key={purchase.id}>
                     <TableCell className="font-medium">
                       {purchase.purchaseNumber}
@@ -1313,16 +1336,17 @@ export default function LogisticsWorkspace({
                       ) : (
                         "—"
                       )}
-                      {purchase.arrivalPhotoUrl && (
+                      {receiptPhotos.map((photo, index) => (
                         <a
+                          key={photo}
                           className="mt-1 block text-xs text-primary underline"
-                          href={`${purchase.arrivalPhotoUrl}?preview=1`}
+                          href={photo}
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Lihat foto
+                          Lihat foto {index + 1}
                         </a>
-                      )}
+                      ))}
                     </TableCell>
                     {canCreatePurchaseOrder && (
                       <TableCell>
@@ -1334,6 +1358,7 @@ export default function LogisticsWorkspace({
                             size="sm"
                             onClick={() => {
                               setReceivingPurchaseError("");
+                              setReceivingPhotos([]);
                               setReceivingPurchase(purchase);
                             }}
                           >
@@ -1343,7 +1368,8 @@ export default function LogisticsWorkspace({
                       </TableCell>
                     )}
                   </TableRow>
-                ))}
+                  );
+                })}
                 {stockPurchases.length === 0 && (
                   <TableRow>
                     <TableCell
@@ -1623,6 +1649,7 @@ export default function LogisticsWorkspace({
             if (!open && !receivingPurchaseSubmitting) {
               setReceivingPurchase(null);
               setReceivingPurchaseError("");
+              setReceivingPhotos([]);
             }
           }}
         >
@@ -1645,21 +1672,119 @@ export default function LogisticsWorkspace({
                   name="purchaseId"
                   value={receivingPurchase.id}
                 />
-                <div className="space-y-2">
-                  <Label htmlFor="direct-stock-receipt-photo">
-                    Foto bukti barang tiba
-                  </Label>
-                  <Input
-                    id="direct-stock-receipt-photo"
-                    name="photo"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    required
-                    disabled={receivingPurchaseSubmitting}
-                  />
+                <div className="space-y-3">
+                  <Label>Foto bukti barang tiba</Label>
+                  {cloudinaryCloudName && cloudinaryApiKey ? (
+                    <CldUploadWidget
+                      config={{
+                        cloud: {
+                          cloudName: cloudinaryCloudName,
+                          apiKey: cloudinaryApiKey,
+                        },
+                      }}
+                      signatureEndpoint="/api/cloudinary/direct-stock-receipt-signature"
+                      options={{
+                        folder: DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER,
+                        resourceType: "image",
+                        sources: ["local", "camera"],
+                        multiple: true,
+                        maxFiles: Math.max(
+                          1,
+                          MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS -
+                            receivingPhotos.length,
+                        ),
+                        maxFileSize: 5 * 1024 * 1024,
+                        clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
+                        showPoweredBy: false,
+                      }}
+                      onSuccess={(result) => {
+                        if (
+                          result.event === "success" &&
+                          typeof result.info === "object" &&
+                          result.info !== null &&
+                          "secure_url" in result.info &&
+                          typeof result.info.secure_url === "string"
+                        ) {
+                          const secureUrl = result.info.secure_url;
+                          setReceivingPhotos((current) =>
+                            current.includes(secureUrl) ||
+                            current.length >= MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+                              ? current
+                              : [...current, secureUrl],
+                          );
+                          setReceivingPurchaseError("");
+                        }
+                      }}
+                      onError={(error) => {
+                        console.error(
+                          "Direct stock receipt photo upload failed:",
+                          error,
+                        );
+                        setReceivingPurchaseError(
+                          "Foto gagal diunggah. Silakan coba kembali.",
+                        );
+                      }}
+                    >
+                      {({ open }) => (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => open()}
+                          disabled={
+                            receivingPurchaseSubmitting ||
+                            receivingPhotos.length >=
+                              MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+                          }
+                        >
+                          Unggah Foto ({receivingPhotos.length}/
+                          {MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS})
+                        </Button>
+                      )}
+                    </CldUploadWidget>
+                  ) : (
+                    <p className="text-sm text-destructive" role="alert">
+                      Upload foto tidak tersedia. Periksa konfigurasi Cloudinary
+                      di server.
+                    </p>
+                  )}
                   <p className="text-xs text-muted-foreground">
-                    JPG, PNG, atau WEBP. Maksimal 5 MB.
+                    Pilih 1–{MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto JPG,
+                    PNG, atau WEBP; maksimal 5 MB per foto.
                   </p>
+                  {receivingPhotos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {receivingPhotos.map((photo, index) => (
+                        <div
+                          key={photo}
+                          className="relative aspect-[4/3] overflow-hidden rounded-md border"
+                        >
+                          <Image
+                            src={photo}
+                            alt={`Bukti penerimaan ${index + 1}`}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                            sizes="(max-width: 640px) 30vw, 140px"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            aria-label={`Hapus foto ${index + 1}`}
+                            className="absolute right-1 top-1 size-7"
+                            onClick={() =>
+                              setReceivingPhotos((current) =>
+                                current.filter((url) => url !== photo),
+                              )
+                            }
+                            disabled={receivingPurchaseSubmitting}
+                          >
+                            <X aria-hidden="true" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {receivingPurchaseError && (
                   <p className="text-sm text-destructive" role="alert">
@@ -1675,7 +1800,15 @@ export default function LogisticsWorkspace({
                   >
                     Batal
                   </Button>
-                  <Button type="submit" disabled={receivingPurchaseSubmitting}>
+                  <Button
+                    type="submit"
+                    disabled={
+                      receivingPurchaseSubmitting ||
+                      receivingPhotos.length === 0 ||
+                      receivingPhotos.length >
+                        MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+                    }
+                  >
                     {receivingPurchaseSubmitting
                       ? "Mencatat penerimaan..."
                       : "Terima Barang"}

@@ -113,6 +113,9 @@ const auditActionLabels: Record<string, string> = {
   LOGISTICS_BUY_STORE: "Dibeli di toko; diteruskan ke Keuangan",
   LOGISTICS_PO_CREATED: "PO dibuat; menunggu persetujuan",
   LOGISTICS_DIRECT_PURCHASE_CREATED: "Pembelian langsung ditautkan",
+  DIRECT_PURCHASE_APPROVED: "Pembelian langsung disetujui Direktur",
+  DIRECT_PURCHASE_PAYMENT: "Pembayaran pembelian langsung dicatat",
+  DIRECT_PURCHASE_RECEIVED: "Pembelian langsung diterima Logistik",
   DOCUMENT_ISSUED: "Dokumen PO/DO diterbitkan",
   FINANCE_PAYMENT_COMPLETED: "Pembayaran diselesaikan",
   MOVER_DELIVERY_COMPLETED: "Barang diterima di lapangan",
@@ -803,22 +806,20 @@ export default function TicketListing({
                             (sum, payment) => sum + payment.amount,
                             0,
                           );
-                          const remaining = Math.max(
-                            0,
-                            Number(selectedTicket.totalAmount ?? 0) - paid,
-                          );
                           return (
-                            <Badge variant={remaining < 0.005 ? "success" : "warning"}>
-                              {remaining < 0.005 ? "LUNAS" : "SEBAGIAN / DP"}
+                            <Badge variant="secondary">
+                              {selectedTicket.paymentTransactions!.length} transaksi ·{" "}
+                              {formatCurrency(String(paid))}
                             </Badge>
                           );
                         })()}
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full min-w-[480px] text-left text-sm">
+                        <table className="w-full min-w-[640px] text-left text-sm">
                           <thead>
                             <tr className="border-b text-muted-foreground">
                               <th className="py-2 pr-3">Tanggal</th>
+                              <th className="py-2 pr-3">Referensi</th>
                               <th className="py-2 pr-3">Tipe</th>
                               <th className="py-2 pr-3">Jumlah</th>
                               <th className="py-2 pr-3">Tujuan Transfer</th>
@@ -833,6 +834,7 @@ export default function TicketListing({
                                     ? new Date(payment.paidAt).toLocaleDateString("id-ID")
                                     : "—"}
                                 </td>
+                                <td className="py-2 pr-3">{payment.reference}</td>
                                 <td className="py-2 pr-3">
                                   {payment.paymentType === PaymentType.DOWN_PAYMENT
                                     ? "DP"
@@ -847,12 +849,18 @@ export default function TicketListing({
                                 <td className="py-2">
                                   {payment.proofOfTransferUrl ? (
                                     <a
-                                      href={payment.proofOfTransferUrl}
+                                      href={
+                                        payment.proofOfTransferUrl.startsWith(
+                                          "/api/tickets/receipts/",
+                                        )
+                                          ? `${payment.proofOfTransferUrl}?preview=1`
+                                          : payment.proofOfTransferUrl
+                                      }
                                       target="_blank"
                                       rel="noreferrer"
                                       className="text-primary underline"
                                     >
-                                      Lihat
+                                      Lihat Bukti
                                     </a>
                                   ) : (
                                     "—"

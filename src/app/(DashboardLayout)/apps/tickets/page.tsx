@@ -178,6 +178,18 @@ const Tickets = async ({
             status: true,
             isApprovedByDirector: true,
             createdAt: true,
+            paymentTransactions: {
+              where: { status: PaymentStatus.PAID },
+              orderBy: { createdAt: "desc" },
+              select: {
+                id: true,
+                paymentType: true,
+                amount: true,
+                transferDestination: true,
+                proofOfTransferUrl: true,
+                paidAt: true,
+              },
+            },
           },
         },
         paymentTransactions: {
@@ -300,9 +312,22 @@ const Tickets = async ({
       session.user.role === UserRole.ADMINISTRATIONS ||
       ticket.requesterId === session.user.id
         ? [
-            ...ticket.paymentTransactions,
+            ...ticket.paymentTransactions.map((payment) => ({
+              ...payment,
+              reference: ticket.ticketNumber,
+            })),
             ...ticket.purchaseOrders.flatMap(
-              (purchaseOrder) => purchaseOrder.paymentTransactions,
+              (purchaseOrder) =>
+                purchaseOrder.paymentTransactions.map((payment) => ({
+                  ...payment,
+                  reference: purchaseOrder.poNumber,
+                })),
+            ),
+            ...ticket.directStockPurchases.flatMap((purchase) =>
+              purchase.paymentTransactions.map((payment) => ({
+                ...payment,
+                reference: purchase.purchaseNumber,
+              })),
             ),
           ]
             .sort(

@@ -34,6 +34,7 @@ export type TicketRow = {
     transferDestination: string;
     proofOfTransferUrl: string | null;
     paidAt: string | null;
+    reference: string;
   }[];
   attachmentUrl: string | null;
   purchaseReceiptUrl: string | null;

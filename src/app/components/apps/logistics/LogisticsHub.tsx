@@ -77,6 +77,7 @@ type DirectStockPurchaseRow = {
   createdAt: string;
   receivedAt: string | null;
   arrivalPhotoUrl: string | null;
+  receivedPhotos: string[];
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
   ticket: { id: string; ticketNumber: string; title: string } | null;
@@ -152,6 +153,8 @@ export default function LogisticsHub({
   vendors,
   stockItems,
   stockPurchases,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
   purchaseOrders,
   deliveryOrders,
   equipmentLogs,
@@ -167,6 +170,8 @@ export default function LogisticsHub({
   vendors: LogisticsVendor[];
   stockItems: LogisticsStockItem[];
   stockPurchases: DirectStockPurchaseRow[];
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
   purchaseOrders: HubPurchaseOrder[];
   deliveryOrders: HubDeliveryOrder[];
   equipmentLogs: EquipmentLogRow[];
@@ -337,6 +342,8 @@ export default function LogisticsHub({
           mode="stock"
           stockItems={stockItems}
           stockPurchases={stockPurchases}
+          cloudinaryCloudName={cloudinaryCloudName}
+          cloudinaryApiKey={cloudinaryApiKey}
           purchaseTickets={tickets.map(({ id, ticketNumber, title }) => ({
             id,
             ticketNumber,

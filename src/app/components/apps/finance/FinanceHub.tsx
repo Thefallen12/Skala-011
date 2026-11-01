@@ -20,6 +20,7 @@ import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
 import PaymentModal, {
   type PaymentModalTarget,
 } from "@/app/components/apps/finance/PaymentModal";
+import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import DocumentPdfGenerator, {
   type DocumentTemplateOption,
 } from "@/app/components/apps/documents/DocumentPdfGenerator";
@@ -65,7 +66,13 @@ import {
   PaymentType,
   UserRole,
 } from "@/generated/prisma/enums";
-import { FileCheck2, Fuel, ReceiptText } from "lucide-react";
+import {
+  Eye,
+  FileCheck2,
+  Fuel,
+  History,
+  ReceiptText,
+} from "lucide-react";
 
 type FinanceOrder = {
   id: string;
@@ -140,6 +147,19 @@ type FinanceDirectPurchase = {
   paymentTransactions: PaymentTransaction[];
 };
 
+type FinanceHistoryTransaction = {
+  id: string;
+  reference: string;
+  title: string;
+  targetKind: FinancePaymentRow["kind"];
+  targetId: string;
+  paymentType: PaymentType;
+  amount: number;
+  transferDestination: string;
+  proofOfTransferUrl: string | null;
+  paidAt: string | null;
+};
+
 type FinanceTermyn = {
   id: string;
   contractNumber: string;
@@ -182,6 +202,9 @@ const currency = (amount: number | string | null) =>
         maximumFractionDigits: 0,
       }).format(Number(amount));
 
+const paymentReceiptHref = (url: string) =>
+  url.startsWith("/api/tickets/receipts/") ? `${url}?preview=1` : url;
+
 export default function FinanceHub({
   purchaseOrders,
   standalonePayments,
@@ -195,6 +218,8 @@ export default function FinanceHub({
   role,
   initialTab,
   initialOpenSheet,
+  cloudinaryCloudName,
+  cloudinaryApiKey,
 }: {
   purchaseOrders: FinanceOrder[];
   standalonePayments: FinanceOrder[];
@@ -208,19 +233,28 @@ export default function FinanceHub({
   role: UserRole;
   initialTab?: string;
   initialOpenSheet?: string;
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
 }) {
   const router = useRouter();
-  const allowedTabs = [
-    "po-check",
-    "payments",
-    "subcontract",
-    "fuel-logs",
-    "fuel-requests",
-  ];
-  const resolvedTab = allowedTabs.includes(initialTab ?? "")
-    ? initialTab!
-    : "po-check";
+  const legacyOperationalTabs = ["subcontract", "fuel-logs", "fuel-requests"];
+  const tabAliases: Record<string, string> = {
+    "po-check": "check",
+    payments: "payment",
+    check: "check",
+    payment: "payment",
+    history: "history",
+    operations: "operations",
+  };
+  const resolvedTab = legacyOperationalTabs.includes(initialTab ?? "")
+    ? "operations"
+    : tabAliases[initialTab ?? ""] ?? "check";
   const [activeTab, setActiveTab] = useState(resolvedTab);
+  const [operationsTab, setOperationsTab] = useState(
+    legacyOperationalTabs.includes(initialTab ?? "")
+      ? initialTab!
+      : "subcontract",
+  );
   const [paymentModalSelection, setPaymentModalSelection] = useState<{
     kind: FinancePaymentRow["kind"];
     id: string;
@@ -244,7 +278,7 @@ export default function FinanceHub({
     return null;
   });
   const [message, setMessage] = useState("");
-  const [receipt, setReceipt] = useState<File | null>(null);
+  const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
   const [paymentType, setPaymentType] = useState<PaymentType>(
     PaymentType.FULL_PAYMENT,
   );
@@ -361,6 +395,42 @@ export default function FinanceHub({
   const pendingPaymentCount = paymentRows.filter(
     (row) => row.grandTotal - row.paidAmount > 0.005,
   ).length;
+  const pendingPaymentRows = paymentRows.filter(
+    (row) => row.grandTotal - row.paidAmount > 0.005,
+  );
+  const paymentHistoryRows: FinanceHistoryTransaction[] = [
+    ...standalonePayments.flatMap((order) =>
+      (order.paymentTransactions ?? []).map((payment) => ({
+        ...payment,
+        reference: order.poNumber,
+        title: `PO · ${order.vendorName}`,
+        targetKind: "standalone-po" as const,
+        targetId: order.publicCode,
+      })),
+    ),
+    ...directPurchases.flatMap((purchase) =>
+      purchase.paymentTransactions.map((payment) => ({
+        ...payment,
+        reference: purchase.purchaseNumber,
+        title: `Pembelian langsung · ${purchase.vendorName}`,
+        targetKind: "direct-purchase" as const,
+        targetId: purchase.id,
+      })),
+    ),
+    ...tickets.flatMap((ticket) =>
+      ticket.paymentTransactions.map((payment) => ({
+        ...payment,
+        reference: ticket.ticketNumber,
+        title: ticket.title,
+        targetKind: "ticket" as const,
+        targetId: ticket.id,
+      })),
+    ),
+  ].sort(
+    (a, b) =>
+      (b.paidAt ? new Date(b.paidAt).getTime() : 0) -
+      (a.paidAt ? new Date(a.paidAt).getTime() : 0),
+  );
   const pendingTermynPaymentCount = termyns.filter(
     (termyn) => termyn.status === "APPROVED",
   ).length;
@@ -372,6 +442,15 @@ export default function FinanceHub({
       ) ?? null
     : null;
 
+  const openPaymentHistory = (row: FinancePaymentRow) => {
+    setSelection(
+      row.kind === "ticket"
+        ? { kind: "ticket", id: row.id }
+        : row.kind === "standalone-po"
+          ? { kind: "standalone-po", id: row.id }
+          : { kind: "direct-purchase", id: row.id },
+    );
+  };
 
   const runReview = (publicCode: string) => {
     setMessage("");
@@ -462,7 +541,10 @@ export default function FinanceHub({
 
   const submitPayment = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if ((!activeTicket && !activeStandaloneOrder && !activeDirectPurchase) || !receipt) {
+    if (
+      (!activeTicket && !activeStandaloneOrder && !activeDirectPurchase) ||
+      !receiptUrl
+    ) {
       setMessage("Pilih PO/tiket dan unggah bukti pembayaran terlebih dahulu.");
       return;
     }
@@ -486,14 +568,14 @@ export default function FinanceHub({
         if (!target) return;
         const result: TicketActionResult = await submitPaymentRecord({
           target,
-          file: receipt,
+          proofOfTransferUrl: receiptUrl,
           transferDestination,
           paymentType,
           amount,
         });
         setMessage(result.message);
         if (result.success) {
-          setReceipt(null);
+          setReceiptUrl(null);
           setPaymentAmount("");
           setPaymentType(PaymentType.FULL_PAYMENT);
           router.refresh();
@@ -506,7 +588,7 @@ export default function FinanceHub({
   };
 
   const submitModalPayment = async (
-    file: File,
+    proofOfTransferUrl: string,
     transferDestination: string,
     type: PaymentType,
     amount: number,
@@ -522,7 +604,7 @@ export default function FinanceHub({
           : { kind: "direct-purchase" as const, id: selectedPaymentRow.id };
     return submitPaymentRecord({
       target,
-      file,
+      proofOfTransferUrl,
       transferDestination,
       paymentType: type,
       amount,
@@ -583,8 +665,8 @@ export default function FinanceHub({
   return (
     <div className="space-y-5">
       <ErpHubBrand
-        title="Finance Hub"
-        description="Pemeriksaan PO, bukti pembayaran, dan pemantauan realisasi biaya proyek."
+        title="Finance Command Hub"
+        description="Workspace terpadu untuk pemeriksaan PO, pencairan, bukti transfer, dan kendali biaya."
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -612,35 +694,31 @@ export default function FinanceHub({
         className="space-y-5"
       >
         <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-lg border bg-white p-2">
-          <TabsTrigger value="po-check" className="gap-2">
+          <TabsTrigger value="check" className="gap-2">
             <FileCheck2 className="size-4" />
-            Verifikasi PO <Badge variant="secondary">{purchaseOrders.length}</Badge>
+            1. Perlu Diperiksa (PO & Tiket)
+            <Badge variant="secondary">{purchaseOrders.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="payments" className="gap-2">
+          <TabsTrigger value="payment" className="gap-2">
             <ReceiptText className="size-4" />
-            Pembayaran <Badge variant="secondary">{pendingPaymentCount}</Badge>
+            2. Antrean Pembayaran
+            <Badge variant="secondary">{pendingPaymentCount}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="subcontract">
-            Termin & Retensi <Badge variant="secondary">{termyns.length}</Badge>
+          <TabsTrigger value="history" className="gap-2">
+            <History className="size-4" />
+            3. Riwayat & Bukti Transfer
+            <Badge variant="secondary">{paymentHistoryRows.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="fuel-logs" className="gap-2">
+          <TabsTrigger value="operations" className="gap-2">
             <Fuel className="size-4" />
-            Log BBM Mover <Badge variant="secondary">{vehicleTripLogs.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="fuel-requests" className="gap-2">
-            <Fuel className="size-4" />
-            Reimbursement BBM
+            Operasional Lainnya
             <Badge variant="secondary">
-              {vehicleFuelRequests.filter(
-                (request) =>
-                  request.status === "PENDING_FINANCE" ||
-                  request.status === "PROOF_SUBMITTED",
-              ).length}
+              {termyns.length + vehicleTripLogs.length + vehicleFuelRequests.length}
             </Badge>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="po-check">
+        <TabsContent value="check">
           <Card>
             <CardHeader>
               <CardTitle>PO Menunggu Checked By Finance</CardTitle>
@@ -651,47 +729,70 @@ export default function FinanceHub({
                   Tidak ada PO draft yang menunggu pemeriksaan.
                 </p>
               ) : (
-                purchaseOrders.map((order) => (
-                  <article
-                    key={order.publicCode}
-                    className="flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold text-primary">
-                        {order.poNumber} · {order.vendorName}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {order.items.length} item ·{" "}
-                        {new Date(order.createdAt).toLocaleDateString("id-ID")}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setMessage("");
-                          setSelection({ kind: "po", id: order.publicCode });
-                        }}
-                      >
-                        Review PO
-                      </Button>
-                      {role === UserRole.FINANCE && !order.paidAt && (
-                        <Button
-                          disabled={isPending}
-                          onClick={() => runReview(order.publicCode)}
+                <div className="overflow-x-auto rounded-lg border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Nomor Ref</TableHead>
+                        <TableHead>Vendor</TableHead>
+                        <TableHead>Tanggal</TableHead>
+                        <TableHead>Item</TableHead>
+                        <TableHead className="text-right">Aksi</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {purchaseOrders.map((order) => (
+                        <TableRow
+                          key={order.publicCode}
+                          className="cursor-pointer"
+                          tabIndex={0}
+                          onClick={() => {
+                            setMessage("");
+                            setSelection({ kind: "po", id: order.publicCode });
+                          }}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              setSelection({ kind: "po", id: order.publicCode });
+                            }
+                          }}
                         >
-                          Checked By
-                        </Button>
-                      )}
-                    </div>
-                  </article>
-                ))
+                          <TableCell className="font-semibold">
+                            {order.poNumber}
+                          </TableCell>
+                          <TableCell>{order.vendorName}</TableCell>
+                          <TableCell>
+                            {new Date(order.createdAt).toLocaleDateString("id-ID")}
+                          </TableCell>
+                          <TableCell>{order.items.length}</TableCell>
+                          <TableCell className="text-right">
+                            {role === UserRole.FINANCE && !order.paidAt && (
+                              <Button
+                                disabled={isPending}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  runReview(order.publicCode);
+                                }}
+                              >
+                                Tandai Diperiksa
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               )}
+              <p className="text-sm text-muted-foreground">
+                Pembelian langsung menunggu persetujuan eksekutif terlebih dahulu;
+                setelah disetujui, tagihan masuk ke antrean pembayaran.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="payments">
+        <TabsContent value="payment">
           <Card>
             <CardHeader>
               <CardTitle>Tagihan & Pembelian Disetujui</CardTitle>
@@ -710,13 +811,24 @@ export default function FinanceHub({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {paymentRows.map((row) => {
+                    {pendingPaymentRows.map((row) => {
                       const balance =
                         Math.round((row.grandTotal - row.paidAmount) * 100) /
                         100;
                       const outstanding = Math.max(0, balance);
                       return (
-                        <TableRow key={`${row.kind}:${row.id}`}>
+                        <TableRow
+                          key={`${row.kind}:${row.id}`}
+                          className="cursor-pointer"
+                          tabIndex={0}
+                          onClick={() => openPaymentHistory(row)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              openPaymentHistory(row);
+                            }
+                          }}
+                        >
                           <TableCell>
                             <span className="font-semibold">{row.reference}</span>
                             <span className="block text-xs text-muted-foreground">
@@ -746,34 +858,50 @@ export default function FinanceHub({
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <Button
-                              type="button"
-                              variant={outstanding === 0 ? "outline" : "default"}
-                              disabled={
-                                balance <= 0 ||
-                                role !== UserRole.FINANCE ||
-                                isPending
-                              }
-                              onClick={() =>
-                                setPaymentModalSelection({
-                                  kind: row.kind,
-                                  id: row.id,
-                                })
-                              }
-                            >
-                              {balance <= 0 ? "Lunas" : "Bayar / Transfer"}
-                            </Button>
+                            <div className="flex flex-wrap justify-end gap-2">
+                              {row.paidAmount > 0 && (
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  disabled={isPending}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    openPaymentHistory(row);
+                                  }}
+                                >
+                                  <Eye className="mr-2 size-4" aria-hidden="true" />
+                                  Lihat Bukti
+                                </Button>
+                              )}
+                              {outstanding > 0 && (
+                                <Button
+                                  type="button"
+                                  disabled={
+                                    isPending || role !== UserRole.FINANCE
+                                  }
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setPaymentModalSelection({
+                                      kind: row.kind,
+                                      id: row.id,
+                                    });
+                                  }}
+                                >
+                                  Bayar / Transfer
+                                </Button>
+                              )}
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
                     })}
-                    {paymentRows.length === 0 && (
+                    {pendingPaymentRows.length === 0 && (
                       <TableRow>
                         <TableCell
                           colSpan={6}
                           className="py-10 text-center text-muted-foreground"
                         >
-                          Belum ada tagihan yang disetujui dan siap dibayar.
+                          Tidak ada tagihan yang menunggu pembayaran.
                         </TableCell>
                       </TableRow>
                     )}
@@ -784,6 +912,140 @@ export default function FinanceHub({
           </Card>
         </TabsContent>
 
+        <TabsContent value="history">
+          <Card>
+            <CardHeader>
+              <CardTitle>Riwayat & Bukti Transfer</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto rounded-lg border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Tanggal</TableHead>
+                      <TableHead>Nomor Ref</TableHead>
+                      <TableHead>Transaksi</TableHead>
+                      <TableHead>Jenis</TableHead>
+                      <TableHead>Jumlah</TableHead>
+                      <TableHead>Bukti Transfer</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paymentHistoryRows.map((payment) => (
+                      <TableRow
+                        key={payment.id}
+                        className="cursor-pointer"
+                        tabIndex={0}
+                        onClick={() =>
+                          setSelection(
+                            payment.targetKind === "ticket"
+                              ? { kind: "ticket", id: payment.targetId }
+                              : payment.targetKind === "standalone-po"
+                                ? { kind: "standalone-po", id: payment.targetId }
+                                : { kind: "direct-purchase", id: payment.targetId },
+                          )
+                        }
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            setSelection(
+                              payment.targetKind === "ticket"
+                                ? { kind: "ticket", id: payment.targetId }
+                                : payment.targetKind === "standalone-po"
+                                  ? { kind: "standalone-po", id: payment.targetId }
+                                  : {
+                                      kind: "direct-purchase",
+                                      id: payment.targetId,
+                                    },
+                            );
+                          }
+                        }}
+                      >
+                        <TableCell>
+                          {payment.paidAt
+                            ? new Date(payment.paidAt).toLocaleString("id-ID")
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="font-semibold">
+                          {payment.reference}
+                        </TableCell>
+                        <TableCell>{payment.title}</TableCell>
+                        <TableCell>
+                          {payment.paymentType === PaymentType.DOWN_PAYMENT
+                            ? "DP"
+                            : payment.paymentType === PaymentType.PROGRESS_PAYMENT
+                              ? "Termin"
+                              : "Pelunasan"}
+                        </TableCell>
+                        <TableCell>{currency(payment.amount)}</TableCell>
+                        <TableCell>
+                          {payment.proofOfTransferUrl ? (
+                            <Button asChild size="sm" variant="outline">
+                              <a
+                                href={paymentReceiptHref(
+                                  payment.proofOfTransferUrl,
+                                )}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(event) => event.stopPropagation()}
+                              >
+                                <ReceiptText
+                                  className="mr-2 size-4"
+                                  aria-hidden="true"
+                                />
+                                Lihat Bukti Transfer
+                              </a>
+                            </Button>
+                          ) : (
+                            <span className="text-muted-foreground">
+                              Tidak ada bukti
+                            </span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {paymentHistoryRows.length === 0 && (
+                      <TableRow>
+                        <TableCell
+                          colSpan={6}
+                          className="py-10 text-center text-muted-foreground"
+                        >
+                          Belum ada transaksi pembayaran berhasil.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="operations">
+          <Tabs
+            value={operationsTab}
+            onValueChange={setOperationsTab}
+            className="space-y-4"
+          >
+            <TabsList className="flex h-auto flex-wrap justify-start gap-1">
+              <TabsTrigger value="subcontract">
+                Termin & Retensi ({termyns.length})
+              </TabsTrigger>
+              <TabsTrigger value="fuel-logs">
+                Log BBM Mover ({vehicleTripLogs.length})
+              </TabsTrigger>
+              <TabsTrigger value="fuel-requests">
+                Reimbursement BBM (
+                {
+                  vehicleFuelRequests.filter(
+                    (request) =>
+                      request.status === "PENDING_FINANCE" ||
+                      request.status === "PROOF_SUBMITTED",
+                  ).length
+                }
+                )
+              </TabsTrigger>
+            </TabsList>
         <TabsContent value="subcontract">
           <Card>
             <CardHeader>
@@ -1173,6 +1435,8 @@ export default function FinanceHub({
             </CardContent>
           </Card>
         </TabsContent>
+          </Tabs>
+        </TabsContent>
       </Tabs>
 
       {message && (
@@ -1186,7 +1450,7 @@ export default function FinanceHub({
         onOpenChange={(open) => {
           if (!open) {
             setSelection(null);
-            setReceipt(null);
+            setReceiptUrl(null);
             setPaymentAmount("");
             setPaymentType(PaymentType.FULL_PAYMENT);
             setMessage("");
@@ -1335,27 +1599,19 @@ export default function FinanceHub({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="standalone-po-payment-receipt">
-                    Bukti pembayaran
-                  </Label>
-                  <Input
-                    id="standalone-po-payment-receipt"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,application/pdf"
-                    required
+                  <Label>Bukti pembayaran</Label>
+                  <FinancePaymentProofUpload
+                    value={receiptUrl}
+                    onChange={setReceiptUrl}
+                    cloudinaryCloudName={cloudinaryCloudName}
+                    cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
-                    onChange={(event) =>
-                      setReceipt(event.target.files?.[0] ?? null)
-                    }
                   />
-                  <p className="text-xs text-muted-foreground">
-                    PDF/JPG/PNG/WEBP, maksimal 5 MB.
-                  </p>
                 </div>
                 <Button
                   type="submit"
                   disabled={
-                    !receipt ||
+                    !receiptUrl ||
                     isPending ||
                     (paymentType !== PaymentType.FULL_PAYMENT &&
                       (!paymentAmount || Number(paymentAmount) <= 0))
@@ -1487,25 +1743,19 @@ export default function FinanceHub({
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="direct-purchase-payment-proof">Bukti pembayaran</Label>
-                      <Input
-                        id="direct-purchase-payment-proof"
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,application/pdf"
-                        required
+                      <Label>Bukti pembayaran</Label>
+                      <FinancePaymentProofUpload
+                        value={receiptUrl}
+                        onChange={setReceiptUrl}
+                        cloudinaryCloudName={cloudinaryCloudName}
+                        cloudinaryApiKey={cloudinaryApiKey}
                         disabled={isPending}
-                        onChange={(event) =>
-                          setReceipt(event.target.files?.[0] ?? null)
-                        }
                       />
-                      <p className="text-xs text-muted-foreground">
-                        PDF/JPG/PNG/WEBP, maksimal 5 MB.
-                      </p>
                     </div>
                     <Button
                       type="submit"
                       disabled={
-                        !receipt ||
+                        !receiptUrl ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
                           (!paymentAmount || Number(paymentAmount) <= 0))
@@ -1612,25 +1862,19 @@ export default function FinanceHub({
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="transfer-receipt">Bukti transfer</Label>
-                      <Input
-                        id="transfer-receipt"
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,application/pdf"
-                        required
+                      <Label>Bukti transfer</Label>
+                      <FinancePaymentProofUpload
+                        value={receiptUrl}
+                        onChange={setReceiptUrl}
+                        cloudinaryCloudName={cloudinaryCloudName}
+                        cloudinaryApiKey={cloudinaryApiKey}
                         disabled={isPending}
-                        onChange={(event) =>
-                          setReceipt(event.target.files?.[0] ?? null)
-                        }
                       />
-                      <p className="text-xs text-muted-foreground">
-                        PDF/JPG/PNG/WEBP, maksimal 5 MB.
-                      </p>
                     </div>
                     <Button
                       type="submit"
                       disabled={
-                        !receipt ||
+                        !receiptUrl ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
                           (!paymentAmount || Number(paymentAmount) <= 0))
@@ -1681,14 +1925,21 @@ export default function FinanceHub({
                           <td className="py-2 pr-3">{payment.transferDestination}</td>
                           <td className="py-2">
                             {payment.proofOfTransferUrl ? (
-                              <a
-                                href={payment.proofOfTransferUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-primary underline"
-                              >
-                                Lihat
-                              </a>
+                              <Button asChild size="sm" variant="outline">
+                                <a
+                                  href={paymentReceiptHref(
+                                    payment.proofOfTransferUrl,
+                                  )}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <ReceiptText
+                                    className="mr-2 size-4"
+                                    aria-hidden="true"
+                                  />
+                                  Lihat Bukti Transfer
+                                </a>
+                              </Button>
                             ) : (
                               "—"
                             )}
@@ -1736,6 +1987,8 @@ export default function FinanceHub({
         }}
         target={selectedPaymentRow}
         onPay={submitModalPayment}
+        cloudinaryCloudName={cloudinaryCloudName}
+        cloudinaryApiKey={cloudinaryApiKey}
       />
     </div>
   );

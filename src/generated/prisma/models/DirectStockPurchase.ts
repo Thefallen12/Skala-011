@@ -113,6 +113,7 @@ export type DirectStockPurchaseCountAggregateOutputType = {
   receivedAt: number
   receivedById: number
   arrivalPhotoUrl: number
+  receivedPhotos: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -207,6 +208,7 @@ export type DirectStockPurchaseCountAggregateInputType = {
   receivedAt?: true
   receivedById?: true
   arrivalPhotoUrl?: true
+  receivedPhotos?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -322,6 +324,7 @@ export type DirectStockPurchaseGroupByOutputType = {
   receivedAt: Date | null
   receivedById: string | null
   arrivalPhotoUrl: string | null
+  receivedPhotos: string[]
   createdById: string
   createdAt: Date
   updatedAt: Date
@@ -373,6 +376,7 @@ export type DirectStockPurchaseWhereInput = {
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  receivedPhotos?: Prisma.StringNullableListFilter<"DirectStockPurchase">
   createdById?: Prisma.StringFilter<"DirectStockPurchase"> | string
   createdAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
@@ -408,6 +412,7 @@ export type DirectStockPurchaseOrderByWithRelationInput = {
   receivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  receivedPhotos?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -446,6 +451,7 @@ export type DirectStockPurchaseWhereUniqueInput = Prisma.AtLeast<{
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  receivedPhotos?: Prisma.StringNullableListFilter<"DirectStockPurchase">
   createdById?: Prisma.StringFilter<"DirectStockPurchase"> | string
   createdAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
@@ -481,6 +487,7 @@ export type DirectStockPurchaseOrderByWithAggregationInput = {
   receivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  receivedPhotos?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -517,6 +524,7 @@ export type DirectStockPurchaseScalarWhereWithAggregatesInput = {
   receivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
+  receivedPhotos?: Prisma.StringNullableListFilter<"DirectStockPurchase">
   createdById?: Prisma.StringWithAggregatesFilter<"DirectStockPurchase"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DirectStockPurchase"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DirectStockPurchase"> | Date | string
@@ -541,6 +549,7 @@ export type DirectStockPurchaseCreateInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -575,6 +584,7 @@ export type DirectStockPurchaseUncheckedCreateInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -601,6 +611,7 @@ export type DirectStockPurchaseUpdateInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -635,6 +646,7 @@ export type DirectStockPurchaseUncheckedUpdateInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -665,6 +677,7 @@ export type DirectStockPurchaseCreateManyInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -689,6 +702,7 @@ export type DirectStockPurchaseUpdateManyMutationInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -716,6 +730,7 @@ export type DirectStockPurchaseUncheckedUpdateManyInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -729,6 +744,14 @@ export type DirectStockPurchaseListRelationFilter = {
 
 export type DirectStockPurchaseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type DirectStockPurchaseCountOrderByAggregateInput = {
@@ -754,6 +777,7 @@ export type DirectStockPurchaseCountOrderByAggregateInput = {
   receivedAt?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrder
+  receivedPhotos?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -959,12 +983,21 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput =
   deleteMany?: Prisma.DirectStockPurchaseScalarWhereInput | Prisma.DirectStockPurchaseScalarWhereInput[]
 }
 
+export type DirectStockPurchaseCreatereceivedPhotosInput = {
+  set: string[]
+}
+
 export type EnumPOPaymentMethodFieldUpdateOperationsInput = {
   set?: $Enums.POPaymentMethod
 }
 
 export type EnumDirectStockPurchaseStatusFieldUpdateOperationsInput = {
   set?: $Enums.DirectStockPurchaseStatus
+}
+
+export type DirectStockPurchaseUpdatereceivedPhotosInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type DirectStockPurchaseCreateNestedOneWithoutItemsInput = {
@@ -1100,6 +1133,7 @@ export type DirectStockPurchaseCreateWithoutApprovedByInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1132,6 +1166,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutApprovedByInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1168,6 +1203,7 @@ export type DirectStockPurchaseCreateWithoutCreatedByInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1201,6 +1237,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutCreatedByInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.DirectStockPurchaseItemUncheckedCreateNestedManyWithoutPurchaseInput
@@ -1236,6 +1273,7 @@ export type DirectStockPurchaseCreateWithoutReceivedByInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1268,6 +1306,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutReceivedByInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1327,6 +1366,7 @@ export type DirectStockPurchaseScalarWhereInput = {
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  receivedPhotos?: Prisma.StringNullableListFilter<"DirectStockPurchase">
   createdById?: Prisma.StringFilter<"DirectStockPurchase"> | string
   createdAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
@@ -1383,6 +1423,7 @@ export type DirectStockPurchaseCreateWithoutItemsInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1416,6 +1457,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutItemsInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1457,6 +1499,7 @@ export type DirectStockPurchaseUpdateWithoutItemsInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -1490,6 +1533,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutItemsInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1515,6 +1559,7 @@ export type DirectStockPurchaseCreateWithoutVendorInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1547,6 +1592,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutVendorInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1599,6 +1645,7 @@ export type DirectStockPurchaseCreateWithoutTicketInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1631,6 +1678,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutTicketInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1683,6 +1731,7 @@ export type DirectStockPurchaseCreateWithoutPaymentTransactionsInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
@@ -1716,6 +1765,7 @@ export type DirectStockPurchaseUncheckedCreateWithoutPaymentTransactionsInput = 
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1757,6 +1807,7 @@ export type DirectStockPurchaseUpdateWithoutPaymentTransactionsInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -1790,6 +1841,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutPaymentTransactionsInput = 
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1818,6 +1870,7 @@ export type DirectStockPurchaseCreateManyApprovedByInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1846,6 +1899,7 @@ export type DirectStockPurchaseCreateManyCreatedByInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1872,6 +1926,7 @@ export type DirectStockPurchaseCreateManyReceivedByInput = {
   approvedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1896,6 +1951,7 @@ export type DirectStockPurchaseUpdateWithoutApprovedByInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -1928,6 +1984,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutApprovedByInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1957,6 +2014,7 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1981,6 +2039,7 @@ export type DirectStockPurchaseUpdateWithoutCreatedByInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -2014,6 +2073,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutCreatedByInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.DirectStockPurchaseItemUncheckedUpdateManyWithoutPurchaseNestedInput
@@ -2043,6 +2103,7 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2066,6 +2127,7 @@ export type DirectStockPurchaseUpdateWithoutReceivedByInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -2098,6 +2160,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutReceivedByInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2127,6 +2190,7 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2154,6 +2218,7 @@ export type DirectStockPurchaseCreateManyVendorInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2178,6 +2243,7 @@ export type DirectStockPurchaseUpdateWithoutVendorInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -2210,6 +2276,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutVendorInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2239,6 +2306,7 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutVendorInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2266,6 +2334,7 @@ export type DirectStockPurchaseCreateManyTicketInput = {
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2290,6 +2359,7 @@ export type DirectStockPurchaseUpdateWithoutTicketInput = {
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
@@ -2322,6 +2392,7 @@ export type DirectStockPurchaseUncheckedUpdateWithoutTicketInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2351,6 +2422,7 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutTicketInput = {
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2419,6 +2491,7 @@ export type DirectStockPurchaseSelect<ExtArgs extends runtime.Types.Extensions.I
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
+  receivedPhotos?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2455,6 +2528,7 @@ export type DirectStockPurchaseSelectCreateManyAndReturn<ExtArgs extends runtime
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
+  receivedPhotos?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2488,6 +2562,7 @@ export type DirectStockPurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
+  receivedPhotos?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2521,12 +2596,13 @@ export type DirectStockPurchaseSelectScalar = {
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
+  receivedPhotos?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DirectStockPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "purchaseNumber" | "vendorId" | "ticketId" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "totalAmount" | "paidAt" | "reference" | "notes" | "status" | "isApprovedByDirector" | "approvedById" | "approvedAt" | "receivedAt" | "receivedById" | "arrivalPhotoUrl" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["directStockPurchase"]>
+export type DirectStockPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "purchaseNumber" | "vendorId" | "ticketId" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "totalAmount" | "paidAt" | "reference" | "notes" | "status" | "isApprovedByDirector" | "approvedById" | "approvedAt" | "receivedAt" | "receivedById" | "arrivalPhotoUrl" | "receivedPhotos" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["directStockPurchase"]>
 export type DirectStockPurchaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
@@ -2586,6 +2662,7 @@ export type $DirectStockPurchasePayload<ExtArgs extends runtime.Types.Extensions
     receivedAt: Date | null
     receivedById: string | null
     arrivalPhotoUrl: string | null
+    receivedPhotos: string[]
     createdById: string
     createdAt: Date
     updatedAt: Date
@@ -3041,6 +3118,7 @@ export interface DirectStockPurchaseFieldRefs {
   readonly receivedAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>
   readonly receivedById: Prisma.FieldRef<"DirectStockPurchase", 'String'>
   readonly arrivalPhotoUrl: Prisma.FieldRef<"DirectStockPurchase", 'String'>
+  readonly receivedPhotos: Prisma.FieldRef<"DirectStockPurchase", 'String[]'>
   readonly createdById: Prisma.FieldRef<"DirectStockPurchase", 'String'>
   readonly createdAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>

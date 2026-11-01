@@ -526,6 +526,7 @@ export const DirectStockPurchaseScalarFieldEnum = {
   receivedAt: 'receivedAt',
   receivedById: 'receivedById',
   arrivalPhotoUrl: 'arrivalPhotoUrl',
+  receivedPhotos: 'receivedPhotos',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

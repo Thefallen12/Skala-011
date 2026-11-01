@@ -1,5 +1,6 @@
 import {
   DOStatus,
+  PaymentStatus,
   TicketStatus,
   TicketType,
   UserRole,
@@ -19,7 +20,7 @@ export async function GET(
 
   const { fileName } = await params;
   const receiptUrl = `/api/tickets/receipts/${fileName}`;
-  const [ticket, deliveryOrder, vehicleFuelRequest] = await Promise.all([
+  const [ticket, deliveryOrder, vehicleFuelRequest, payment] = await Promise.all([
     prisma.ticket.findFirst({
       where: {
         OR: [
@@ -71,12 +72,58 @@ export async function GET(
       },
       select: { requestedById: true },
     }),
+    prisma.paymentTransaction.findFirst({
+      where: {
+        proofOfTransferUrl: receiptUrl,
+        status: PaymentStatus.PAID,
+      },
+      select: {
+        ticket: {
+          select: {
+            requesterId: true,
+            moverAssigneeId: true,
+            type: true,
+            status: true,
+          },
+        },
+        po: {
+          select: {
+            ticket: {
+              select: {
+                requesterId: true,
+                moverAssigneeId: true,
+                type: true,
+                status: true,
+              },
+            },
+          },
+        },
+        directStockPurchase: {
+          select: {
+            createdById: true,
+            ticket: {
+              select: {
+                requesterId: true,
+                moverAssigneeId: true,
+                type: true,
+                status: true,
+              },
+            },
+          },
+        },
+      },
+    }),
   ]);
-  if (!ticket && !deliveryOrder && !vehicleFuelRequest) {
+  if (!ticket && !deliveryOrder && !vehicleFuelRequest && !payment) {
     return new Response("Not found", { status: 404 });
   }
 
   const role = session.user.role;
+  const paymentTicket =
+    payment?.ticket ??
+    payment?.po?.ticket ??
+    payment?.directStockPurchase?.ticket ??
+    null;
   const deliveryOrderIsVisibleToLogistics =
     role === UserRole.LOGISTICS &&
     deliveryOrder?.ticket?.type === TicketType.MATERIAL &&
@@ -97,14 +144,12 @@ export async function GET(
     (ticket?.requesterId === session.user.id &&
       ticket.deliveryOrderReceiptUrl !== receiptUrl) ||
     (deliveryOrder?.ticket?.requesterId === session.user.id) ||
-    role === UserRole.DIRECTOR ||
-    role === UserRole.ADMINISTRATIONS ||
-    (role === UserRole.FINANCE &&
-      ticket &&
-      (ticket.status === TicketStatus.WAITING_FINANCE_PAYMENT ||
-        ticket.status === TicketStatus.COMPLETED) &&
-      (ticket.transferReceiptUrl === receiptUrl ||
-        ticket.purchaseReceiptUrl === receiptUrl)) ||
+    paymentTicket?.requesterId === session.user.id ||
+    payment?.directStockPurchase?.createdById === session.user.id ||
+    ((role === UserRole.DIRECTOR || role === UserRole.ADMINISTRATIONS) &&
+      Boolean(ticket || deliveryOrder || vehicleFuelRequest || payment)) ||
+    (role === UserRole.FINANCE && Boolean(payment)) ||
+    (role === UserRole.LOGISTICS && Boolean(payment?.directStockPurchase)) ||
     (role === UserRole.LOGISTICS &&
       ((ticket &&
         ticket.type === TicketType.MATERIAL &&

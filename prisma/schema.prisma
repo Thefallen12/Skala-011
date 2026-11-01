@@ -803,6 +803,7 @@ model DirectStockPurchase {
   receivedById         String?
   receivedBy           User?                     @relation("DirectStockPurchaseReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
   arrivalPhotoUrl      String?
+  receivedPhotos       String[]                  @default([])
   createdById          String
   createdBy            User                      @relation("DirectStockPurchaseCreator", fields: [createdById], references: [id], onDelete: Restrict)
   items                DirectStockPurchaseItem[]

@@ -416,6 +416,8 @@ export default async function FinancePage({
       <FinanceHub
         key={`${tab ?? ""}:${openSheet ?? ""}`}
         role={session.user.role}
+        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         purchaseOrders={orders.map((order) => ({
           id: order.id,
           publicCode: order.publicCode,
@@ -542,9 +544,15 @@ export default async function FinancePage({
           projectName: ticket.project
             ? `${ticket.project.kelompokTani} · ${ticket.project.title}`
             : null,
-          paymentTransactions: (
-            ticket.purchaseOrders[0]?.paymentTransactions ??
-            ticket.paymentTransactions
+          paymentTransactions: Array.from(
+            new Map(
+              [
+                ...ticket.paymentTransactions,
+                ...ticket.purchaseOrders.flatMap(
+                  (order) => order.paymentTransactions,
+                ),
+              ].map((payment) => [payment.id, payment]),
+            ).values(),
           ).map((payment) => ({
             ...payment,
             paidAt: payment.paidAt?.toISOString() ?? null,

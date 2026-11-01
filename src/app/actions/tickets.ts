@@ -36,14 +36,25 @@ import {
 import { sendNotification } from "@/lib/notifications";
 import { receivePurchaseOrderStock } from "@/lib/logistics/receive-purchase-order-stock";
 import {
-  DirectStockPurchasePhotoValidationError,
+  isDirectStockPurchaseCloudinaryPhotoUrl,
   removeDirectStockPurchasePhoto,
-  saveDirectStockPurchasePhoto,
 } from "@/lib/direct-stock-purchase-photos";
+import { MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS } from "@/lib/direct-stock-purchase-photo-config";
 import {
   removeTicketReceipt,
   saveTicketReceipt,
 } from "@/lib/ticket-receipts";
+import { isFinancePaymentProofUrl } from "@/lib/finance-payment-proofs";
+
+async function storeFinancePaymentProof(proof: File | string): Promise<string> {
+  if (typeof proof === "string") {
+    if (!isFinancePaymentProofUrl(proof)) {
+      throw new Error("URL bukti transfer Cloudinary tidak valid.");
+    }
+    return proof;
+  }
+  return saveTicketReceipt(proof);
+}
 
 type TicketItemInput = {
   stockItemId?: string;
@@ -835,6 +846,7 @@ export async function approveDirectStockPurchaseByDirector(
           id: true,
           purchaseNumber: true,
           isApprovedByDirector: true,
+          ticketId: true,
         },
       });
       if (!purchase) throw new Error("Pembelian langsung tidak ditemukan.");
@@ -851,6 +863,16 @@ export async function approveDirectStockPurchaseByDirector(
       });
       if (approval.count !== 1) {
         throw new Error("Pembelian ini sudah disetujui Direktur.");
+      }
+      if (purchase.ticketId) {
+        await transaction.ticketAuditLog.create({
+          data: {
+            ticketId: purchase.ticketId,
+            userId: session.user.id,
+            action: "DIRECT_PURCHASE_APPROVED",
+            notes: `Pembelian langsung ${purchase.purchaseNumber} disetujui dan diteruskan ke Keuangan.`,
+          },
+        });
       }
       await sendNotification({
         roleTarget: UserRole.FINANCE,
@@ -876,6 +898,7 @@ export async function approveDirectStockPurchaseByDirector(
   revalidatePath("/apps/finance");
   revalidatePath("/apps/logistics");
   revalidatePath("/apps/logistics/stock");
+  revalidatePath("/apps/tickets");
   return {
     success: true,
     message: "Pembelian langsung disetujui dan diteruskan ke Keuangan.",
@@ -897,28 +920,27 @@ export async function receiveDirectStockPurchase(
   }
 
   const purchaseId = formData.get("purchaseId");
-  const photo = formData.get("photo");
+  const submittedPhotos = formData.getAll("receivedPhotos");
+  const receivedPhotos = submittedPhotos.filter(
+    (photo): photo is string => typeof photo === "string",
+  );
   if (
     typeof purchaseId !== "string" ||
     !purchaseId.trim() ||
-    !(photo instanceof File)
+    receivedPhotos.length !== submittedPhotos.length ||
+    receivedPhotos.length < 1 ||
+    receivedPhotos.length > MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS ||
+    receivedPhotos.some(
+      (photo) =>
+        photo.length > 2048 ||
+        !isDirectStockPurchaseCloudinaryPhotoUrl(photo),
+    ) ||
+    new Set(receivedPhotos).size !== receivedPhotos.length
   ) {
     return directPurchaseFailure(
-      "Pembelian dan foto bukti penerimaan wajib dipilih.",
+      `Pilih pembelian dan unggah 1 sampai ${MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto bukti penerimaan yang valid.`,
     );
   }
-
-  let photoUrl: string;
-  try {
-    photoUrl = await saveDirectStockPurchasePhoto(photo);
-  } catch (error) {
-    if (error instanceof DirectStockPurchasePhotoValidationError) {
-      return directPurchaseFailure(error.message);
-    }
-    console.error("Direct stock purchase receipt photo save failed:", error);
-    return directPurchaseFailure("Foto penerimaan gagal disimpan. Coba kembali.");
-  }
-
   try {
     const purchaseNumber = await prisma.$transaction(async (transaction) => {
       const purchase = await transaction.directStockPurchase.findUnique({
@@ -927,6 +949,7 @@ export async function receiveDirectStockPurchase(
           id: true,
           purchaseNumber: true,
           isApprovedByDirector: true,
+          ticketId: true,
         },
       });
       if (!purchase) {
@@ -961,7 +984,8 @@ export async function receiveDirectStockPurchase(
           status: DirectStockPurchaseStatus.RECEIVED,
           receivedAt: new Date(),
           receivedById: session.user.id,
-          arrivalPhotoUrl: photoUrl,
+          arrivalPhotoUrl: receivedPhotos[0],
+          receivedPhotos,
         },
       });
       if (receipt.count !== 1) {
@@ -1040,6 +1064,16 @@ export async function receiveDirectStockPurchase(
           },
         });
       }
+      if (purchase.ticketId) {
+        await transaction.ticketAuditLog.create({
+          data: {
+            ticketId: purchase.ticketId,
+            userId: session.user.id,
+            action: "DIRECT_PURCHASE_RECEIVED",
+            notes: `Pembelian langsung ${purchase.purchaseNumber} diterima Logistik dengan ${receivedPhotos.length} foto bukti.`,
+          },
+        });
+      }
       return purchase.purchaseNumber;
     }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
 
@@ -1052,10 +1086,12 @@ export async function receiveDirectStockPurchase(
       purchaseNumber,
     };
   } catch (error) {
-    try {
-      await removeDirectStockPurchasePhoto(photoUrl);
-    } catch (cleanupError) {
-      console.error("Direct stock purchase photo cleanup failed:", cleanupError);
+    for (const photoUrl of receivedPhotos) {
+      try {
+        await removeDirectStockPurchasePhoto(photoUrl);
+      } catch (cleanupError) {
+        console.error("Direct stock purchase photo cleanup failed:", cleanupError);
+      }
     }
     console.error("Direct stock purchase receipt failed:", error);
     return directPurchaseFailure(
@@ -2695,7 +2731,7 @@ async function createWarehouseDeliveryOrder(
 
 export async function processFinancePayment(
   ticketId: string,
-  file: File,
+  proof: File | string,
   transferDestination: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
@@ -2710,7 +2746,11 @@ export async function processFinancePayment(
   if (!isBoundedText(transferDestination, 300)) {
     return actionFailure("Keterangan tujuan transfer wajib diisi.");
   }
-  if (!(file instanceof File) || !Object.values(PaymentType).includes(paymentType)) {
+  if (
+    (!(proof instanceof File) &&
+      (typeof proof !== "string" || !isFinancePaymentProofUrl(proof))) ||
+    !Object.values(PaymentType).includes(paymentType)
+  ) {
     return actionFailure("Jenis pembayaran atau bukti transfer tidak valid.");
   }
   if (
@@ -2723,7 +2763,7 @@ export async function processFinancePayment(
 
   let receiptUrl: string;
   try {
-    receiptUrl = await saveTicketReceipt(file);
+    receiptUrl = await storeFinancePaymentProof(proof);
   } catch (error) {
     return actionFailure(
       error instanceof Error ? error.message : "File bukti gagal diproses.",
@@ -2948,7 +2988,7 @@ export async function processFinancePayment(
 
 export async function processFinanceStandalonePurchaseOrderPayment(
   publicCode: string,
-  file: File,
+  proof: File | string,
   transferDestination: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
@@ -2963,7 +3003,10 @@ export async function processFinanceStandalonePurchaseOrderPayment(
   if (!isBoundedText(transferDestination, 300)) {
     return actionFailure("Keterangan tujuan transfer wajib diisi.");
   }
-  if (!(file instanceof File)) {
+  if (
+    !(proof instanceof File) &&
+    (typeof proof !== "string" || !isFinancePaymentProofUrl(proof))
+  ) {
     return actionFailure("Bukti pembayaran wajib diunggah.");
   }
   if (!Object.values(PaymentType).includes(paymentType)) {
@@ -2979,7 +3022,7 @@ export async function processFinanceStandalonePurchaseOrderPayment(
 
   let receiptUrl: string;
   try {
-    receiptUrl = await saveTicketReceipt(file);
+    receiptUrl = await storeFinancePaymentProof(proof);
   } catch (error) {
     return actionFailure(
       error instanceof Error ? error.message : "File bukti gagal diproses.",
@@ -3124,7 +3167,7 @@ export async function processFinanceStandalonePurchaseOrderPayment(
 
 export async function processFinanceDirectStockPurchasePayment(
   purchaseId: string,
-  file: File,
+  proof: File | string,
   transferDestination: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
@@ -3141,7 +3184,11 @@ export async function processFinanceDirectStockPurchasePayment(
   if (!isBoundedText(transferDestination, 300)) {
     return actionFailure("Keterangan tujuan transfer wajib diisi.");
   }
-  if (!(file instanceof File) || !Object.values(PaymentType).includes(paymentType)) {
+  if (
+    (!(proof instanceof File) &&
+      (typeof proof !== "string" || !isFinancePaymentProofUrl(proof))) ||
+    !Object.values(PaymentType).includes(paymentType)
+  ) {
     return actionFailure("Jenis pembayaran atau bukti transfer tidak valid.");
   }
   if (
@@ -3153,7 +3200,7 @@ export async function processFinanceDirectStockPurchasePayment(
 
   let receiptUrl: string;
   try {
-    receiptUrl = await saveTicketReceipt(file);
+    receiptUrl = await storeFinancePaymentProof(proof);
   } catch (error) {
     return actionFailure(
       error instanceof Error ? error.message : "File bukti gagal diproses.",
@@ -3170,6 +3217,7 @@ export async function processFinanceDirectStockPurchasePayment(
           totalAmount: true,
           isApprovedByDirector: true,
           status: true,
+          ticketId: true,
         },
       });
       if (!purchase) throw new Error("Pembelian langsung tidak ditemukan.");
@@ -3212,6 +3260,24 @@ export async function processFinanceDirectStockPurchasePayment(
           paidAt: now,
         },
       });
+      if (purchase.ticketId) {
+        const paymentLabel =
+          paymentType === PaymentType.DOWN_PAYMENT
+            ? "DP"
+            : paymentType === PaymentType.PROGRESS_PAYMENT
+              ? "pembayaran termin"
+              : isFullyPaid
+                ? "pelunasan"
+                : "pembayaran";
+        await transaction.ticketAuditLog.create({
+          data: {
+            ticketId: purchase.ticketId,
+            userId: session.user.id,
+            action: "DIRECT_PURCHASE_PAYMENT",
+            notes: `${paymentLabel} pembelian langsung ${purchase.purchaseNumber} sebesar Rp${amount.toLocaleString("id-ID")} dicatat oleh Keuangan; bukti transfer tersedia di Riwayat Pembayaran.`,
+          },
+        });
+      }
       if (isFullyPaid) {
         await transaction.directStockPurchase.update({
           where: { id: purchase.id },
@@ -3259,6 +3325,7 @@ export async function processFinanceDirectStockPurchasePayment(
   revalidatePath("/apps/finance");
   revalidatePath("/apps/logistics");
   revalidatePath("/apps/logistics/stock");
+  revalidatePath("/apps/tickets");
   return {
     success: true,
     message:
@@ -3275,7 +3342,8 @@ export type PaymentRecordTarget =
 
 export async function submitPaymentRecord(input: {
   target: PaymentRecordTarget;
-  file: File;
+  file?: File;
+  proofOfTransferUrl?: string;
   transferDestination: string;
   paymentType: PaymentType;
   amount?: number;
@@ -3286,17 +3354,25 @@ export async function submitPaymentRecord(input: {
     typeof input.target !== "object" ||
     typeof input.target.id !== "string" ||
     !input.target.id.trim() ||
-    !(input.file instanceof File) ||
-    input.file.size === 0 ||
+    (input.file instanceof File && input.file.size === 0) ||
+    (input.file !== undefined && !(input.file instanceof File)) ||
+    (input.proofOfTransferUrl !== undefined &&
+      (typeof input.proofOfTransferUrl !== "string" ||
+        !isFinancePaymentProofUrl(input.proofOfTransferUrl))) ||
+    (Boolean(input.file) === Boolean(input.proofOfTransferUrl)) ||
     !isBoundedText(input.transferDestination, 300) ||
     !Object.values(PaymentType).includes(input.paymentType)
   ) {
     return actionFailure("Data pembayaran atau bukti transfer tidak valid.");
   }
+  const proof = input.proofOfTransferUrl ?? input.file;
+  if (!proof) {
+    return actionFailure("Bukti pembayaran wajib diunggah.");
+  }
   if (input.target.kind === "ticket") {
     return processFinancePayment(
       input.target.id,
-      input.file,
+      proof,
       input.transferDestination,
       input.paymentType,
       input.amount,
@@ -3305,7 +3381,7 @@ export async function submitPaymentRecord(input: {
   if (input.target.kind === "purchase-order") {
     return processFinanceStandalonePurchaseOrderPayment(
       input.target.id,
-      input.file,
+      proof,
       input.transferDestination,
       input.paymentType,
       input.amount,
@@ -3314,7 +3390,7 @@ export async function submitPaymentRecord(input: {
   if (input.target.kind === "direct-purchase") {
     return processFinanceDirectStockPurchasePayment(
       input.target.id,
-      input.file,
+      proof,
       input.transferDestination,
       input.paymentType,
       input.amount,

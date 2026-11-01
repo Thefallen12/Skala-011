@@ -1,7 +1,9 @@
 import { join, resolve } from "node:path";
 import {
   removeCloudinaryPhoto,
+  getCloudinaryPublicId,
 } from "@/lib/cloudinary-photos";
+import { DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/direct-stock-purchase-photo-config";
 import {
   PrivatePhotoValidationError,
   readPrivatePhoto,
@@ -48,6 +50,24 @@ export async function removeDirectStockPurchasePhoto(url: string): Promise<void>
     photoDirectory,
     "/api/logistics/direct-stock-purchase-photo",
   );
+}
+
+export function isDirectStockPurchaseCloudinaryPhotoUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    const publicId = getCloudinaryPublicId(url);
+    return (
+      parsed.protocol === "https:" &&
+      parsed.hostname === "res.cloudinary.com" &&
+      Boolean(
+        publicId?.startsWith(
+          `${DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER}/`,
+        ),
+      )
+    );
+  } catch {
+    return false;
+  }
 }
 
 export async function readDirectStockPurchasePhoto(

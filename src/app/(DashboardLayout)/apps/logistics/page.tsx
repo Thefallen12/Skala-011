@@ -343,6 +343,20 @@ export default async function LogisticsPage({
             status: true,
             isApprovedByDirector: true,
             createdAt: true,
+            receivedAt: true,
+            arrivalPhotoUrl: true,
+            receivedPhotos: true,
+            paymentTransactions: {
+              where: { status: PaymentStatus.PAID },
+              select: { proofOfTransferUrl: true },
+            },
+            items: {
+              select: { id: true, itemName: true, quantity: true, unit: true },
+            },
+            receivedBy: { select: { name: true } },
+            ticket: {
+              select: { id: true, ticketNumber: true, title: true },
+            },
           },
         },
         deliveryOrders: {
@@ -458,6 +472,7 @@ export default async function LogisticsPage({
         createdAt: true,
         receivedAt: true,
         arrivalPhotoUrl: true,
+        receivedPhotos: true,
         paymentTransactions: {
           where: { status: PaymentStatus.PAID },
           select: { proofOfTransferUrl: true },
@@ -583,6 +598,8 @@ export default async function LogisticsPage({
         projects={projects}
         role={session.user.role}
         vendors={vendors}
+        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         stockPurchases={directStockPurchases.map((purchase) => ({
           ...purchase,
           totalAmount: purchase.totalAmount.toString(),
