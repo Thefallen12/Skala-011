@@ -41,8 +41,8 @@ export default function DashboardLayoutClient({
   }
 
   return (
-    <div className='flex w-full min-h-screen'>
-      <div className='page-wrapper flex w-full'>
+    <div className='flex min-h-screen w-full min-w-0'>
+      <div className='page-wrapper flex min-w-0 flex-1'>
         <div className='xl:block hidden'>
           <Sidebar
             canManageUsers={canManageUsers}
@@ -55,7 +55,7 @@ export default function DashboardLayoutClient({
             sidebarCounts={sidebarCounts}
           />
         </div>
-        <div className='body-wrapper w-full bg-background'>
+        <div className='body-wrapper min-w-0 flex-1 bg-background'>
           <Header
             canManageUsers={canManageUsers}
             canAccessLogistics={canAccessLogistics}
@@ -73,7 +73,9 @@ export default function DashboardLayoutClient({
             notificationLoadFailed={Boolean(error)}
             refreshNotifications={mutate}
           />
-          <div className='container mx-auto px-6 py-30'>{children}</div>
+          <div className='container mx-auto w-full min-w-0 px-4 py-8 sm:px-6 sm:py-10 xl:py-30'>
+            {children}
+          </div>
         </div>
       </div>
     </div>

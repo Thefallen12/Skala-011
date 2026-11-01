@@ -31,9 +31,16 @@ const SalesOverview = ({
       height: 310,
       stacked: false,
       width: "100%",
-      offsetX: -20,
+      offsetX: 0,
+      animations: {
+        enabled: true,
+        easing: "easeinout",
+        speed: 750,
+        animateGradually: { enabled: true, delay: 90 },
+        dynamicAnimation: { enabled: true, speed: 350 },
+      },
     },
-    colors: ["var(--color-primary)", "var(--color-secondary)"],
+    colors: ["#38bdf8", "#f97316"],
     plotOptions: {
       bar: {
         horizontal: false,
@@ -43,7 +50,7 @@ const SalesOverview = ({
     },
     dataLabels: { enabled: false },
     legend: { show: false },
-    grid: { borderColor: "rgba(0,0,0,0.1)", strokeDashArray: 3 },
+    grid: { borderColor: "rgba(141,166,196,0.18)", strokeDashArray: 3 },
     xaxis: {
       categories: monthLabels(year),
       axisBorder: { show: false },
@@ -61,21 +68,23 @@ const SalesOverview = ({
   };
 
   return (
-    <CardBox className="h-full w-full pb-0">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <CardBox className="dashboard-enter h-full w-full overflow-hidden border-slate-200/80 bg-white/80 p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-700/80 dark:bg-[#1e293b]/55 sm:p-6">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
         <div>
-          <h5 className="card-title">Aktivitas Bulanan</h5>
-          <p className="text-sm font-normal text-muted-foreground">
+          <h2 className="font-bold text-slate-900 dark:text-white">
+            Aktivitas Bulanan
+          </h2>
+          <p className="mt-1 text-xs text-muted-foreground">
             Proyek baru dan tiket masuk selama {year}
           </p>
         </div>
         <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-primary" />
+            <span className="size-2 rounded-full bg-sky-400" />
             Proyek baru
           </span>
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-secondary" />
+            <span className="size-2 rounded-full bg-orange-500" />
             Tiket masuk
           </span>
         </div>

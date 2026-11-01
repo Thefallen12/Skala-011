@@ -17,6 +17,10 @@ import {
 } from "@/app/actions/tickets";
 import type { TicketActionResult } from "@/app/actions/tickets";
 import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
+import FinanceDashboard, {
+  type FinanceDashboardCategory,
+  type FinanceDashboardMonth,
+} from "@/app/components/apps/finance/FinanceDashboard";
 import PaymentModal, {
   type PaymentModalTarget,
 } from "@/app/components/apps/finance/PaymentModal";
@@ -220,6 +224,8 @@ export default function FinanceHub({
   initialOpenSheet,
   cloudinaryCloudName,
   cloudinaryApiKey,
+  dashboardMonths,
+  dashboardCategories,
 }: {
   purchaseOrders: FinanceOrder[];
   standalonePayments: FinanceOrder[];
@@ -235,6 +241,8 @@ export default function FinanceHub({
   initialOpenSheet?: string;
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
+  dashboardMonths: FinanceDashboardMonth[];
+  dashboardCategories: FinanceDashboardCategory[];
 }) {
   const router = useRouter();
   const legacyOperationalTabs = ["subcontract", "fuel-logs", "fuel-requests"];
@@ -431,9 +439,6 @@ export default function FinanceHub({
       (b.paidAt ? new Date(b.paidAt).getTime() : 0) -
       (a.paidAt ? new Date(a.paidAt).getTime() : 0),
   );
-  const pendingTermynPaymentCount = termyns.filter(
-    (termyn) => termyn.status === "APPROVED",
-  ).length;
   const selectedPaymentRow = paymentModalSelection
     ? paymentRows.find(
         (row) =>
@@ -669,24 +674,18 @@ export default function FinanceHub({
         description="Workspace terpadu untuk pemeriksaan PO, pencairan, bukti transfer, dan kendali biaya."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">PO menunggu pemeriksaan</p>
-            <p className="mt-2 text-2xl font-bold text-primary">
-              {purchaseOrders.length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">Pembayaran perlu diproses</p>
-            <p className="mt-2 text-2xl font-bold text-primary">
-              {pendingPaymentCount + pendingTermynPaymentCount}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <FinanceDashboard
+        reviewCount={purchaseOrders.length}
+        pendingPaymentCount={pendingPaymentCount}
+        outstandingAmount={pendingPaymentRows.reduce(
+          (total, row) =>
+            total + Math.max(0, row.grandTotal - row.paidAmount),
+          0,
+        )}
+        months={dashboardMonths}
+        categories={dashboardCategories}
+        onNavigate={setActiveTab}
+      />
 
       <Tabs
         value={activeTab}

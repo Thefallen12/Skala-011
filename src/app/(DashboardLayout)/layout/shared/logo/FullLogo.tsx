@@ -13,7 +13,7 @@ const FullLogo = () => {
         priority
         className="h-10 w-[45px] shrink-0 rounded-md object-contain dark:bg-white dark:p-1"
       />
-      <span className="flex min-w-0 flex-col leading-tight">
+      <span className="flex min-w-0 flex-col leading-tight max-[390px]:hidden">
         <span className="truncate text-sm font-bold text-primary dark:text-white">
           SKALA PRIORITAS
         </span>

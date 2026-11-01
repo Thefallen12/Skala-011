@@ -66,7 +66,7 @@ export default function NotificationBell({
   };
 
   return (
-    <div className="relative px-3">
+    <div className="relative px-1 sm:px-3">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button

@@ -40,7 +40,7 @@ const Profile = ({
   userRole: UserRole;
 }) => {
   return (
-    <div className='relative group/menu ps-15 shrink-0'>
+    <div className='relative group/menu shrink-0 ps-2 sm:ps-15'>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <span className='hover:text-primary hover:bg-lightprimary rounded-full flex justify-center items-center cursor-pointer group-hover/menu:bg-lightprimary group-hover/menu:text-primary'>

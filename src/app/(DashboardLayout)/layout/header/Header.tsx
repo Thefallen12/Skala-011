@@ -79,23 +79,23 @@ const Header = ({
         }`}
       >
         <nav
-          className={`rounded-none  py-4 sm:ps-6 max-w-full! sm:pe-10 dark:bg-dark flex justify-between items-center px-6`}
+          className="flex min-w-0 max-w-full! items-center justify-between gap-1 rounded-none px-2 py-4 dark:bg-dark sm:gap-3 sm:px-6 sm:pe-10"
         >
           {/* Mobile Toggle Icon */}
           <div
             onClick={() => {
               setIsOpen(true);
             }}
-            className="px-[15px] hover:text-primary dark:hover:text-primary text-foreground dark:text-muted-foreground relative after:absolute after:w-10 after:h-10 after:rounded-full hover:after:bg-lightprimary  after:bg-transparent rounded-full xl:hidden flex justify-center items-center cursor-pointer"
+            className="relative flex shrink-0 cursor-pointer items-center justify-center rounded-full px-2 text-foreground after:absolute after:size-10 after:rounded-full after:bg-transparent hover:after:bg-lightprimary hover:text-primary dark:text-muted-foreground dark:hover:text-primary sm:px-[15px] xl:hidden"
           >
             <Icon icon="tabler:menu-2" height={20} width={20} />
           </div>
 
-          <div className="block xl:hidden">
+          <div className="min-w-0 flex-1 xl:hidden">
             <FullLogo />
           </div>
 
-          <div className="flex xl:hidden items-center">
+          <div className="flex shrink-0 items-center xl:hidden">
             <div
               className="hover:text-primary px-2 md:px-15 group focus:ring-0 rounded-full flex justify-center items-center cursor-pointer relative"
               onClick={toggleMode}

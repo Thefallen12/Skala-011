@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import FinanceHub from "@/app/components/apps/finance/FinanceHub";
+import type {
+  FinanceDashboardCategory,
+  FinanceDashboardMonth,
+} from "@/app/components/apps/finance/FinanceDashboard";
 import { Prisma } from "@/generated/prisma/client";
 import {
   BASTType,
@@ -34,6 +38,14 @@ export default async function FinancePage({
   const session = await auth();
   if (!session?.user) redirect("/auth/login");
   if (!financeRoles.includes(session.user.role)) redirect("/");
+  const currentDate = new Date();
+  const dashboardStart = new Date(
+    Date.UTC(
+      currentDate.getUTCFullYear(),
+      currentDate.getUTCMonth() - 11,
+      1,
+    ),
+  );
 
   const [
     orders,
@@ -46,6 +58,7 @@ export default async function FinancePage({
     documentTemplates,
     vehicleTripLogs,
     vehicleFuelRequests,
+    dashboardPaymentAggregates,
   ] = await Promise.all([
     prisma.purchaseOrder.findMany({
       where: { status: POStatus.DRAFT },
@@ -402,7 +415,97 @@ export default async function FinancePage({
         project: { select: { title: true, kelompokTani: true } },
       },
     }),
+    prisma.$queryRaw<
+      {
+        monthKey: string;
+        category: string;
+        transactionCount: number;
+        totalAmount: number;
+      }[]
+    >`
+      SELECT
+        to_char(
+          date_trunc('month', "paidAt" AT TIME ZONE 'UTC'),
+          'YYYY-MM'
+        ) AS "monthKey",
+        CASE
+          WHEN "directStockPurchaseId" IS NOT NULL THEN 'direct-purchase'
+          WHEN "poId" IS NOT NULL THEN 'purchase-order'
+          WHEN "ticketId" IS NOT NULL THEN 'ticket'
+          ELSE 'other'
+        END AS category,
+        COUNT(*)::int AS "transactionCount",
+        COALESCE(SUM(amount), 0)::double precision AS "totalAmount"
+      FROM "PaymentTransaction"
+      WHERE status = ${PaymentStatus.PAID}
+        AND "paidAt" >= ${dashboardStart}
+        AND "paidAt" <= ${currentDate}
+      GROUP BY 1, 2
+      ORDER BY 1 ASC
+    `,
   ]);
+
+  const dashboardMonths: FinanceDashboardMonth[] = Array.from(
+    { length: 12 },
+    (_, index) => {
+      const monthDate = new Date(
+        Date.UTC(
+          currentDate.getUTCFullYear(),
+          currentDate.getUTCMonth() - 11 + index,
+          1,
+        ),
+      );
+      const key = `${monthDate.getUTCFullYear()}-${String(
+        monthDate.getUTCMonth() + 1,
+      ).padStart(2, "0")}`;
+      const aggregates = dashboardPaymentAggregates.filter(
+        (aggregate) => aggregate.monthKey === key,
+      );
+      return {
+        key,
+        label: new Intl.DateTimeFormat("id-ID", {
+          month: "short",
+          timeZone: "UTC",
+        }).format(monthDate),
+        paymentCount: aggregates.reduce(
+          (total, aggregate) => total + aggregate.transactionCount,
+          0,
+        ),
+        totalPaid: aggregates.reduce(
+          (total, aggregate) => total + aggregate.totalAmount,
+          0,
+        ),
+      };
+    },
+  );
+  const dashboardCategoryLabels: Record<string, string> = {
+    "purchase-order": "Purchase Order",
+    ticket: "Tiket",
+    "direct-purchase": "Pembelian Langsung",
+    other: "Lainnya",
+  };
+  const dashboardCategories: FinanceDashboardCategory[] = [
+    "purchase-order",
+    "ticket",
+    "direct-purchase",
+    "other",
+  ].map((kind) => {
+    const aggregates = dashboardPaymentAggregates.filter(
+      (aggregate) => aggregate.category === kind,
+    );
+    return {
+      kind,
+      label: dashboardCategoryLabels[kind],
+      paymentCount: aggregates.reduce(
+        (total, aggregate) => total + aggregate.transactionCount,
+        0,
+      ),
+      totalPaid: aggregates.reduce(
+        (total, aggregate) => total + aggregate.totalAmount,
+        0,
+      ),
+    };
+  });
 
   const findVendor = (name: string) =>
     vendors.find(
@@ -418,6 +521,8 @@ export default async function FinancePage({
         role={session.user.role}
         cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
         cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
+        dashboardMonths={dashboardMonths}
+        dashboardCategories={dashboardCategories}
         purchaseOrders={orders.map((order) => ({
           id: order.id,
           publicCode: order.publicCode,

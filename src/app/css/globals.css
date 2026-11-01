@@ -8,6 +8,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.dashboard-enter {
+  animation: dashboard-enter 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dashboard-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .morphing-infinity {
   overflow: visible;
   animation: infinity-breathe 1.8s ease-in-out infinite;
@@ -60,6 +73,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .dashboard-enter {
+    animation: none;
+  }
+
   .morphing-infinity,
   .morphing-infinity-path {
     animation: none;

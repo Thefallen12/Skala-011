@@ -19,30 +19,48 @@ const YearlyBreakup = ({
   other: number;
 }) => {
   const chartOptions: ApexOptions = {
-    series: [completed, running, other],
-    labels: ["Selesai", "Berjalan", "Lainnya"],
     chart: {
       type: "donut",
       fontFamily: "inherit",
-      foreColor: "#adb0bb",
+      foreColor: "#8da6c4",
       height: 200,
-      offsetX: 18,
       toolbar: { show: false },
+      animations: {
+        enabled: true,
+        speed: 750,
+        animateGradually: { enabled: true, delay: 100 },
+      },
     },
     plotOptions: {
       pie: {
         startAngle: 0,
         endAngle: 360,
-        donut: { size: "75%" },
+        donut: {
+          size: "72%",
+          labels: {
+            show: true,
+            name: { show: true, offsetY: 18 },
+            value: {
+              show: true,
+              offsetY: -10,
+              formatter: (value) => `${value} proyek`,
+            },
+            total: {
+              show: true,
+              label: "Total proyek",
+              formatter: () => `${total}`,
+            },
+          },
+        },
       },
     },
     stroke: { show: false },
     dataLabels: { enabled: false },
     legend: { show: false },
     colors: [
-      "var(--color-success)",
-      "var(--color-primary)",
-      "var(--color-secondary)",
+      "#10b981",
+      "#f97316",
+      "#3b82f6",
     ],
     tooltip: {
       theme: "dark",
@@ -51,18 +69,22 @@ const YearlyBreakup = ({
   };
 
   const breakdown = [
-    { label: "Selesai", value: completed, color: "text-success" },
-    { label: "Berjalan", value: running, color: "text-primary" },
-    { label: "Lainnya", value: other, color: "text-secondary" },
+    { label: "Selesai", value: completed, color: "text-emerald-500" },
+    { label: "Berjalan", value: running, color: "text-orange-500" },
+    { label: "Lainnya / pending", value: other, color: "text-blue-500" },
   ];
 
   return (
-    <CardBox>
-      <h5 className="card-title mb-4">Status Proyek</h5>
-      <div className="grid grid-cols-12 items-center">
-        <div className="col-span-5">
+    <CardBox className="dashboard-enter h-full min-w-0 border-slate-200/80 bg-white/80 p-4 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-700/80 dark:bg-[#1e293b]/55 sm:p-5">
+      <h2 className="mb-4 font-bold text-slate-900 dark:text-white">
+        Status Proyek
+      </h2>
+      <div className="grid min-w-0 grid-cols-1 items-center gap-2 2xl:grid-cols-[minmax(0,1fr)_180px]">
+        <div className="min-w-0">
           <p className="mb-1 text-xs text-muted-foreground">Total proyek</p>
-          <h4 className="mb-4 text-xl">{total}</h4>
+          <h3 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">
+            {total}
+          </h3>
           <div className="flex flex-col gap-2">
             {breakdown.map((item) => (
               <div className="flex items-center gap-1.5" key={item.label}>
@@ -77,15 +99,17 @@ const YearlyBreakup = ({
             ))}
           </div>
         </div>
-        <div className="col-span-7 flex justify-center">
+        <div className="flex min-w-0 justify-center">
           {total > 0 ? (
-            <Chart
-              options={chartOptions}
-              series={[completed, running, other]}
-              type="donut"
-              height={200}
-              width={180}
-            />
+            <div className="w-full max-w-[180px]">
+              <Chart
+                options={chartOptions}
+                series={[completed, running, other]}
+                type="donut"
+                height={200}
+                width="100%"
+              />
+            </div>
           ) : (
             <p className="py-12 text-center text-xs text-muted-foreground">
               Belum ada data proyek.

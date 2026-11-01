@@ -3,7 +3,12 @@ import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
 import { getJakartaDateKey, getJakartaDayRange, shiftDateKey } from "@/lib/habit-date";
-import { ProjectStatus, TicketStatus } from "@/generated/prisma/enums";
+import {
+  ProjectStatus,
+  TicketStatus,
+  UserRole,
+  WorkTaskStatus,
+} from "@/generated/prisma/enums";
 import ProfileWelcome from "../components/dashboard/ProfileWelcome";
 import { TopCards } from "../components/dashboard/TopCards";
 import SalesOverview from "../components/dashboard/SalesOverview";
@@ -92,7 +97,7 @@ export default async function DashboardPage() {
     recentProjects,
     ticketCountByStatus,
     recentTickets,
-    activeTaskCount,
+    tasksByStatus,
     monthlyStockMovements,
     timesheetTotal,
     timesheetByDay,
@@ -136,11 +141,14 @@ export default async function DashboardPage() {
         type: true,
         createdAt: true,
         totalAmount: true,
+        priority: true,
+        requester: { select: { name: true } },
+        project: { select: { name: true } },
       },
     }),
-    prisma.workTask.count({
+    prisma.workTask.groupBy({
+      by: ["status"],
       where: {
-        status: { not: "DONE" },
         startsAt: { lt: tomorrow.start },
         endsAt: { gte: today.start },
         OR: [
@@ -149,6 +157,7 @@ export default async function DashboardPage() {
           { members: { some: { userId: session.user.id } } },
         ],
       },
+      _count: { _all: true },
     }),
     prisma.stockMovement.count({
       where: {
@@ -189,6 +198,14 @@ export default async function DashboardPage() {
   const ticketCounts = new Map(
     ticketCountByStatus.map((entry) => [entry.status, entry._count._all]),
   );
+  const taskCounts = new Map(
+    tasksByStatus.map((entry) => [entry.status, entry._count._all]),
+  );
+  const activeTaskCount =
+    (taskCounts.get(WorkTaskStatus.TODO) ?? 0) +
+    (taskCounts.get(WorkTaskStatus.IN_PROGRESS) ?? 0);
+  const completedTaskCount = taskCounts.get(WorkTaskStatus.DONE) ?? 0;
+  const totalTaskCount = activeTaskCount + completedTaskCount;
   const activeTickets = ticketCountByStatus
     .filter(
       ({ status }) =>
@@ -221,9 +238,10 @@ export default async function DashboardPage() {
     {
       title: "Total Proyek",
       value: String(projectCount),
-      image: "/images/svgs/icon-briefcase.svg",
+      caption: "Aktif & rencana",
       href: "/apps/projects",
-      color: "info",
+      icon: "projects",
+      color: "orange",
     },
     {
       title: "Proyek Berjalan",
@@ -232,37 +250,51 @@ export default async function DashboardPage() {
           (projectCounts.get(ProjectStatus.ON_PROGRESS) ?? 0) +
           (projectCounts.get(ProjectStatus.ACTIVE) ?? 0),
       ),
-      image: "/images/svgs/icon-tasks.svg",
+      caption: `+${monthlyProjectCounts[Number(todayKey.slice(5, 7)) - 1] ?? 0} proyek baru bulan ini`,
       href: "/apps/projects",
-      color: "success",
+      icon: "growth",
+      color: "blue",
     },
     {
       title: "Tugas Saya Hari Ini",
-      value: String(activeTaskCount),
-      image: "/images/svgs/icon-tasks.svg",
+      value: String(totalTaskCount),
+      caption: `Selesai ${completedTaskCount}`,
       href: `/apps/habits?tab=tasks&date=${todayKey}`,
-      color: "primary",
+      icon: "tasks",
+      color: "purple",
     },
     {
       title: "Tiket Aktif",
       value: String(activeTickets),
-      image: "/images/svgs/icon-mailbox.svg",
+      caption: "Membutuhkan tindakan",
       href: "/apps/tickets",
-      color: "warning",
+      icon: "tickets",
+      color: "teal",
     },
     {
       title: "Mutasi Stok Bulan Ini",
       value: String(monthlyStockMovements),
-      image: "/images/svgs/icon-inbox.svg",
-      href: "/apps/projects",
-      color: "secondary",
+      caption: "Transaksi bulan ini",
+      href:
+        user.role === UserRole.MOVER
+          ? "/apps/logistics"
+          : user.role === UserRole.LOGISTICS ||
+              user.role === UserRole.DIRECTOR ||
+              user.role === UserRole.ADMINISTRATIONS
+            ? "/apps/logistics/stock"
+            : user.role === UserRole.FINANCE
+              ? "/apps/finance"
+              : "/apps/projects",
+      icon: "stock",
+      color: "indigo",
     },
     {
       title: "Jam Timesheet Bulan Ini",
       value: `${Math.round((timesheetTotal._sum.durationMinutes ?? 0) / 6) / 10} jam`,
-      image: "/images/svgs/icon-office-bag.svg",
+      caption: "Total jam kerja tercatat",
       href: "/apps/habits?tab=timesheet",
-      color: "error",
+      icon: "timesheet",
+      color: "green",
     },
   ] as const;
 
@@ -278,86 +310,80 @@ export default async function DashboardPage() {
     (projectCounts.get(ProjectStatus.COMPLETED) ?? 0);
 
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-12">
-        <ProfileWelcome
-          name={user.name}
-          role={user.role}
-          profilePhotoUrl={user.profilePhotoUrl}
-        />
-      </div>
-      <div className="col-span-12">
-        <TopCards cards={cards} />
-      </div>
-      <div className="col-span-12 lg:col-span-8">
-        <SalesOverview
-          year={year}
-          projectCounts={monthlyProjectCounts}
-          ticketCounts={monthlyTicketCounts}
-        />
-      </div>
-      <div className="col-span-12 lg:col-span-4">
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-12">
-            <YearlyBreakup
-              total={projectCount}
-              completed={completedProjects}
-              running={
-                (projectCounts.get(ProjectStatus.RUNNING) ?? 0) +
-                (projectCounts.get(ProjectStatus.ON_PROGRESS) ?? 0) +
-                (projectCounts.get(ProjectStatus.ACTIVE) ?? 0)
-              }
-              other={Math.max(
-                projectCount -
-                  completedProjects -
-                  (projectCounts.get(ProjectStatus.RUNNING) ?? 0) -
-                  (projectCounts.get(ProjectStatus.ON_PROGRESS) ?? 0) -
-                  (projectCounts.get(ProjectStatus.ACTIVE) ?? 0),
-                0,
-              )}
-            />
-          </div>
-          <div className="col-span-12">
-            <MonthlyEarning
-              hours={Math.round(
-                (timesheetTotal._sum.durationMinutes ?? 0) / 6,
-              ) / 10}
-              dayLabels={days.map((dayKey) =>
-                new Intl.DateTimeFormat("id-ID", {
-                  timeZone: "Asia/Jakarta",
-                  weekday: "short",
-                }).format(new Date(`${dayKey}T12:00:00+07:00`)),
-              )}
-              hoursByDay={hoursByDay}
-            />
-          </div>
+    <div className="w-full min-w-0 space-y-6">
+      <ProfileWelcome
+        name={user.name}
+        role={user.role}
+        profilePhotoUrl={user.profilePhotoUrl}
+      />
+      <TopCards cards={cards} />
+      <div className="grid min-w-0 grid-cols-1 gap-5 xl:grid-cols-3">
+        <div className="min-w-0 xl:col-span-2">
+          <SalesOverview
+            year={year}
+            projectCounts={monthlyProjectCounts}
+            ticketCounts={monthlyTicketCounts}
+          />
+        </div>
+        <div className="grid min-w-0 gap-5 sm:grid-cols-2 xl:grid-cols-1">
+          <YearlyBreakup
+            total={projectCount}
+            completed={completedProjects}
+            running={
+              (projectCounts.get(ProjectStatus.RUNNING) ?? 0) +
+              (projectCounts.get(ProjectStatus.ON_PROGRESS) ?? 0) +
+              (projectCounts.get(ProjectStatus.ACTIVE) ?? 0)
+            }
+            other={Math.max(
+              projectCount -
+                completedProjects -
+                (projectCounts.get(ProjectStatus.RUNNING) ?? 0) -
+                (projectCounts.get(ProjectStatus.ON_PROGRESS) ?? 0) -
+                (projectCounts.get(ProjectStatus.ACTIVE) ?? 0),
+              0,
+            )}
+          />
+          <MonthlyEarning
+            hours={Math.round(
+              (timesheetTotal._sum.durationMinutes ?? 0) / 6,
+            ) / 10}
+            dayLabels={days.map((dayKey) =>
+              new Intl.DateTimeFormat("id-ID", {
+                timeZone: "Asia/Jakarta",
+                weekday: "short",
+              }).format(new Date(`${dayKey}T12:00:00+07:00`)),
+            )}
+            hoursByDay={hoursByDay}
+          />
         </div>
       </div>
-      <div className="col-span-12 lg:col-span-4">
-        <RecentTransaction
-          tickets={recentTickets.map((ticket) => ({
-            ...ticket,
-            createdAt: dateTimeFormatter.format(ticket.createdAt),
-            totalAmount: ticket.totalAmount
-              ? rupiah.format(Number(ticket.totalAmount))
-              : "—",
-            statusLabel: ticketStatusLabels[ticket.status],
-          }))}
-        />
+      <div className="grid min-w-0 grid-cols-1 gap-5 xl:grid-cols-3">
+        <div className="min-w-0">
+          <RecentTransaction
+            tickets={recentTickets.map((ticket) => ({
+              ...ticket,
+              createdAt: dateTimeFormatter.format(ticket.createdAt),
+              totalAmount: ticket.totalAmount
+                ? rupiah.format(Number(ticket.totalAmount))
+                : "—",
+              statusLabel: ticketStatusLabels[ticket.status],
+              requesterName: ticket.requester?.name ?? "Pemohon",
+              projectName: ticket.project?.name ?? "Umum",
+            }))}
+          />
+        </div>
+        <div className="flex min-w-0 xl:col-span-2">
+          <ProductPerformance
+            projects={recentProjects.map((project) => ({
+              ...project,
+              statusLabel: projectStatusLabels[project.status],
+              budget: project.budget ? rupiah.format(Number(project.budget)) : "—",
+            }))}
+            averageProgress={totalProjectProgress}
+          />
+        </div>
       </div>
-      <div className="col-span-12 flex lg:col-span-8">
-        <ProductPerformance
-          projects={recentProjects.map((project) => ({
-            ...project,
-            statusLabel: projectStatusLabels[project.status],
-            budget: project.budget ? rupiah.format(Number(project.budget)) : "—",
-          }))}
-          averageProgress={totalProjectProgress}
-        />
-      </div>
-      <div className="col-span-12">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
