@@ -730,7 +730,7 @@ export async function GET(request: NextRequest) {
       : null;
     const publicAppUrl =
       resolvePublicAppUrl() ?? new URL(request.url).origin;
-    const [logoDataUrl, qrDataUrl, approvalQrDataUrl] = await Promise.all([
+    const [logoResult, qrResult, approvalQrResult] = await Promise.allSettled([
       getDocumentHeaderLogoDataUrl(),
       verificationPath
         ? createBrandedQrDataUrl(
@@ -738,8 +738,7 @@ export async function GET(request: NextRequest) {
             260,
           )
         : Promise.resolve(null),
-      kind === "DO" &&
-      document.approvalPublicCode
+      kind === "DO" && document.approvalPublicCode
         ? createBrandedQrDataUrl(
             new URL(
               `/verify/po/${encodeURIComponent(document.approvalPublicCode)}`,
@@ -749,9 +748,23 @@ export async function GET(request: NextRequest) {
           )
         : Promise.resolve(null),
     ]);
-    document.logoDataUrl = logoDataUrl;
-    document.qrDataUrl = qrDataUrl;
-    document.approvalQrDataUrl = approvalQrDataUrl;
+    if (logoResult.status === "rejected") {
+      console.error("Document logo asset failed, using hosted fallback:", logoResult.reason);
+    }
+    if (qrResult.status === "rejected") {
+      console.error("Document verification QR failed, continuing without QR:", qrResult.reason);
+    }
+    if (approvalQrResult.status === "rejected") {
+      console.error("Document approval QR failed, continuing without QR:", approvalQrResult.reason);
+    }
+    document.logoDataUrl =
+      logoResult.status === "fulfilled"
+        ? logoResult.value
+        : "/images/logos/cop-surat.png";
+    document.qrDataUrl =
+      qrResult.status === "fulfilled" ? qrResult.value : null;
+    document.approvalQrDataUrl =
+      approvalQrResult.status === "fulfilled" ? approvalQrResult.value : null;
     delete document.approvalPublicCode;
     const documentHtml = renderUniversalTransactionDocument(document);
     if (previewOnly) {
