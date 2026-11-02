@@ -1,7 +1,5 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
 
 function localChromePath(): string | null {
   if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
@@ -41,6 +39,10 @@ function localChromePath(): string | null {
 }
 
 export async function renderPdf(html: string): Promise<ArrayBuffer> {
+  const [{ default: chromium }, { default: puppeteer }] = await Promise.all([
+    import("@sparticuz/chromium"),
+    import("puppeteer-core"),
+  ]);
   const localExecutable = localChromePath();
   if (process.platform === "win32" && !localExecutable) {
     throw new Error(
