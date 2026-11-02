@@ -42,6 +42,12 @@ export const APP_MENUS: MenuDefinition[] = [
 
 export const APP_ROLES = Object.values(UserRole) as UserRole[];
 
+export const SETTINGS_MENU_ROLES: UserRole[] = [
+  UserRole.ADMINISTRATIONS,
+  UserRole.DIRECTOR,
+  UserRole.DEPUTY_DIRECTOR,
+];
+
 export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
   [UserRole.DIRECTOR]: APP_MENUS.map((menu) => menu.key),
   [UserRole.DEPUTY_DIRECTOR]: APP_MENUS.map((menu) => menu.key),
@@ -53,7 +59,6 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
     "documents",
     "documents_issued",
     "notes",
-    "settings",
   ],
   [UserRole.LOGISTICS]: [
     "dashboard",
@@ -62,7 +67,6 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
     "documents",
     "documents_issued",
     "notes",
-    "settings",
   ],
   [UserRole.KOORDINATOR]: [
     "dashboard",
@@ -73,7 +77,6 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
     "documents",
     "documents_issued",
     "notes",
-    "settings",
   ],
   [UserRole.FIELD_TEAM]: [
     "dashboard",

@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/generated/prisma/enums";
-import { APP_MENUS, APP_ROLES, DEFAULT_MENU_ACCESS_BY_ROLE } from "@/lib/config/menus";
+import {
+  APP_MENUS,
+  APP_ROLES,
+  DEFAULT_MENU_ACCESS_BY_ROLE,
+  SETTINGS_MENU_ROLES,
+} from "@/lib/config/menus";
 import { MAINTENANCE_PAGES } from "@/lib/config/maintenance-pages";
 
 export type MenuAccessMatrixRow = {
@@ -104,7 +109,11 @@ export async function getMenuAccessMatrix() {
       continue;
     }
 
-    existingRow.allowedByRole[row.role] = row.isAllowed;
+    existingRow.allowedByRole[row.role] =
+      row.menuKey === "settings" &&
+      !SETTINGS_MENU_ROLES.includes(row.role as UserRole)
+        ? false
+        : row.isAllowed;
   }
 
   for (const menu of APP_MENUS) {
@@ -114,6 +123,14 @@ export async function getMenuAccessMatrix() {
     }
 
     for (const role of APP_ROLES) {
+      if (
+        menu.key === "settings" &&
+        !SETTINGS_MENU_ROLES.includes(role)
+      ) {
+        menuRow.allowedByRole[role] = false;
+        continue;
+      }
+
       if (!(role in menuRow.allowedByRole)) {
         menuRow.allowedByRole[role] = (DEFAULT_MENU_ACCESS_BY_ROLE[role] ?? []).includes(menu.key);
       }
@@ -141,6 +158,16 @@ export async function toggleMenuAccess(
   const menu = APP_MENUS.find((item) => item.key === menuKey);
   if (!menu) {
     return { success: false, message: "Menu tidak valid." };
+  }
+  if (
+    menuKey === "settings" &&
+    isAllowed &&
+    !SETTINGS_MENU_ROLES.includes(normalizedRole)
+  ) {
+    return {
+      success: false,
+      message: "Pengaturan Sistem hanya tersedia untuk Direktur, Wakil Direktur, dan Administrasi.",
+    };
   }
 
   try {

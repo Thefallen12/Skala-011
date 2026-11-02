@@ -9,7 +9,7 @@ import {
   type MenuAccessMatrixRow,
 } from "@/app/actions/settings";
 import { MAINTENANCE_PAGES } from "@/lib/config/maintenance-pages";
-import { APP_ROLES } from "@/lib/config/menus";
+import { APP_ROLES, SETTINGS_MENU_ROLES } from "@/lib/config/menus";
 import { Switch } from "@/components/ui/switch";
 
 const roleLabels: Record<string, string> = {
@@ -378,7 +378,12 @@ export default function MaintenanceSettingsClient({
                     >
                       <Switch
                         checked={row.allowedByRole[role] ?? false}
-                        disabled={!canManage || pendingKey !== null}
+                        disabled={
+                          !canManage ||
+                          pendingKey !== null ||
+                          (row.key === "settings" &&
+                            !SETTINGS_MENU_ROLES.includes(role))
+                        }
                         aria-label={`${roleLabels[role] ?? role} · ${row.name}`}
                         onCheckedChange={(checked) =>
                           toggleAccess(role, row.key, checked)

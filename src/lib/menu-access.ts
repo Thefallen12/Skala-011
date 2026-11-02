@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/generated/prisma/enums";
-import { APP_MENUS, APP_ROLES, DEFAULT_MENU_ACCESS_BY_ROLE } from "@/lib/config/menus";
+import {
+  APP_MENUS,
+  APP_ROLES,
+  DEFAULT_MENU_ACCESS_BY_ROLE,
+  SETTINGS_MENU_ROLES,
+} from "@/lib/config/menus";
 
 export async function ensureMenuAccessDefaults() {
   const existing = await prisma.menuAccess.findMany({
@@ -58,6 +63,13 @@ export async function getVisibleMenuKeysForRole(role: UserRole): Promise<string[
 
   const fallbackKeys = DEFAULT_MENU_ACCESS_BY_ROLE[role] ?? [];
   return APP_MENUS.filter((menu) => {
+    if (
+      menu.key === "settings" &&
+      !SETTINGS_MENU_ROLES.includes(role)
+    ) {
+      return false;
+    }
+
     if (allowedSet.has(menu.key)) {
       return true;
     }

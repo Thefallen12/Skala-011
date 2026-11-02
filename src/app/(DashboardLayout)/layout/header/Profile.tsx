@@ -8,6 +8,7 @@ import SimpleBar from 'simplebar-react'
 import { Button } from '@/components/ui/button'
 import { logout } from '@/app/actions/auth'
 import { UserRole } from '@/generated/prisma/enums'
+import { SETTINGS_MENU_ROLES } from '@/lib/config/menus'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,7 +90,13 @@ const Profile = ({
                 </Link>
               </DropdownMenuItem>
             )}
-            {profileData.profileDD.map((item, index) => (
+            {profileData.profileDD
+              .filter(
+                (item) =>
+                  item.url !== '/apps/settings' ||
+                  SETTINGS_MENU_ROLES.includes(userRole),
+              )
+              .map((item, index) => (
               <DropdownMenuItem key={index} asChild>
                 <Link
                   href={item.url}
@@ -105,7 +112,7 @@ const Profile = ({
                   </div>
                 </Link>
               </DropdownMenuItem>
-            ))}
+              ))}
           </SimpleBar>
 
           <DropdownMenuSeparator className='my-2 bg-border' />
