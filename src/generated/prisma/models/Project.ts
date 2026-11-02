@@ -367,6 +367,7 @@ export type ProjectWhereInput = {
   fieldPic?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   polygons?: Prisma.ProjectPolygonListRelationFilter
+  drawingDocuments?: Prisma.DrawingDocumentListRelationFilter
   dailyReports?: Prisma.DailyReportListRelationFilter
   workPoints?: Prisma.ProjectWorkPointListRelationFilter
   wageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
@@ -413,6 +414,7 @@ export type ProjectOrderByWithRelationInput = {
   fieldPic?: Prisma.UserOrderByWithRelationInput
   fieldSurveys?: Prisma.FieldSurveyOrderByRelationAggregateInput
   polygons?: Prisma.ProjectPolygonOrderByRelationAggregateInput
+  drawingDocuments?: Prisma.DrawingDocumentOrderByRelationAggregateInput
   dailyReports?: Prisma.DailyReportOrderByRelationAggregateInput
   workPoints?: Prisma.ProjectWorkPointOrderByRelationAggregateInput
   wageDisbursements?: Prisma.ProjectWageDisbursementOrderByRelationAggregateInput
@@ -462,6 +464,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   fieldPic?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   fieldSurveys?: Prisma.FieldSurveyListRelationFilter
   polygons?: Prisma.ProjectPolygonListRelationFilter
+  drawingDocuments?: Prisma.DrawingDocumentListRelationFilter
   dailyReports?: Prisma.DailyReportListRelationFilter
   workPoints?: Prisma.ProjectWorkPointListRelationFilter
   wageDisbursements?: Prisma.ProjectWageDisbursementListRelationFilter
@@ -565,6 +568,7 @@ export type ProjectCreateInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -610,6 +614,7 @@ export type ProjectUncheckedCreateInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -655,6 +660,7 @@ export type ProjectUpdateInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -700,6 +706,7 @@ export type ProjectUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1085,6 +1092,22 @@ export type ProjectUpdateOneRequiredWithoutBlueprintsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutBlueprintsInput, Prisma.ProjectUpdateWithoutBlueprintsInput>, Prisma.ProjectUncheckedUpdateWithoutBlueprintsInput>
 }
 
+export type ProjectCreateNestedOneWithoutDrawingDocumentsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedCreateWithoutDrawingDocumentsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutDrawingDocumentsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutDrawingDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedCreateWithoutDrawingDocumentsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutDrawingDocumentsInput
+  upsert?: Prisma.ProjectUpsertWithoutDrawingDocumentsInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutDrawingDocumentsInput, Prisma.ProjectUpdateWithoutDrawingDocumentsInput>, Prisma.ProjectUncheckedUpdateWithoutDrawingDocumentsInput>
+}
+
 export type ProjectCreateNestedOneWithoutStockMovementsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutStockMovementsInput, Prisma.ProjectUncheckedCreateWithoutStockMovementsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutStockMovementsInput
@@ -1291,6 +1314,7 @@ export type ProjectCreateWithoutFieldPicInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1335,6 +1359,7 @@ export type ProjectUncheckedCreateWithoutFieldPicInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1434,6 +1459,7 @@ export type ProjectCreateWithoutCalendarEventsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1478,6 +1504,7 @@ export type ProjectUncheckedCreateWithoutCalendarEventsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1538,6 +1565,7 @@ export type ProjectUpdateWithoutCalendarEventsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1582,6 +1610,7 @@ export type ProjectUncheckedUpdateWithoutCalendarEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1626,6 +1655,7 @@ export type ProjectCreateWithoutWorkTasksInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1670,6 +1700,7 @@ export type ProjectUncheckedCreateWithoutWorkTasksInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1730,6 +1761,7 @@ export type ProjectUpdateWithoutWorkTasksInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1774,6 +1806,7 @@ export type ProjectUncheckedUpdateWithoutWorkTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -1818,6 +1851,7 @@ export type ProjectCreateWithoutTimesheetEntriesInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -1862,6 +1896,7 @@ export type ProjectUncheckedCreateWithoutTimesheetEntriesInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -1922,6 +1957,7 @@ export type ProjectUpdateWithoutTimesheetEntriesInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -1966,6 +2002,7 @@ export type ProjectUncheckedUpdateWithoutTimesheetEntriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2009,6 +2046,7 @@ export type ProjectCreateWithoutFieldSurveysInput = {
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2053,6 +2091,7 @@ export type ProjectUncheckedCreateWithoutFieldSurveysInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2113,6 +2152,7 @@ export type ProjectUpdateWithoutFieldSurveysInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2157,6 +2197,7 @@ export type ProjectUncheckedUpdateWithoutFieldSurveysInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2201,6 +2242,7 @@ export type ProjectCreateWithoutPolygonsInput = {
   updatedAt?: Date | string
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2245,6 +2287,7 @@ export type ProjectUncheckedCreateWithoutPolygonsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2305,6 +2348,7 @@ export type ProjectUpdateWithoutPolygonsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2349,6 +2393,7 @@ export type ProjectUncheckedUpdateWithoutPolygonsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2394,6 +2439,7 @@ export type ProjectCreateWithoutDailyReportsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -2438,6 +2484,7 @@ export type ProjectUncheckedCreateWithoutDailyReportsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -2498,6 +2545,7 @@ export type ProjectUpdateWithoutDailyReportsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -2542,6 +2590,7 @@ export type ProjectUncheckedUpdateWithoutDailyReportsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2586,6 +2635,7 @@ export type ProjectCreateWithoutWorkPointsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -2630,6 +2680,7 @@ export type ProjectUncheckedCreateWithoutWorkPointsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -2690,6 +2741,7 @@ export type ProjectUpdateWithoutWorkPointsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -2734,6 +2786,7 @@ export type ProjectUncheckedUpdateWithoutWorkPointsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2778,6 +2831,7 @@ export type ProjectCreateWithoutBlueprintsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -2822,6 +2876,7 @@ export type ProjectUncheckedCreateWithoutBlueprintsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -2882,6 +2937,7 @@ export type ProjectUpdateWithoutBlueprintsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -2926,6 +2982,7 @@ export type ProjectUncheckedUpdateWithoutBlueprintsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -2934,6 +2991,202 @@ export type ProjectUncheckedUpdateWithoutBlueprintsInput = {
   calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
   workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
   timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUncheckedUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutDrawingDocumentsInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
+  polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutDrawingDocumentsInput = {
+  id?: string
+  code: string
+  name: string
+  title: string
+  isDeleted?: boolean
+  kelompokTani: string
+  address: string
+  jenisPekerjaan?: string | null
+  pagu: runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: number
+  priority?: $Enums.ProjectPriority
+  vendor?: string | null
+  clientName?: string | null
+  location?: string | null
+  status?: $Enums.ProjectStatus
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
+  polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutProjectInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutProjectInput
+  workTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutProjectInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutProjectInput
+  blueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutProjectInput
+  subkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutProjectInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutProjectInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutProjectInput
+  cashflows?: Prisma.CashflowUncheckedCreateNestedManyWithoutProjectInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutProjectInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutProjectInput
+  addendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutProjectInput
+  bastDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutDrawingDocumentsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedCreateWithoutDrawingDocumentsInput>
+}
+
+export type ProjectUpsertWithoutDrawingDocumentsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedUpdateWithoutDrawingDocumentsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedCreateWithoutDrawingDocumentsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutDrawingDocumentsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutDrawingDocumentsInput, Prisma.ProjectUncheckedUpdateWithoutDrawingDocumentsInput>
+}
+
+export type ProjectUpdateWithoutDrawingDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
+  polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUpdateManyWithoutProjectNestedInput
+  subkonContracts?: Prisma.SubkonContractUpdateManyWithoutProjectNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutProjectNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutProjectNestedInput
+  cashflows?: Prisma.CashflowUpdateManyWithoutProjectNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutProjectNestedInput
+  vehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutProjectNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutProjectNestedInput
+  addendums?: Prisma.ProjectAddendumUpdateManyWithoutProjectNestedInput
+  bastDocuments?: Prisma.BASTDocumentUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutDrawingDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  kelompokTani?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPekerjaan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagu?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  landArea?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  progress?: Prisma.FloatFieldUpdateOperationsInput | number
+  priority?: Prisma.EnumProjectPriorityFieldUpdateOperationsInput | $Enums.ProjectPriority
+  vendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fieldPicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
+  polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
+  workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
+  wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutProjectNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutProjectNestedInput
+  workTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutProjectNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutProjectNestedInput
+  blueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutProjectNestedInput
   subkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutProjectNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutProjectNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutProjectNestedInput
@@ -2970,6 +3223,7 @@ export type ProjectCreateWithoutStockMovementsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3014,6 +3268,7 @@ export type ProjectUncheckedCreateWithoutStockMovementsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3074,6 +3329,7 @@ export type ProjectUpdateWithoutStockMovementsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3118,6 +3374,7 @@ export type ProjectUncheckedUpdateWithoutStockMovementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3162,6 +3419,7 @@ export type ProjectCreateWithoutWageDisbursementsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutProjectInput
@@ -3206,6 +3464,7 @@ export type ProjectUncheckedCreateWithoutWageDisbursementsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutProjectInput
@@ -3266,6 +3525,7 @@ export type ProjectUpdateWithoutWageDisbursementsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutProjectNestedInput
@@ -3310,6 +3570,7 @@ export type ProjectUncheckedUpdateWithoutWageDisbursementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3354,6 +3615,7 @@ export type ProjectCreateWithoutSubkonContractsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3398,6 +3660,7 @@ export type ProjectUncheckedCreateWithoutSubkonContractsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3458,6 +3721,7 @@ export type ProjectUpdateWithoutSubkonContractsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3502,6 +3766,7 @@ export type ProjectUncheckedUpdateWithoutSubkonContractsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3546,6 +3811,7 @@ export type ProjectCreateWithoutEquipmentLogsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3590,6 +3856,7 @@ export type ProjectUncheckedCreateWithoutEquipmentLogsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3650,6 +3917,7 @@ export type ProjectUpdateWithoutEquipmentLogsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3694,6 +3962,7 @@ export type ProjectUncheckedUpdateWithoutEquipmentLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3738,6 +4007,7 @@ export type ProjectCreateWithoutAddendumsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3782,6 +4052,7 @@ export type ProjectUncheckedCreateWithoutAddendumsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -3842,6 +4113,7 @@ export type ProjectUpdateWithoutAddendumsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -3886,6 +4158,7 @@ export type ProjectUncheckedUpdateWithoutAddendumsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -3930,6 +4203,7 @@ export type ProjectCreateWithoutBastDocumentsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -3974,6 +4248,7 @@ export type ProjectUncheckedCreateWithoutBastDocumentsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4034,6 +4309,7 @@ export type ProjectUpdateWithoutBastDocumentsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -4078,6 +4354,7 @@ export type ProjectUncheckedUpdateWithoutBastDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -4122,6 +4399,7 @@ export type ProjectCreateWithoutTicketsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -4166,6 +4444,7 @@ export type ProjectUncheckedCreateWithoutTicketsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4226,6 +4505,7 @@ export type ProjectUpdateWithoutTicketsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -4270,6 +4550,7 @@ export type ProjectUncheckedUpdateWithoutTicketsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -4314,6 +4595,7 @@ export type ProjectCreateWithoutPurchaseOrdersInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -4358,6 +4640,7 @@ export type ProjectUncheckedCreateWithoutPurchaseOrdersInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4418,6 +4701,7 @@ export type ProjectUpdateWithoutPurchaseOrdersInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -4462,6 +4746,7 @@ export type ProjectUncheckedUpdateWithoutPurchaseOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -4506,6 +4791,7 @@ export type ProjectCreateWithoutVehicleTripLogsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -4550,6 +4836,7 @@ export type ProjectUncheckedCreateWithoutVehicleTripLogsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4610,6 +4897,7 @@ export type ProjectUpdateWithoutVehicleTripLogsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -4654,6 +4942,7 @@ export type ProjectUncheckedUpdateWithoutVehicleTripLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -4698,6 +4987,7 @@ export type ProjectCreateWithoutVehicleFuelRequestsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -4742,6 +5032,7 @@ export type ProjectUncheckedCreateWithoutVehicleFuelRequestsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4802,6 +5093,7 @@ export type ProjectUpdateWithoutVehicleFuelRequestsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -4846,6 +5138,7 @@ export type ProjectUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -4890,6 +5183,7 @@ export type ProjectCreateWithoutInvoicesInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -4934,6 +5228,7 @@ export type ProjectUncheckedCreateWithoutInvoicesInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -4994,6 +5289,7 @@ export type ProjectUpdateWithoutInvoicesInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -5038,6 +5334,7 @@ export type ProjectUncheckedUpdateWithoutInvoicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -5082,6 +5379,7 @@ export type ProjectCreateWithoutCashflowsInput = {
   fieldPic?: Prisma.UserCreateNestedOneWithoutAssignedProjectsInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutProjectInput
@@ -5126,6 +5424,7 @@ export type ProjectUncheckedCreateWithoutCashflowsInput = {
   updatedAt?: Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutProjectInput
   polygons?: Prisma.ProjectPolygonUncheckedCreateNestedManyWithoutProjectInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutProjectInput
   dailyReports?: Prisma.DailyReportUncheckedCreateNestedManyWithoutProjectInput
   workPoints?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProjectInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutProjectInput
@@ -5186,6 +5485,7 @@ export type ProjectUpdateWithoutCashflowsInput = {
   fieldPic?: Prisma.UserUpdateOneWithoutAssignedProjectsNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -5230,6 +5530,7 @@ export type ProjectUncheckedUpdateWithoutCashflowsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -5297,6 +5598,7 @@ export type ProjectUpdateWithoutFieldPicInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutProjectNestedInput
@@ -5341,6 +5643,7 @@ export type ProjectUncheckedUpdateWithoutFieldPicInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutProjectNestedInput
   polygons?: Prisma.ProjectPolygonUncheckedUpdateManyWithoutProjectNestedInput
+  drawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutProjectNestedInput
   dailyReports?: Prisma.DailyReportUncheckedUpdateManyWithoutProjectNestedInput
   workPoints?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProjectNestedInput
   wageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutProjectNestedInput
@@ -5393,6 +5696,7 @@ export type ProjectUncheckedUpdateManyWithoutFieldPicInput = {
 export type ProjectCountOutputType = {
   fieldSurveys: number
   polygons: number
+  drawingDocuments: number
   dailyReports: number
   workPoints: number
   wageDisbursements: number
@@ -5416,6 +5720,7 @@ export type ProjectCountOutputType = {
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   fieldSurveys?: boolean | ProjectCountOutputTypeCountFieldSurveysArgs
   polygons?: boolean | ProjectCountOutputTypeCountPolygonsArgs
+  drawingDocuments?: boolean | ProjectCountOutputTypeCountDrawingDocumentsArgs
   dailyReports?: boolean | ProjectCountOutputTypeCountDailyReportsArgs
   workPoints?: boolean | ProjectCountOutputTypeCountWorkPointsArgs
   wageDisbursements?: boolean | ProjectCountOutputTypeCountWageDisbursementsArgs
@@ -5458,6 +5763,13 @@ export type ProjectCountOutputTypeCountFieldSurveysArgs<ExtArgs extends runtime.
  */
 export type ProjectCountOutputTypeCountPolygonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProjectPolygonWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountDrawingDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DrawingDocumentWhereInput
 }
 
 /**
@@ -5613,6 +5925,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   fieldPic?: boolean | Prisma.Project$fieldPicArgs<ExtArgs>
   fieldSurveys?: boolean | Prisma.Project$fieldSurveysArgs<ExtArgs>
   polygons?: boolean | Prisma.Project$polygonsArgs<ExtArgs>
+  drawingDocuments?: boolean | Prisma.Project$drawingDocumentsArgs<ExtArgs>
   dailyReports?: boolean | Prisma.Project$dailyReportsArgs<ExtArgs>
   workPoints?: boolean | Prisma.Project$workPointsArgs<ExtArgs>
   wageDisbursements?: boolean | Prisma.Project$wageDisbursementsArgs<ExtArgs>
@@ -5716,6 +6029,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   fieldPic?: boolean | Prisma.Project$fieldPicArgs<ExtArgs>
   fieldSurveys?: boolean | Prisma.Project$fieldSurveysArgs<ExtArgs>
   polygons?: boolean | Prisma.Project$polygonsArgs<ExtArgs>
+  drawingDocuments?: boolean | Prisma.Project$drawingDocumentsArgs<ExtArgs>
   dailyReports?: boolean | Prisma.Project$dailyReportsArgs<ExtArgs>
   workPoints?: boolean | Prisma.Project$workPointsArgs<ExtArgs>
   wageDisbursements?: boolean | Prisma.Project$wageDisbursementsArgs<ExtArgs>
@@ -5749,6 +6063,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     fieldPic: Prisma.$UserPayload<ExtArgs> | null
     fieldSurveys: Prisma.$FieldSurveyPayload<ExtArgs>[]
     polygons: Prisma.$ProjectPolygonPayload<ExtArgs>[]
+    drawingDocuments: Prisma.$DrawingDocumentPayload<ExtArgs>[]
     dailyReports: Prisma.$DailyReportPayload<ExtArgs>[]
     workPoints: Prisma.$ProjectWorkPointPayload<ExtArgs>[]
     wageDisbursements: Prisma.$ProjectWageDisbursementPayload<ExtArgs>[]
@@ -6188,6 +6503,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   fieldPic<T extends Prisma.Project$fieldPicArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$fieldPicArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fieldSurveys<T extends Prisma.Project$fieldSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$fieldSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldSurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   polygons<T extends Prisma.Project$polygonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$polygonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPolygonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  drawingDocuments<T extends Prisma.Project$drawingDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$drawingDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DrawingDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dailyReports<T extends Prisma.Project$dailyReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$dailyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workPoints<T extends Prisma.Project$workPointsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$workPointsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWorkPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wageDisbursements<T extends Prisma.Project$wageDisbursementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$wageDisbursementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWageDisbursementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6722,6 +7038,30 @@ export type Project$polygonsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ProjectPolygonScalarFieldEnum | Prisma.ProjectPolygonScalarFieldEnum[]
+}
+
+/**
+ * Project.drawingDocuments
+ */
+export type Project$drawingDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DrawingDocument
+   */
+  select?: Prisma.DrawingDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DrawingDocument
+   */
+  omit?: Prisma.DrawingDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DrawingDocumentInclude<ExtArgs> | null
+  where?: Prisma.DrawingDocumentWhereInput
+  orderBy?: Prisma.DrawingDocumentOrderByWithRelationInput | Prisma.DrawingDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.DrawingDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DrawingDocumentScalarFieldEnum | Prisma.DrawingDocumentScalarFieldEnum[]
 }
 
 /**

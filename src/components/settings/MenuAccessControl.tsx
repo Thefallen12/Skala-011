@@ -6,7 +6,11 @@ import {
   toggleMenuAccess,
   type MenuAccessMatrixRow,
 } from "@/app/actions/settings";
-import { APP_ROLES, SETTINGS_MENU_ROLES } from "@/lib/config/menus";
+import {
+  APP_ROLES,
+  isMenuAccessRequired,
+  SETTINGS_MENU_ROLES,
+} from "@/lib/config/menus";
 import { Switch } from "@/components/ui/switch";
 
 const roleLabels: Record<string, string> = {
@@ -132,12 +136,22 @@ export default function MenuAccessControl({
                     className="px-3 py-3 text-center"
                   >
                     <Switch
-                      checked={row.allowedByRole[role] ?? false}
+                      checked={
+                        isMenuAccessRequired(role, row.key)
+                          ? true
+                          : row.allowedByRole[role] ?? false
+                      }
                       disabled={
                         !canManage ||
                         pendingKey !== null ||
+                        isMenuAccessRequired(role, row.key) ||
                         (row.key === "settings" &&
                           !SETTINGS_MENU_ROLES.includes(role))
+                      }
+                      title={
+                        isMenuAccessRequired(role, row.key)
+                          ? "Menu ini wajib tersedia untuk role tersebut."
+                          : undefined
                       }
                       aria-label={`${roleLabels[role] ?? role} · ${row.name}`}
                       onCheckedChange={(checked) =>

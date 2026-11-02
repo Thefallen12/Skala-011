@@ -50,6 +50,13 @@ const SidebarContent: MenuItem[] = [
         requiresDrafter: true,
       },
       {
+        name: 'Gambar Kerja (Drafter)',
+        icon: 'solar:pen-new-square-linear',
+        url: '/apps/drafter',
+        menuKey: 'drafter',
+        requiresDrafter: true,
+      },
+      {
         name: 'Persetujuan Eksekutif',
         icon: 'solar:checklist-minimalistic-linear',
         url: '/apps/approvals',

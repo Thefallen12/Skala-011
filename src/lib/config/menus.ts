@@ -4,6 +4,7 @@ export type AppMenuKey =
   | "dashboard"
   | "master_proyek"
   | "blueprints"
+  | "drafter"
   | "approvals"
   | "finance_hub"
   | "habits"
@@ -26,6 +27,7 @@ export const APP_MENUS: MenuDefinition[] = [
   { key: "dashboard", name: "Beranda / Dashboard", path: "/", icon: "Home" },
   { key: "master_proyek", name: "Master Proyek", path: "/apps/projects", icon: "Folder" },
   { key: "blueprints", name: "Gambar Kerja", path: "/apps/blueprints", icon: "FolderKanban" },
+  { key: "drafter", name: "Gambar Kerja (Drafter)", path: "/apps/drafter", icon: "PenTool" },
   { key: "approvals", name: "Persetujuan Eksekutif", path: "/apps/approvals", icon: "CheckCheck" },
   { key: "finance_hub", name: "Finance Hub", path: "/apps/finance", icon: "Wallet" },
   { key: "habits", name: "Jadwal & Habit", path: "/apps/habits", icon: "CalendarRange" },
@@ -45,6 +47,20 @@ export const SETTINGS_MENU_ROLES: UserRole[] = [
   UserRole.DIRECTOR,
   UserRole.DEPUTY_DIRECTOR,
 ];
+
+export const REQUIRED_MENU_ACCESS_BY_ROLE: Partial<
+  Record<UserRole, AppMenuKey[]>
+> = {
+  [UserRole.ADMINISTRATIONS]: ["drafter"],
+  [UserRole.DIRECTOR]: ["drafter"],
+};
+
+export function isMenuAccessRequired(
+  role: UserRole,
+  menuKey: AppMenuKey,
+): boolean {
+  return REQUIRED_MENU_ACCESS_BY_ROLE[role]?.includes(menuKey) ?? false;
+}
 
 export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
   [UserRole.DIRECTOR]: APP_MENUS.map((menu) => menu.key),
@@ -69,6 +85,7 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
   [UserRole.KOORDINATOR]: [
     "dashboard",
     "master_proyek",
+    "drafter",
     "approvals",
     "tickets",
     "logistik",
@@ -79,6 +96,7 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
   [UserRole.FIELD_TEAM]: [
     "dashboard",
     "master_proyek",
+    "drafter",
     "tickets",
     "notes",
   ],
@@ -86,6 +104,7 @@ export const DEFAULT_MENU_ACCESS_BY_ROLE: Record<UserRole, AppMenuKey[]> = {
     "dashboard",
     "master_proyek",
     "blueprints",
+    "drafter",
     "templates",
     "tickets",
     "notes",

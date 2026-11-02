@@ -172,6 +172,16 @@ export type ProjectWorkPoint = Prisma.ProjectWorkPointModel
  */
 export type Blueprint = Prisma.BlueprintModel
 /**
+ * Model DrawingDocument
+ *
+ */
+export type DrawingDocument = Prisma.DrawingDocumentModel
+/**
+ * Model DrawingLog
+ *
+ */
+export type DrawingLog = Prisma.DrawingLogModel
+/**
  * Model ProjectWorkPointProgress
  * 
  */

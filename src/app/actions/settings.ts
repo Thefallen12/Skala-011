@@ -8,12 +8,14 @@ import {
   APP_MENUS,
   APP_ROLES,
   DEFAULT_MENU_ACCESS_BY_ROLE,
+  isMenuAccessRequired,
   SETTINGS_MENU_ROLES,
 } from "@/lib/config/menus";
 import { MAINTENANCE_PAGES } from "@/lib/config/maintenance-pages";
+import type { AppMenuKey } from "@/lib/config/menus";
 
 export type MenuAccessMatrixRow = {
-  key: string;
+  key: AppMenuKey;
   name: string;
   path: string;
   allowedByRole: Record<string, boolean>;
@@ -167,6 +169,12 @@ export async function toggleMenuAccess(
     return {
       success: false,
       message: "Pengaturan Sistem hanya tersedia untuk Direktur, Wakil Direktur, dan Administrasi.",
+    };
+  }
+  if (isMenuAccessRequired(normalizedRole, menu.key) && !isAllowed) {
+    return {
+      success: false,
+      message: "Menu Drafter wajib tersedia untuk Direktur dan Administrasi.",
     };
   }
 

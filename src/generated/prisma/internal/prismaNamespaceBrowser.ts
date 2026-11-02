@@ -77,6 +77,8 @@ export const ModelName = {
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
   Blueprint: 'Blueprint',
+  DrawingDocument: 'DrawingDocument',
+  DrawingLog: 'DrawingLog',
   ProjectWorkPointProgress: 'ProjectWorkPointProgress',
   ProjectWorkPointProgressPhoto: 'ProjectWorkPointProgressPhoto',
   StockMovement: 'StockMovement',
@@ -539,6 +541,38 @@ export const BlueprintScalarFieldEnum = {
 } as const
 
 export type BlueprintScalarFieldEnum = (typeof BlueprintScalarFieldEnum)[keyof typeof BlueprintScalarFieldEnum]
+
+
+export const DrawingDocumentScalarFieldEnum = {
+  id: 'id',
+  drawingCode: 'drawingCode',
+  projectId: 'projectId',
+  title: 'title',
+  category: 'category',
+  version: 'version',
+  status: 'status',
+  fileUrl: 'fileUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DrawingDocumentScalarFieldEnum = (typeof DrawingDocumentScalarFieldEnum)[keyof typeof DrawingDocumentScalarFieldEnum]
+
+
+export const DrawingLogScalarFieldEnum = {
+  id: 'id',
+  drawingId: 'drawingId',
+  action: 'action',
+  notes: 'notes',
+  version: 'version',
+  fileUrl: 'fileUrl',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type DrawingLogScalarFieldEnum = (typeof DrawingLogScalarFieldEnum)[keyof typeof DrawingLogScalarFieldEnum]
 
 
 export const ProjectWorkPointProgressScalarFieldEnum = {

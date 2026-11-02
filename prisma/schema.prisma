@@ -339,6 +339,8 @@ model User {
   approvedWorkPointWages                            ProjectWorkPoint[]            @relation("WorkPointWageApprover")
   draftedBlueprints                                 Blueprint[]                   @relation("BlueprintDrafter")
   reviewedBlueprints                                Blueprint[]                   @relation("BlueprintReviewer")
+  uploadedDrawingDocuments                          DrawingDocument[]             @relation("DrawingUploader")
+  createdDrawingLogs                                DrawingLog[]                  @relation("DrawingLogCreator")
   createdSubkonContracts                            SubkonContract[]              @relation("SubkonContractCreator")
   approvedSubkonContracts                           SubkonContract[]              @relation("SubkonContractApprover")
   createdSubkonTermyns                              SubkonTermyn[]                @relation("SubkonTermynCreator")
@@ -625,6 +627,7 @@ model Project {
   fieldPic            User?                     @relation("ProjectFieldPic", fields: [fieldPicId], references: [id], onDelete: SetNull)
   fieldSurveys        FieldSurvey[]
   polygons            ProjectPolygon[]
+  drawingDocuments    DrawingDocument[]
   dailyReports        DailyReport[]
   workPoints          ProjectWorkPoint[]
   wageDisbursements   ProjectWageDisbursement[]
@@ -817,6 +820,42 @@ model Blueprint {
 
   @@index([projectId, drawingNumber])
   @@index([status, updatedAt])
+}
+
+model DrawingDocument {
+  id            String       @id @default(cuid())
+  drawingCode   String       @unique
+  projectId     String?
+  project       Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  title         String
+  category      String
+  version       Int          @default(0)
+  status        String       @default("DRAFT")
+  fileUrl       String?
+  thumbnailUrl  String?
+  uploadedById  String
+  uploadedBy    User         @relation("DrawingUploader", fields: [uploadedById], references: [id], onDelete: Restrict)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  logs          DrawingLog[]
+
+  @@index([projectId, updatedAt])
+  @@index([status, updatedAt])
+}
+
+model DrawingLog {
+  id          String          @id @default(cuid())
+  drawingId   String
+  drawing     DrawingDocument @relation(fields: [drawingId], references: [id], onDelete: Cascade)
+  action      String
+  notes       String?         @db.Text
+  version     Int
+  fileUrl     String?
+  createdById String
+  createdBy   User            @relation("DrawingLogCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime        @default(now())
+
+  @@index([drawingId, createdAt])
 }
 
 model ProjectWorkPointProgress {

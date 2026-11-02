@@ -269,6 +269,8 @@ export type UserWhereInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   draftedBlueprints?: Prisma.BlueprintListRelationFilter
   reviewedBlueprints?: Prisma.BlueprintListRelationFilter
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentListRelationFilter
+  createdDrawingLogs?: Prisma.DrawingLogListRelationFilter
   createdSubkonContracts?: Prisma.SubkonContractListRelationFilter
   approvedSubkonContracts?: Prisma.SubkonContractListRelationFilter
   createdSubkonTermyns?: Prisma.SubkonTermynListRelationFilter
@@ -352,6 +354,8 @@ export type UserOrderByWithRelationInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointOrderByRelationAggregateInput
   draftedBlueprints?: Prisma.BlueprintOrderByRelationAggregateInput
   reviewedBlueprints?: Prisma.BlueprintOrderByRelationAggregateInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentOrderByRelationAggregateInput
+  createdDrawingLogs?: Prisma.DrawingLogOrderByRelationAggregateInput
   createdSubkonContracts?: Prisma.SubkonContractOrderByRelationAggregateInput
   approvedSubkonContracts?: Prisma.SubkonContractOrderByRelationAggregateInput
   createdSubkonTermyns?: Prisma.SubkonTermynOrderByRelationAggregateInput
@@ -438,6 +442,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   approvedWorkPointWages?: Prisma.ProjectWorkPointListRelationFilter
   draftedBlueprints?: Prisma.BlueprintListRelationFilter
   reviewedBlueprints?: Prisma.BlueprintListRelationFilter
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentListRelationFilter
+  createdDrawingLogs?: Prisma.DrawingLogListRelationFilter
   createdSubkonContracts?: Prisma.SubkonContractListRelationFilter
   approvedSubkonContracts?: Prisma.SubkonContractListRelationFilter
   createdSubkonTermyns?: Prisma.SubkonTermynListRelationFilter
@@ -561,6 +567,8 @@ export type UserCreateInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -644,6 +652,8 @@ export type UserUncheckedCreateInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -727,6 +737,8 @@ export type UserUpdateInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -810,6 +822,8 @@ export type UserUncheckedUpdateInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1261,6 +1275,34 @@ export type UserUpdateOneWithoutReviewedBlueprintsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedBlueprintsInput, Prisma.UserUpdateWithoutReviewedBlueprintsInput>, Prisma.UserUncheckedUpdateWithoutReviewedBlueprintsInput>
+}
+
+export type UserCreateNestedOneWithoutUploadedDrawingDocumentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedCreateWithoutUploadedDrawingDocumentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedDrawingDocumentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUploadedDrawingDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedCreateWithoutUploadedDrawingDocumentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedDrawingDocumentsInput
+  upsert?: Prisma.UserUpsertWithoutUploadedDrawingDocumentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploadedDrawingDocumentsInput, Prisma.UserUpdateWithoutUploadedDrawingDocumentsInput>, Prisma.UserUncheckedUpdateWithoutUploadedDrawingDocumentsInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedDrawingLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedCreateWithoutCreatedDrawingLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDrawingLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedDrawingLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedCreateWithoutCreatedDrawingLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDrawingLogsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedDrawingLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedDrawingLogsInput, Prisma.UserUpdateWithoutCreatedDrawingLogsInput>, Prisma.UserUncheckedUpdateWithoutCreatedDrawingLogsInput>
 }
 
 export type UserCreateNestedOneWithoutCreatedStockMovementsInput = {
@@ -2010,6 +2052,8 @@ export type UserCreateWithoutNotesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -2092,6 +2136,8 @@ export type UserUncheckedCreateWithoutNotesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -2190,6 +2236,8 @@ export type UserUpdateWithoutNotesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -2272,6 +2320,8 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -2355,6 +2405,8 @@ export type UserCreateWithoutNotificationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -2437,6 +2489,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -2535,6 +2589,8 @@ export type UserUpdateWithoutNotificationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -2617,6 +2673,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -2698,6 +2756,8 @@ export type UserCreateWithoutCalendarEventInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -2780,6 +2840,8 @@ export type UserUncheckedCreateWithoutCalendarEventInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -2878,6 +2940,8 @@ export type UserUpdateWithoutCalendarEventInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -2960,6 +3024,8 @@ export type UserUncheckedUpdateWithoutCalendarEventInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -3043,6 +3109,8 @@ export type UserCreateWithoutCalendarRemindersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -3125,6 +3193,8 @@ export type UserUncheckedCreateWithoutCalendarRemindersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -3223,6 +3293,8 @@ export type UserUpdateWithoutCalendarRemindersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -3305,6 +3377,8 @@ export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -3387,6 +3461,8 @@ export type UserCreateWithoutCalendarEventParticipantsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -3469,6 +3545,8 @@ export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -3567,6 +3645,8 @@ export type UserUpdateWithoutCalendarEventParticipantsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -3649,6 +3729,8 @@ export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -3730,6 +3812,8 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -3812,6 +3896,8 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverId
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -3899,6 +3985,8 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -3981,6 +4069,8 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterI
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -4079,6 +4169,8 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -4161,6 +4253,8 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverId
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -4254,6 +4348,8 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -4336,6 +4432,8 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterI
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -4418,6 +4516,8 @@ export type UserCreateWithoutSessionInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -4500,6 +4600,8 @@ export type UserUncheckedCreateWithoutSessionInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -4598,6 +4700,8 @@ export type UserUpdateWithoutSessionInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -4680,6 +4784,8 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -4763,6 +4869,8 @@ export type UserCreateWithoutHabitsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -4845,6 +4953,8 @@ export type UserUncheckedCreateWithoutHabitsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -4943,6 +5053,8 @@ export type UserUpdateWithoutHabitsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -5025,6 +5137,8 @@ export type UserUncheckedUpdateWithoutHabitsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -5107,6 +5221,8 @@ export type UserCreateWithoutCreatedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -5189,6 +5305,8 @@ export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -5276,6 +5394,8 @@ export type UserCreateWithoutAssignedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -5358,6 +5478,8 @@ export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -5456,6 +5578,8 @@ export type UserUpdateWithoutCreatedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -5538,6 +5662,8 @@ export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -5631,6 +5757,8 @@ export type UserUpdateWithoutAssignedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -5713,6 +5841,8 @@ export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -5795,6 +5925,8 @@ export type UserCreateWithoutWorkTaskMembershipsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -5877,6 +6009,8 @@ export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -5975,6 +6109,8 @@ export type UserUpdateWithoutWorkTaskMembershipsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -6057,6 +6193,8 @@ export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -6139,6 +6277,8 @@ export type UserCreateWithoutTimesheetEntriesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -6221,6 +6361,8 @@ export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -6319,6 +6461,8 @@ export type UserUpdateWithoutTimesheetEntriesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -6401,6 +6545,8 @@ export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -6482,6 +6628,8 @@ export type UserCreateWithoutAssignedProjectsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -6564,6 +6712,8 @@ export type UserUncheckedCreateWithoutAssignedProjectsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -6662,6 +6812,8 @@ export type UserUpdateWithoutAssignedProjectsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -6744,6 +6896,8 @@ export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -6826,6 +6980,8 @@ export type UserCreateWithoutFieldSurveysInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -6908,6 +7064,8 @@ export type UserUncheckedCreateWithoutFieldSurveysInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -7006,6 +7164,8 @@ export type UserUpdateWithoutFieldSurveysInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -7088,6 +7248,8 @@ export type UserUncheckedUpdateWithoutFieldSurveysInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -7170,6 +7332,8 @@ export type UserCreateWithoutProposedWorkPointWagesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -7252,6 +7416,8 @@ export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -7339,6 +7505,8 @@ export type UserCreateWithoutApprovedWorkPointWagesInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -7421,6 +7589,8 @@ export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -7519,6 +7689,8 @@ export type UserUpdateWithoutProposedWorkPointWagesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -7601,6 +7773,8 @@ export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -7694,6 +7868,8 @@ export type UserUpdateWithoutApprovedWorkPointWagesInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -7776,6 +7952,8 @@ export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -7858,6 +8036,8 @@ export type UserCreateWithoutDraftedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -7940,6 +8120,8 @@ export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -8027,6 +8209,8 @@ export type UserCreateWithoutReviewedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -8109,6 +8293,8 @@ export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -8207,6 +8393,8 @@ export type UserUpdateWithoutDraftedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -8289,6 +8477,8 @@ export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -8382,6 +8572,8 @@ export type UserUpdateWithoutReviewedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -8464,6 +8656,712 @@ export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserCreateWithoutUploadedDrawingDocumentsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutUploadedDrawingDocumentsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutUploadedDrawingDocumentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedCreateWithoutUploadedDrawingDocumentsInput>
+}
+
+export type UserUpsertWithoutUploadedDrawingDocumentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedUpdateWithoutUploadedDrawingDocumentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedCreateWithoutUploadedDrawingDocumentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUploadedDrawingDocumentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUploadedDrawingDocumentsInput, Prisma.UserUncheckedUpdateWithoutUploadedDrawingDocumentsInput>
+}
+
+export type UserUpdateWithoutUploadedDrawingDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUploadedDrawingDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserCreateWithoutCreatedDrawingLogsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutCreatedDrawingLogsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutCreatedDrawingLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedCreateWithoutCreatedDrawingLogsInput>
+}
+
+export type UserUpsertWithoutCreatedDrawingLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedUpdateWithoutCreatedDrawingLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedCreateWithoutCreatedDrawingLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedDrawingLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDrawingLogsInput, Prisma.UserUncheckedUpdateWithoutCreatedDrawingLogsInput>
+}
+
+export type UserUpdateWithoutCreatedDrawingLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedDrawingLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -8547,6 +9445,8 @@ export type UserCreateWithoutCreatedStockMovementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -8629,6 +9529,8 @@ export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -8727,6 +9629,8 @@ export type UserUpdateWithoutCreatedStockMovementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -8809,6 +9713,8 @@ export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -8891,6 +9797,8 @@ export type UserCreateWithoutStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -8973,6 +9881,8 @@ export type UserUncheckedCreateWithoutStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -9071,6 +9981,8 @@ export type UserUpdateWithoutStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -9153,6 +10065,8 @@ export type UserUncheckedUpdateWithoutStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -9234,6 +10148,8 @@ export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -9316,6 +10232,8 @@ export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -9404,6 +10322,8 @@ export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -9486,6 +10406,8 @@ export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -9573,6 +10495,8 @@ export type UserCreateWithoutCreatedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -9655,6 +10579,8 @@ export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -9752,6 +10678,8 @@ export type UserUpdateWithoutApprovedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -9834,6 +10762,8 @@ export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -9928,6 +10858,8 @@ export type UserUpdateWithoutReceivedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -10010,6 +10942,8 @@ export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -10103,6 +11037,8 @@ export type UserUpdateWithoutCreatedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -10185,6 +11121,8 @@ export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -10267,6 +11205,8 @@ export type UserCreateWithoutWageAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -10349,6 +11289,8 @@ export type UserUncheckedCreateWithoutWageAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -10447,6 +11389,8 @@ export type UserUpdateWithoutWageAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -10529,6 +11473,8 @@ export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -10611,6 +11557,8 @@ export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -10693,6 +11641,8 @@ export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -10791,6 +11741,8 @@ export type UserUpdateWithoutCreatedProjectWageDisbursementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -10873,6 +11825,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -10955,6 +11909,8 @@ export type UserCreateWithoutCreatedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
@@ -11037,6 +11993,8 @@ export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
@@ -11124,6 +12082,8 @@ export type UserCreateWithoutApprovedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
@@ -11206,6 +12166,8 @@ export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
@@ -11293,6 +12255,8 @@ export type UserCreateWithoutReleasedSubkonRetentionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -11375,6 +12339,8 @@ export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -11473,6 +12439,8 @@ export type UserUpdateWithoutCreatedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
@@ -11555,6 +12523,8 @@ export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
@@ -11648,6 +12618,8 @@ export type UserUpdateWithoutApprovedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
@@ -11730,6 +12702,8 @@ export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
@@ -11823,6 +12797,8 @@ export type UserUpdateWithoutReleasedSubkonRetentionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -11905,6 +12881,8 @@ export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -11987,6 +12965,8 @@ export type UserCreateWithoutCreatedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
@@ -12069,6 +13049,8 @@ export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
@@ -12156,6 +13138,8 @@ export type UserCreateWithoutVerifiedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -12238,6 +13222,8 @@ export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12325,6 +13311,8 @@ export type UserCreateWithoutReviewedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -12407,6 +13395,8 @@ export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12494,6 +13484,8 @@ export type UserCreateWithoutApprovedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -12576,6 +13568,8 @@ export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12663,6 +13657,8 @@ export type UserCreateWithoutPaidSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -12745,6 +13741,8 @@ export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12843,6 +13841,8 @@ export type UserUpdateWithoutCreatedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
@@ -12925,6 +13925,8 @@ export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
@@ -13018,6 +14020,8 @@ export type UserUpdateWithoutVerifiedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -13100,6 +14104,8 @@ export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -13193,6 +14199,8 @@ export type UserUpdateWithoutReviewedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -13275,6 +14283,8 @@ export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -13368,6 +14378,8 @@ export type UserUpdateWithoutApprovedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -13450,6 +14462,8 @@ export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -13543,6 +14557,8 @@ export type UserUpdateWithoutPaidSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -13625,6 +14641,8 @@ export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -13707,6 +14725,8 @@ export type UserCreateWithoutCreatedEquipmentLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -13789,6 +14809,8 @@ export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -13887,6 +14909,8 @@ export type UserUpdateWithoutCreatedEquipmentLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -13969,6 +14993,8 @@ export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -14051,6 +15077,8 @@ export type UserCreateWithoutCreatedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -14133,6 +15161,8 @@ export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -14220,6 +15250,8 @@ export type UserCreateWithoutApprovedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -14302,6 +15334,8 @@ export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -14400,6 +15434,8 @@ export type UserUpdateWithoutCreatedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -14482,6 +15518,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -14575,6 +15613,8 @@ export type UserUpdateWithoutApprovedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -14657,6 +15697,8 @@ export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -14739,6 +15781,8 @@ export type UserCreateWithoutApprovedBASTDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -14821,6 +15865,8 @@ export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -14919,6 +15965,8 @@ export type UserUpdateWithoutApprovedBASTDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -15001,6 +16049,8 @@ export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -15082,6 +16132,8 @@ export type UserCreateWithoutTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -15164,6 +16216,8 @@ export type UserUncheckedCreateWithoutTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -15252,6 +16306,8 @@ export type UserCreateWithoutAssignedMoverTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -15334,6 +16390,8 @@ export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -15431,6 +16489,8 @@ export type UserUpdateWithoutTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -15513,6 +16573,8 @@ export type UserUncheckedUpdateWithoutTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -15607,6 +16669,8 @@ export type UserUpdateWithoutAssignedMoverTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -15689,6 +16753,8 @@ export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -15771,6 +16837,8 @@ export type UserCreateWithoutCreatedDocumentTemplatesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -15853,6 +16921,8 @@ export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -15951,6 +17021,8 @@ export type UserUpdateWithoutCreatedDocumentTemplatesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -16033,6 +17105,8 @@ export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -16115,6 +17189,8 @@ export type UserCreateWithoutUploadedPurchaseOrderInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -16197,6 +17273,8 @@ export type UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -16284,6 +17362,8 @@ export type UserCreateWithoutSentPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -16366,6 +17446,8 @@ export type UserUncheckedCreateWithoutSentPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -16453,6 +17535,8 @@ export type UserCreateWithoutCreatedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -16535,6 +17619,8 @@ export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -16622,6 +17708,8 @@ export type UserCreateWithoutReviewedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -16704,6 +17792,8 @@ export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -16791,6 +17881,8 @@ export type UserCreateWithoutApprovedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -16873,6 +17965,8 @@ export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -16971,6 +18065,8 @@ export type UserUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -17053,6 +18149,8 @@ export type UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -17146,6 +18244,8 @@ export type UserUpdateWithoutSentPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -17228,6 +18328,8 @@ export type UserUncheckedUpdateWithoutSentPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -17321,6 +18423,8 @@ export type UserUpdateWithoutCreatedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -17403,6 +18507,8 @@ export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -17496,6 +18602,8 @@ export type UserUpdateWithoutReviewedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -17578,6 +18686,8 @@ export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -17671,6 +18781,8 @@ export type UserUpdateWithoutApprovedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -17753,6 +18865,8 @@ export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -17834,6 +18948,8 @@ export type UserCreateWithoutProcessedPaymentTransactionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -17916,6 +19032,8 @@ export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -18004,6 +19122,8 @@ export type UserCreateWithoutSentPaymentConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -18086,6 +19206,8 @@ export type UserUncheckedCreateWithoutSentPaymentConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -18183,6 +19305,8 @@ export type UserUpdateWithoutProcessedPaymentTransactionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -18265,6 +19389,8 @@ export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -18359,6 +19485,8 @@ export type UserUpdateWithoutSentPaymentConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -18441,6 +19569,8 @@ export type UserUncheckedUpdateWithoutSentPaymentConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -18523,6 +19653,8 @@ export type UserCreateWithoutCreatedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -18605,6 +19737,8 @@ export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -18692,6 +19826,8 @@ export type UserCreateWithoutReceivedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -18774,6 +19910,8 @@ export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -18861,6 +19999,8 @@ export type UserCreateWithoutSignedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -18943,6 +20083,8 @@ export type UserUncheckedCreateWithoutSignedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -19030,6 +20172,8 @@ export type UserCreateWithoutAcknowledgedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -19112,6 +20256,8 @@ export type UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -19210,6 +20356,8 @@ export type UserUpdateWithoutCreatedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -19292,6 +20440,8 @@ export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -19385,6 +20535,8 @@ export type UserUpdateWithoutReceivedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -19467,6 +20619,8 @@ export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -19560,6 +20714,8 @@ export type UserUpdateWithoutSignedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -19642,6 +20798,8 @@ export type UserUncheckedUpdateWithoutSignedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -19735,6 +20893,8 @@ export type UserUpdateWithoutAcknowledgedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -19817,6 +20977,8 @@ export type UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -19899,6 +21061,8 @@ export type UserCreateWithoutCreatedVehicleTripLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -19981,6 +21145,8 @@ export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -20079,6 +21245,8 @@ export type UserUpdateWithoutCreatedVehicleTripLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -20161,6 +21329,8 @@ export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -20243,6 +21413,8 @@ export type UserCreateWithoutVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -20325,6 +21497,8 @@ export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -20412,6 +21586,8 @@ export type UserCreateWithoutReviewedVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -20494,6 +21670,8 @@ export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -20592,6 +21770,8 @@ export type UserUpdateWithoutVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -20674,6 +21854,8 @@ export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -20767,6 +21949,8 @@ export type UserUpdateWithoutReviewedVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -20849,6 +22033,8 @@ export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -20931,6 +22117,8 @@ export type UserCreateWithoutSignedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -21013,6 +22201,8 @@ export type UserUncheckedCreateWithoutSignedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -21100,6 +22290,8 @@ export type UserCreateWithoutAcknowledgedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -21182,6 +22374,8 @@ export type UserUncheckedCreateWithoutAcknowledgedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -21280,6 +22474,8 @@ export type UserUpdateWithoutSignedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -21362,6 +22558,8 @@ export type UserUncheckedUpdateWithoutSignedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -21455,6 +22653,8 @@ export type UserUpdateWithoutAcknowledgedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -21537,6 +22737,8 @@ export type UserUncheckedUpdateWithoutAcknowledgedInvoicesInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -21619,6 +22821,8 @@ export type UserCreateWithoutCashflowsRecordedInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -21701,6 +22905,8 @@ export type UserUncheckedCreateWithoutCashflowsRecordedInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -21799,6 +23005,8 @@ export type UserUpdateWithoutCashflowsRecordedInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -21881,6 +23089,8 @@ export type UserUncheckedUpdateWithoutCashflowsRecordedInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -21963,6 +23173,8 @@ export type UserCreateWithoutSentOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -22045,6 +23257,8 @@ export type UserUncheckedCreateWithoutSentOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -22132,6 +23346,8 @@ export type UserCreateWithoutSignedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -22214,6 +23430,8 @@ export type UserUncheckedCreateWithoutSignedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -22301,6 +23519,8 @@ export type UserCreateWithoutAcknowledgedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -22383,6 +23603,8 @@ export type UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -22481,6 +23703,8 @@ export type UserUpdateWithoutSentOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -22563,6 +23787,8 @@ export type UserUncheckedUpdateWithoutSentOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -22656,6 +23882,8 @@ export type UserUpdateWithoutSignedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -22738,6 +23966,8 @@ export type UserUncheckedUpdateWithoutSignedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -22831,6 +24061,8 @@ export type UserUpdateWithoutAcknowledgedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -22913,6 +24145,8 @@ export type UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -22995,6 +24229,8 @@ export type UserCreateWithoutIssuedDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -23077,6 +24313,8 @@ export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -23175,6 +24413,8 @@ export type UserUpdateWithoutIssuedDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -23257,6 +24497,8 @@ export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -23339,6 +24581,8 @@ export type UserCreateWithoutPreparedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -23421,6 +24665,8 @@ export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -23508,6 +24754,8 @@ export type UserCreateWithoutSignedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -23590,6 +24838,8 @@ export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -23677,6 +24927,8 @@ export type UserCreateWithoutIssuedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -23759,6 +25011,8 @@ export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -23857,6 +25111,8 @@ export type UserUpdateWithoutPreparedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -23939,6 +25195,8 @@ export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -24032,6 +25290,8 @@ export type UserUpdateWithoutSignedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -24114,6 +25374,8 @@ export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -24207,6 +25469,8 @@ export type UserUpdateWithoutIssuedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -24289,6 +25553,8 @@ export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -24370,6 +25636,8 @@ export type UserCreateWithoutTicketAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
@@ -24452,6 +25720,8 @@ export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
   draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
@@ -24550,6 +25820,8 @@ export type UserUpdateWithoutTicketAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
@@ -24632,6 +25904,8 @@ export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
   approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
   draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
   reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
   approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
   createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -24706,6 +25980,8 @@ export type UserCountOutputType = {
   approvedWorkPointWages: number
   draftedBlueprints: number
   reviewedBlueprints: number
+  uploadedDrawingDocuments: number
+  createdDrawingLogs: number
   createdSubkonContracts: number
   approvedSubkonContracts: number
   createdSubkonTermyns: number
@@ -24775,6 +26051,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   approvedWorkPointWages?: boolean | UserCountOutputTypeCountApprovedWorkPointWagesArgs
   draftedBlueprints?: boolean | UserCountOutputTypeCountDraftedBlueprintsArgs
   reviewedBlueprints?: boolean | UserCountOutputTypeCountReviewedBlueprintsArgs
+  uploadedDrawingDocuments?: boolean | UserCountOutputTypeCountUploadedDrawingDocumentsArgs
+  createdDrawingLogs?: boolean | UserCountOutputTypeCountCreatedDrawingLogsArgs
   createdSubkonContracts?: boolean | UserCountOutputTypeCountCreatedSubkonContractsArgs
   approvedSubkonContracts?: boolean | UserCountOutputTypeCountApprovedSubkonContractsArgs
   createdSubkonTermyns?: boolean | UserCountOutputTypeCountCreatedSubkonTermynsArgs
@@ -24941,6 +26219,20 @@ export type UserCountOutputTypeCountDraftedBlueprintsArgs<ExtArgs extends runtim
  */
 export type UserCountOutputTypeCountReviewedBlueprintsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BlueprintWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUploadedDrawingDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DrawingDocumentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedDrawingLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DrawingLogWhereInput
 }
 
 /**
@@ -25331,6 +26623,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   approvedWorkPointWages?: boolean | Prisma.User$approvedWorkPointWagesArgs<ExtArgs>
   draftedBlueprints?: boolean | Prisma.User$draftedBlueprintsArgs<ExtArgs>
   reviewedBlueprints?: boolean | Prisma.User$reviewedBlueprintsArgs<ExtArgs>
+  uploadedDrawingDocuments?: boolean | Prisma.User$uploadedDrawingDocumentsArgs<ExtArgs>
+  createdDrawingLogs?: boolean | Prisma.User$createdDrawingLogsArgs<ExtArgs>
   createdSubkonContracts?: boolean | Prisma.User$createdSubkonContractsArgs<ExtArgs>
   approvedSubkonContracts?: boolean | Prisma.User$approvedSubkonContractsArgs<ExtArgs>
   createdSubkonTermyns?: boolean | Prisma.User$createdSubkonTermynsArgs<ExtArgs>
@@ -25453,6 +26747,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   approvedWorkPointWages?: boolean | Prisma.User$approvedWorkPointWagesArgs<ExtArgs>
   draftedBlueprints?: boolean | Prisma.User$draftedBlueprintsArgs<ExtArgs>
   reviewedBlueprints?: boolean | Prisma.User$reviewedBlueprintsArgs<ExtArgs>
+  uploadedDrawingDocuments?: boolean | Prisma.User$uploadedDrawingDocumentsArgs<ExtArgs>
+  createdDrawingLogs?: boolean | Prisma.User$createdDrawingLogsArgs<ExtArgs>
   createdSubkonContracts?: boolean | Prisma.User$createdSubkonContractsArgs<ExtArgs>
   approvedSubkonContracts?: boolean | Prisma.User$approvedSubkonContractsArgs<ExtArgs>
   createdSubkonTermyns?: boolean | Prisma.User$createdSubkonTermynsArgs<ExtArgs>
@@ -25527,6 +26823,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     approvedWorkPointWages: Prisma.$ProjectWorkPointPayload<ExtArgs>[]
     draftedBlueprints: Prisma.$BlueprintPayload<ExtArgs>[]
     reviewedBlueprints: Prisma.$BlueprintPayload<ExtArgs>[]
+    uploadedDrawingDocuments: Prisma.$DrawingDocumentPayload<ExtArgs>[]
+    createdDrawingLogs: Prisma.$DrawingLogPayload<ExtArgs>[]
     createdSubkonContracts: Prisma.$SubkonContractPayload<ExtArgs>[]
     approvedSubkonContracts: Prisma.$SubkonContractPayload<ExtArgs>[]
     createdSubkonTermyns: Prisma.$SubkonTermynPayload<ExtArgs>[]
@@ -26003,6 +27301,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   approvedWorkPointWages<T extends Prisma.User$approvedWorkPointWagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedWorkPointWagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectWorkPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   draftedBlueprints<T extends Prisma.User$draftedBlueprintsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$draftedBlueprintsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlueprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedBlueprints<T extends Prisma.User$reviewedBlueprintsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedBlueprintsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlueprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  uploadedDrawingDocuments<T extends Prisma.User$uploadedDrawingDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedDrawingDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DrawingDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdDrawingLogs<T extends Prisma.User$createdDrawingLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDrawingLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DrawingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdSubkonContracts<T extends Prisma.User$createdSubkonContractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSubkonContractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubkonContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedSubkonContracts<T extends Prisma.User$approvedSubkonContractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedSubkonContractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubkonContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdSubkonTermyns<T extends Prisma.User$createdSubkonTermynsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSubkonTermynsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubkonTermynPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -26847,6 +28147,54 @@ export type User$reviewedBlueprintsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.BlueprintScalarFieldEnum | Prisma.BlueprintScalarFieldEnum[]
+}
+
+/**
+ * User.uploadedDrawingDocuments
+ */
+export type User$uploadedDrawingDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DrawingDocument
+   */
+  select?: Prisma.DrawingDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DrawingDocument
+   */
+  omit?: Prisma.DrawingDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DrawingDocumentInclude<ExtArgs> | null
+  where?: Prisma.DrawingDocumentWhereInput
+  orderBy?: Prisma.DrawingDocumentOrderByWithRelationInput | Prisma.DrawingDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.DrawingDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DrawingDocumentScalarFieldEnum | Prisma.DrawingDocumentScalarFieldEnum[]
+}
+
+/**
+ * User.createdDrawingLogs
+ */
+export type User$createdDrawingLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DrawingLog
+   */
+  select?: Prisma.DrawingLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DrawingLog
+   */
+  omit?: Prisma.DrawingLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DrawingLogInclude<ExtArgs> | null
+  where?: Prisma.DrawingLogWhereInput
+  orderBy?: Prisma.DrawingLogOrderByWithRelationInput | Prisma.DrawingLogOrderByWithRelationInput[]
+  cursor?: Prisma.DrawingLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DrawingLogScalarFieldEnum | Prisma.DrawingLogScalarFieldEnum[]
 }
 
 /**

@@ -38,6 +38,7 @@ export const MAINTENANCE_PAGES: MaintenancePageDefinition[] = [
   },
   { key: "project-legacy", name: "Halaman Proyek", section: "Master Proyek", path: "/apps/project" },
   { key: "blueprints", name: "Gambar Kerja", section: "Gambar Kerja", path: "/apps/blueprints" },
+  { key: "drafter", name: "Gambar Kerja & Desain Drafter", section: "Gambar Kerja", path: "/apps/drafter" },
   { key: "approvals", name: "Persetujuan Eksekutif", section: "Persetujuan Eksekutif", path: "/apps/approvals" },
   { key: "finance", name: "Finance Hub", section: "Finance Hub", path: "/apps/finance" },
   { key: "habits", name: "Jadwal & Habit", section: "Jadwal & Habit", path: "/apps/habits" },

@@ -423,6 +423,8 @@ export const ModelName = {
   ProjectProgressPhoto: 'ProjectProgressPhoto',
   ProjectWorkPoint: 'ProjectWorkPoint',
   Blueprint: 'Blueprint',
+  DrawingDocument: 'DrawingDocument',
+  DrawingLog: 'DrawingLog',
   ProjectWorkPointProgress: 'ProjectWorkPointProgress',
   ProjectWorkPointProgressPhoto: 'ProjectWorkPointProgressPhoto',
   StockMovement: 'StockMovement',
@@ -477,7 +479,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "menuAccess" | "pageMaintenance" | "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "projectPolygon" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
+    modelProps: "menuAccess" | "pageMaintenance" | "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "projectPolygon" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "drawingDocument" | "drawingLog" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2402,6 +2404,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BlueprintCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BlueprintCountAggregateOutputType> | number
+        }
+      }
+    }
+    DrawingDocument: {
+      payload: Prisma.$DrawingDocumentPayload<ExtArgs>
+      fields: Prisma.DrawingDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DrawingDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DrawingDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.DrawingDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DrawingDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.DrawingDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.DrawingDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.DrawingDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DrawingDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.DrawingDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        update: {
+          args: Prisma.DrawingDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DrawingDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DrawingDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DrawingDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DrawingDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.DrawingDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDrawingDocument>
+        }
+        groupBy: {
+          args: Prisma.DrawingDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DrawingDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DrawingDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DrawingDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DrawingLog: {
+      payload: Prisma.$DrawingLogPayload<ExtArgs>
+      fields: Prisma.DrawingLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DrawingLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DrawingLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        findFirst: {
+          args: Prisma.DrawingLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DrawingLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        findMany: {
+          args: Prisma.DrawingLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>[]
+        }
+        create: {
+          args: Prisma.DrawingLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        createMany: {
+          args: Prisma.DrawingLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DrawingLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>[]
+        }
+        delete: {
+          args: Prisma.DrawingLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        update: {
+          args: Prisma.DrawingLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.DrawingLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DrawingLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DrawingLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.DrawingLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DrawingLogPayload>
+        }
+        aggregate: {
+          args: Prisma.DrawingLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDrawingLog>
+        }
+        groupBy: {
+          args: Prisma.DrawingLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DrawingLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DrawingLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DrawingLogCountAggregateOutputType> | number
         }
       }
     }
@@ -5737,6 +5887,38 @@ export const BlueprintScalarFieldEnum = {
 export type BlueprintScalarFieldEnum = (typeof BlueprintScalarFieldEnum)[keyof typeof BlueprintScalarFieldEnum]
 
 
+export const DrawingDocumentScalarFieldEnum = {
+  id: 'id',
+  drawingCode: 'drawingCode',
+  projectId: 'projectId',
+  title: 'title',
+  category: 'category',
+  version: 'version',
+  status: 'status',
+  fileUrl: 'fileUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DrawingDocumentScalarFieldEnum = (typeof DrawingDocumentScalarFieldEnum)[keyof typeof DrawingDocumentScalarFieldEnum]
+
+
+export const DrawingLogScalarFieldEnum = {
+  id: 'id',
+  drawingId: 'drawingId',
+  action: 'action',
+  notes: 'notes',
+  version: 'version',
+  fileUrl: 'fileUrl',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type DrawingLogScalarFieldEnum = (typeof DrawingLogScalarFieldEnum)[keyof typeof DrawingLogScalarFieldEnum]
+
+
 export const ProjectWorkPointProgressScalarFieldEnum = {
   id: 'id',
   workPointId: 'workPointId',
@@ -7325,6 +7507,8 @@ export type GlobalOmitConfig = {
   projectProgressPhoto?: Prisma.ProjectProgressPhotoOmit
   projectWorkPoint?: Prisma.ProjectWorkPointOmit
   blueprint?: Prisma.BlueprintOmit
+  drawingDocument?: Prisma.DrawingDocumentOmit
+  drawingLog?: Prisma.DrawingLogOmit
   projectWorkPointProgress?: Prisma.ProjectWorkPointProgressOmit
   projectWorkPointProgressPhoto?: Prisma.ProjectWorkPointProgressPhotoOmit
   stockMovement?: Prisma.StockMovementOmit

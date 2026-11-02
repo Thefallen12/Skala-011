@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { authForProxy } from "./auth";
 import { UserRole } from "./src/generated/prisma/enums";
 import { getRoleHomePath } from "./src/lib/role-home";
+import { drawingAccessRoles } from "./src/lib/user-access";
 
 const projectRoles = [
   UserRole.ADMINISTRATIONS,
@@ -43,6 +44,9 @@ function rolesForPath(pathname: string): readonly UserRole[] | null {
   }
   if (pathname === "/apps/blueprints" || pathname.startsWith("/apps/blueprints/")) {
     return projectRoles;
+  }
+  if (pathname === "/apps/drafter" || pathname.startsWith("/apps/drafter/")) {
+    return drawingAccessRoles;
   }
   if (pathname === "/apps/finance" || pathname.startsWith("/apps/finance/")) {
     return financeRoles;

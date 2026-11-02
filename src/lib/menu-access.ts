@@ -4,6 +4,7 @@ import {
   APP_MENUS,
   APP_ROLES,
   DEFAULT_MENU_ACCESS_BY_ROLE,
+  isMenuAccessRequired,
   SETTINGS_MENU_ROLES,
 } from "@/lib/config/menus";
 
@@ -63,6 +64,10 @@ export async function getVisibleMenuKeysForRole(role: UserRole): Promise<string[
 
   const fallbackKeys = DEFAULT_MENU_ACCESS_BY_ROLE[role] ?? [];
   return APP_MENUS.filter((menu) => {
+    if (isMenuAccessRequired(role, menu.key)) {
+      return true;
+    }
+
     if (
       menu.key === "settings" &&
       !SETTINGS_MENU_ROLES.includes(role)

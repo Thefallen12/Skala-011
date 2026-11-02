@@ -1,5 +1,5 @@
 import { auth } from "../../../auth";
-import { canManageUsers } from "@/lib/user-access";
+import { canManageUsers, drawingAccessRoles } from "@/lib/user-access";
 import { UserRole } from "@/generated/prisma/enums";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -180,10 +180,7 @@ export default async function Layout({
         session.user.role === UserRole.FIELD_TEAM ||
         session.user.role === UserRole.DRAFTER
       }
-      canAccessDrafter={
-        session.user.role === UserRole.DRAFTER ||
-        session.user.role === UserRole.ADMINISTRATIONS
-      }
+      canAccessDrafter={drawingAccessRoles.includes(session.user.role)}
       isMover={session.user.role === UserRole.MOVER}
       allowedMenuKeys={allowedMenuKeys}
       maintenancePageKeys={maintenancePageKeys}
