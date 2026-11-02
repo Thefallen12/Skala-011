@@ -48,6 +48,7 @@ import {
   type SurveyGeoJSON,
 } from "@/lib/field-survey-geojson";
 import type {
+  GlobalPolygonFeature,
   SurveyDrawRequest,
   SurveyDrawTool,
   SurveyLayerVisibility,
@@ -134,7 +135,18 @@ function geometryStyle(feature?: Feature<Geometry, GeoJsonProperties>): PathOpti
       fillOpacity: 0.22,
     };
   }
+
   return { color: "#38bdf8", weight: 4, opacity: 0.9 };
+}
+
+function globalPolygonStyle(status: string): PathOptions {
+  const isRunning = ["RUNNING", "ON_PROGRESS", "ACTIVE"].includes(status);
+  return {
+    color: isRunning ? "#0f2c59" : "#facc15",
+    weight: 3,
+    fillColor: isRunning ? "#0f2c59" : "#facc15",
+    fillOpacity: 0.28,
+  };
 }
 
 function formatDistance(value: number) {
@@ -417,6 +429,7 @@ export default function ProjectMap({
   onDrawToolSelect,
   onFeatureCreated,
   onFeatureSelected,
+  globalPolygons,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
@@ -428,6 +441,7 @@ export default function ProjectMap({
   onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
   onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
   onFeatureSelected: (feature: SurveyGeoJSON["features"][number]) => void;
+  globalPolygons: GlobalPolygonFeature[];
 }) {
   const featureGroupRef = useRef<LeafletFeatureGroup>(null);
   const activeToolRef = useRef<ActiveMapTool | null>(null);
@@ -560,6 +574,7 @@ export default function ProjectMap({
   const googleTileAttribution = googleCopyright
     ? `Google Maps · ${googleCopyright}`
     : "Google Maps";
+  const visibleGlobalPolygons = globalPolygons;
 
   return (
     <div
@@ -644,6 +659,17 @@ export default function ProjectMap({
             />
           </>
         )}
+
+        {visibleGlobalPolygons.map((polygon, index) => (
+          <GeoJSON
+            key={`${polygon.projectId}-${polygon.surveyName}-${index}`}
+            data={polygon.feature as never}
+            style={() => globalPolygonStyle(polygon.status)}
+            onEachFeature={(_feature, layer) => {
+              layer.bindTooltip(`${polygon.projectTitle} · ${polygon.surveyName}`);
+            }}
+          />
+        ))}
 
         {visibleImportedData && (
           <GeoJSON

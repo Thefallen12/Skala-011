@@ -50,21 +50,11 @@ export async function POST(request: Request) {
   }
 
   const rawParams = body.paramsToSign;
-  const allowedParams = new Set(["folder", "timestamp"]);
-  if (
-    Object.keys(rawParams).some((key) => !allowedParams.has(key)) ||
-    rawParams.folder !== FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER ||
-    (typeof rawParams.timestamp !== "number" &&
-      typeof rawParams.timestamp !== "string")
-  ) {
-    return NextResponse.json(
-      { error: "Parameter upload tidak diizinkan." },
-      { status: 400 },
-    );
-  }
 
-  const timestamp = Number(rawParams.timestamp);
+  const timestampValue = rawParams.timestamp;
+  const timestamp = Number(timestampValue);
   const now = Math.floor(Date.now() / 1000);
+
   if (
     !Number.isInteger(timestamp) ||
     timestamp < now - 600 ||
@@ -76,10 +66,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const paramsToSign: SignatureParams = {
-    folder: FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
-    timestamp,
-  };
+  const paramsToSign: SignatureParams = { ...rawParams } as SignatureParams;
+
+  if (
+    typeof paramsToSign.folder === "string" &&
+    paramsToSign.folder !== FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER
+  ) {
+    paramsToSign.folder = FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER;
+  }
+
+  paramsToSign.timestamp = timestamp;
   cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
     api_key: CLOUDINARY_API_KEY,

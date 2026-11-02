@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { CldUploadWidget } from "next-cloudinary";
 import { center } from "@turf/turf";
 import {
   ArrowUpRight,
@@ -33,7 +32,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { loadFieldSurveyGeoJSON } from "@/app/actions/field-surveys";
+import {
+  loadFieldSurveyGeoJSON,
+  saveFieldSurveyPhotoUrls,
+} from "@/app/actions/field-surveys";
 import {
   measureSurveyGeoJSON,
   type SurveyGeoJSON,
@@ -49,8 +51,11 @@ import ProjectMapLoader, {
   type SurveyFeatureMetadata,
   type SurveyDrawRequest,
   type SurveyLayerVisibility,
+  type GlobalPolygonFeature,
 } from "./ProjectMapLoader";
-import { FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER } from "@/lib/field-survey-photo-config";
+import SurveyDetailModal from "@/components/gis/SurveyDetailModal";
+import { useMaintenanceEnabled } from "@/components/maintenance/MaintenanceContext";
+import { UnderProductionState } from "@/components/ui/under-production-state";
 
 function emptyCollection(): SurveyGeoJSON {
   return { type: "FeatureCollection", features: [] };
@@ -84,6 +89,7 @@ export default function GISWorkspace({
   initialProjectId,
   initialView = "map",
   onViewChange,
+  onOpenProjects,
   onProjectChange,
 }: {
   projects: SurveyProjectOption[];
@@ -95,6 +101,7 @@ export default function GISWorkspace({
   initialProjectId?: string | null;
   initialView?: "map" | "details";
   onViewChange?: (view: "map" | "details") => void;
+  onOpenProjects?: () => void;
   onProjectChange?: (projectId: string) => void;
 }) {
   const [importedData, setImportedData] = useState<SurveyGeoJSON | null>(null);
@@ -119,6 +126,13 @@ export default function GISWorkspace({
   const [featureFormError, setFeatureFormError] = useState("");
   const activeProjectId = initialProjectId ?? projects[0]?.id ?? "";
   const activeView = initialView;
+  const isSurveyLocationUnderMaintenance =
+    useMaintenanceEnabled("survey-location");
+  const isSurveyDetailsUnderMaintenance =
+    useMaintenanceEnabled("survey-details");
+  const isSurveyViewUnderMaintenance =
+    isSurveyDetailsUnderMaintenance ||
+    (activeView === "map" && isSurveyLocationUnderMaintenance);
   const [importMessage, setImportMessage] = useState("");
   const [visibility, setVisibility] = useState<SurveyLayerVisibility>({
     polygon: true,
@@ -128,7 +142,17 @@ export default function GISWorkspace({
   const [drawRequest, setDrawRequest] = useState<SurveyDrawRequest | null>(null);
   const [reportSurveyId, setReportSurveyId] = useState<string | null>(surveys[0]?.id ?? null);
   const [reportPreviewOpen, setReportPreviewOpen] = useState(false);
+  const [detailSurveyId, setDetailSurveyId] = useState<string | null>(null);
+  const [showAllProjects, setShowAllProjects] = useState(true);
   const reportFrameRef = useRef<HTMLIFrameElement>(null);
+  const detailSurvey =
+    detailSurveyId === null
+      ? null
+      : surveys.find((survey) => survey.id === detailSurveyId) ?? null;
+  const detailProject =
+    detailSurvey === null
+      ? null
+      : projects.find((project) => project.id === detailSurvey.projectId) ?? null;
 
   const combinedData = useMemo<SurveyGeoJSON>(
     () => ({
@@ -136,6 +160,38 @@ export default function GISWorkspace({
       features: [...(importedData?.features ?? []), ...drawnData.features],
     }),
     [drawnData.features, importedData],
+  );
+  const globalPolygons = useMemo<GlobalPolygonFeature[]>(
+    () =>
+      surveys.flatMap((survey) =>
+        (survey.features?.length
+          ? survey.features
+          : (survey.geoJsonData?.features ?? []).map((feature, index) => ({
+              id: `${survey.id}-legacy-${index}`,
+              featureCategory: "Batas Area Proyek (Polygon)",
+              name: `${survey.locationName} · Polygon ${index + 1}`,
+              description: null,
+              geometryType: feature.geometry?.type ?? "",
+              geoJsonData: feature,
+              areaSqm: null,
+              lengthM: null,
+              photoUrls: [],
+            })))
+          .filter((feature) =>
+            ["Polygon", "MultiPolygon"].includes(feature.geometryType),
+          )
+          .map((feature) => {
+            const project = projects.find((item) => item.id === survey.projectId);
+            return {
+              projectId: survey.projectId ?? "",
+              projectTitle: project?.title ?? survey.projectName,
+              status: project?.status ?? "PENDING",
+              surveyName: survey.surveyName ?? survey.locationName,
+              feature: feature.geoJsonData,
+            };
+          }),
+      ),
+    [projects, surveys],
   );
   const measurements = useMemo(
     () => measureSurveyGeoJSON(combinedData),
@@ -185,6 +241,15 @@ export default function GISWorkspace({
           )
           .join(", ")
       : "—";
+
+  if (isSurveyViewUnderMaintenance) {
+    return (
+      <UnderProductionState
+        className="w-full"
+        footerText={`MAINTENANCE · ${isSurveyDetailsUnderMaintenance ? "PETA & SURVEI LAPANGAN" : "LOKASI & SURVEI PROYEK"}`}
+      />
+    );
+  }
 
   const updateImportedData = (data: SurveyGeoJSON | null) => {
     setImportedData(data);
@@ -345,32 +410,47 @@ export default function GISWorkspace({
     URL.revokeObjectURL(url);
   };
 
+  const openSurveyReport = (id: string | null) => {
+    if (!id) return;
+    window.open(
+      `/apps/projects/map/report/${encodeURIComponent(id)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-3 xl:h-[calc(100vh-12rem)] xl:min-h-[640px]">
-      <Card className="flex flex-col gap-3 border-border bg-gradient-to-r from-card via-card to-muted p-3 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4 sm:py-2.5">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <div className="grid size-10 shrink-0 place-items-center rounded-lg border border-border bg-background text-primary shadow-sm">
-            <MapPinned className="size-6" aria-hidden="true" />
+    <div className="flex min-w-0 flex-col gap-3">
+      <Card className="flex min-w-0 flex-col gap-2 border-border bg-card px-2 py-2 shadow-sm sm:px-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="grid size-8 shrink-0 place-items-center rounded-md border border-orange-500/30 bg-orange-500/10 text-orange-500">
+            <MapPinned className="size-4" aria-hidden="true" />
           </div>
-          <div className="min-w-0 border-l border-secondary pl-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-secondary">
-              Skala Prioritas Engineering
-            </p>
-            <h1 className="mt-0.5 text-lg font-bold leading-tight tracking-tight text-primary sm:text-xl">
-              {activeView === "map"
-                ? "Lokasi & Survei Project"
-                : "Detail & Input Keterangan Survei Lapangan"}
-            </h1>
-            <p className="mt-0.5 text-[10px] text-muted-foreground">
-              {activeView === "map"
-                ? "Analisis GIS, pemetaan area, dan data survei lapangan."
-                : "Lengkapi atribut, kondisi lapangan, dan dokumentasi survei."}
-            </p>
+          <div className="flex min-w-0 flex-1 overflow-hidden rounded-md border border-border bg-background p-1">
+            <Button
+              type="button"
+              size="sm"
+              variant={activeView === "map" ? "default" : "ghost"}
+              className="h-8 min-w-0 whitespace-nowrap rounded px-2 text-[11px] sm:px-3 sm:text-xs"
+              onClick={() => changeView("map")}
+            >
+              Lokasi &amp; Survei Project
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              className="h-8 min-w-0 whitespace-nowrap rounded px-2 text-[11px] sm:px-3 sm:text-xs"
+              onClick={() => onOpenProjects?.()}
+              title="Buka halaman semua project"
+            >
+              Semua Project
+            </Button>
           </div>
         </div>
 
-        <div className="flex flex-col items-start gap-1 sm:items-end">
-          <div className="flex items-center gap-2.5">
+        <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-end lg:shrink-0">
+          <div className="hidden items-center gap-2.5">
             <div className="flex items-center gap-1 border-r border-border pr-2">
               <Shapes className="size-3.5 text-orange-500" aria-hidden="true" />
               <span className="text-xs font-bold text-foreground">{measurements.polygonCount}</span>
@@ -387,23 +467,11 @@ export default function GISWorkspace({
               <span className="hidden text-[9px] text-muted-foreground sm:inline">Titik Point</span>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {reportSurveyId && (
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                className="h-7 gap-1.5 px-2.5 text-[10px]"
-                onClick={() => setReportPreviewOpen(true)}
-              >
-                <FileText className="size-4" />
-                Tampilkan PDF
-              </Button>
-            )}
+          <div className="col-span-2 grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center sm:justify-end">
             <Button
               type="button"
               size="sm"
-              className="h-7 bg-orange-600 px-2.5 text-[10px] text-white hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600"
+              className="h-8 bg-orange-600 px-2.5 text-[10px] text-white hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 sm:h-7"
               onClick={() => {
                 if (activeView === "map") changeView("details");
                 startNewSurvey();
@@ -416,7 +484,7 @@ export default function GISWorkspace({
               type="button"
               size="sm"
               variant="outline"
-              className="h-7 gap-1.5 px-2.5 text-[10px]"
+              className="h-8 gap-1.5 px-2.5 text-[10px] sm:h-7"
               asChild
             >
               <label className="cursor-pointer">
@@ -437,7 +505,7 @@ export default function GISWorkspace({
               type="button"
               size="sm"
               variant="outline"
-              className="hidden h-7 px-2.5 text-[10px] sm:inline-flex"
+              className="col-span-2 h-8 px-2.5 text-[10px] sm:h-7 sm:inline-flex"
               onClick={downloadGeoJSON}
               disabled={featureCount === 0}
             >
@@ -448,40 +516,15 @@ export default function GISWorkspace({
         </div>
       </Card>
 
-      <nav
-        aria-label="Halaman survei proyek"
-        className="flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2"
-      >
-        <Button
-          type="button"
-          size="sm"
-          variant={activeView === "map" ? "default" : "ghost"}
-          onClick={() => changeView("map")}
-          className="gap-2"
-        >
-          <MapPinned className="size-4" aria-hidden="true" />
-          Lokasi & Survei Project
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant={activeView === "details" ? "default" : "ghost"}
-          onClick={() => changeView("details")}
-          className="gap-2"
-        >
-          <Pencil className="size-4" aria-hidden="true" />
-          Detail & Input Keterangan Survei Lapangan
-        </Button>
-      </nav>
-
       <section
-        className={`grid min-h-[640px] flex-1 gap-4 xl:min-h-0 ${
+        className={`grid min-w-0 flex-none items-start gap-4 ${
           activeView === "map"
-            ? "lg:grid-cols-[minmax(260px,0.72fr)_minmax(0,1.8fr)]"
-            : "lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.55fr)]"
+            ? "min-h-0 lg:grid-cols-[minmax(0,1.8fr)_minmax(320px,1.2fr)]"
+            : "min-h-[640px] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.55fr)]"
         }`}
       >
         {activeView === "map" && (
+          <div className="hidden">
           <SurveyMapControls
             projects={projects}
             activeProjectId={activeProjectId}
@@ -511,13 +554,28 @@ export default function GISWorkspace({
             onDownloadGeoJSON={downloadGeoJSON}
             onShowDetails={() => changeView("details")}
           />
+          </div>
         )}
         <div
-          className={`flex min-h-0 flex-col gap-3 ${
-            activeView === "map" ? "lg:col-start-2" : ""
+          className={`flex min-w-0 min-h-0 flex-col gap-3 ${
+            activeView === "details" ? "lg:col-start-2" : ""
           }`}
         >
-          <Card className="min-h-[420px] flex-1 overflow-hidden p-1.5 shadow-sm xl:min-h-[470px]">
+          <div className="flex items-center justify-between rounded-lg border border-border bg-card px-3 py-2">
+            <span className="text-xs font-extrabold uppercase tracking-wide text-foreground">
+              Peta Interaktif Sebaran Polygon (Semua Proyek)
+            </span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 text-[10px]"
+              onClick={() => setShowAllProjects((value) => !value)}
+            >
+              {showAllProjects ? "Filter Project" : "Lihat Semua Project"}
+            </Button>
+          </div>
+          <Card className="h-[500px] min-h-0 w-full max-w-full overflow-hidden p-1.5 shadow-sm">
             <ProjectMapLoader
               importedData={importedData}
               importedDataVersion={importedDataVersion}
@@ -539,9 +597,16 @@ export default function GISWorkspace({
               onFeatureSelected={() => {
                 changeView("details");
               }}
+              globalPolygons={
+                showAllProjects
+                  ? globalPolygons
+                  : globalPolygons.filter(
+                      (polygon) => polygon.projectId === activeProjectId,
+                    )
+              }
             />
           </Card>
-          <Card className="border-slate-800 bg-slate-900/50 p-4 text-slate-300">
+          <Card className={`${activeView === "map" ? "hidden" : ""} border-slate-800 bg-slate-900/50 p-4 text-slate-300`}>
             <div className="grid gap-2 sm:grid-cols-2">
               <p className="text-xs text-slate-400">
                 Tipe Geometri{" "}
@@ -633,6 +698,46 @@ export default function GISWorkspace({
             )}
           </Card>
         </div>
+        {activeView === "map" && (
+          <Card className="min-w-0 self-start border-border bg-card p-4 shadow-sm lg:min-h-[547px]">
+            <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
+              <h2 className="text-sm font-extrabold uppercase tracking-wide text-foreground">
+                Detail Project Aktif
+              </h2>
+              <span className="rounded border border-orange-500/30 bg-orange-500/10 px-2 py-1 text-[10px] font-bold text-orange-500">
+                {projects.find((project) => project.id === activeProjectId)?.code ?? "—"}
+              </span>
+            </div>
+            {(() => {
+              const activeProject = projects.find((project) => project.id === activeProjectId);
+              const activeSurvey = surveys.find((survey) => survey.projectId === activeProjectId) ?? surveys[0];
+              return (
+                <>
+                  <div className="grid grid-cols-[90px_10px_1fr] gap-y-3 text-xs">
+                    <span className="font-semibold text-muted-foreground">Project ID</span><span>:</span><span>{activeProject?.code ?? "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Nama Project</span><span>:</span><span>{activeProject?.title ?? activeSurvey?.projectName ?? "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Lokasi</span><span>:</span><span>{activeSurvey?.locationName ?? "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Luas</span><span>:</span><span>{activeSurvey?.areaSqm ? `${(activeSurvey.areaSqm / 10000).toFixed(2)} Ha` : "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Tanggal Survei</span><span>:</span><span>{activeSurvey?.createdAt ? new Date(activeSurvey.createdAt).toLocaleDateString("id-ID") : "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Surveyor</span><span>:</span><span>{activeSurvey?.surveyorName ?? "—"}</span>
+                    <span className="font-semibold text-muted-foreground">Keterangan</span><span>:</span><span>{activeSurvey?.notes ?? "Belum ada keterangan."}</span>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2 border-t border-border pt-3">
+                    <Button type="button" size="sm" className="text-xs" onClick={() => changeView("details")}>Edit Data</Button>
+                    {reportSurveyId && <Button type="button" size="sm" variant="outline" className="text-xs" onClick={() => setReportPreviewOpen(true)}><FileText className="mr-1 size-3" /> Tampilkan PDF</Button>}
+                  </div>
+                  <div className="mt-4 border-t border-border pt-3">
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Legenda</p>
+                    <div className="space-y-2 text-xs">
+                      <p><span className="mr-2 inline-block size-3 rounded-sm bg-[#0f2c59]" />Project sedang berjalan</p>
+                      <p><span className="mr-2 inline-block size-3 rounded-sm bg-[#facc15]" />Polygon survei project</p>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+          </Card>
+        )}
         <div className={activeView === "details" ? "min-h-0" : "hidden"}>
           <SurveyForm
             key={newSurveyRequest}
@@ -658,6 +763,53 @@ export default function GISWorkspace({
           />
         </div>
       </section>
+      {activeView === "map" && (
+        <Card className="overflow-hidden border-border bg-card shadow-sm">
+          <div className="flex items-center justify-between border-b border-border p-4">
+            <h2 className="text-sm font-extrabold uppercase tracking-wide text-foreground">
+              Tabel Data Hasil Survei Lapangan
+            </h2>
+            <Input className="h-8 max-w-[220px] text-xs" placeholder="Cari data survei..." />
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] text-left text-xs">
+              <thead className="bg-muted/70 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  {["No", "ID Project / No. SPK", "Nama Project", "Lokasi / Kategori", "Luas (Ha)", "Tanggal Survei", "Tim & Koordinator", "Status", "Aksi"].map((heading) => (
+                    <th key={heading} className="whitespace-nowrap px-3 py-3">{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {surveys.slice(0, 10).map((survey, index) => {
+                  const project = projects.find((item) => item.id === survey.projectId);
+                  const running = ["RUNNING", "ON_PROGRESS", "ACTIVE"].includes(project?.status ?? "");
+                  return (
+                    <tr key={survey.id} className={`border-t border-border ${survey.projectId === activeProjectId ? "bg-orange-500/5" : "hover:bg-muted/30"}`}>
+                      <td className="px-3 py-3">{index + 1}</td>
+                      <td className="px-3 py-3 font-semibold">{project?.code ?? survey.projectCode ?? "—"}</td>
+                      <td className="px-3 py-3">{project?.title ?? survey.projectName}</td>
+                      <td className="px-3 py-3">{survey.locationName}<span className="block text-[10px] text-muted-foreground">{survey.objectCategory ?? "Polygon"}</span></td>
+                      <td className="px-3 py-3">{survey.areaSqm ? (survey.areaSqm / 10000).toFixed(2) : "—"}</td>
+                      <td className="px-3 py-3 whitespace-nowrap">{new Date(survey.createdAt).toLocaleDateString("id-ID")}</td>
+                      <td className="px-3 py-3">{survey.surveyorName}</td>
+                      <td className="px-3 py-3"><span className={`inline-flex items-center gap-1.5 rounded px-2 py-1 text-[10px] font-bold ${running ? "bg-emerald-500/15 text-emerald-500" : "bg-amber-500/15 text-amber-500"}`}><span className={`size-2 rounded-full ${running ? "bg-emerald-500" : "bg-amber-500"}`} />{running ? "Aktif" : "Pilih Adat"}</span></td>
+                      <td className="px-3 py-3"><Button type="button" variant="outline" size="sm" className="h-7 text-[10px]" onClick={() => {
+                        if (isSurveyDetailsUnderMaintenance) {
+                          changeView("details");
+                          return;
+                        }
+                        setDetailSurveyId(survey.id);
+                      }}>Lihat Detail</Button></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="border-t border-border px-4 py-2 text-[10px] text-muted-foreground">Menampilkan {Math.min(surveys.length, 10)} dari {surveys.length} data</div>
+        </Card>
+      )}
 
       <p className="flex items-center justify-between px-1 text-[11px] text-muted-foreground">
         <span>Skala Prioritas · Dashboard GIS & Survei Lapangan</span>
@@ -666,6 +818,32 @@ export default function GISWorkspace({
           <ArrowUpRight className="size-3" aria-hidden="true" />
         </span>
       </p>
+      <SurveyDetailModal
+        open={detailSurvey !== null}
+        onClose={() => setDetailSurveyId(null)}
+        survey={detailSurvey}
+        project={detailProject}
+        cloudinaryCloudName={cloudinaryCloudName}
+        cloudinaryApiKey={cloudinaryApiKey}
+        savePhotoToDatabase={async (surveyId, url, label) => {
+          const result = await saveFieldSurveyPhotoUrls({
+            surveyId,
+            photos: [{ url, label }],
+          });
+          if (!result.success) {
+            throw new Error(result.message);
+          }
+        }}
+        onEditData={() => {
+          setDetailSurveyId(null);
+        }}
+        onAddInformation={() => {
+          setDetailSurveyId(null);
+        }}
+        onAddPhoto={() => {
+          setDetailSurveyId(null);
+        }}
+      />
       <GlobalModal
         isOpen={reportPreviewOpen && reportSurveyId !== null}
         onClose={() => setReportPreviewOpen(false)}
@@ -877,43 +1055,6 @@ export default function GISWorkspace({
               </div>
               <div className="space-y-1.5 sm:col-span-2">
                 <Label htmlFor="feature-photo-urls">Foto fitur (URL Cloudinary, pisahkan dengan koma)</Label>
-                {cloudinaryCloudName && cloudinaryApiKey && (
-                  <CldUploadWidget
-                    config={{ cloud: { cloudName: cloudinaryCloudName, apiKey: cloudinaryApiKey } }}
-                    signatureEndpoint="/api/cloudinary/field-survey-signature"
-                    options={{
-                      folder: FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
-                      resourceType: "image",
-                      sources: ["local", "camera"],
-                      multiple: true,
-                      maxFiles: 10,
-                      maxFileSize: 8 * 1024 * 1024,
-                      clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
-                      showPoweredBy: false,
-                    }}
-                    onSuccess={(result) => {
-                      const info = result.info;
-                      if (
-                        result.event === "success" &&
-                        typeof info === "object" &&
-                        info !== null &&
-                        "secure_url" in info &&
-                        typeof info.secure_url === "string"
-                      ) {
-                        setFeatureMetadata((current) => ({
-                          ...current,
-                          photoUrls: [...current.photoUrls.split(",").map((url) => url.trim()).filter(Boolean), info.secure_url].slice(0, 10).join(", "),
-                        }));
-                      }
-                    }}
-                  >
-                    {({ open }) => (
-                      <Button type="button" variant="outline" onClick={() => open()}>
-                        Unggah foto fitur
-                      </Button>
-                    )}
-                  </CldUploadWidget>
-                )}
                 <Input
                   id="feature-photo-urls"
                   value={featureMetadata.photoUrls}
@@ -925,6 +1066,9 @@ export default function GISWorkspace({
                   }
                   placeholder="https://res.cloudinary.com/.../foto.jpg"
                 />
+                <p className="text-[10px] text-slate-400">
+                  Masukkan URL foto manual untuk referensi fitur. Unggah foto dokumentasi utama dilakukan pada modal detail survei.
+                </p>
               </div>
             </div>
             {featureFormError && (

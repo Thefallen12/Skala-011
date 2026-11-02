@@ -3,6 +3,8 @@ import { canManageUsers } from "@/lib/user-access";
 import { UserRole } from "@/generated/prisma/enums";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getVisibleMenuKeysForRole } from "@/lib/menu-access";
+import { getEnabledMaintenancePageKeys } from "@/lib/maintenance";
 import { HabitFrequency } from "@/generated/prisma/enums";
 import {
   getJakartaDateKey,
@@ -120,6 +122,11 @@ export default async function Layout({
   ]);
   if (!user) redirect("/auth/login");
 
+  const [allowedMenuKeys, maintenancePageKeys] = await Promise.all([
+    getVisibleMenuKeysForRole(session.user.role),
+    getEnabledMaintenancePageKeys(),
+  ]);
+
   const notifications = [
     ...pendingHabits.map((habit) => ({
       id: `habit-${habit.id}`,
@@ -178,6 +185,8 @@ export default async function Layout({
         session.user.role === UserRole.ADMINISTRATIONS
       }
       isMover={session.user.role === UserRole.MOVER}
+      allowedMenuKeys={allowedMenuKeys}
+      maintenancePageKeys={maintenancePageKeys}
       profilePhotoUrl={user.profilePhotoUrl}
       userName={session.user.name ?? "Pengguna"}
       userRole={session.user.role}

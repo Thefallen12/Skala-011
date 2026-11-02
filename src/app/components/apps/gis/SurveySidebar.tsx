@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import type { ProjectStatus } from "@/generated/prisma/enums";
 import {
   AlertCircle,
   Check,
@@ -47,6 +48,7 @@ export type SurveyProjectOption = {
   code: string;
   title: string;
   vendor: string;
+  status: ProjectStatus;
 };
 
 export type FieldSurveyFeatureSummary = {
@@ -59,6 +61,12 @@ export type FieldSurveyFeatureSummary = {
   areaSqm: number | null;
   lengthM: number | null;
   photoUrls: string[];
+};
+
+export type FieldSurveyPhotoSummary = {
+  id?: string;
+  url: string;
+  caption: string;
 };
 
 export type FieldSurveySummary = {
@@ -75,9 +83,11 @@ export type FieldSurveySummary = {
   topography?: string | null;
   landOwnership?: string | null;
   documentationUrls?: string[];
+  photos?: FieldSurveyPhotoSummary[];
   areaSqm: number | null;
   lengthM: number | null;
   perimeterM: number | null;
+  geoJsonData?: SurveyGeoJSON;
   notes: string | null;
   createdAt: string;
   surveyType?: string;

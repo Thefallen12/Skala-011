@@ -397,6 +397,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  MenuAccess: 'MenuAccess',
+  PageMaintenance: 'PageMaintenance',
   User: 'User',
   UserNote: 'UserNote',
   Notification: 'Notification',
@@ -414,6 +416,7 @@ export const ModelName = {
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
   FieldSurvey: 'FieldSurvey',
+  ProjectPolygon: 'ProjectPolygon',
   SurveyFeature: 'SurveyFeature',
   SurveyPhoto: 'SurveyPhoto',
   DailyReport: 'DailyReport',
@@ -474,10 +477,158 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
+    modelProps: "menuAccess" | "pageMaintenance" | "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "projectPolygon" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    MenuAccess: {
+      payload: Prisma.$MenuAccessPayload<ExtArgs>
+      fields: Prisma.MenuAccessFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MenuAccessFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MenuAccessFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        findFirst: {
+          args: Prisma.MenuAccessFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MenuAccessFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        findMany: {
+          args: Prisma.MenuAccessFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>[]
+        }
+        create: {
+          args: Prisma.MenuAccessCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        createMany: {
+          args: Prisma.MenuAccessCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MenuAccessCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>[]
+        }
+        delete: {
+          args: Prisma.MenuAccessDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        update: {
+          args: Prisma.MenuAccessUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        deleteMany: {
+          args: Prisma.MenuAccessDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MenuAccessUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MenuAccessUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>[]
+        }
+        upsert: {
+          args: Prisma.MenuAccessUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MenuAccessPayload>
+        }
+        aggregate: {
+          args: Prisma.MenuAccessAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMenuAccess>
+        }
+        groupBy: {
+          args: Prisma.MenuAccessGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MenuAccessGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MenuAccessCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MenuAccessCountAggregateOutputType> | number
+        }
+      }
+    }
+    PageMaintenance: {
+      payload: Prisma.$PageMaintenancePayload<ExtArgs>
+      fields: Prisma.PageMaintenanceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PageMaintenanceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PageMaintenanceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        findFirst: {
+          args: Prisma.PageMaintenanceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PageMaintenanceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        findMany: {
+          args: Prisma.PageMaintenanceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>[]
+        }
+        create: {
+          args: Prisma.PageMaintenanceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        createMany: {
+          args: Prisma.PageMaintenanceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PageMaintenanceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>[]
+        }
+        delete: {
+          args: Prisma.PageMaintenanceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        update: {
+          args: Prisma.PageMaintenanceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        deleteMany: {
+          args: Prisma.PageMaintenanceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PageMaintenanceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PageMaintenanceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>[]
+        }
+        upsert: {
+          args: Prisma.PageMaintenanceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageMaintenancePayload>
+        }
+        aggregate: {
+          args: Prisma.PageMaintenanceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePageMaintenance>
+        }
+        groupBy: {
+          args: Prisma.PageMaintenanceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PageMaintenanceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PageMaintenanceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PageMaintenanceCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -1733,6 +1884,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FieldSurveyCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FieldSurveyCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProjectPolygon: {
+      payload: Prisma.$ProjectPolygonPayload<ExtArgs>
+      fields: Prisma.ProjectPolygonFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectPolygonFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectPolygonFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectPolygonFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectPolygonFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectPolygonFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectPolygonCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectPolygonCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectPolygonCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectPolygonDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        update: {
+          args: Prisma.ProjectPolygonUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectPolygonDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectPolygonUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectPolygonUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectPolygonUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectPolygonPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectPolygonAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectPolygon>
+        }
+        groupBy: {
+          args: Prisma.ProjectPolygonGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectPolygonGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectPolygonCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectPolygonCountAggregateOutputType> | number
         }
       }
     }
@@ -5105,6 +5330,31 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const MenuAccessScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  menuKey: 'menuKey',
+  menuName: 'menuName',
+  isAllowed: 'isAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MenuAccessScalarFieldEnum = (typeof MenuAccessScalarFieldEnum)[keyof typeof MenuAccessScalarFieldEnum]
+
+
+export const PageMaintenanceScalarFieldEnum = {
+  pageKey: 'pageKey',
+  pageName: 'pageName',
+  path: 'path',
+  isUnderMaintenance: 'isUnderMaintenance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PageMaintenanceScalarFieldEnum = (typeof PageMaintenanceScalarFieldEnum)[keyof typeof PageMaintenanceScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -5365,6 +5615,21 @@ export const FieldSurveyScalarFieldEnum = {
 } as const
 
 export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
+
+
+export const ProjectPolygonScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  surveyId: 'surveyId',
+  type: 'type',
+  name: 'name',
+  geometryType: 'geometryType',
+  geoJsonData: 'geoJsonData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectPolygonScalarFieldEnum = (typeof ProjectPolygonScalarFieldEnum)[keyof typeof ProjectPolygonScalarFieldEnum]
 
 
 export const SurveyFeatureScalarFieldEnum = {
@@ -6276,20 +6541,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'UserRole'
- */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
-    
-
-
-/**
- * Reference to a field of type 'UserRole[]'
- */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
-    
-
-
-/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -6307,6 +6558,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole'
+ */
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole[]'
+ */
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -6475,6 +6740,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'ProjectPolygonType'
+ */
+export type EnumProjectPolygonTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectPolygonType'>
+    
+
+
+/**
+ * Reference to a field of type 'ProjectPolygonType[]'
+ */
+export type ListEnumProjectPolygonTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectPolygonType[]'>
     
 
 
@@ -7020,6 +7299,8 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  menuAccess?: Prisma.MenuAccessOmit
+  pageMaintenance?: Prisma.PageMaintenanceOmit
   user?: Prisma.UserOmit
   userNote?: Prisma.UserNoteOmit
   notification?: Prisma.NotificationOmit
@@ -7037,6 +7318,7 @@ export type GlobalOmitConfig = {
   timesheetEntry?: Prisma.TimesheetEntryOmit
   project?: Prisma.ProjectOmit
   fieldSurvey?: Prisma.FieldSurveyOmit
+  projectPolygon?: Prisma.ProjectPolygonOmit
   surveyFeature?: Prisma.SurveyFeatureOmit
   surveyPhoto?: Prisma.SurveyPhotoOmit
   dailyReport?: Prisma.DailyReportOmit

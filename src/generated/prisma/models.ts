@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/MenuAccess'
+export type * from './models/PageMaintenance'
 export type * from './models/User'
 export type * from './models/UserNote'
 export type * from './models/Notification'
@@ -25,6 +27,7 @@ export type * from './models/WorkTaskMember'
 export type * from './models/TimesheetEntry'
 export type * from './models/Project'
 export type * from './models/FieldSurvey'
+export type * from './models/ProjectPolygon'
 export type * from './models/SurveyFeature'
 export type * from './models/SurveyPhoto'
 export type * from './models/DailyReport'

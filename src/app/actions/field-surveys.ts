@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { UserRole } from "@/generated/prisma/enums";
+import { ProjectPolygonType, ProjectStatus, UserRole } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { area, center, length } from "@turf/turf";
 import {
@@ -118,6 +118,97 @@ export type SaveFieldSurveyInput = {
   }>;
 };
 
+export async function saveFieldSurveyPhotoUrls(input: {
+  surveyId: string;
+  photos: Array<{ url: string; label?: string }>;
+}): Promise<{ success: boolean; message: string; urls?: string[] }> {
+  const surveyor = await getActiveSurveyor();
+  if (!surveyor) {
+    return { success: false, message: "Sesi atau akses pengguna tidak valid." };
+  }
+
+  const surveyId = input?.surveyId?.trim();
+  const photos = (input?.photos ?? []).filter(
+    (photo) => typeof photo?.url === "string" && photo.url.trim().length > 0,
+  );
+
+  if (!surveyId || surveyId.length > 200 || photos.length === 0) {
+    return { success: false, message: "Data foto survei tidak valid." };
+  }
+
+  try {
+    const survey = await prisma.fieldSurvey.findUnique({
+      where: { id: surveyId },
+      select: { id: true, surveyorId: true, project: { select: { fieldPicId: true } } },
+    });
+
+    if (!survey) {
+      return { success: false, message: "Survei tidak ditemukan." };
+    }
+
+    if (survey.surveyorId !== surveyor.id) {
+      const projectFieldPicId = survey.project?.fieldPicId;
+      if (projectFieldPicId !== surveyor.id && surveyor.role !== UserRole.ADMINISTRATIONS && surveyor.role !== UserRole.DIRECTOR && surveyor.role !== UserRole.DEPUTY_DIRECTOR) {
+        return { success: false, message: "Anda tidak memiliki akses untuk mengubah foto survei ini." };
+      }
+    }
+
+    const urls = Array.from(new Set(photos.map((photo) => photo.url.trim()))).slice(0, 10);
+    const existingByUrl = await prisma.surveyPhoto.findMany({
+      where: { surveyId, url: { in: urls } },
+      select: { id: true, url: true, caption: true },
+    });
+    const existingUrlSet = new Set(existingByUrl.map((photo) => photo.url));
+
+    for (const photo of photos) {
+      const safeUrl = photo.url.trim();
+      const label = (photo.label ?? "").trim() || "Foto";
+      const existing = existingByUrl.find((item) => item.url === safeUrl);
+
+      if (existing) {
+        await prisma.surveyPhoto.update({
+          where: { id: existing.id },
+          data: { caption: label },
+        });
+        continue;
+      }
+
+      await prisma.surveyPhoto.create({
+        data: {
+          surveyId,
+          url: safeUrl,
+          caption: label,
+          latitude: 0,
+          longitude: 0,
+        },
+      });
+    }
+
+    const savedPhotos = await prisma.surveyPhoto.findMany({
+      where: { surveyId },
+      orderBy: { createdAt: "asc" },
+      select: { url: true },
+    });
+
+    await prisma.fieldSurvey.update({
+      where: { id: surveyId },
+      data: {
+        documentationUrls: Array.from(new Set(savedPhotos.map((photo) => photo.url))).slice(0, 10),
+      },
+    });
+
+    revalidatePath("/apps/projects");
+    return {
+      success: true,
+      message: "Foto survei berhasil disimpan.",
+      urls: Array.from(new Set(savedPhotos.map((photo) => photo.url))).slice(0, 10),
+    };
+  } catch (error) {
+    console.error("Saving survey photo URLs failed:", error);
+    return { success: false, message: "Foto survei gagal disimpan. Silakan coba kembali." };
+  }
+}
+
 export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
   success: boolean;
   message: string;
@@ -172,7 +263,7 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
             ? { fieldPicId: surveyor.id }
             : {}),
         },
-        select: { id: true, title: true, name: true, code: true },
+        select: { id: true, title: true, name: true, code: true, status: true },
       })
     : null;
   if (projectId && !project) {
@@ -287,6 +378,30 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
           : undefined,
       },
     });
+    if (project?.id) {
+      const polygonFeatures = geoJsonData.features.filter(
+        (feature) =>
+          feature.geometry?.type === "Polygon" ||
+          feature.geometry?.type === "MultiPolygon",
+      );
+      if (polygonFeatures.length > 0) {
+        await prisma.projectPolygon.createMany({
+          data: polygonFeatures.map((feature, index) => ({
+            projectId: project.id,
+            surveyId: survey.id,
+            type:
+              project.status === ProjectStatus.RUNNING ||
+              project.status === ProjectStatus.ON_PROGRESS ||
+              project.status === ProjectStatus.ACTIVE
+                ? ProjectPolygonType.PROJECT
+                : ProjectPolygonType.SURVEY,
+            name: `${locationName} · Polygon ${index + 1}`,
+            geometryType: feature.geometry?.type ?? "Polygon",
+            geoJsonData: feature as object,
+          })),
+        });
+      }
+    }
 
     revalidatePath("/apps/projects");
     return {

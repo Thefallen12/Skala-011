@@ -18,6 +18,16 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model MenuAccess
+ * 
+ */
+export type MenuAccess = Prisma.MenuAccessModel
+/**
+ * Model PageMaintenance
+ * 
+ */
+export type PageMaintenance = Prisma.PageMaintenanceModel
+/**
  * Model User
  * 
  */
@@ -102,6 +112,11 @@ export type Project = Prisma.ProjectModel
  * 
  */
 export type FieldSurvey = Prisma.FieldSurveyModel
+/**
+ * Model ProjectPolygon
+ * 
+ */
+export type ProjectPolygon = Prisma.ProjectPolygonModel
 /**
  * Model SurveyFeature
  * 

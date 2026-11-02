@@ -447,10 +447,11 @@ export default function SurveyForm({
             )}
           </section>
 
-          <section className="space-y-3 border-t border-slate-800 pt-4">
-            <h2 className="text-sm font-semibold text-slate-100">
-              Seksi 2: Detail Survei & Kondisi Lapangan
-            </h2>
+          <>
+              <section className="space-y-3 border-t border-slate-800 pt-4">
+                <h2 className="text-sm font-semibold text-slate-100">
+                  Seksi 2: Detail Survei & Kondisi Lapangan
+                </h2>
             <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
               <div className="space-y-1.5">
                 <Label htmlFor="vegetation-type" className="text-xs text-slate-400">
@@ -721,6 +722,8 @@ export default function SurveyForm({
               </div>
             </div>
           </section>
+
+          </>
 
           <section className="grid gap-2 rounded-lg border border-slate-800 bg-slate-950/40 p-3 text-xs sm:grid-cols-2">
             <p className="text-slate-400">

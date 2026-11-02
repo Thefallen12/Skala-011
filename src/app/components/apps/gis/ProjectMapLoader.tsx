@@ -49,6 +49,13 @@ export type SurveyFeatureMetadata = {
   surveyorName: string;
   description: string;
 };
+export type GlobalPolygonFeature = {
+  projectId: string;
+  projectTitle: string;
+  status: string;
+  surveyName: string;
+  feature: SurveyGeoJSON["features"][number];
+};
 
 export default function ProjectMapLoader({
   importedData,
@@ -61,6 +68,7 @@ export default function ProjectMapLoader({
   onDrawToolSelect,
   onFeatureCreated,
   onFeatureSelected,
+  globalPolygons,
 }: {
   importedData: SurveyGeoJSON | null;
   importedDataVersion: number;
@@ -72,6 +80,7 @@ export default function ProjectMapLoader({
   onDrawToolSelect: (tool: SurveyDrawTool, featureId?: string) => void;
   onFeatureCreated: (feature: SurveyGeoJSON["features"][number]) => void;
   onFeatureSelected: (feature: SurveyGeoJSON["features"][number]) => void;
+  globalPolygons: GlobalPolygonFeature[];
 }) {
   return (
     <ProjectMap
@@ -85,6 +94,7 @@ export default function ProjectMapLoader({
       onDrawToolSelect={onDrawToolSelect}
       onFeatureCreated={onFeatureCreated}
       onFeatureSelected={onFeatureSelected}
+      globalPolygons={globalPolygons}
     />
   );
 }

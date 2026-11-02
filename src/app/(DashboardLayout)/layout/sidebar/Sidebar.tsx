@@ -23,6 +23,7 @@ interface SidebarItemType {
   title?: string;
   icon?: string;
   url?: string;
+  menuKey?: string;
   children?: SidebarItemType[];
   disabled?: boolean;
   isPro?: boolean;
@@ -142,6 +143,7 @@ const SidebarLayout = ({
   canAccessProjects,
   canAccessDrafter,
   isMover,
+  allowedMenuKeys,
   sidebarCounts,
 }: {
   onClose?: () => void;
@@ -152,6 +154,7 @@ const SidebarLayout = ({
   canAccessProjects: boolean;
   canAccessDrafter: boolean;
   isMover: boolean;
+  allowedMenuKeys?: string[];
   sidebarCounts: SidebarCounts;
 }) => {
   const pathname = usePathname();
@@ -166,6 +169,7 @@ const SidebarLayout = ({
     item: SidebarItemType,
   ): SidebarItemType | null => {
     if (
+      (item.menuKey && allowedMenuKeys && !allowedMenuKeys.includes(item.menuKey)) ||
       (item.requiresUserManagement && !canManageUsers) ||
       (item.requiresLogistics && !canAccessLogistics) ||
       (item.requiresExecutive && !canAccessExecutive) ||

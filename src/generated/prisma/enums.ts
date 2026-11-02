@@ -35,6 +35,14 @@ export const ProjectPriority = {
 export type ProjectPriority = (typeof ProjectPriority)[keyof typeof ProjectPriority]
 
 
+export const ProjectPolygonType = {
+  PROJECT: 'PROJECT',
+  SURVEY: 'SURVEY'
+} as const
+
+export type ProjectPolygonType = (typeof ProjectPolygonType)[keyof typeof ProjectPolygonType]
+
+
 export const CalendarEventType = {
   PROJECT: 'PROJECT',
   MEETING: 'MEETING',

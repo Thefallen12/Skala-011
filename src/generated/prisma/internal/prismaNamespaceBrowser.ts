@@ -51,6 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  MenuAccess: 'MenuAccess',
+  PageMaintenance: 'PageMaintenance',
   User: 'User',
   UserNote: 'UserNote',
   Notification: 'Notification',
@@ -68,6 +70,7 @@ export const ModelName = {
   TimesheetEntry: 'TimesheetEntry',
   Project: 'Project',
   FieldSurvey: 'FieldSurvey',
+  ProjectPolygon: 'ProjectPolygon',
   SurveyFeature: 'SurveyFeature',
   SurveyPhoto: 'SurveyPhoto',
   DailyReport: 'DailyReport',
@@ -129,6 +132,31 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const MenuAccessScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  menuKey: 'menuKey',
+  menuName: 'menuName',
+  isAllowed: 'isAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MenuAccessScalarFieldEnum = (typeof MenuAccessScalarFieldEnum)[keyof typeof MenuAccessScalarFieldEnum]
+
+
+export const PageMaintenanceScalarFieldEnum = {
+  pageKey: 'pageKey',
+  pageName: 'pageName',
+  path: 'path',
+  isUnderMaintenance: 'isUnderMaintenance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PageMaintenanceScalarFieldEnum = (typeof PageMaintenanceScalarFieldEnum)[keyof typeof PageMaintenanceScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -391,6 +419,21 @@ export const FieldSurveyScalarFieldEnum = {
 } as const
 
 export type FieldSurveyScalarFieldEnum = (typeof FieldSurveyScalarFieldEnum)[keyof typeof FieldSurveyScalarFieldEnum]
+
+
+export const ProjectPolygonScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  surveyId: 'surveyId',
+  type: 'type',
+  name: 'name',
+  geometryType: 'geometryType',
+  geoJsonData: 'geoJsonData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectPolygonScalarFieldEnum = (typeof ProjectPolygonScalarFieldEnum)[keyof typeof ProjectPolygonScalarFieldEnum]
 
 
 export const SurveyFeatureScalarFieldEnum = {

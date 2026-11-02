@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { area } from "@turf/turf";
 import { prisma } from "@/lib/prisma";
 import { createBrandedQrDataUrl } from "@/lib/documents/qr-code";
+import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
 import ReportStaticMapLoader from "./ReportStaticMapLoader";
 
 const DEFAULT_REPORT_LOGO_URL =
@@ -177,8 +178,24 @@ export default async function SurveyReportPage({
     process.env.NEXT_PUBLIC_CLOUDINARY_REPORT_LOGO_URL?.trim() ||
     DEFAULT_REPORT_LOGO_URL;
   const reportLogoUrl = cloudinaryLogoUrl || "/images/logos/logo-icon.svg";
-  const reportVerificationUrl = `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/report/${encodeURIComponent(survey.id)}`;
-  const coordinatorQrDataUrl = await createBrandedQrDataUrl(reportVerificationUrl, 180);
+  const reportBaseUrl = resolvePublicAppUrl() ?? "http://localhost:3000";
+  const reportVerificationUrl = new URL(
+    `/report/${encodeURIComponent(survey.id)}`,
+    reportBaseUrl,
+  ).toString();
+  const coordinatorQrResult = await Promise.allSettled([
+    createBrandedQrDataUrl(reportVerificationUrl, 180),
+  ]);
+  if (coordinatorQrResult[0].status === "rejected") {
+    console.error(
+      "Survey report coordinator QR failed, continuing without QR:",
+      coordinatorQrResult[0].reason,
+    );
+  }
+  const coordinatorQrDataUrl =
+    coordinatorQrResult[0].status === "fulfilled"
+      ? coordinatorQrResult[0].value
+      : null;
 
   return (
     <main className="report-page relative mx-auto min-h-[297mm] w-[210mm] overflow-hidden rounded-[18mm] bg-white px-[15mm] pb-[12mm] pt-[12mm] font-sans text-[#333] shadow-sm print:m-0 print:min-h-0 print:w-[210mm] print:rounded-none print:shadow-none">
@@ -237,8 +254,12 @@ export default async function SurveyReportPage({
         <div>
           <p className="text-[11px] font-bold text-[#0F2C59]">Diperiksa Oleh / <i>Checked By</i></p>
           <div className="mt-2 flex flex-col items-center">
-            <img src={coordinatorQrDataUrl} alt="QR tanda tangan koordinator lapangan" className="h-[48px] w-[48px]" />
-            <span className="mt-1 text-[7px] text-[#666]">QR verifikasi</span>
+            {coordinatorQrDataUrl ? (
+              <>
+                <img src={coordinatorQrDataUrl} alt="QR tanda tangan koordinator lapangan" className="h-[48px] w-[48px]" />
+                <span className="mt-1 text-[7px] text-[#666]">QR verifikasi</span>
+              </>
+            ) : null}
             <div className="mb-1 mt-2 w-[180px] border-t border-[#333] pt-1 text-[11px] font-bold">{coordinator?.name || "Bambang Gunawan"}</div>
             <p className="text-[11px] font-bold text-[#0F2C59]">Koordinator Lapangan</p>
           </div>

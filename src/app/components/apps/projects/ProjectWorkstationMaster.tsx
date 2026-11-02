@@ -686,7 +686,7 @@ export default function ProjectWorkstationMaster({
 
       <nav
         aria-label="Submenu Project Workstation"
-        className="flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2 shadow-sm"
+        className={`${activeSection === "surveys" ? "hidden" : ""} flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2 shadow-sm`}
       >
         <Button
           type="button"
@@ -1107,16 +1107,31 @@ export default function ProjectWorkstationMaster({
             onViewChange={(view) => {
               const projectQuery =
                 surveyProjectId || surveyProjects[0]?.id || "none";
-              router.replace(
-                `/apps/projects?section=surveys&view=${view}&projectId=${encodeURIComponent(projectQuery || "none")}`,
-                { scroll: false },
-              );
+              const nextUrl = `/apps/projects?section=surveys&view=${view}&projectId=${encodeURIComponent(projectQuery || "none")}`;
+              if (typeof window !== "undefined") {
+                const currentUrl = `${window.location.pathname}${window.location.search}`;
+                if (currentUrl !== nextUrl) {
+                  router.replace(nextUrl, { scroll: false });
+                }
+              }
+            }}
+            onOpenProjects={() => {
+              const nextUrl = "/apps/projects";
+              if (typeof window !== "undefined") {
+                const currentUrl = `${window.location.pathname}${window.location.search}`;
+                if (currentUrl !== nextUrl) {
+                  router.replace(nextUrl, { scroll: false });
+                }
+              }
             }}
             onProjectChange={(projectId) => {
-              router.replace(
-                `/apps/projects?section=surveys&view=${surveyView}&projectId=${encodeURIComponent(projectId || "none")}`,
-                { scroll: false },
-              );
+              const nextUrl = `/apps/projects?section=surveys&view=${surveyView}&projectId=${encodeURIComponent(projectId || "none")}`;
+              if (typeof window !== "undefined") {
+                const currentUrl = `${window.location.pathname}${window.location.search}`;
+                if (currentUrl !== nextUrl) {
+                  router.replace(nextUrl, { scroll: false });
+                }
+              }
             }}
           />
         </section>

@@ -205,6 +205,7 @@ export default async function ProjectsWorkstationPage({
     code: project.code,
     title: project.title || project.name,
     vendor: project.vendor ?? "",
+    status: project.status,
   }));
   const projectIds = projects.map((project) => project.id);
   const savedSurveys = await prisma.fieldSurvey.findMany({

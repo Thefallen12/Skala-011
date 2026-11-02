@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 interface GlobalModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenChange?: (open: boolean) => void;
   title: ReactNode;
   icon?: ReactNode;
   description?: string;
@@ -29,6 +30,7 @@ interface GlobalModalProps {
 export function GlobalModal({
   isOpen,
   onClose,
+  onOpenChange,
   title,
   icon,
   description,
@@ -44,6 +46,10 @@ export function GlobalModal({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
+        if (onOpenChange) {
+          onOpenChange(open);
+          return;
+        }
         if (!open) onClose();
       }}
     >
