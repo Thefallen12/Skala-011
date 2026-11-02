@@ -728,21 +728,22 @@ export async function GET(request: NextRequest) {
     const verificationPath = verificationCode
       ? `/verify/${kind.toLowerCase()}/${encodeURIComponent(verificationCode)}`
       : null;
+    const publicAppUrl =
+      resolvePublicAppUrl() ?? new URL(request.url).origin;
     const [logoDataUrl, qrDataUrl, approvalQrDataUrl] = await Promise.all([
       getDocumentHeaderLogoDataUrl(),
-      verificationPath && resolvePublicAppUrl()
+      verificationPath
         ? createBrandedQrDataUrl(
-            new URL(verificationPath, resolvePublicAppUrl()!).toString(),
+            new URL(verificationPath, publicAppUrl).toString(),
             260,
           )
         : Promise.resolve(null),
       kind === "DO" &&
-      document.approvalPublicCode &&
-      resolvePublicAppUrl()
+      document.approvalPublicCode
         ? createBrandedQrDataUrl(
             new URL(
               `/verify/po/${encodeURIComponent(document.approvalPublicCode)}`,
-              resolvePublicAppUrl()!,
+              publicAppUrl,
             ).toString(),
             240,
           )

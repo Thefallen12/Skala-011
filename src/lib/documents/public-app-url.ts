@@ -34,14 +34,21 @@ export function resolvePublicAppUrl(): URL | null {
     return new URL("http://localhost:3000");
   }
 
-  const configuredOrigin = [
+  const configuredOrigins = [
     process.env.NEXT_PUBLIC_APP_URL,
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.PUBLIC_APP_URL,
+    process.env.APP_URL,
     process.env.AUTH_URL,
     process.env.NEXTAUTH_URL,
-  ].find((value) => Boolean(value?.trim()));
+    process.env.DOMAIN,
+    process.env.domain,
+  ];
 
-  if (configuredOrigin) {
-    return parsePublicOrigin(configuredOrigin.trim());
+  for (const configuredOrigin of configuredOrigins) {
+    if (!configuredOrigin?.trim()) continue;
+    const parsedOrigin = parsePublicOrigin(configuredOrigin.trim());
+    if (parsedOrigin) return parsedOrigin;
   }
 
   return null;
