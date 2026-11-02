@@ -130,7 +130,7 @@ export async function createAccount(
   }
 
   revalidatePath("/auth/register");
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   revalidatePath("/(DashboardLayout)", "layout");
   return {
     status: "success",

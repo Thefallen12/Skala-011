@@ -1,45 +1,38 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Construction, Folder, Wrench } from "lucide-react";
 import {
-  toggleMenuAccess,
   togglePageMaintenance,
   type MenuAccessMatrixRow,
 } from "@/app/actions/settings";
 import { MAINTENANCE_PAGES } from "@/lib/config/maintenance-pages";
-import { APP_ROLES, SETTINGS_MENU_ROLES } from "@/lib/config/menus";
 import { Switch } from "@/components/ui/switch";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import MenuAccessControl from "@/components/settings/MenuAccessControl";
 
-const roleLabels: Record<string, string> = {
-  DIRECTOR: "Direktur",
-  DEPUTY_DIRECTOR: "Wakil Direktur",
-  DRAFTER: "Drafter",
-  FINANCE: "Keuangan",
-  LOGISTICS: "Logistik",
-  KOORDINATOR: "Koordinator Lapangan",
-  FIELD_TEAM: "Tim Lapangan",
-  MOVER: "Pengangkut",
-  ADMINISTRATIONS: "Admin",
-};
-
-export default function MaintenanceSettingsClient({
+export default function SettingsClient({
   enabledKeys: initialEnabledKeys,
   canManage,
   accessMatrix: initialAccessMatrix,
+  usersDirectory,
+  initialTab,
 }: {
   enabledKeys: string[];
   canManage: boolean;
   accessMatrix: MenuAccessMatrixRow[];
+  usersDirectory: ReactNode;
+  initialTab: "menu-access" | "maintenance" | "users";
 }) {
   const router = useRouter();
   const [enabledKeys, setEnabledKeys] = useState(initialEnabledKeys);
-  const [accessMatrix, setAccessMatrix] = useState(initialAccessMatrix);
   const [pendingKey, setPendingKey] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"maintenance" | "access">(
-    "maintenance",
-  );
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
   const [message, setMessage] = useState<{
     type: "error" | "success";
@@ -90,45 +83,6 @@ export default function MaintenanceSettingsClient({
     });
   };
 
-  const toggleAccess = (role: string, menuKey: string, isAllowed: boolean) => {
-    const previousMatrix = accessMatrix;
-    setAccessMatrix((current) =>
-      current.map((row) =>
-        row.key === menuKey
-          ? {
-              ...row,
-              allowedByRole: { ...row.allowedByRole, [role]: isAllowed },
-            }
-          : row,
-      ),
-    );
-    setPendingKey(`${role}:${menuKey}`);
-    setMessage(null);
-
-    startTransition(async () => {
-      try {
-        const result = await toggleMenuAccess(role, menuKey, isAllowed);
-        if (!result.success) {
-          setAccessMatrix(previousMatrix);
-          setMessage({ type: "error", text: result.message });
-          return;
-        }
-
-        setMessage({ type: "success", text: result.message });
-        router.refresh();
-      } catch (error) {
-        console.error("Updating menu access failed:", error);
-        setAccessMatrix(previousMatrix);
-        setMessage({
-          type: "error",
-          text: "Gagal menyimpan pengaturan hak akses.",
-        });
-      } finally {
-        setPendingKey(null);
-      }
-    });
-  };
-
   const toggleGroup = (section: string) => {
     setCollapsedGroups((current) =>
       current.includes(section)
@@ -143,14 +97,13 @@ export default function MaintenanceSettingsClient({
         <div>
           <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.12em] text-secondary">
             <Wrench className="size-4" />
-            Pengaturan Sistem
+            Pengaturan
           </div>
           <h1 className="text-[28px] font-black tracking-[-0.04em] text-foreground">
-            Pengaturan Halaman &amp; Sub-Menu
+            Pengaturan Sistem
           </h1>
           <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-            Kelola maintenance halaman dan hak akses menu berdasarkan peran
-            pengguna.
+            Kelola hak akses menu, pengguna, dan preferensi aplikasi.
           </p>
         </div>
 
@@ -160,67 +113,45 @@ export default function MaintenanceSettingsClient({
             {enabledKeys.length} maintenance
           </span>
           <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-bold text-muted-foreground">
-            {accessMatrix.length} menu terdaftar
+            {initialAccessMatrix.length} menu terdaftar
           </span>
         </div>
       </div>
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-2">
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveTab("maintenance")}
-            className={[
-              "rounded-lg px-4 py-2 text-sm font-semibold transition",
-              activeTab === "maintenance"
-                ? "bg-secondary text-secondary-foreground shadow-sm"
-                : "text-muted-foreground hover:bg-muted",
-            ].join(" ")}
-          >
-            Status Maintenance
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("access")}
-            className={[
-              "rounded-lg px-4 py-2 text-sm font-semibold transition",
-              activeTab === "access"
-                ? "bg-secondary text-secondary-foreground shadow-sm"
-                : "text-muted-foreground hover:bg-muted",
-            ].join(" ")}
-          >
-            Hak Akses Menu
-          </button>
-        </div>
-        {activeTab === "maintenance" && (
-          <p className="px-2 text-xs text-muted-foreground">
+      <Tabs defaultValue={initialTab} className="w-full">
+        <TabsList className="mb-5 h-auto flex-wrap justify-start gap-1 border border-border bg-muted p-1">
+          <TabsTrigger value="menu-access">Hak Akses Menu</TabsTrigger>
+          {usersDirectory && (
+            <TabsTrigger value="users">Manajemen Pengguna</TabsTrigger>
+          )}
+          <TabsTrigger value="maintenance">Status Maintenance</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="maintenance" className="mt-0">
+          <p className="mb-4 text-xs text-muted-foreground">
             Pengaturan Sistem selalu tersedia untuk memulihkan halaman.
           </p>
-        )}
-      </div>
+          {message && (
+            <p
+              role={message.type === "error" ? "alert" : "status"}
+              className={[
+                "mb-4 rounded-lg border px-4 py-3 text-sm font-medium",
+                message.type === "error"
+                  ? "border-error/30 bg-lighterror text-error"
+                  : "border-success/30 bg-lightsuccess text-success",
+              ].join(" ")}
+            >
+              {message.text}
+            </p>
+          )}
 
-      {message && (
-        <p
-          role={message.type === "error" ? "alert" : "status"}
-          className={[
-            "mb-4 rounded-lg border px-4 py-3 text-sm font-medium",
-            message.type === "error"
-              ? "border-error/30 bg-lighterror text-error"
-              : "border-success/30 bg-lightsuccess text-success",
-          ].join(" ")}
-        >
-          {message.text}
-        </p>
-      )}
+          {!canManage && (
+            <p className="mb-4 rounded-lg border border-warning/30 bg-lightwarning px-4 py-3 text-sm text-warning">
+              Anda dapat melihat status, tetapi hanya Direktur, Wakil Direktur,
+              atau Administrasi yang dapat mengubah pengaturan.
+            </p>
+          )}
 
-      {!canManage && (
-        <p className="mb-4 rounded-lg border border-warning/30 bg-lightwarning px-4 py-3 text-sm text-warning">
-          Anda dapat melihat status, tetapi hanya Direktur, Wakil Direktur,
-          atau Admin yang dapat mengubah pengaturan.
-        </p>
-      )}
-
-      {activeTab === "maintenance" ? (
         <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
           <div className="border-b border-border bg-muted px-5 py-3 text-[15px] font-black uppercase tracking-[0.12em] text-card-foreground">
             Kontrol Navigasi &amp; Maintenance
@@ -341,63 +272,21 @@ export default function MaintenanceSettingsClient({
             })}
           </div>
         </div>
-      ) : (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
-          <div className="border-b border-border bg-muted px-5 py-3 text-[15px] font-black uppercase tracking-[0.12em] text-card-foreground">
-            Matriks Hak Akses Menu
-          </div>
-          <table className="w-full min-w-[780px] border-collapse text-left">
-            <thead>
-              <tr className="bg-muted/70 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-                <th scope="col" className="sticky left-0 bg-muted px-4 py-3">
-                  Menu
-                </th>
-                {APP_ROLES.map((role) => (
-                  <th key={role} scope="col" className="px-3 py-3 text-center">
-                    {roleLabels[role] ?? role}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {accessMatrix.map((row) => (
-                <tr key={row.key} className="hover:bg-muted/50">
-                  <th
-                    scope="row"
-                    className="sticky left-0 bg-card px-4 py-3 text-sm font-semibold text-card-foreground"
-                  >
-                    <span>{row.name}</span>
-                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
-                      {row.path}
-                    </span>
-                  </th>
-                  {APP_ROLES.map((role) => (
-                    <td
-                      key={`${row.key}:${role}`}
-                      className="px-3 py-3 text-center"
-                    >
-                      <Switch
-                        checked={row.allowedByRole[role] ?? false}
-                        disabled={
-                          !canManage ||
-                          pendingKey !== null ||
-                          (row.key === "settings" &&
-                            !SETTINGS_MENU_ROLES.includes(role))
-                        }
-                        aria-label={`${roleLabels[role] ?? role} · ${row.name}`}
-                        onCheckedChange={(checked) =>
-                          toggleAccess(role, row.key, checked)
-                        }
-                        className="data-[state=checked]:bg-secondary"
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+        </TabsContent>
+
+        <TabsContent value="menu-access" className="mt-0">
+          <MenuAccessControl
+            initialAccessMatrix={initialAccessMatrix}
+            canManage={canManage}
+          />
+        </TabsContent>
+
+        {usersDirectory && (
+          <TabsContent value="users" className="mt-0">
+            {usersDirectory}
+          </TabsContent>
+        )}
+      </Tabs>
     </section>
   );
 }

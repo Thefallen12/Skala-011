@@ -75,7 +75,7 @@ const Profile = ({
             {canManageUsers && (
               <DropdownMenuItem asChild>
                 <Link
-                  href='/apps/users'
+                  href='/apps/settings?tab=users'
                   className='px-4 py-2 flex items-center group/link w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
                 >
                   <div className='flex items-center gap-3 w-full'>

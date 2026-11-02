@@ -81,6 +81,7 @@ export default function DashboardLayoutClient({
               canAccessProjects={canAccessProjects}
               canAccessDrafter={canAccessDrafter}
               isMover={isMover}
+              allowedMenuKeys={allowedMenuKeys}
               profilePhotoUrl={profilePhotoUrl}
               userName={userName}
               userRole={userRole}

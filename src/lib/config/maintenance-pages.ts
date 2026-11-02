@@ -57,7 +57,6 @@ export const MAINTENANCE_PAGES: MaintenancePageDefinition[] = [
   { key: "orders", name: "Pesanan", section: "Pesanan", path: "/apps/orders" },
   { key: "order-create", name: "Buat Pesanan", section: "Pesanan", path: "/apps/orders/new" },
   { key: "notes", name: "Catatan", section: "Catatan", path: "/apps/notes" },
-  { key: "users", name: "Manajemen Pengguna", section: "Manajemen", path: "/apps/users" },
   { key: "settings", name: "Pengaturan Sistem", section: "Pengaturan", path: "/apps/settings", manageable: false },
   { key: "blog-posts", name: "Artikel", section: "Artikel", path: "/apps/blog/post" },
   { key: "blog-detail", name: "Detail Artikel", section: "Artikel", path: "/apps/blog/detail/:slug" },

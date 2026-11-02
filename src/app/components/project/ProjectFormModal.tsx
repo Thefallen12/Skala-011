@@ -248,7 +248,7 @@ export default function ProjectFormModal({
                   {canManageUsers && (
                     <>
                       {" "}
-                      <Link href="/apps/users" className="font-medium underline">
+                      <Link href="/apps/settings?tab=users" className="font-medium underline">
                         Buka Manajemen Pengguna
                       </Link>
                     </>

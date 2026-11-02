@@ -63,8 +63,6 @@ function rolesForPath(pathname: string): readonly UserRole[] | null {
     return Object.values(UserRole).filter((role) => role !== UserRole.MOVER);
   }
   if (
-    pathname === "/apps/users" ||
-    pathname.startsWith("/apps/users/") ||
     pathname === "/apps/documents" ||
     pathname.startsWith("/apps/documents/") ||
     pathname === "/apps/templates" ||

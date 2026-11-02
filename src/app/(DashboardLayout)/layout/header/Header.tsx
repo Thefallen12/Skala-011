@@ -22,6 +22,7 @@ const Header = ({
   canAccessProjects,
   canAccessDrafter,
   isMover,
+  allowedMenuKeys,
   profilePhotoUrl,
   userName,
   userRole,
@@ -38,6 +39,7 @@ const Header = ({
   canAccessProjects: boolean;
   canAccessDrafter: boolean;
   isMover: boolean;
+  allowedMenuKeys: string[];
   profilePhotoUrl: string | null;
   userName: string;
   userRole: UserRole;
@@ -200,6 +202,7 @@ const Header = ({
             canAccessProjects={canAccessProjects}
             canAccessDrafter={canAccessDrafter}
             isMover={isMover}
+            allowedMenuKeys={allowedMenuKeys}
             sidebarCounts={sidebarCounts}
             onClose={() => setIsOpen(false)}
           />

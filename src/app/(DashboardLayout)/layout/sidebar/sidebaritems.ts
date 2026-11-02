@@ -116,13 +116,6 @@ const SidebarContent: MenuItem[] = [
         url: '/apps/settings',
         menuKey: 'settings',
       },
-      {
-        name: 'Manajemen Pengguna',
-        icon: 'solar:users-group-rounded-linear',
-        url: '/apps/users',
-        menuKey: 'users',
-        requiresUserManagement: true,
-      },
     ],
   },
 ]

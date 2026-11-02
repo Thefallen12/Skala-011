@@ -105,7 +105,7 @@ export async function updateUserRole(
     return { success: false, message: "Role akun gagal diperbarui." };
   }
 
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   return { success: true, message: "Role akun berhasil diperbarui." };
 }
 
@@ -232,7 +232,7 @@ export async function updateUserDetails(
     }
   }
 
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   revalidatePath("/(DashboardLayout)", "layout");
   return { success: true, message: successMessage };
 }
@@ -312,7 +312,7 @@ export async function deleteUser(
     };
   }
 
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   return { success: true, message: "Akun berhasil dihapus." };
 }
 
@@ -372,7 +372,7 @@ export async function updateUserStatus(
     return { success: false, message: "Status akun gagal diperbarui." };
   }
 
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   return {
     success: true,
     message: `Akun berhasil ${isActive ? "diaktifkan" : "dinonaktifkan"}.`,
@@ -550,7 +550,7 @@ export async function importUsersCsv(
     };
   }
 
-  revalidatePath("/apps/users");
+  revalidatePath("/apps/settings");
   return {
     success: true,
     message: `${accounts.length} akun berhasil diimpor.`,

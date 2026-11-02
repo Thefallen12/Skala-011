@@ -13,8 +13,7 @@ export type AppMenuKey =
   | "documents"
   | "templates"
   | "notes"
-  | "settings"
-  | "users";
+  | "settings";
 
 export type MenuDefinition = {
   key: AppMenuKey;
@@ -37,7 +36,6 @@ export const APP_MENUS: MenuDefinition[] = [
   { key: "templates", name: "Template Dokumen", path: "/apps/templates", icon: "FileStack" },
   { key: "notes", name: "Catatan", path: "/apps/notes", icon: "NotebookText" },
   { key: "settings", name: "Pengaturan Sistem", path: "/apps/settings", icon: "Settings" },
-  { key: "users", name: "Manajemen Pengguna", path: "/apps/users", icon: "Users" },
 ];
 
 export const APP_ROLES = Object.values(UserRole) as UserRole[];
