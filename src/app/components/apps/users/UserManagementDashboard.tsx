@@ -174,11 +174,13 @@ export default function UserManagementDashboard({
   currentUserId,
   cloudinaryCloudName,
   cloudinaryApiKey,
+  cloudinaryConfigured,
   users,
 }: {
   currentUserId: string;
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
+  cloudinaryConfigured: boolean;
   users: ManagedUser[];
 }) {
   const [query, setQuery] = useState("");
@@ -906,7 +908,7 @@ export default function UserManagementDashboard({
               value={profilePhotoUrl ?? ""}
             />
             <div className="flex flex-col items-center gap-3 rounded-lg border border-border p-4">
-              {cloudinaryCloudName && cloudinaryApiKey ? (
+              {cloudinaryConfigured ? (
                 <CldUploadWidget
                   config={{
                     cloud: {
@@ -940,8 +942,14 @@ export default function UserManagementDashboard({
                   }}
                   onError={(error) => {
                     console.error("Profile photo upload failed:", error);
+                    const detail =
+                      typeof error === "string"
+                        ? error
+                        : error?.statusText || error?.status;
                     setPhotoUploadError(
-                      "Foto gagal diunggah. Silakan coba kembali.",
+                      detail
+                        ? `Foto gagal diunggah (${detail}). Periksa konfigurasi dan koneksi Cloudinary.`
+                        : "Foto gagal diunggah. Periksa konfigurasi dan koneksi Cloudinary.",
                     );
                   }}
                 >
@@ -982,8 +990,9 @@ export default function UserManagementDashboard({
                 </CldUploadWidget>
               ) : (
                 <p role="alert" className="text-center text-sm text-destructive">
-                  Upload foto belum tersedia. Periksa konfigurasi Cloudinary di
-                  server.
+                  Upload foto belum tersedia. Administrator perlu mengatur
+                  CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan
+                  CLOUDINARY_API_SECRET pada environment server.
                 </p>
               )}
               {photoUploadError && (
@@ -1152,7 +1161,7 @@ export default function UserManagementDashboard({
           </>
         }
       >
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Periksa terlebih dahulu bahwa akun yang dipilih memang sudah tidak
           diperlukan.
         </p>

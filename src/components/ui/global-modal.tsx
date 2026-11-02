@@ -55,29 +55,31 @@ export function GlobalModal({
     >
       <DialogContent
         overlayClassName={cn(
-          "bg-[#070d19]/85 backdrop-blur-sm",
+          "bg-background/80 backdrop-blur-sm",
           overlayClassName,
         )}
         className={cn(
-          "flex max-h-[90vh] w-full max-w-4xl flex-col gap-0 overflow-hidden rounded-2xl border-slate-800 bg-[#131b2e] p-0 text-slate-100 shadow-2xl",
-          "[&>button:last-child]:right-4 [&>button:last-child]:top-4 [&>button:last-child]:rounded-lg [&>button:last-child]:bg-slate-800 [&>button:last-child]:p-2 [&>button:last-child]:text-slate-400 [&>button:last-child]:hover:bg-slate-700 [&>button:last-child]:hover:text-white",
+          "flex max-h-[90vh] w-full max-w-4xl flex-col gap-0 overflow-hidden rounded-2xl border-border bg-popover p-0 text-popover-foreground shadow-2xl",
+          "[&>button:last-child]:right-4 [&>button:last-child]:top-4 [&>button:last-child]:rounded-lg [&>button:last-child]:bg-muted [&>button:last-child]:p-2 [&>button:last-child]:text-muted-foreground [&>button:last-child]:hover:bg-accent [&>button:last-child]:hover:text-accent-foreground",
           className,
         )}
       >
-        <DialogHeader className={cn(
-          "shrink-0 flex-row items-start justify-between gap-4 space-y-0 border-b border-slate-800 bg-[#162035] px-6 py-5 pr-16",
-          hideHeader && "hidden",
-        )}>
+        <DialogHeader
+          className={cn(
+            "shrink-0 flex-row items-start justify-between gap-4 space-y-0 border-b border-border bg-muted px-6 py-5 pr-16",
+            hideHeader && "hidden",
+          )}
+        >
           <div className="flex min-w-0 items-start gap-3.5">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-orange-500/15 text-orange-400">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
               {icon ?? <FolderOpen aria-hidden="true" className="size-5" />}
             </span>
             <div className="min-w-0 space-y-1">
-              <DialogTitle className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-white">
+              <DialogTitle className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-foreground">
                 {title}
               </DialogTitle>
               {description ? (
-                <DialogDescription className="text-xs leading-relaxed text-slate-400">
+                <DialogDescription className="text-xs leading-relaxed text-muted-foreground">
                   {description}
                 </DialogDescription>
               ) : null}
@@ -93,9 +95,9 @@ export function GlobalModal({
           {children}
         </div>
         {footer ? (
-          <div className="shrink-0 flex flex-col items-center justify-between gap-4 border-t border-slate-800 bg-[#162035] px-6 py-5 sm:flex-row">
+          <div className="shrink-0 flex flex-col items-center justify-between gap-4 border-t border-border bg-muted px-6 py-5 sm:flex-row">
             {footerNote ? (
-              <span className="text-center text-[10px] font-medium leading-normal text-slate-400 sm:text-left">
+              <span className="text-center text-[10px] font-medium leading-normal text-muted-foreground sm:text-left">
                 {footerNote}
               </span>
             ) : null}
