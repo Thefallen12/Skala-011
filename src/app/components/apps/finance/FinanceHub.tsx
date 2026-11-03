@@ -1062,6 +1062,7 @@ export default function FinanceHub({
         monthOutflow={monthOutflow}
         onNavigate={navigateFromDashboard}
         onOpenIncoming={openIncomingFund}
+        onPreviewProof={(url, label) => setReceiptPreview({ url, label })}
       />
 
       <DocumentSignoffQueue

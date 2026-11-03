@@ -76,6 +76,7 @@ export default function FinanceDashboard({
   monthOutflow,
   onNavigate,
   onOpenIncoming,
+  onPreviewProof,
 }: {
   reviewCount: number;
   pendingPaymentCount: number;
@@ -91,6 +92,7 @@ export default function FinanceDashboard({
     cashflowType?: "IN" | "OUT" | null,
   ) => void;
   onOpenIncoming: () => void;
+  onPreviewProof: (url: string, label: string) => void;
 }) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -530,15 +532,21 @@ export default function FinanceDashboard({
                       {transaction.paymentMethod}
                     </span>
                     {transaction.proofUrl && (
-                      <a
-                        href={transaction.proofUrl}
-                        target="_blank"
-                        rel="noreferrer"
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (transaction.proofUrl) {
+                            onPreviewProof(
+                              transaction.proofUrl,
+                              `Bukti transaksi ${transaction.sourceDesc}`,
+                            );
+                          }
+                        }}
                         className="mt-1 inline-flex items-center gap-1 text-blue-300 hover:underline"
                       >
                         <ExternalLink className="size-3" aria-hidden="true" />
                         Lihat bukti
-                      </a>
+                      </button>
                     )}
                   </td>
                   <td className="max-w-[220px] px-4 py-3">
