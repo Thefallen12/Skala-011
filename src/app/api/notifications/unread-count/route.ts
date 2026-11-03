@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { UserRole } from "@/generated/prisma/enums";
 import { auth } from "../../../../../auth";
-import { prisma } from "@/lib/prisma";
+import { and, or } from "@prisma/orm-postgres/orm-client";
+import { prisma8 } from "@/lib/prisma8";
 
 export async function GET() {
   const session = await auth();
@@ -12,66 +13,63 @@ export async function GET() {
   const role = session.user.role;
   const [unreadCount, notifications, executiveCount, logisticsCount, financeCount] =
     await Promise.all([
-      prisma.notification.count({
-        where: { userId: session.user.id, isRead: false },
-      }),
-      prisma.notification.findMany({
-        where: { userId: session.user.id },
-        orderBy: { createdAt: "desc" },
-        take: 25,
-        select: {
-          id: true,
-          title: true,
-          message: true,
-          type: true,
-          isRead: true,
-          actionUrl: true,
-          createdAt: true,
-        },
-      }),
-      prisma.notification.count({
-        where: {
-          userId: session.user.id,
-          isRead: false,
-          actionUrl: { startsWith: "/apps/approvals" },
-        },
-      }),
-      prisma.notification.count({
-        where: {
-          userId: session.user.id,
-          isRead: false,
-          OR: [
-            { actionUrl: { startsWith: "/apps/logistics" } },
+      prisma8.orm.public.Notification.where({
+        userId: session.user.id,
+        isRead: false,
+      }).aggregate((aggregate) => ({ count: aggregate.count() })),
+      prisma8.orm.public.Notification.select(
+        "id",
+        "title",
+        "message",
+        "type",
+        "isRead",
+        "actionUrl",
+        "createdAt",
+      )
+        .where({ userId: session.user.id })
+        .orderBy((notification) => notification.createdAt.desc())
+        .limit(25)
+        .all(),
+      prisma8.orm.public.Notification.where((notification) =>
+        and(
+          notification.userId.eq(session.user.id),
+          notification.isRead.eq(false),
+          notification.actionUrl.like("/apps/approvals%"),
+        ),
+      ).aggregate((aggregate) => ({ count: aggregate.count() })),
+      prisma8.orm.public.Notification.where((notification) =>
+        and(
+          notification.userId.eq(session.user.id),
+          notification.isRead.eq(false),
+          or(
+            notification.actionUrl.like("/apps/logistics%"),
             ...(role === UserRole.LOGISTICS
-              ? [{ actionUrl: { startsWith: "/d/" } }]
+              ? [notification.actionUrl.like("/d/%")]
               : []),
-          ],
-        },
-      }),
-      prisma.notification.count({
-        where: {
-          userId: session.user.id,
-          isRead: false,
-          OR: [
-            { actionUrl: { startsWith: "/apps/finance" } },
+          ),
+        ),
+      ).aggregate((aggregate) => ({ count: aggregate.count() })),
+      prisma8.orm.public.Notification.where((notification) =>
+        and(
+          notification.userId.eq(session.user.id),
+          notification.isRead.eq(false),
+          or(
+            notification.actionUrl.like("/apps/finance%"),
             ...(role === UserRole.FINANCE
-              ? [{ actionUrl: { startsWith: "/d/" } }]
+              ? [notification.actionUrl.like("/d/%")]
               : []),
-          ],
-        },
-      }),
+          ),
+        ),
+      ).aggregate((aggregate) => ({ count: aggregate.count() })),
     ]);
 
   return NextResponse.json({
-    unreadCount,
-    notifications: notifications.map((notification) => ({
-      ...notification,
-      createdAt: notification.createdAt.toISOString(),
-    })),
+    unreadCount: unreadCount.count,
+    notifications,
     sidebarCounts: {
-      executive: executiveCount,
-      logistics: logisticsCount,
-      finance: financeCount,
+      executive: executiveCount.count,
+      logistics: logisticsCount.count,
+      finance: financeCount.count,
     },
   });
 }
