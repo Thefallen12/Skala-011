@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  useEffect,
   useMemo,
   useRef,
   useState,
+  useTransition,
   type ChangeEvent,
   type FormEvent,
 } from "react";
@@ -11,7 +13,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CldUploadWidget } from "next-cloudinary";
 import {
   AlertTriangle,
   Boxes,
@@ -28,6 +29,7 @@ import {
   Search,
   Trash2,
   Truck,
+  Upload,
   X,
 } from "lucide-react";
 import CardBox from "@/app/components/shared/CardBox";
@@ -43,7 +45,6 @@ import type {
 } from "@/app/(DashboardLayout)/types/ticket";
 import { TicketStatus } from "@/generated/prisma/enums";
 import {
-  DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER,
   MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS,
 } from "@/lib/direct-stock-purchase-photo-config";
 import { getJakartaDateKey, shiftDateKey } from "@/lib/habit-date";
@@ -52,6 +53,7 @@ import {
   importLogisticsStockCsv,
   receiveDirectStockPurchase,
   saveLogisticsStockItem,
+  submitDirectStockPurchaseInvoice,
 } from "@/app/actions/tickets";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -158,9 +160,129 @@ type DirectStockPurchaseRow = {
   receivedAt: string | null;
   arrivalPhotoUrl: string | null;
   receivedPhotos: string[];
+  vendorInvoiceUrl: string | null;
+  vendorInvoiceUploadedAt: string | null;
+  vendorInvoiceUploadedBy: { name: string | null } | null;
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
   ticket: { id: string; ticketNumber: string; title: string } | null;
+};
+
+function DirectPurchaseInvoiceAction({
+  purchase,
+  onPreview,
+}: {
+  purchase: DirectStockPurchaseRow;
+  onPreview: (url: string, label: string) => void;
+}) {
+  const router = useRouter();
+  const invoicePhotoInput = useRef<HTMLInputElement>(null);
+  const [documentPhoto, setDocumentPhoto] = useState<File | null>(null);
+  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const saveDocument = () => {
+    if (!documentPhoto) {
+      setMessage("Pilih foto invoice/bon terlebih dahulu.");
+      return;
+    }
+    setMessage("");
+    startTransition(async () => {
+      try {
+        const formData = new FormData();
+        formData.set("purchaseId", purchase.id);
+        formData.set("invoicePhoto", documentPhoto, documentPhoto.name);
+        const result = await submitDirectStockPurchaseInvoice(formData);
+        setMessage(result.message);
+        if (result.success) {
+          setDocumentPhoto(null);
+          router.refresh();
+        }
+      } catch (error) {
+        console.error("Saving direct purchase invoice failed:", error);
+        setMessage("Invoice/bon gagal disimpan. Coba kembali.");
+      }
+    });
+  };
+
+  const invoiceUrl = purchase.vendorInvoiceUrl;
+  if (invoiceUrl) {
+    return (
+      <Button
+        type="button"
+        variant="link"
+        size="sm"
+        className="h-auto p-0 text-xs"
+        onClick={() =>
+          onPreview(
+            invoiceUrl,
+            `${purchase.purchaseNumber} · Invoice / BON Faktur`,
+          )
+        }
+      >
+        Lihat Invoice/Bon
+      </Button>
+    );
+  }
+  if (!purchase.isApprovedByDirector) {
+    return null;
+  }
+  if (purchase.status !== "PENDING_RECEIPT") {
+    return null;
+  }
+
+  return (
+    <div className="space-y-2">
+      <label className="block space-y-1">
+        <span className="text-xs font-medium">Foto Invoice / BON Faktur</span>
+        <Input
+          ref={invoicePhotoInput}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="sr-only"
+          onChange={(event) => {
+            const file = event.currentTarget.files?.[0] ?? null;
+            setDocumentPhoto(file);
+            setMessage(file ? `${file.name} dipilih.` : "");
+          }}
+          disabled={isPending}
+          aria-label="Pilih foto Invoice atau BON Faktur"
+        />
+      </label>
+      <Button
+        type="button"
+        size="sm"
+        variant="outline"
+        onClick={() => invoicePhotoInput.current?.click()}
+        disabled={isPending}
+      >
+        <Upload aria-hidden="true" />
+        {documentPhoto ? "Ganti Foto Invoice/Bon" : "Unggah Invoice/Bon"}
+      </Button>
+      {documentPhoto && (
+        <Button
+          type="button"
+          size="sm"
+          onClick={saveDocument}
+          disabled={isPending}
+        >
+          {isPending
+            ? "Mengunggah dan mengirim..."
+            : "Simpan & Kirim ke Keuangan"}
+        </Button>
+      )}
+      {message && (
+        <p className="max-w-48 text-xs text-muted-foreground" role="status">
+          {message}
+        </p>
+      )}
+    </div>
+  );
+}
+
+type ReceivingPhoto = {
+  file: File;
+  previewUrl: string;
 };
 
 type PurchaseTicketOption = {
@@ -216,7 +338,9 @@ export default function LogisticsWorkspace({
   const [receivingPurchaseSubmitting, setReceivingPurchaseSubmitting] =
     useState(false);
   const [receivingPurchaseError, setReceivingPurchaseError] = useState("");
-  const [receivingPhotos, setReceivingPhotos] = useState<string[]>([]);
+  const [receivingPhotos, setReceivingPhotos] = useState<ReceivingPhoto[]>([]);
+  const receivingPreviewUrls = useRef(new Set<string>());
+  const receivingPhotoInput = useRef<HTMLInputElement>(null);
   const [stockReceiptPreview, setStockReceiptPreview] = useState<{
     url: string;
     label: string;
@@ -236,6 +360,14 @@ export default function LogisticsWorkspace({
   const [stockDeleteTarget, setStockDeleteTarget] =
     useState<LogisticsStockItem | null>(null);
   const [stockDeleteSubmitting, setStockDeleteSubmitting] = useState(false);
+
+  useEffect(
+    () => () => {
+      receivingPreviewUrls.current.forEach((url) => URL.revokeObjectURL(url));
+      receivingPreviewUrls.current.clear();
+    },
+    [],
+  );
   const [stockDeleteError, setStockDeleteError] = useState("");
   const [stockActionError, setStockActionError] = useState("");
   const [stockDraft, setStockDraft] = useState({
@@ -489,11 +621,66 @@ export default function LogisticsWorkspace({
     },
   ];
 
+  const clearReceivingPhotos = () => {
+    receivingPhotos.forEach(({ previewUrl }) => {
+      URL.revokeObjectURL(previewUrl);
+      receivingPreviewUrls.current.delete(previewUrl);
+    });
+    setReceivingPhotos([]);
+  };
+
+  const selectReceivingPhotos = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.currentTarget.files ?? []);
+    event.currentTarget.value = "";
+    if (files.length === 0) return;
+
+    const validTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+    const newPhotos: ReceivingPhoto[] = [];
+    const errors: string[] = [];
+    const remainingSlots =
+      MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS - receivingPhotos.length;
+
+    for (const file of files) {
+      if (
+        receivingPhotos.length + newPhotos.length >=
+        MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+      ) {
+        errors.push(`Maksimal ${MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto.`);
+        break;
+      }
+      if (!validTypes.has(file.type)) {
+        errors.push(`${file.name}: format harus JPG, PNG, atau WEBP.`);
+        continue;
+      }
+      if (file.size < 1 || file.size > 5 * 1024 * 1024) {
+        errors.push(`${file.name}: ukuran foto harus maksimal 5 MB.`);
+        continue;
+      }
+
+      const previewUrl = URL.createObjectURL(file);
+      receivingPreviewUrls.current.add(previewUrl);
+      newPhotos.push({ file, previewUrl });
+    }
+
+    if (newPhotos.length > 0) {
+      setReceivingPhotos((current) => [...current, ...newPhotos]);
+    }
+    setReceivingPurchaseError(errors.join(" "));
+
+    if (files.length > remainingSlots && !errors.length) {
+      setReceivingPurchaseError(
+        `Maksimal ${MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto.`,
+      );
+    }
+  };
+
   const submitStockPurchaseReceipt = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    receivingPhotos.forEach((photo) => formData.append("receivedPhotos", photo));
+    receivingPhotos.forEach(({ file }) =>
+      formData.append("receivedPhotos", file, file.name),
+    );
     setReceivingPurchaseError("");
     setReceivingPurchaseSubmitting(true);
     try {
@@ -504,7 +691,7 @@ export default function LogisticsWorkspace({
       }
       setStockNotice(result.message);
       setReceivingPurchase(null);
-      setReceivingPhotos([]);
+      clearReceivingPhotos();
       router.refresh();
     } catch (error) {
       console.error("Receiving direct stock purchase failed:", error);
@@ -1236,6 +1423,7 @@ export default function LogisticsWorkspace({
                   <TableHead>Barang</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Invoice / BON Faktur</TableHead>
                   <TableHead>Penerimaan</TableHead>
                   {canCreatePurchaseOrder && <TableHead>Aksi</TableHead>}
                 </TableRow>
@@ -1291,10 +1479,36 @@ export default function LogisticsWorkspace({
                           ? "Diterima"
                           : !purchase.isApprovedByDirector
                             ? "Menunggu persetujuan Direktur"
+                            : !purchase.vendorInvoiceUrl
+                              ? "Menunggu invoice/bon Logistik"
                             : !purchase.hasFinanceProof
                               ? "Menunggu pembayaran Keuangan"
                               : "Siap diterima Logistik"}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        {purchase.vendorInvoiceUploadedAt && (
+                          <>
+                          <p>
+                            {stockDateLabel.format(
+                              new Date(purchase.vendorInvoiceUploadedAt),
+                            )}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {purchase.vendorInvoiceUploadedBy?.name ??
+                              "Logistik"}
+                          </p>
+                          </>
+                        )}
+                        <DirectPurchaseInvoiceAction
+                          purchase={purchase}
+                          onPreview={(url, label) => {
+                            setStockReceiptPreviewFailed(false);
+                            setStockReceiptPreview({ url, label });
+                          }}
+                        />
+                      </div>
                     </TableCell>
                     <TableCell>
                       {purchase.receivedAt ? (
@@ -1330,21 +1544,23 @@ export default function LogisticsWorkspace({
                     </TableCell>
                     {canCreatePurchaseOrder && (
                       <TableCell>
-                        {purchase.status === "PENDING_RECEIPT" &&
-                          purchase.isApprovedByDirector &&
-                          purchase.hasFinanceProof && (
-                          <Button
-                            type="button"
-                            size="sm"
-                            onClick={() => {
-                              setReceivingPurchaseError("");
-                              setReceivingPhotos([]);
-                              setReceivingPurchase(purchase);
-                            }}
-                          >
-                            Terima Barang
-                          </Button>
-                        )}
+                        <div className="flex flex-col items-start gap-2">
+                          {purchase.status === "PENDING_RECEIPT" &&
+                            purchase.isApprovedByDirector &&
+                            purchase.hasFinanceProof && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                onClick={() => {
+                                  setReceivingPurchaseError("");
+                                  clearReceivingPhotos();
+                                  setReceivingPurchase(purchase);
+                                }}
+                              >
+                                Terima Barang
+                              </Button>
+                            )}
+                        </div>
                       </TableCell>
                     )}
                   </TableRow>
@@ -1353,7 +1569,7 @@ export default function LogisticsWorkspace({
                 {stockPurchases.length === 0 && (
                   <TableRow>
                     <TableCell
-                      colSpan={canCreatePurchaseOrder ? 8 : 7}
+                      colSpan={canCreatePurchaseOrder ? 9 : 8}
                       className="py-8 text-center text-sm text-muted-foreground"
                     >
                       Belum ada pembelian langsung.
@@ -1608,7 +1824,7 @@ export default function LogisticsWorkspace({
             if (receivingPurchaseSubmitting) return;
             setReceivingPurchase(null);
             setReceivingPurchaseError("");
-            setReceivingPhotos([]);
+            clearReceivingPhotos();
           }}
           title="Terima Pembelian Stok"
           description={
@@ -1630,92 +1846,49 @@ export default function LogisticsWorkspace({
                 />
                 <div className="space-y-3">
                   <Label>Foto bukti barang tiba</Label>
-                  {cloudinaryCloudName && cloudinaryApiKey ? (
-                    <CldUploadWidget
-                      config={{
-                        cloud: {
-                          cloudName: cloudinaryCloudName,
-                          apiKey: cloudinaryApiKey,
-                        },
-                      }}
-                      signatureEndpoint="/api/cloudinary/direct-stock-receipt-signature"
-                      options={{
-                        folder: DIRECT_STOCK_PURCHASE_PHOTO_CLOUDINARY_FOLDER,
-                        resourceType: "image",
-                        sources: ["local", "camera"],
-                        multiple: true,
-                        maxFiles: Math.max(
-                          1,
-                          MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS -
-                            receivingPhotos.length,
-                        ),
-                        maxFileSize: 5 * 1024 * 1024,
-                        clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
-                        showPoweredBy: false,
-                      }}
-                      onSuccess={(result) => {
-                        if (
-                          result.event === "success" &&
-                          typeof result.info === "object" &&
-                          result.info !== null &&
-                          "secure_url" in result.info &&
-                          typeof result.info.secure_url === "string"
-                        ) {
-                          const secureUrl = result.info.secure_url;
-                          setReceivingPhotos((current) =>
-                            current.includes(secureUrl) ||
-                            current.length >= MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
-                              ? current
-                              : [...current, secureUrl],
-                          );
-                          setReceivingPurchaseError("");
-                        }
-                      }}
-                      onError={(error) => {
-                        console.error(
-                          "Direct stock receipt photo upload failed:",
-                          error,
-                        );
-                        setReceivingPurchaseError(
-                          "Foto gagal diunggah. Silakan coba kembali.",
-                        );
-                      }}
-                    >
-                      {({ open }) => (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => open()}
-                          disabled={
-                            receivingPurchaseSubmitting ||
-                            receivingPhotos.length >=
-                              MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
-                          }
-                        >
-                          Unggah Foto ({receivingPhotos.length}/
-                          {MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS})
-                        </Button>
-                      )}
-                    </CldUploadWidget>
-                  ) : (
-                    <p className="text-sm text-destructive" role="alert">
-                      Upload foto tidak tersedia. Periksa konfigurasi Cloudinary
-                      di server.
-                    </p>
-                  )}
+                  <input
+                    ref={receivingPhotoInput}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    className="sr-only"
+                    onChange={selectReceivingPhotos}
+                    disabled={
+                      receivingPurchaseSubmitting ||
+                      receivingPhotos.length >=
+                        MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+                    }
+                    aria-label="Pilih foto bukti barang tiba"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => receivingPhotoInput.current?.click()}
+                    disabled={
+                      receivingPurchaseSubmitting ||
+                      receivingPhotos.length >=
+                        MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
+                    }
+                  >
+                    <FileUp aria-hidden="true" />
+                    Pilih Foto ({receivingPhotos.length}/
+                    {MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS})
+                  </Button>
                   <p className="text-xs text-muted-foreground">
-                    Pilih 1–{MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto JPG,
-                    PNG, atau WEBP; maksimal 5 MB per foto.
+                    Foto disimpan di formulir terlebih dahulu dan baru diunggah
+                    ke Cloudinary saat Anda menekan Terima Barang. Pilih 1–
+                    {MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto JPG, PNG,
+                    atau WEBP; maksimal 5 MB per foto.
                   </p>
                   {receivingPhotos.length > 0 && (
                     <div className="grid grid-cols-3 gap-2">
                       {receivingPhotos.map((photo, index) => (
                         <div
-                          key={photo}
+                          key={photo.previewUrl}
                           className="relative aspect-[4/3] overflow-hidden rounded-md border"
                         >
                           <Image
-                            src={photo}
+                            src={photo.previewUrl}
                             alt={`Bukti penerimaan ${index + 1}`}
                             fill
                             unoptimized
@@ -1728,11 +1901,19 @@ export default function LogisticsWorkspace({
                             size="icon"
                             aria-label={`Hapus foto ${index + 1}`}
                             className="absolute right-1 top-1 size-7"
-                            onClick={() =>
+                            onClick={() => {
+                              URL.revokeObjectURL(photo.previewUrl);
+                              receivingPreviewUrls.current.delete(
+                                photo.previewUrl,
+                              );
                               setReceivingPhotos((current) =>
-                                current.filter((url) => url !== photo),
-                              )
-                            }
+                                current.filter(
+                                  (currentPhoto) =>
+                                    currentPhoto.previewUrl !==
+                                    photo.previewUrl,
+                                ),
+                              );
+                            }}
                             disabled={receivingPurchaseSubmitting}
                           >
                             <X aria-hidden="true" />
@@ -1766,7 +1947,7 @@ export default function LogisticsWorkspace({
                     }
                   >
                     {receivingPurchaseSubmitting
-                      ? "Mencatat penerimaan..."
+                      ? "Mengunggah foto dan mencatat..."
                       : "Terima Barang"}
                   </Button>
                 </div>

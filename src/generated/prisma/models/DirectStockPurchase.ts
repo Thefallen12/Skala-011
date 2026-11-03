@@ -54,6 +54,9 @@ export type DirectStockPurchaseMinAggregateOutputType = {
   isApprovedByDirector: boolean | null
   approvedById: string | null
   approvedAt: Date | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedById: string | null
+  vendorInvoiceUploadedAt: Date | null
   receivedAt: Date | null
   receivedById: string | null
   arrivalPhotoUrl: string | null
@@ -82,6 +85,9 @@ export type DirectStockPurchaseMaxAggregateOutputType = {
   isApprovedByDirector: boolean | null
   approvedById: string | null
   approvedAt: Date | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedById: string | null
+  vendorInvoiceUploadedAt: Date | null
   receivedAt: Date | null
   receivedById: string | null
   arrivalPhotoUrl: string | null
@@ -110,6 +116,9 @@ export type DirectStockPurchaseCountAggregateOutputType = {
   isApprovedByDirector: number
   approvedById: number
   approvedAt: number
+  vendorInvoiceUrl: number
+  vendorInvoiceUploadedById: number
+  vendorInvoiceUploadedAt: number
   receivedAt: number
   receivedById: number
   arrivalPhotoUrl: number
@@ -149,6 +158,9 @@ export type DirectStockPurchaseMinAggregateInputType = {
   isApprovedByDirector?: true
   approvedById?: true
   approvedAt?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedById?: true
+  vendorInvoiceUploadedAt?: true
   receivedAt?: true
   receivedById?: true
   arrivalPhotoUrl?: true
@@ -177,6 +189,9 @@ export type DirectStockPurchaseMaxAggregateInputType = {
   isApprovedByDirector?: true
   approvedById?: true
   approvedAt?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedById?: true
+  vendorInvoiceUploadedAt?: true
   receivedAt?: true
   receivedById?: true
   arrivalPhotoUrl?: true
@@ -205,6 +220,9 @@ export type DirectStockPurchaseCountAggregateInputType = {
   isApprovedByDirector?: true
   approvedById?: true
   approvedAt?: true
+  vendorInvoiceUrl?: true
+  vendorInvoiceUploadedById?: true
+  vendorInvoiceUploadedAt?: true
   receivedAt?: true
   receivedById?: true
   arrivalPhotoUrl?: true
@@ -321,6 +339,9 @@ export type DirectStockPurchaseGroupByOutputType = {
   isApprovedByDirector: boolean
   approvedById: string | null
   approvedAt: Date | null
+  vendorInvoiceUrl: string | null
+  vendorInvoiceUploadedById: string | null
+  vendorInvoiceUploadedAt: Date | null
   receivedAt: Date | null
   receivedById: string | null
   arrivalPhotoUrl: string | null
@@ -373,6 +394,9 @@ export type DirectStockPurchaseWhereInput = {
   isApprovedByDirector?: Prisma.BoolFilter<"DirectStockPurchase"> | boolean
   approvedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
@@ -383,6 +407,7 @@ export type DirectStockPurchaseWhereInput = {
   vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  vendorInvoiceUploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   items?: Prisma.DirectStockPurchaseItemListRelationFilter
@@ -409,6 +434,9 @@ export type DirectStockPurchaseOrderByWithRelationInput = {
   isApprovedByDirector?: Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -419,6 +447,7 @@ export type DirectStockPurchaseOrderByWithRelationInput = {
   vendor?: Prisma.VendorOrderByWithRelationInput
   ticket?: Prisma.TicketOrderByWithRelationInput
   approvedBy?: Prisma.UserOrderByWithRelationInput
+  vendorInvoiceUploadedBy?: Prisma.UserOrderByWithRelationInput
   receivedBy?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   items?: Prisma.DirectStockPurchaseItemOrderByRelationAggregateInput
@@ -448,6 +477,9 @@ export type DirectStockPurchaseWhereUniqueInput = Prisma.AtLeast<{
   isApprovedByDirector?: Prisma.BoolFilter<"DirectStockPurchase"> | boolean
   approvedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
@@ -458,6 +490,7 @@ export type DirectStockPurchaseWhereUniqueInput = Prisma.AtLeast<{
   vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
   ticket?: Prisma.XOR<Prisma.TicketNullableScalarRelationFilter, Prisma.TicketWhereInput> | null
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  vendorInvoiceUploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   items?: Prisma.DirectStockPurchaseItemListRelationFilter
@@ -484,6 +517,9 @@ export type DirectStockPurchaseOrderByWithAggregationInput = {
   isApprovedByDirector?: Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedById?: Prisma.SortOrderInput | Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -521,6 +557,9 @@ export type DirectStockPurchaseScalarWhereWithAggregatesInput = {
   isApprovedByDirector?: Prisma.BoolWithAggregatesFilter<"DirectStockPurchase"> | boolean
   approvedById?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
   approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DirectStockPurchase"> | Date | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DirectStockPurchase"> | Date | string | null
   receivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableWithAggregatesFilter<"DirectStockPurchase"> | string | null
@@ -547,6 +586,8 @@ export type DirectStockPurchaseCreateInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -555,6 +596,7 @@ export type DirectStockPurchaseCreateInput = {
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
@@ -581,6 +623,9 @@ export type DirectStockPurchaseUncheckedCreateInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -609,6 +654,8 @@ export type DirectStockPurchaseUpdateInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -617,6 +664,7 @@ export type DirectStockPurchaseUpdateInput = {
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
@@ -643,6 +691,9 @@ export type DirectStockPurchaseUncheckedUpdateInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -674,6 +725,9 @@ export type DirectStockPurchaseCreateManyInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -700,6 +754,8 @@ export type DirectStockPurchaseUpdateManyMutationInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -727,6 +783,9 @@ export type DirectStockPurchaseUncheckedUpdateManyInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -766,6 +825,9 @@ export type DirectStockPurchaseCountOrderByAggregateInput = {
   isApprovedByDirector?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
   receivedAt?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrder
@@ -799,6 +861,9 @@ export type DirectStockPurchaseMaxOrderByAggregateInput = {
   isApprovedByDirector?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
   receivedAt?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrder
@@ -827,6 +892,9 @@ export type DirectStockPurchaseMinOrderByAggregateInput = {
   isApprovedByDirector?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
+  vendorInvoiceUrl?: Prisma.SortOrder
+  vendorInvoiceUploadedById?: Prisma.SortOrder
+  vendorInvoiceUploadedAt?: Prisma.SortOrder
   receivedAt?: Prisma.SortOrder
   receivedById?: Prisma.SortOrder
   arrivalPhotoUrl?: Prisma.SortOrder
@@ -856,6 +924,13 @@ export type DirectStockPurchaseCreateNestedManyWithoutApprovedByInput = {
   connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
 }
 
+export type DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput = {
+  create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInputEnvelope
+  connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+}
+
 export type DirectStockPurchaseCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutCreatedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutCreatedByInput> | Prisma.DirectStockPurchaseCreateWithoutCreatedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutCreatedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutCreatedByInput[]
@@ -874,6 +949,13 @@ export type DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput =
   create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutApprovedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutApprovedByInput> | Prisma.DirectStockPurchaseCreateWithoutApprovedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutApprovedByInput[]
   connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutApprovedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutApprovedByInput[]
   createMany?: Prisma.DirectStockPurchaseCreateManyApprovedByInputEnvelope
+  connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+}
+
+export type DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput = {
+  create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInputEnvelope
   connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
 }
 
@@ -902,6 +984,20 @@ export type DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput = {
   connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
   update?: Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutApprovedByInput | Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutApprovedByInput[]
   updateMany?: Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutApprovedByInput | Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutApprovedByInput[]
+  deleteMany?: Prisma.DirectStockPurchaseScalarWhereInput | Prisma.DirectStockPurchaseScalarWhereInput[]
+}
+
+export type DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  upsert?: Prisma.DirectStockPurchaseUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInputEnvelope
+  set?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  disconnect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  delete?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  update?: Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  updateMany?: Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput[]
   deleteMany?: Prisma.DirectStockPurchaseScalarWhereInput | Prisma.DirectStockPurchaseScalarWhereInput[]
 }
 
@@ -944,6 +1040,20 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput =
   connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
   update?: Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutApprovedByInput | Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutApprovedByInput[]
   updateMany?: Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutApprovedByInput | Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutApprovedByInput[]
+  deleteMany?: Prisma.DirectStockPurchaseScalarWhereInput | Prisma.DirectStockPurchaseScalarWhereInput[]
+}
+
+export type DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput> | Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput[] | Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput[]
+  connectOrCreate?: Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput[]
+  upsert?: Prisma.DirectStockPurchaseUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  createMany?: Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInputEnvelope
+  set?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  disconnect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  delete?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  connect?: Prisma.DirectStockPurchaseWhereUniqueInput | Prisma.DirectStockPurchaseWhereUniqueInput[]
+  update?: Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput[]
+  updateMany?: Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput[]
   deleteMany?: Prisma.DirectStockPurchaseScalarWhereInput | Prisma.DirectStockPurchaseScalarWhereInput[]
 }
 
@@ -1123,6 +1233,8 @@ export type DirectStockPurchaseCreateWithoutApprovedByInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1130,6 +1242,7 @@ export type DirectStockPurchaseCreateWithoutApprovedByInput = {
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
@@ -1155,6 +1268,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutApprovedByInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1176,6 +1292,82 @@ export type DirectStockPurchaseCreateManyApprovedByInputEnvelope = {
   skipDuplicates?: boolean
 }
 
+export type DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput = {
+  id?: string
+  purchaseNumber: string
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Date | string | null
+  reference?: string | null
+  notes?: string | null
+  status?: $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: boolean
+  approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  receivedAt?: Date | string | null
+  arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
+  ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
+  approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
+  items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutDirectStockPurchaseInput
+}
+
+export type DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput = {
+  id?: string
+  purchaseNumber: string
+  vendorId?: string | null
+  ticketId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Date | string | null
+  reference?: string | null
+  notes?: string | null
+  status?: $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: boolean
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  receivedAt?: Date | string | null
+  receivedById?: string | null
+  arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  items?: Prisma.DirectStockPurchaseItemUncheckedCreateNestedManyWithoutPurchaseInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutDirectStockPurchaseInput
+}
+
+export type DirectStockPurchaseCreateOrConnectWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.DirectStockPurchaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type DirectStockPurchaseCreateManyVendorInvoiceUploadedByInputEnvelope = {
+  data: Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInput | Prisma.DirectStockPurchaseCreateManyVendorInvoiceUploadedByInput[]
+  skipDuplicates?: boolean
+}
+
 export type DirectStockPurchaseCreateWithoutCreatedByInput = {
   id?: string
   purchaseNumber: string
@@ -1193,6 +1385,8 @@ export type DirectStockPurchaseCreateWithoutCreatedByInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1201,6 +1395,7 @@ export type DirectStockPurchaseCreateWithoutCreatedByInput = {
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutDirectStockPurchaseInput
@@ -1226,6 +1421,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutCreatedByInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1263,6 +1461,8 @@ export type DirectStockPurchaseCreateWithoutReceivedByInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1271,6 +1471,7 @@ export type DirectStockPurchaseCreateWithoutReceivedByInput = {
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutDirectStockPurchaseInput
@@ -1296,6 +1497,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutReceivedByInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1355,6 +1559,9 @@ export type DirectStockPurchaseScalarWhereInput = {
   isApprovedByDirector?: Prisma.BoolFilter<"DirectStockPurchase"> | boolean
   approvedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
+  vendorInvoiceUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
+  vendorInvoiceUploadedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedAt?: Prisma.DateTimeNullableFilter<"DirectStockPurchase"> | Date | string | null
   receivedById?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
   arrivalPhotoUrl?: Prisma.StringNullableFilter<"DirectStockPurchase"> | string | null
@@ -1362,6 +1569,22 @@ export type DirectStockPurchaseScalarWhereInput = {
   createdById?: Prisma.StringFilter<"DirectStockPurchase"> | string
   createdAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DirectStockPurchase"> | Date | string
+}
+
+export type DirectStockPurchaseUpsertWithWhereUniqueWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.DirectStockPurchaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.DirectStockPurchaseUpdateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedUpdateWithoutVendorInvoiceUploadedByInput>
+  create: Prisma.XOR<Prisma.DirectStockPurchaseCreateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedCreateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type DirectStockPurchaseUpdateWithWhereUniqueWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.DirectStockPurchaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.DirectStockPurchaseUpdateWithoutVendorInvoiceUploadedByInput, Prisma.DirectStockPurchaseUncheckedUpdateWithoutVendorInvoiceUploadedByInput>
+}
+
+export type DirectStockPurchaseUpdateManyWithWhereWithoutVendorInvoiceUploadedByInput = {
+  where: Prisma.DirectStockPurchaseScalarWhereInput
+  data: Prisma.XOR<Prisma.DirectStockPurchaseUpdateManyMutationInput, Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByInput>
 }
 
 export type DirectStockPurchaseUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -1413,6 +1636,8 @@ export type DirectStockPurchaseCreateWithoutItemsInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1421,6 +1646,7 @@ export type DirectStockPurchaseCreateWithoutItemsInput = {
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutDirectStockPurchaseInput
@@ -1446,6 +1672,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutItemsInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1489,6 +1718,8 @@ export type DirectStockPurchaseUpdateWithoutItemsInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -1497,6 +1728,7 @@ export type DirectStockPurchaseUpdateWithoutItemsInput = {
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutDirectStockPurchaseNestedInput
@@ -1522,6 +1754,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutItemsInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1549,6 +1784,8 @@ export type DirectStockPurchaseCreateWithoutVendorInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1556,6 +1793,7 @@ export type DirectStockPurchaseCreateWithoutVendorInput = {
   updatedAt?: Date | string
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
@@ -1581,6 +1819,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutVendorInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1635,6 +1876,8 @@ export type DirectStockPurchaseCreateWithoutTicketInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1642,6 +1885,7 @@ export type DirectStockPurchaseCreateWithoutTicketInput = {
   updatedAt?: Date | string
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
@@ -1667,6 +1911,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutTicketInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1721,6 +1968,8 @@ export type DirectStockPurchaseCreateWithoutPaymentTransactionsInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1729,6 +1978,7 @@ export type DirectStockPurchaseCreateWithoutPaymentTransactionsInput = {
   vendor?: Prisma.VendorCreateNestedOneWithoutDirectStockPurchasesInput
   ticket?: Prisma.TicketCreateNestedOneWithoutDirectStockPurchasesInput
   approvedBy?: Prisma.UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput
+  vendorInvoiceUploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedDirectStockPurchasesInput
   items?: Prisma.DirectStockPurchaseItemCreateNestedManyWithoutPurchaseInput
@@ -1754,6 +2004,9 @@ export type DirectStockPurchaseUncheckedCreateWithoutPaymentTransactionsInput = 
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1797,6 +2050,8 @@ export type DirectStockPurchaseUpdateWithoutPaymentTransactionsInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -1805,6 +2060,7 @@ export type DirectStockPurchaseUpdateWithoutPaymentTransactionsInput = {
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
@@ -1830,6 +2086,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutPaymentTransactionsInput = 
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1859,6 +2118,40 @@ export type DirectStockPurchaseCreateManyApprovedByInput = {
   status?: $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: boolean
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
+  receivedAt?: Date | string | null
+  receivedById?: string | null
+  arrivalPhotoUrl?: string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DirectStockPurchaseCreateManyVendorInvoiceUploadedByInput = {
+  id?: string
+  purchaseNumber: string
+  vendorId?: string | null
+  ticketId?: string | null
+  vendorName: string
+  paymentMethod?: $Enums.POPaymentMethod
+  paymentBankName?: string | null
+  paymentAccountNumber?: string | null
+  paymentAccountName?: string | null
+  paymentTerms?: string | null
+  includeTax?: boolean
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Date | string | null
+  reference?: string | null
+  notes?: string | null
+  status?: $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: boolean
+  approvedById?: string | null
+  approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1888,6 +2181,9 @@ export type DirectStockPurchaseCreateManyCreatedByInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -1916,6 +2212,9 @@ export type DirectStockPurchaseCreateManyReceivedByInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   arrivalPhotoUrl?: string | null
   receivedPhotos?: Prisma.DirectStockPurchaseCreatereceivedPhotosInput | string[]
@@ -1941,6 +2240,8 @@ export type DirectStockPurchaseUpdateWithoutApprovedByInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -1948,6 +2249,7 @@ export type DirectStockPurchaseUpdateWithoutApprovedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
@@ -1973,6 +2275,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutApprovedByInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2003,6 +2308,106 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DirectStockPurchaseUpdateWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
+  ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
+  approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
+  items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutDirectStockPurchaseNestedInput
+}
+
+export type DirectStockPurchaseUncheckedUpdateWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.DirectStockPurchaseItemUncheckedUpdateManyWithoutPurchaseNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutDirectStockPurchaseNestedInput
+}
+
+export type DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ticketId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorName?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.EnumPOPaymentMethodFieldUpdateOperationsInput | $Enums.POPaymentMethod
+  paymentBankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  includeTax?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
+  isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2029,6 +2434,8 @@ export type DirectStockPurchaseUpdateWithoutCreatedByInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2037,6 +2444,7 @@ export type DirectStockPurchaseUpdateWithoutCreatedByInput = {
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutDirectStockPurchaseNestedInput
@@ -2062,6 +2470,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutCreatedByInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2092,6 +2503,9 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2117,6 +2531,8 @@ export type DirectStockPurchaseUpdateWithoutReceivedByInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2125,6 +2541,7 @@ export type DirectStockPurchaseUpdateWithoutReceivedByInput = {
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutDirectStockPurchaseNestedInput
@@ -2150,6 +2567,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutReceivedByInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2180,6 +2600,9 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2207,6 +2630,9 @@ export type DirectStockPurchaseCreateManyVendorInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -2233,6 +2659,8 @@ export type DirectStockPurchaseUpdateWithoutVendorInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2240,6 +2668,7 @@ export type DirectStockPurchaseUpdateWithoutVendorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ticket?: Prisma.TicketUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
@@ -2265,6 +2694,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutVendorInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2295,6 +2727,9 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutVendorInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2323,6 +2758,9 @@ export type DirectStockPurchaseCreateManyTicketInput = {
   isApprovedByDirector?: boolean
   approvedById?: string | null
   approvedAt?: Date | string | null
+  vendorInvoiceUrl?: string | null
+  vendorInvoiceUploadedById?: string | null
+  vendorInvoiceUploadedAt?: Date | string | null
   receivedAt?: Date | string | null
   receivedById?: string | null
   arrivalPhotoUrl?: string | null
@@ -2349,6 +2787,8 @@ export type DirectStockPurchaseUpdateWithoutTicketInput = {
   status?: Prisma.EnumDirectStockPurchaseStatusFieldUpdateOperationsInput | $Enums.DirectStockPurchaseStatus
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedPhotos?: Prisma.DirectStockPurchaseUpdatereceivedPhotosInput | string[]
@@ -2356,6 +2796,7 @@ export type DirectStockPurchaseUpdateWithoutTicketInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   vendor?: Prisma.VendorUpdateOneWithoutDirectStockPurchasesNestedInput
   approvedBy?: Prisma.UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput
+  vendorInvoiceUploadedBy?: Prisma.UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDirectStockPurchasesNestedInput
   items?: Prisma.DirectStockPurchaseItemUpdateManyWithoutPurchaseNestedInput
@@ -2381,6 +2822,9 @@ export type DirectStockPurchaseUncheckedUpdateWithoutTicketInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2411,6 +2855,9 @@ export type DirectStockPurchaseUncheckedUpdateManyWithoutTicketInput = {
   isApprovedByDirector?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vendorInvoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorInvoiceUploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receivedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   arrivalPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2480,6 +2927,9 @@ export type DirectStockPurchaseSelect<ExtArgs extends runtime.Types.Extensions.I
   isApprovedByDirector?: boolean
   approvedById?: boolean
   approvedAt?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorInvoiceUploadedAt?: boolean
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
@@ -2490,6 +2940,7 @@ export type DirectStockPurchaseSelect<ExtArgs extends runtime.Types.Extensions.I
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   items?: boolean | Prisma.DirectStockPurchase$itemsArgs<ExtArgs>
@@ -2517,6 +2968,9 @@ export type DirectStockPurchaseSelectCreateManyAndReturn<ExtArgs extends runtime
   isApprovedByDirector?: boolean
   approvedById?: boolean
   approvedAt?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorInvoiceUploadedAt?: boolean
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
@@ -2527,6 +2981,7 @@ export type DirectStockPurchaseSelectCreateManyAndReturn<ExtArgs extends runtime
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["directStockPurchase"]>
@@ -2551,6 +3006,9 @@ export type DirectStockPurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime
   isApprovedByDirector?: boolean
   approvedById?: boolean
   approvedAt?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorInvoiceUploadedAt?: boolean
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
@@ -2561,6 +3019,7 @@ export type DirectStockPurchaseSelectUpdateManyAndReturn<ExtArgs extends runtime
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["directStockPurchase"]>
@@ -2585,6 +3044,9 @@ export type DirectStockPurchaseSelectScalar = {
   isApprovedByDirector?: boolean
   approvedById?: boolean
   approvedAt?: boolean
+  vendorInvoiceUrl?: boolean
+  vendorInvoiceUploadedById?: boolean
+  vendorInvoiceUploadedAt?: boolean
   receivedAt?: boolean
   receivedById?: boolean
   arrivalPhotoUrl?: boolean
@@ -2594,11 +3056,12 @@ export type DirectStockPurchaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DirectStockPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "purchaseNumber" | "vendorId" | "ticketId" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "totalAmount" | "paidAt" | "reference" | "notes" | "status" | "isApprovedByDirector" | "approvedById" | "approvedAt" | "receivedAt" | "receivedById" | "arrivalPhotoUrl" | "receivedPhotos" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["directStockPurchase"]>
+export type DirectStockPurchaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "purchaseNumber" | "vendorId" | "ticketId" | "vendorName" | "paymentMethod" | "paymentBankName" | "paymentAccountNumber" | "paymentAccountName" | "paymentTerms" | "includeTax" | "totalAmount" | "paidAt" | "reference" | "notes" | "status" | "isApprovedByDirector" | "approvedById" | "approvedAt" | "vendorInvoiceUrl" | "vendorInvoiceUploadedById" | "vendorInvoiceUploadedAt" | "receivedAt" | "receivedById" | "arrivalPhotoUrl" | "receivedPhotos" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["directStockPurchase"]>
 export type DirectStockPurchaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   items?: boolean | Prisma.DirectStockPurchase$itemsArgs<ExtArgs>
@@ -2609,6 +3072,7 @@ export type DirectStockPurchaseIncludeCreateManyAndReturn<ExtArgs extends runtim
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -2616,6 +3080,7 @@ export type DirectStockPurchaseIncludeUpdateManyAndReturn<ExtArgs extends runtim
   vendor?: boolean | Prisma.DirectStockPurchase$vendorArgs<ExtArgs>
   ticket?: boolean | Prisma.DirectStockPurchase$ticketArgs<ExtArgs>
   approvedBy?: boolean | Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>
+  vendorInvoiceUploadedBy?: boolean | Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>
   receivedBy?: boolean | Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -2626,6 +3091,7 @@ export type $DirectStockPurchasePayload<ExtArgs extends runtime.Types.Extensions
     vendor: Prisma.$VendorPayload<ExtArgs> | null
     ticket: Prisma.$TicketPayload<ExtArgs> | null
     approvedBy: Prisma.$UserPayload<ExtArgs> | null
+    vendorInvoiceUploadedBy: Prisma.$UserPayload<ExtArgs> | null
     receivedBy: Prisma.$UserPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
     items: Prisma.$DirectStockPurchaseItemPayload<ExtArgs>[]
@@ -2651,6 +3117,9 @@ export type $DirectStockPurchasePayload<ExtArgs extends runtime.Types.Extensions
     isApprovedByDirector: boolean
     approvedById: string | null
     approvedAt: Date | null
+    vendorInvoiceUrl: string | null
+    vendorInvoiceUploadedById: string | null
+    vendorInvoiceUploadedAt: Date | null
     receivedAt: Date | null
     receivedById: string | null
     arrivalPhotoUrl: string | null
@@ -3055,6 +3524,7 @@ export interface Prisma__DirectStockPurchaseClient<T, Null = never, ExtArgs exte
   vendor<T extends Prisma.DirectStockPurchase$vendorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$vendorArgs<ExtArgs>>): Prisma.Prisma__VendorClient<runtime.Types.Result.GetResult<Prisma.$VendorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   ticket<T extends Prisma.DirectStockPurchase$ticketArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$ticketArgs<ExtArgs>>): Prisma.Prisma__TicketClient<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   approvedBy<T extends Prisma.DirectStockPurchase$approvedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$approvedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vendorInvoiceUploadedBy<T extends Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   receivedBy<T extends Prisma.DirectStockPurchase$receivedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$receivedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   items<T extends Prisma.DirectStockPurchase$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DirectStockPurchase$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchaseItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3107,6 +3577,9 @@ export interface DirectStockPurchaseFieldRefs {
   readonly isApprovedByDirector: Prisma.FieldRef<"DirectStockPurchase", 'Boolean'>
   readonly approvedById: Prisma.FieldRef<"DirectStockPurchase", 'String'>
   readonly approvedAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>
+  readonly vendorInvoiceUrl: Prisma.FieldRef<"DirectStockPurchase", 'String'>
+  readonly vendorInvoiceUploadedById: Prisma.FieldRef<"DirectStockPurchase", 'String'>
+  readonly vendorInvoiceUploadedAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>
   readonly receivedAt: Prisma.FieldRef<"DirectStockPurchase", 'DateTime'>
   readonly receivedById: Prisma.FieldRef<"DirectStockPurchase", 'String'>
   readonly arrivalPhotoUrl: Prisma.FieldRef<"DirectStockPurchase", 'String'>
@@ -3556,6 +4029,25 @@ export type DirectStockPurchase$ticketArgs<ExtArgs extends runtime.Types.Extensi
  * DirectStockPurchase.approvedBy
  */
 export type DirectStockPurchase$approvedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * DirectStockPurchase.vendorInvoiceUploadedBy
+ */
+export type DirectStockPurchase$vendorInvoiceUploadedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

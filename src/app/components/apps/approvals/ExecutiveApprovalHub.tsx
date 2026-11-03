@@ -584,6 +584,7 @@ export default function ExecutiveApprovalHub({
           <CardContent>
             <UniversalDocumentPreview
               title={`Purchase Order ${signedPo.order.poNumber}`}
+              documentNumber={signedPo.order.poNumber}
               src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(signedPo.order.publicCode)}`}
             />
           </CardContent>
@@ -636,6 +637,7 @@ export default function ExecutiveApprovalHub({
                 </p>
                 <UniversalDocumentPreview
                   title={`Purchase Order ${selectedPo.poNumber}`}
+                  documentNumber={selectedPo.poNumber}
                   src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(selectedPo.publicCode)}`}
                 />
                 {isExecutive(role) && (
@@ -727,7 +729,7 @@ export default function ExecutiveApprovalHub({
                       )
                     }
                   >
-                    {isPending ? "Memproses..." : "Setujui Pencairan Dana"}
+                    {isPending ? "Memproses..." : "Setujui Pengajuan Pembelian"}
                   </Button>
                 )}
               </div>

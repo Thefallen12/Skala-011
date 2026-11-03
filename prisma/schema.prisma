@@ -336,6 +336,7 @@ model User {
   tickets                                           Ticket[]
   processedPaymentTransactions                      PaymentTransaction[]          @relation("PaymentTransactionProcessor")
   approvedDirectStockPurchases                      DirectStockPurchase[]         @relation("DirectStockPurchaseApprover")
+  uploadedDirectStockPurchaseInvoices               DirectStockPurchase[]         @relation("DirectStockPurchaseInvoiceUploader")
   ticketAuditLogs                                   TicketAuditLog[]
   assignedProjects                                  Project[]                     @relation("ProjectFieldPic")
   fieldSurveys                                      FieldSurvey[]                 @relation("FieldSurveyor")
@@ -955,39 +956,43 @@ model StockPurchase {
 }
 
 model DirectStockPurchase {
-  id                   String                    @id @default(cuid())
-  purchaseNumber       String                    @unique
-  vendorId             String?
-  vendor               Vendor?                   @relation(fields: [vendorId], references: [id], onDelete: SetNull)
-  ticketId             String?
-  ticket               Ticket?                   @relation(fields: [ticketId], references: [id], onDelete: SetNull)
-  vendorName           String
-  paymentMethod        POPaymentMethod           @default(CASH)
-  paymentBankName      String?
-  paymentAccountNumber String?
-  paymentAccountName   String?
-  paymentTerms         String?
-  includeTax           Boolean                   @default(false)
-  totalAmount          Decimal                   @db.Decimal(18, 2)
-  paidAt               DateTime?
-  reference            String?
-  notes                String?                   @db.Text
-  status               DirectStockPurchaseStatus @default(PENDING_RECEIPT)
-  isApprovedByDirector Boolean                   @default(false)
-  approvedById         String?
-  approvedBy           User?                     @relation("DirectStockPurchaseApprover", fields: [approvedById], references: [id], onDelete: SetNull)
-  approvedAt           DateTime?
-  receivedAt           DateTime?
-  receivedById         String?
-  receivedBy           User?                     @relation("DirectStockPurchaseReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
-  arrivalPhotoUrl      String?
-  receivedPhotos       String[]                  @default([])
-  createdById          String
-  createdBy            User                      @relation("DirectStockPurchaseCreator", fields: [createdById], references: [id], onDelete: Restrict)
-  items                DirectStockPurchaseItem[]
-  paymentTransactions  PaymentTransaction[]
-  createdAt            DateTime                  @default(now())
-  updatedAt            DateTime                  @updatedAt
+  id                        String                    @id @default(cuid())
+  purchaseNumber            String                    @unique
+  vendorId                  String?
+  vendor                    Vendor?                   @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  ticketId                  String?
+  ticket                    Ticket?                   @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  vendorName                String
+  paymentMethod             POPaymentMethod           @default(CASH)
+  paymentBankName           String?
+  paymentAccountNumber      String?
+  paymentAccountName        String?
+  paymentTerms              String?
+  includeTax                Boolean                   @default(false)
+  totalAmount               Decimal                   @db.Decimal(18, 2)
+  paidAt                    DateTime?
+  reference                 String?
+  notes                     String?                   @db.Text
+  status                    DirectStockPurchaseStatus @default(PENDING_RECEIPT)
+  isApprovedByDirector      Boolean                   @default(false)
+  approvedById              String?
+  approvedBy                User?                     @relation("DirectStockPurchaseApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt                DateTime?
+  vendorInvoiceUrl          String?
+  vendorInvoiceUploadedById String?
+  vendorInvoiceUploadedBy   User?                     @relation("DirectStockPurchaseInvoiceUploader", fields: [vendorInvoiceUploadedById], references: [id], onDelete: SetNull)
+  vendorInvoiceUploadedAt   DateTime?
+  receivedAt                DateTime?
+  receivedById              String?
+  receivedBy                User?                     @relation("DirectStockPurchaseReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
+  arrivalPhotoUrl           String?
+  receivedPhotos            String[]                  @default([])
+  createdById               String
+  createdBy                 User                      @relation("DirectStockPurchaseCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  items                     DirectStockPurchaseItem[]
+  paymentTransactions       PaymentTransaction[]
+  createdAt                 DateTime                  @default(now())
+  updatedAt                 DateTime                  @updatedAt
 
   @@index([status, createdAt])
   @@index([vendorId, createdAt])

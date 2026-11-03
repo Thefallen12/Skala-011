@@ -173,6 +173,7 @@ type FinanceDirectPurchase = {
   paymentBankName: string | null;
   paymentAccountNumber: string | null;
   paymentAccountName: string | null;
+  vendorInvoiceUrl: string | null;
   createdAt: string;
   items: {
     itemName: string;
@@ -1095,7 +1096,7 @@ export default function FinanceHub({
       <DocumentSignoffQueue
         tasks={documentSignoffTasks}
         title="Tanda Tangan & Konfirmasi Dokumen"
-        description="Invoice ditandatangani Keuangan lalu diketahui Direktur. KO dan DO ditandatangani Logistik lalu diketahui Keuangan."
+        description="Invoice ditandatangani Keuangan lalu diketahui Direktur. KO ditandatangani Logistik lalu diketahui Keuangan."
       />
 
       <Tabs
@@ -2154,6 +2155,7 @@ export default function FinanceHub({
                 </p>
                 <UniversalDocumentPreview
                   title={`Purchase Order ${previewOrder.poNumber}`}
+                  documentNumber={previewOrder.poNumber}
                   src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(previewOrder.publicCode)}`}
                 />
               </>
@@ -2347,7 +2349,21 @@ export default function FinanceHub({
                   <strong>{currency(paidAmount)}</strong> · Sisa:{" "}
                   <strong>{currency(remainingAmount)}</strong>
                 </p>
-                {role === UserRole.FINANCE && remainingAmount > 0 && (
+                {activeDirectPurchase.vendorInvoiceUrl && (
+                  <Button asChild size="sm" variant="outline">
+                    <a
+                      href={photoDownloadHref(activeDirectPurchase.vendorInvoiceUrl)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <ExternalLink className="mr-2 size-4" aria-hidden="true" />
+                      Lihat Invoice / BON Faktur
+                    </a>
+                  </Button>
+                )}
+                {role === UserRole.FINANCE &&
+                  activeDirectPurchase.vendorInvoiceUrl &&
+                  remainingAmount > 0 && (
                   <form className="space-y-3 border-t pt-3" onSubmit={submitPayment}>
                     <section className="space-y-2 text-sm">
                       <Label>Jenis pembayaran</Label>

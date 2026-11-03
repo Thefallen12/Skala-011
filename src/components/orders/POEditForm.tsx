@@ -628,7 +628,8 @@ export default function POEditForm({
           }
         >
           <UniversalDocumentPreview
-            title={`Purchase Order ${poNumber}`}
+            title={`Purchase Order ${poNumber ?? "PO"}`}
+            documentNumber={poNumber ?? "PO"}
             src={`/api/documents/transactions?kind=PO&publicCode=${encodeURIComponent(publicCode)}`}
           />
         </GlobalModal>

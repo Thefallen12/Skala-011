@@ -37,12 +37,15 @@ import {
 import { sendNotification } from "@/lib/notifications";
 import { receivePurchaseOrderStock } from "@/lib/logistics/receive-purchase-order-stock";
 import {
-  isDirectStockPurchaseCloudinaryPhotoUrl,
+  DirectStockPurchasePhotoValidationError,
   removeDirectStockPurchasePhoto,
+  saveDirectStockPurchasePhoto,
 } from "@/lib/direct-stock-purchase-photos";
 import { MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS } from "@/lib/direct-stock-purchase-photo-config";
 import {
   CloudinaryPhotoValidationError,
+  CloudinaryConfigurationError,
+  removeCloudinaryPhoto,
   uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
 import { CloudinaryPrivatePdfValidationError } from "@/lib/cloudinary-private-pdfs";
@@ -57,6 +60,7 @@ import {
   type VendorInvoiceInput,
 } from "@/lib/invoice-input";
 import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
+import { PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER } from "@/lib/purchase-order-invoice-config";
 import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
 import { isTicketRequestReceiptUrl } from "@/lib/ticket-request-receipts";
 
@@ -128,6 +132,18 @@ export type TicketActionResult = {
     brand: string | null;
     modelName: string | null;
   }[];
+  stockAvailability?: {
+    ticketItemId: string;
+    itemName: string;
+    quantity: number;
+    unit: string;
+    availableQuantity: string;
+    ready: boolean;
+    pendingPurchaseNumber?: string;
+    message?: string;
+  }[];
+  readyItemIds?: string[];
+  needsOrderItemIds?: string[];
   moverAssigneeId?: string | null;
   stockItem?: {
     id: string;
@@ -145,6 +161,12 @@ const actionFailure = (message: string): TicketActionResult => ({
 
 const warehouseInsufficientMessage =
   "Stok gudang tidak mencukupi untuk memenuhi permintaan ini.";
+
+const normalizeTicketStockValue = (value: string) =>
+  value.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID");
+
+const ticketStockItemKey = (itemName: string, unit: string) =>
+  `${normalizeTicketStockValue(itemName)}\u0000${normalizeTicketStockValue(unit)}`;
 
 type WarehouseReservation = {
   stockItemId: string;
@@ -185,7 +207,7 @@ function evaluateWarehouseStock(
       return {
         available: false,
         fallbackRequired: true,
-        message: warehouseInsufficientMessage,
+        message: `Barang "${ticketItem.itemName}" (${ticketItem.unit}) belum terdaftar di katalog stok gudang.`,
       };
     }
     if (matches.length > 1) {
@@ -215,12 +237,84 @@ function evaluateWarehouseStock(
       return {
         available: false,
         fallbackRequired: true,
-        message: warehouseInsufficientMessage,
+        message: `Stok "${reservation.name}" tidak mencukupi: tersedia ${stockItem?.stockQuantity.toString() ?? "0"} ${reservation.unit}, dibutuhkan ${reservation.quantity} ${reservation.unit}.`,
       };
     }
   }
 
   return { available: true, reservations };
+}
+
+function evaluateWarehouseItemAvailability(
+  ticketItems: { id: string; itemName: string; quantity: number; unit: string }[],
+  stockItems: {
+    id: string;
+    name: string;
+    unit: string;
+    stockQuantity: Prisma.Decimal;
+  }[],
+) {
+  const normalize = (value: string) =>
+    value.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID");
+  const requiredByStockId = new Map<string, number>();
+  const matchesByTicketItem = new Map<
+    string,
+    { stockItem: (typeof stockItems)[number] | null; message?: string }
+  >();
+
+  for (const ticketItem of ticketItems) {
+    const matches = stockItems.filter(
+      (stockItem) =>
+        normalize(stockItem.name) === normalize(ticketItem.itemName) &&
+        normalize(stockItem.unit) === normalize(ticketItem.unit),
+    );
+    if (matches.length > 1) {
+      return {
+        success: false as const,
+        message: `Barang "${ticketItem.itemName}" (${ticketItem.unit}) memiliki SKU ganda; perbaiki katalog sebelum melanjutkan.`,
+      };
+    }
+    const stockItem = matches[0] ?? null;
+    matchesByTicketItem.set(ticketItem.id, {
+      stockItem,
+      message: stockItem
+        ? undefined
+        : `Barang "${ticketItem.itemName}" (${ticketItem.unit}) belum terdaftar di katalog stok.`,
+    });
+    if (stockItem) {
+      requiredByStockId.set(
+        stockItem.id,
+        (requiredByStockId.get(stockItem.id) ?? 0) + ticketItem.quantity,
+      );
+    }
+  }
+
+  return {
+    success: true as const,
+    items: ticketItems.map((ticketItem) => {
+      const match = matchesByTicketItem.get(ticketItem.id)!;
+      const availableQuantity = match.stockItem?.stockQuantity ?? new Prisma.Decimal(0);
+      const requiredQuantity = match.stockItem
+        ? requiredByStockId.get(match.stockItem.id) ?? ticketItem.quantity
+        : ticketItem.quantity;
+      const ready =
+        match.stockItem !== null &&
+        availableQuantity.greaterThanOrEqualTo(requiredQuantity);
+      return {
+        ticketItemId: ticketItem.id,
+        itemName: ticketItem.itemName,
+        quantity: ticketItem.quantity,
+        unit: ticketItem.unit,
+        availableQuantity: availableQuantity.toString(),
+        ready,
+        message:
+          match.message ??
+          (ready
+            ? undefined
+            : `Stok tersedia ${availableQuantity.toString()} ${ticketItem.unit}; dibutuhkan ${requiredQuantity} ${ticketItem.unit}.`),
+      };
+    }),
+  };
 }
 
 function allocatePaymentAmount(
@@ -668,7 +762,12 @@ export async function createDirectStockPurchase(input: {
   vendorId: string;
   vendorBankAccountId?: string;
   ticketId?: string;
-  items: { stockItemId: string; quantity: string; unitPrice: string }[];
+  items: {
+    stockItemId: string;
+    quantity: string;
+    unitPrice: string;
+    ticketItemId?: string;
+  }[];
   reference?: string;
   notes?: string;
   includeTax?: boolean;
@@ -709,7 +808,9 @@ export async function createDirectStockPurchase(input: {
         typeof item.stockItemId !== "string" ||
         !item.stockItemId.trim() ||
         typeof item.quantity !== "string" ||
-        typeof item.unitPrice !== "string",
+        typeof item.unitPrice !== "string" ||
+        (item.ticketItemId !== undefined &&
+          !isBoundedText(item.ticketItemId, 64)),
     )
   ) {
     return directPurchaseFailure("Data pembelian stok langsung tidak valid.");
@@ -730,6 +831,9 @@ export async function createDirectStockPurchase(input: {
 
   try {
     const purchaseNumber = await prisma.$transaction(async (transaction) => {
+      if (input.ticketId) {
+        await lockTicketFulfillment(transaction, input.ticketId);
+      }
       const vendor = await transaction.vendor.findFirst({
         where: { id: input.vendorId, isApproved: true },
         select: {
@@ -768,7 +872,19 @@ export async function createDirectStockPurchase(input: {
               type: TicketType.MATERIAL,
               status: { not: TicketStatus.REJECTED },
             },
-            select: { id: true, ticketNumber: true },
+            select: {
+              id: true,
+              ticketNumber: true,
+              items: {
+                select: {
+                  id: true,
+                  itemName: true,
+                  quantity: true,
+                  unit: true,
+                  status: true,
+                },
+              },
+            },
           })
         : null;
       if (input.ticketId && !ticket) {
@@ -797,6 +913,85 @@ export async function createDirectStockPurchase(input: {
           totalPrice: quantity.mul(unitPrice).toDecimalPlaces(2),
         };
       });
+      if (ticket) {
+        const selectedTicketItemIds = input.items
+          .map((item) => item.ticketItemId)
+          .filter((id): id is string => Boolean(id));
+        if (new Set(selectedTicketItemIds).size !== selectedTicketItemIds.length) {
+          throw new Error("Item tiket yang sama tidak boleh dimasukkan lebih dari sekali.");
+        }
+        const ticketItemsById = new Map(
+          ticket.items.map((item) => [item.id, item]),
+        );
+        const activePurchases = await transaction.directStockPurchase.findMany({
+          where: {
+            ticketId: ticket.id,
+            status: DirectStockPurchaseStatus.PENDING_RECEIPT,
+          },
+          select: {
+            purchaseNumber: true,
+            items: { select: { itemName: true, unit: true } },
+          },
+        });
+        const activePurchaseByItem = new Map<string, string>();
+        for (const purchase of activePurchases) {
+          for (const item of purchase.items) {
+            activePurchaseByItem.set(
+              ticketStockItemKey(item.itemName, item.unit),
+              purchase.purchaseNumber,
+            );
+          }
+        }
+        for (const [index, item] of items.entries()) {
+          const inputItem = input.items[index];
+          const key = ticketStockItemKey(item.itemName, item.unit);
+          const activePurchaseNumber = activePurchaseByItem.get(key);
+          if (activePurchaseNumber) {
+            throw new Error(
+              `Item tiket ${item.itemName} (${item.unit}) masih ada dalam pesanan ${activePurchaseNumber}. Selesaikan penerimaan pesanan tersebut sebelum memesan ulang.`,
+            );
+          }
+          const matchingTicketItems = ticket.items.filter(
+            (ticketItem) =>
+              ticketStockItemKey(ticketItem.itemName, ticketItem.unit) === key,
+          );
+          const linkedTicketItem = inputItem.ticketItemId
+            ? ticketItemsById.get(inputItem.ticketItemId)
+            : matchingTicketItems.filter(
+                (ticketItem) =>
+                  ticketItem.status === FulfillmentStatus.PENDING &&
+                  new Prisma.Decimal(inputItem.quantity).eq(
+                    ticketItem.quantity,
+                  ),
+              )[0];
+          if (
+            !linkedTicketItem ||
+            linkedTicketItem.status !== FulfillmentStatus.PENDING ||
+            ticketStockItemKey(linkedTicketItem.itemName, linkedTicketItem.unit) !==
+              key ||
+            (inputItem.ticketItemId &&
+              !new Prisma.Decimal(inputItem.quantity).eq(
+                linkedTicketItem.quantity,
+              ))
+          ) {
+            throw new Error(
+              `Item tiket ${item.itemName} (${item.unit}) tidak sesuai dengan item tiket yang masih menunggu pemenuhan.`,
+            );
+          }
+          if (
+            matchingTicketItems.some(
+              (ticketItem) =>
+                ticketItem.status === FulfillmentStatus.PROCESSED_TO_PO,
+            )
+          ) {
+            throw new Error(
+              `Item tiket ${item.itemName} (${item.unit}) sudah tercakup dalam PO aktif untuk tiket ini.`,
+            );
+          }
+        }
+      } else if (input.items.some((item) => item.ticketItemId)) {
+        throw new Error("Item tiket hanya dapat digunakan jika tiket dipilih.");
+      }
       const subtotal = items.reduce(
         (total, item) => total.plus(item.totalPrice),
         new Prisma.Decimal(0),
@@ -868,6 +1063,7 @@ export async function createDirectStockPurchase(input: {
       error instanceof Error &&
         (error.message.startsWith("Vendor ") ||
         error.message.startsWith("Tiket ") ||
+        error.message.startsWith("Item tiket ") ||
         error.message.startsWith("Satu atau lebih") ||
         error.message.startsWith("Rekening "))
         ? error.message
@@ -925,15 +1121,15 @@ export async function approveDirectStockPurchaseByDirector(
             ticketId: purchase.ticketId,
             userId: session.user.id,
             action: "DIRECT_PURCHASE_APPROVED",
-            notes: `Pembelian langsung ${purchase.purchaseNumber} disetujui dan diteruskan ke Keuangan.`,
+            notes: `Pembelian langsung ${purchase.purchaseNumber} disetujui Direktur dan menunggu lampiran invoice/bon dari Logistik.`,
           },
         });
       }
       await sendNotification({
-        roleTarget: UserRole.FINANCE,
-        title: "Pembelian Langsung Siap Dibayar",
-        message: `Pembelian ${purchase.purchaseNumber} telah disetujui oleh Eksekutif.`,
-        actionUrl: "/apps/finance?tab=payments",
+        roleTarget: UserRole.LOGISTICS,
+        title: "Lampirkan Invoice / Bon Pembelian",
+        message: `Pembelian ${purchase.purchaseNumber} disetujui Direktur. Lampirkan invoice/bon agar Keuangan dapat memproses pembayaran.`,
+        actionUrl: "/apps/logistics?tab=stock",
         type: NotificationType.APPROVAL,
         database: transaction,
       });
@@ -956,7 +1152,160 @@ export async function approveDirectStockPurchaseByDirector(
   revalidatePath("/apps/tickets");
   return {
     success: true,
-    message: "Pembelian langsung disetujui dan diteruskan ke Keuangan.",
+    message: "Pembelian langsung disetujui. Logistik perlu melampirkan invoice/bon sebelum pembayaran.",
+  };
+}
+
+export async function submitDirectStockPurchaseInvoice(
+  formData: FormData,
+): Promise<DirectStockPurchaseActionResult> {
+  const purchaseId = formData.get("purchaseId");
+  const documentPhoto = formData.get("invoicePhoto");
+  const session = await auth();
+  if (
+    !session?.user?.id ||
+    (session.user.role !== UserRole.LOGISTICS &&
+      session.user.role !== UserRole.ADMINISTRATIONS)
+  ) {
+    return directPurchaseFailure(
+      "Hanya Logistik atau Administrasi yang dapat melampirkan invoice/bon.",
+    );
+  }
+  if (
+    typeof purchaseId !== "string" ||
+    !purchaseId.trim() ||
+    !(documentPhoto instanceof File) ||
+    documentPhoto.size < 1
+  ) {
+    return directPurchaseFailure(
+      "File invoice/bon tidak valid. Pilih foto JPG, PNG, atau WEBP.",
+    );
+  }
+
+  let uploadedPhotoUrl: string | null = null;
+  let invoiceAttached = false;
+  try {
+    const purchaseBeforeUpload = await prisma.directStockPurchase.findUnique({
+      where: { id: purchaseId },
+      select: {
+        isApprovedByDirector: true,
+        status: true,
+        vendorInvoiceUrl: true,
+      },
+    });
+    if (!purchaseBeforeUpload) {
+      throw new Error("Pembelian langsung tidak ditemukan.");
+    }
+    if (!purchaseBeforeUpload.isApprovedByDirector) {
+      throw new Error(
+        "Pembelian harus disetujui Direktur sebelum invoice/bon dilampirkan.",
+      );
+    }
+    if (purchaseBeforeUpload.status !== DirectStockPurchaseStatus.PENDING_RECEIPT) {
+      throw new Error(
+        "Pembelian sudah diterima dan tidak dapat dilampiri invoice/bon.",
+      );
+    }
+    if (purchaseBeforeUpload.vendorInvoiceUrl) {
+      throw new Error("Invoice/bon pembelian ini sudah dilampirkan.");
+    }
+
+    const documentUrl = (
+      await uploadCloudinaryPhoto(
+        documentPhoto,
+        PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+      )
+    ).secureUrl;
+    uploadedPhotoUrl = documentUrl;
+    if (!isPurchaseOrderInvoiceUrl(documentUrl)) {
+      throw new Error("URL invoice/bon yang diunggah tidak valid.");
+    }
+
+    await prisma.$transaction(async (transaction) => {
+      const purchase = await transaction.directStockPurchase.findUnique({
+        where: { id: purchaseId },
+        select: {
+          id: true,
+          purchaseNumber: true,
+          isApprovedByDirector: true,
+          status: true,
+          vendorInvoiceUrl: true,
+        },
+      });
+      if (!purchase) throw new Error("Pembelian langsung tidak ditemukan.");
+      if (!purchase.isApprovedByDirector) {
+        throw new Error("Pembelian harus disetujui Direktur sebelum invoice/bon dilampirkan.");
+      }
+      if (purchase.status !== DirectStockPurchaseStatus.PENDING_RECEIPT) {
+        throw new Error(
+          "Pembelian sudah diterima dan tidak dapat dilampiri invoice/bon.",
+        );
+      }
+      if (purchase.vendorInvoiceUrl) {
+        throw new Error("Invoice/bon pembelian ini sudah dilampirkan.");
+      }
+
+      const updated = await transaction.directStockPurchase.updateMany({
+        where: {
+          id: purchase.id,
+          isApprovedByDirector: true,
+          status: DirectStockPurchaseStatus.PENDING_RECEIPT,
+          vendorInvoiceUrl: null,
+        },
+        data: {
+          vendorInvoiceUrl: documentUrl,
+          vendorInvoiceUploadedById: session.user.id,
+          vendorInvoiceUploadedAt: new Date(),
+        },
+      });
+      if (updated.count !== 1) {
+        throw new Error("Status pembelian berubah. Muat ulang sebelum mengunggah invoice/bon.");
+      }
+      await sendNotification({
+        roleTarget: UserRole.FINANCE,
+        title: "Invoice / Bon Pembelian Siap Dibayar",
+        message: `Logistik telah melampirkan invoice/bon untuk pembelian ${purchase.purchaseNumber}.`,
+        actionUrl: "/apps/finance?tab=payments",
+        type: NotificationType.APPROVAL,
+        database: transaction,
+      });
+    });
+    invoiceAttached = true;
+  } catch (error) {
+    console.error("Direct stock purchase invoice submission failed:", error);
+    if (uploadedPhotoUrl && !invoiceAttached) {
+      try {
+        await removeCloudinaryPhoto(uploadedPhotoUrl);
+      } catch (cleanupError) {
+        console.error(
+          "Failed to clean up unattached direct stock purchase invoice:",
+          cleanupError,
+        );
+      }
+    }
+    return directPurchaseFailure(
+      error instanceof CloudinaryPhotoValidationError ||
+        error instanceof CloudinaryConfigurationError ||
+        (error instanceof Error &&
+          (error.message === "Pembelian langsung tidak ditemukan." ||
+            error.message === "Invoice/bon pembelian ini sudah dilampirkan." ||
+            error.message ===
+            "Pembelian sudah diterima dan tidak dapat dilampiri invoice/bon." ||
+          error.message ===
+            "Pembelian harus disetujui Direktur sebelum invoice/bon dilampirkan." ||
+          error.message.startsWith("Status pembelian berubah.")))
+        ? error.message
+        : "Invoice/bon gagal dilampirkan. Muat ulang dan coba kembali.",
+    );
+  }
+
+  revalidatePath("/apps/logistics");
+  revalidatePath("/apps/logistics/stock");
+  revalidatePath("/apps/finance");
+  revalidatePath("/apps/tickets");
+  return {
+    success: true,
+    message: "Invoice/bon berhasil dilampirkan dan dikirim ke antrean Keuangan.",
   };
 }
 
@@ -976,27 +1325,63 @@ export async function receiveDirectStockPurchase(
 
   const purchaseId = formData.get("purchaseId");
   const submittedPhotos = formData.getAll("receivedPhotos");
-  const receivedPhotos = submittedPhotos.filter(
-    (photo): photo is string => typeof photo === "string",
+  const receivedPhotoFiles = submittedPhotos.filter(
+    (photo): photo is File => photo instanceof File,
   );
   if (
     typeof purchaseId !== "string" ||
     !purchaseId.trim() ||
-    receivedPhotos.length !== submittedPhotos.length ||
-    receivedPhotos.length < 1 ||
-    receivedPhotos.length > MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS ||
-    receivedPhotos.some(
-      (photo) =>
-        photo.length > 2048 ||
-        !isDirectStockPurchaseCloudinaryPhotoUrl(photo),
-    ) ||
-    new Set(receivedPhotos).size !== receivedPhotos.length
+    receivedPhotoFiles.length !== submittedPhotos.length ||
+    receivedPhotoFiles.length < 1 ||
+    receivedPhotoFiles.length > MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS
   ) {
     return directPurchaseFailure(
-      `Pilih pembelian dan unggah 1 sampai ${MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto bukti penerimaan yang valid.`,
+      `Pilih pembelian dan lampirkan 1 sampai ${MAX_DIRECT_STOCK_PURCHASE_RECEIPT_PHOTOS} foto bukti penerimaan.`,
     );
   }
+
+  const receivedPhotos: string[] = [];
+  let receiptRecorded = false;
   try {
+    const purchase = await prisma.directStockPurchase.findUnique({
+      where: { id: purchaseId },
+      select: {
+        isApprovedByDirector: true,
+        status: true,
+      },
+    });
+    if (!purchase) {
+      return directPurchaseFailure("Pembelian langsung tidak ditemukan.");
+    }
+    if (!purchase.isApprovedByDirector) {
+      return directPurchaseFailure(
+        "Pembelian langsung harus disetujui Direktur sebelum diterima.",
+      );
+    }
+    if (purchase.status !== DirectStockPurchaseStatus.PENDING_RECEIPT) {
+      return directPurchaseFailure(
+        "Pembelian tidak ditemukan atau sudah pernah diterima.",
+      );
+    }
+
+    const financeProof = await prisma.paymentTransaction.findFirst({
+      where: {
+        directStockPurchaseId: purchaseId,
+        status: PaymentStatus.PAID,
+        proofOfTransferUrl: { not: null },
+      },
+      select: { id: true },
+    });
+    if (!financeProof) {
+      return directPurchaseFailure(
+        "Bukti pembayaran dari Keuangan wajib diunggah sebelum penerimaan.",
+      );
+    }
+
+    for (const photo of receivedPhotoFiles) {
+      receivedPhotos.push(await saveDirectStockPurchasePhoto(photo));
+    }
+
     const purchaseNumber = await prisma.$transaction(async (transaction) => {
       const purchase = await transaction.directStockPurchase.findUnique({
         where: { id: purchaseId },
@@ -1131,6 +1516,7 @@ export async function receiveDirectStockPurchase(
       }
       return purchase.purchaseNumber;
     }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    receiptRecorded = true;
 
     revalidatePath("/apps/logistics/stock");
     revalidatePath("/apps/logistics");
@@ -1141,24 +1527,32 @@ export async function receiveDirectStockPurchase(
       purchaseNumber,
     };
   } catch (error) {
-    for (const photoUrl of receivedPhotos) {
-      try {
-        await removeDirectStockPurchasePhoto(photoUrl);
-      } catch (cleanupError) {
-        console.error("Direct stock purchase photo cleanup failed:", cleanupError);
+    if (!receiptRecorded) {
+      for (const photoUrl of receivedPhotos) {
+        try {
+          await removeDirectStockPurchasePhoto(photoUrl);
+        } catch (cleanupError) {
+          console.error("Direct stock purchase photo cleanup failed:", cleanupError);
+        }
       }
     }
     console.error("Direct stock purchase receipt failed:", error);
-    return directPurchaseFailure(
-      error instanceof Error &&
-        (error.message.startsWith("Pembelian tidak ditemukan") ||
-          error.message === "Pembelian langsung tidak ditemukan." ||
-          error.message ===
-            "Pembelian langsung harus disetujui Direktur sebelum diterima." ||
-          error.message ===
-            "Bukti pembayaran dari Keuangan wajib diunggah sebelum penerimaan.")
+    const publicMessage =
+      error instanceof DirectStockPurchasePhotoValidationError ||
+      error instanceof CloudinaryConfigurationError
         ? error.message
-        : "Penerimaan pembelian gagal dicatat. Periksa data lalu coba kembali.",
+        : error instanceof Error &&
+            (error.message.startsWith("Pembelian tidak ditemukan") ||
+              error.message === "Pembelian langsung tidak ditemukan." ||
+              error.message ===
+                "Pembelian langsung harus disetujui Direktur sebelum diterima." ||
+              error.message ===
+                "Bukti pembayaran dari Keuangan wajib diunggah sebelum penerimaan.")
+          ? error.message
+          : null;
+    return directPurchaseFailure(
+      publicMessage ??
+        "Penerimaan pembelian gagal dicatat. Periksa data lalu coba kembali.",
     );
   }
 }
@@ -2342,13 +2736,11 @@ export async function checkTicketItemsStock(
       if (
         ticket.items.length !== ticketItemIds.length ||
         ticket.items.some(
-          (item) =>
-            item.status !== FulfillmentStatus.PENDING ||
-            item.categoryHint !== TicketCategoryHint.WAREHOUSE,
+          (item) => item.status !== FulfillmentStatus.PENDING,
         )
       ) {
         throw new Error(
-          "Sebagian item sudah diproses atau tidak lagi dialokasikan ke gudang. Muat ulang tiket.",
+          "Sebagian item sudah diproses. Muat ulang tiket.",
         );
       }
       const stockItems = await transaction.stockItem.findMany({
@@ -2360,48 +2752,102 @@ export async function checkTicketItemsStock(
           unitPrice: true,
         },
       });
-      const evaluation = evaluateWarehouseStock(ticket.items, stockItems);
-      if (!evaluation.available) return evaluation;
-      const movers = await transaction.user.findMany({
-        where: { role: UserRole.MOVER, isActive: true },
-        orderBy: { name: "asc" },
-        select: { id: true, name: true },
-      });
-      const vehicles = await transaction.vehicle.findMany({
+      const availability = evaluateWarehouseItemAvailability(
+        ticket.items,
+        stockItems,
+      );
+      if (!availability.success) return availability;
+      const activePurchases = await transaction.directStockPurchase.findMany({
         where: {
-          status: "AVAILABLE",
-          odometerInitialized: true,
-          deliveryOrders: {
-            none: { status: { in: [DOStatus.PENDING, DOStatus.IN_TRANSIT] } },
-          },
+          ticketId,
+          status: DirectStockPurchaseStatus.PENDING_RECEIPT,
         },
-        orderBy: { plateNumber: "asc" },
         select: {
-          id: true,
-          plateNumber: true,
-          vehicleType: true,
-          brand: true,
-          modelName: true,
+          purchaseNumber: true,
+          items: { select: { itemName: true, unit: true } },
         },
       });
+      const activePurchaseByItem = new Map<string, string>();
+      for (const purchase of activePurchases) {
+        for (const item of purchase.items) {
+          activePurchaseByItem.set(
+            ticketStockItemKey(item.itemName, item.unit),
+            purchase.purchaseNumber,
+          );
+        }
+      }
+      const items = availability.items.map((item) => {
+        const pendingPurchaseNumber = activePurchaseByItem.get(
+          ticketStockItemKey(item.itemName, item.unit),
+        );
+        return {
+          ...item,
+          ready: pendingPurchaseNumber ? false : item.ready,
+          pendingPurchaseNumber,
+          message: pendingPurchaseNumber
+            ? `Selesaikan pesanan ${pendingPurchaseNumber} sebelum memenuhi atau memesan barang ini kembali.`
+            : item.message,
+        };
+      });
+      const readyItemIds = items
+        .filter((item) => item.ready)
+        .map((item) => item.ticketItemId);
+      const needsOrderItemIds = items
+        .filter((item) => !item.ready && !item.pendingPurchaseNumber)
+        .map((item) => item.ticketItemId);
+      const [movers, vehicles] =
+        readyItemIds.length > 0
+          ? await Promise.all([
+              transaction.user.findMany({
+                where: { role: UserRole.MOVER, isActive: true },
+                orderBy: { name: "asc" },
+                select: { id: true, name: true },
+              }),
+              transaction.vehicle.findMany({
+                where: {
+                  status: "AVAILABLE",
+                  odometerInitialized: true,
+                  deliveryOrders: {
+                    none: {
+                      status: { in: [DOStatus.PENDING, DOStatus.IN_TRANSIT] },
+                    },
+                  },
+                },
+                orderBy: { plateNumber: "asc" },
+                select: {
+                  id: true,
+                  plateNumber: true,
+                  vehicleType: true,
+                  brand: true,
+                  modelName: true,
+                },
+              }),
+            ])
+          : [[], []];
       return {
-        ...evaluation,
+        success: true as const,
+        message: "Status stok diperiksa.",
+        items,
+        readyItemIds,
+        needsOrderItemIds,
         movers,
         vehicles,
         moverAssigneeId: ticket.moverAssigneeId,
       };
     });
 
-    if (!stockCheck.available) {
+    if (!stockCheck.success) {
       return {
         success: false,
-        fallbackRequired: stockCheck.fallbackRequired,
         message: stockCheck.message,
       };
     }
     return {
       success: true,
-      message: "Stok gudang tersedia untuk item terpilih.",
+      message: "Status stok setiap barang berhasil diperiksa.",
+      stockAvailability: stockCheck.items,
+      readyItemIds: stockCheck.readyItemIds,
+      needsOrderItemIds: stockCheck.needsOrderItemIds,
       movers: stockCheck.movers,
       vehicles: stockCheck.vehicles,
       moverAssigneeId: stockCheck.moverAssigneeId,
@@ -2469,11 +2915,14 @@ export async function switchTicketItemsToPurchase(
         ticket.items.some(
           (item) =>
             item.status !== FulfillmentStatus.PENDING ||
-            item.categoryHint !== TicketCategoryHint.WAREHOUSE,
+            ![
+              TicketCategoryHint.WAREHOUSE,
+              TicketCategoryHint.PURCHASE,
+            ].includes(item.categoryHint),
         )
       ) {
         throw new Error(
-          "Sebagian item sudah diproses atau tidak lagi dialokasikan ke gudang. Muat ulang tiket.",
+          "Sebagian item sudah diproses. Muat ulang tiket.",
         );
       }
       const stockItems = await transaction.stockItem.findMany({
@@ -2485,26 +2934,36 @@ export async function switchTicketItemsToPurchase(
           unitPrice: true,
         },
       });
-      const stockEvaluation = evaluateWarehouseStock(ticket.items, stockItems);
-      if (stockEvaluation.available) {
+      const availability = evaluateWarehouseItemAvailability(
+        ticket.items,
+        stockItems,
+      );
+      if (!availability.success) {
+        throw new Error(availability.message);
+      }
+      if (availability.items.some((item) => item.ready)) {
         throw new Error(
-          "Stok gudang masih mencukupi. Silakan lanjutkan dengan membuat DO.",
+          "Sebagian item masih tersedia di gudang. Teruskan hanya item yang berstatus perlu pemesanan.",
         );
       }
-      if (!stockEvaluation.fallbackRequired) {
-        throw new Error(stockEvaluation.message);
-      }
-      const changed = await transaction.ticketItem.updateMany({
-        where: {
-          ticketId,
-          id: { in: ticketItemIds },
-          status: FulfillmentStatus.PENDING,
-          categoryHint: TicketCategoryHint.WAREHOUSE,
-        },
-        data: { categoryHint: TicketCategoryHint.PURCHASE },
-      });
-      if (changed.count !== ticketItemIds.length) {
-        throw new Error("Status item berubah. Muat ulang tiket lalu coba kembali.");
+      const warehouseItemIds = ticket.items
+        .filter((item) => item.categoryHint === TicketCategoryHint.WAREHOUSE)
+        .map((item) => item.id);
+      if (warehouseItemIds.length > 0) {
+        const changed = await transaction.ticketItem.updateMany({
+          where: {
+            ticketId,
+            id: { in: warehouseItemIds },
+            status: FulfillmentStatus.PENDING,
+            categoryHint: TicketCategoryHint.WAREHOUSE,
+          },
+          data: { categoryHint: TicketCategoryHint.PURCHASE },
+        });
+        if (changed.count !== warehouseItemIds.length) {
+          throw new Error(
+            "Status item berubah. Muat ulang tiket lalu coba kembali.",
+          );
+        }
       }
       await syncTicketStatus(transaction, ticketId);
       await transaction.ticketAuditLog.create({
@@ -2513,7 +2972,7 @@ export async function switchTicketItemsToPurchase(
           ticketId,
           userId: session.user.id,
           action: "LOGISTICS_SWITCHED_TO_PURCHASE",
-          notes: `Sumber item dialihkan dari gudang ke pengadaan baru: ${ticket.items
+          notes: `Item dengan stok belum mencukupi diteruskan ke pengadaan baru: ${ticket.items
             .map((item) => item.itemName)
             .join(", ")}.`,
         },
@@ -2532,7 +2991,7 @@ export async function switchTicketItemsToPurchase(
   revalidatePath("/apps/logistics");
   return {
     success: true,
-    message: "Item dialihkan ke pengadaan baru dan siap diproses melalui PO.",
+    message: "Item yang belum ready diteruskan ke form pesanan Logistik.",
   };
 }
 
@@ -2685,6 +3144,36 @@ export async function createLogisticsPurchaseOrderForTicket(
         throw new Error(
           "Nama, jumlah, dan satuan PO harus sesuai dengan item tiket yang masih menunggu pemenuhan.",
         );
+      }
+      const activeDirectPurchases =
+        await transaction.directStockPurchase.findMany({
+          where: {
+            ticketId,
+            status: DirectStockPurchaseStatus.PENDING_RECEIPT,
+          },
+          select: {
+            purchaseNumber: true,
+            items: { select: { itemName: true, unit: true } },
+          },
+        });
+      const activeDirectPurchaseByItem = new Map<string, string>();
+      for (const purchase of activeDirectPurchases) {
+        for (const item of purchase.items) {
+          activeDirectPurchaseByItem.set(
+            ticketStockItemKey(item.itemName, item.unit),
+            purchase.purchaseNumber,
+          );
+        }
+      }
+      for (const item of items) {
+        const purchaseNumber = activeDirectPurchaseByItem.get(
+          ticketStockItemKey(item.itemName, item.unit),
+        );
+        if (purchaseNumber) {
+          throw new Error(
+            `Item tiket ${item.itemName} (${item.unit}) masih ada dalam pesanan langsung ${purchaseNumber}. Selesaikan penerimaan pesanan tersebut sebelum membuat PO.`,
+          );
+        }
       }
       const selectedStockItems = await transaction.stockItem.findMany({
         where: { id: { in: [...new Set(items.map((item) => item.stockItemId))] } },
@@ -2884,13 +3373,11 @@ async function createWarehouseDeliveryOrder(
         selectedTicketItemIds &&
         (selectedItems.length !== selectedTicketItemIds.length ||
           selectedItems.some(
-            (item) =>
-              item.status !== FulfillmentStatus.PENDING ||
-              item.categoryHint !== TicketCategoryHint.WAREHOUSE,
+            (item) => item.status !== FulfillmentStatus.PENDING,
           ))
       ) {
         throw new Error(
-          "Sebagian item sudah diproses atau tidak lagi dialokasikan ke gudang. Muat ulang tiket.",
+          "Sebagian item sudah diproses. Muat ulang tiket.",
         );
       }
       if (selectedItems.length === 0) {
@@ -3938,6 +4425,7 @@ export async function processFinanceDirectStockPurchasePayment(
           vendorName: true,
           totalAmount: true,
           isApprovedByDirector: true,
+          vendorInvoiceUrl: true,
           status: true,
           ticketId: true,
           ticket: { select: { projectId: true } },
@@ -3946,6 +4434,9 @@ export async function processFinanceDirectStockPurchasePayment(
       if (!purchase) throw new Error("Pembelian langsung tidak ditemukan.");
       if (!purchase.isApprovedByDirector) {
         throw new Error("Pembelian langsung wajib disetujui Direktur sebelum pembayaran.");
+      }
+      if (!purchase.vendorInvoiceUrl) {
+        throw new Error("Logistik harus melampirkan invoice/bon sebelum pembayaran.");
       }
       await transaction.$queryRaw<{ locked: boolean }[]>`
         WITH payment_lock AS MATERIALIZED (
@@ -4047,6 +4538,8 @@ export async function processFinanceDirectStockPurchasePayment(
         (error.message === "Pembelian langsung tidak ditemukan." ||
           error.message ===
             "Pembelian langsung wajib disetujui Direktur sebelum pembayaran." ||
+          error.message ===
+            "Logistik harus melampirkan invoice/bon sebelum pembayaran." ||
         error.message === "Pembelian langsung ini sudah lunas." ||
           error.message.startsWith("Saldo buku bank/kas") ||
           error.message.startsWith("Buku bank/kas sumber") ||

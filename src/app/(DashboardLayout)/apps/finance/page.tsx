@@ -88,7 +88,6 @@ export default async function FinancePage({
     vehicleFuelRequests,
     documentSignoffInvoices,
     documentSignoffConfirmations,
-    documentSignoffDeliveryOrders,
     cashflowMonthlyAggregates,
   ] = await Promise.all([
     prisma.purchaseOrder.findMany({
@@ -200,7 +199,10 @@ export default async function FinancePage({
       },
     }),
     prisma.directStockPurchase.findMany({
-      where: { isApprovedByDirector: true },
+      where: {
+        isApprovedByDirector: true,
+        vendorInvoiceUrl: { not: null },
+      },
       orderBy: { approvedAt: "asc" },
       take: 100,
       select: {
@@ -211,6 +213,7 @@ export default async function FinancePage({
         paymentBankName: true,
         paymentAccountNumber: true,
         paymentAccountName: true,
+        vendorInvoiceUrl: true,
         createdAt: true,
         items: {
           select: {
@@ -710,21 +713,6 @@ export default async function FinancePage({
           },
         })
       : Promise.resolve([]),
-    session.user.role === UserRole.FINANCE
-      ? prisma.deliveryOrder.findMany({
-          where: { signedAt: { not: null }, acknowledgedAt: null },
-          orderBy: { createdAt: "asc" },
-          select: {
-            id: true,
-            publicCode: true,
-            doNumber: true,
-            signedBy: { select: { name: true } },
-            signedAt: true,
-            acknowledgedBy: { select: { name: true } },
-            acknowledgedAt: true,
-          },
-        })
-      : Promise.resolve([]),
     prisma.$queryRaw<
       {
         monthKey: string;
@@ -1034,17 +1022,6 @@ export default async function FinancePage({
             acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
             previewUrl: `/api/documents/transactions?kind=KO&id=${encodeURIComponent(document.id)}`,
           })),
-          ...documentSignoffDeliveryOrders.map((document) => ({
-            id: document.id,
-            kind: "DO" as const,
-            number: document.doNumber,
-            action: "acknowledge" as const,
-            signedByName: document.signedBy?.name ?? null,
-            signedAt: document.signedAt?.toISOString() ?? null,
-            acknowledgedByName: document.acknowledgedBy?.name ?? null,
-            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
-            previewUrl: `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(document.publicCode)}`,
-          })),
         ]}
         purchaseOrders={orders.map((order) => ({
           id: order.id,
@@ -1126,6 +1103,7 @@ export default async function FinancePage({
           paymentBankName: purchase.paymentBankName,
           paymentAccountNumber: purchase.paymentAccountNumber,
           paymentAccountName: purchase.paymentAccountName,
+          vendorInvoiceUrl: purchase.vendorInvoiceUrl,
           createdAt: purchase.createdAt.toISOString(),
           items: purchase.items.map((item) => ({
             itemName: item.itemName,

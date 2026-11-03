@@ -34,11 +34,21 @@ export async function updateTransactionDocumentSignature(
         : UserRole.LOGISTICS
       : kind === "INVOICE"
         ? UserRole.DIRECTOR
-        : UserRole.FINANCE;
+        : kind === "DO"
+          ? UserRole.KOORDINATOR
+          : UserRole.FINANCE;
   if (session.user.role !== requiredRole) {
     return {
       success: false,
-      message: `Aksi ini hanya dapat dilakukan oleh ${requiredRole === UserRole.FINANCE ? "Keuangan" : requiredRole === UserRole.LOGISTICS ? "Logistik" : "Direktur"}.`,
+      message: `Aksi ini hanya dapat dilakukan oleh ${
+        requiredRole === UserRole.FINANCE
+          ? "Keuangan"
+          : requiredRole === UserRole.LOGISTICS
+            ? "Logistik"
+            : requiredRole === UserRole.KOORDINATOR
+              ? "Koordinator Lapangan"
+              : "Direktur"
+      }.`,
     };
   }
 
@@ -155,7 +165,7 @@ export async function updateTransactionDocumentSignature(
             throw new Error("DO harus ditandatangani Logistik terlebih dahulu.");
           }
           if (document.acknowledgedAt) {
-            throw new Error("DO sudah dikonfirmasi Keuangan.");
+            throw new Error("DO sudah dikonfirmasi Koordinator Lapangan.");
           }
           const result = await transaction.deliveryOrder.updateMany({
             where: { id, signedAt: { not: null }, acknowledgedAt: null },

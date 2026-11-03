@@ -86,6 +86,9 @@ type DirectStockPurchaseRow = {
   receivedAt: string | null;
   arrivalPhotoUrl: string | null;
   receivedPhotos: string[];
+  vendorInvoiceUrl: string | null;
+  vendorInvoiceUploadedAt: string | null;
+  vendorInvoiceUploadedBy: { name: string | null } | null;
   items: { id: string; itemName: string; quantity: string; unit: string }[];
   receivedBy: { name: string | null } | null;
   ticket: { id: string; ticketNumber: string; title: string } | null;
@@ -359,6 +362,8 @@ export default function LogisticsHub({
           vendors={vendors}
           vehicles={vehicles}
           stockItems={stockItems}
+          cloudinaryCloudName={cloudinaryCloudName}
+          cloudinaryApiKey={cloudinaryApiKey}
           initialOpenSheet={initialOpenSheet}
         />
       </TabsContent>
@@ -370,11 +375,11 @@ export default function LogisticsHub({
           role={role}
           vendors={vendors}
           vehicles={vehicles}
+          cloudinaryCloudName={cloudinaryCloudName}
+          cloudinaryApiKey={cloudinaryApiKey}
           mode="stock"
           stockItems={stockItems}
           stockPurchases={stockPurchases}
-          cloudinaryCloudName={cloudinaryCloudName}
-          cloudinaryApiKey={cloudinaryApiKey}
           purchaseTickets={tickets.map(({ id, ticketNumber, title }) => ({
             id,
             ticketNumber,
@@ -388,7 +393,7 @@ export default function LogisticsHub({
           <DocumentSignoffQueue
             tasks={documentSignoffTasks}
             title="Tanda Tangan Dokumen Logistik"
-            description="Logistik menandatangani KO dan DO. QR verifikasi menjadi valid setelah Keuangan menyelesaikan konfirmasi."
+            description="Logistik menandatangani KO dan DO. QR tanda tangan DO tersedia setelah ditandatangani dan menunjukkan status valid setelah Koordinator Lapangan mengonfirmasi."
           />
           <div className="grid gap-5 xl:grid-cols-2">
           <Card>

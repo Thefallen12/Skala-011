@@ -50,11 +50,19 @@ type PurchaseTicket = {
   title: string;
 };
 
+type InitialPurchaseItem = {
+  ticketItemId: string;
+  itemName: string;
+  quantity: number;
+  unit: string;
+};
+
 type PurchaseLine = {
   key: number;
   stockItemId: string;
   quantity: string;
   unitPrice: string;
+  ticketItemId?: string;
 };
 
 const currency = new Intl.NumberFormat("id-ID", {
@@ -67,25 +75,48 @@ export default function DirectStockPurchaseForm({
   stockItems,
   vendors,
   tickets = [],
+  initialTicketId,
+  initialTicketItems = [],
   onCancel,
   onCreated,
 }: {
   stockItems: PurchaseStockItem[];
   vendors: PurchaseVendorOption[];
   tickets?: PurchaseTicket[];
+  initialTicketId?: string;
+  initialTicketItems?: InitialPurchaseItem[];
   onCancel?: () => void;
   onCreated?: (message: string) => void;
 }) {
   const router = useRouter();
-  const nextRowKey = useRef(1);
-  const [items, setItems] = useState<PurchaseLine[]>([
-    { key: 0, stockItemId: "", quantity: "", unitPrice: "" },
-  ]);
+  const nextRowKey = useRef(initialTicketItems.length || 1);
+  const [items, setItems] = useState<PurchaseLine[]>(() => {
+    if (initialTicketItems.length === 0) {
+      return [{ key: 0, stockItemId: "", quantity: "", unitPrice: "" }];
+    }
+    return initialTicketItems.map((item, index) => {
+      const matches = stockItems.filter(
+        (stockItem) =>
+          stockItem.name.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID") ===
+            item.itemName.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID") &&
+          stockItem.unit.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID") ===
+            item.unit.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID"),
+      );
+      const stockItem = matches.length === 1 ? matches[0] : undefined;
+      return {
+        key: index,
+        stockItemId: stockItem?.id ?? "",
+        quantity: String(item.quantity),
+        unitPrice: stockItem?.unitPrice ?? "",
+        ticketItemId: item.ticketItemId,
+      };
+    });
+  });
   const [catalogItems, setCatalogItems] = useState(stockItems);
   const [vendorId, setVendorId] = useState("");
   const [vendorBankAccountId, setVendorBankAccountId] = useState("");
   const [availableVendors, setAvailableVendors] = useState(vendors);
-  const [ticketId, setTicketId] = useState("");
+  const [ticketId, setTicketId] = useState(initialTicketId ?? "");
   const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemUnit, setNewItemUnit] = useState("pcs");
@@ -118,6 +149,14 @@ export default function DirectStockPurchaseForm({
     0,
   );
   const total = includeTax ? subtotal * 1.11 : subtotal;
+  const hasInvalidItems = items.some(
+    (line) =>
+      !line.stockItemId ||
+      !Number.isFinite(Number(line.quantity)) ||
+      Number(line.quantity) <= 0 ||
+      !Number.isFinite(Number(line.unitPrice)) ||
+      Number(line.unitPrice) <= 0,
+  );
 
   const updateLine = (key: number, patch: Partial<PurchaseLine>) => {
     setItems((current) =>
@@ -226,10 +265,11 @@ export default function DirectStockPurchaseForm({
           vendorId: vendor.id,
           vendorBankAccountId: selectedBankAccount?.id,
           ...(ticketId ? { ticketId } : {}),
-          items: items.map(({ stockItemId, quantity, unitPrice }) => ({
+          items: items.map(({ stockItemId, quantity, unitPrice, ticketItemId }) => ({
             stockItemId,
             quantity,
             unitPrice,
+            ...(ticketItemId ? { ticketItemId } : {}),
           })),
           reference,
           notes,
@@ -260,6 +300,12 @@ export default function DirectStockPurchaseForm({
           <p className="text-sm">Stok bertambah setelah barang diterima.</p>
         </div>
       </div>
+      <p className="rounded-md border border-blue-500/30 bg-blue-500/5 p-3 text-sm text-muted-foreground">
+        Invoice/bon faktur dilampirkan setelah pengajuan ini disetujui Direktur.
+        Setelah disetujui, buka tab Stok Gudang dan unggah dokumen pada kolom
+        Invoice / BON Faktur. Keuangan baru dapat memproses pembayaran setelah
+        dokumen dilampirkan.
+      </p>
 
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -284,7 +330,7 @@ export default function DirectStockPurchaseForm({
             setVendorId(value);
             setVendorBankAccountId("");
           }}
-          disabled={isPending}
+          disabled={isPending || Boolean(initialTicketId)}
         >
           <SelectTrigger id="direct-stock-vendor">
             <SelectValue placeholder="Pilih vendor" />
@@ -347,12 +393,12 @@ export default function DirectStockPurchaseForm({
 
       <div className="space-y-2">
         <Label htmlFor="direct-stock-ticket">
-          Tautkan ke Tiket / Permintaan (opsional)
+          Tautkan ke Tiket / Permintaan{initialTicketId ? "" : " (opsional)"}
         </Label>
         <Select
           value={ticketId || "none"}
           onValueChange={(value) => setTicketId(value === "none" ? "" : value)}
-          disabled={isPending}
+          disabled={isPending || Boolean(initialTicketId)}
         >
           <SelectTrigger id="direct-stock-ticket">
             <SelectValue placeholder="Tidak ditautkan" />
@@ -384,6 +430,7 @@ export default function DirectStockPurchaseForm({
               disabled={
                 isPending ||
                 isSavingNewItem ||
+                Boolean(initialTicketId) ||
                 catalogItems.length === 0 ||
                 items.length >= 50
               }
@@ -401,7 +448,10 @@ export default function DirectStockPurchaseForm({
                 setNewItemDialogOpen(true);
               }}
               disabled={
-                isPending || isSavingNewItem || items.length >= 50
+                isPending ||
+                isSavingNewItem ||
+                Boolean(initialTicketId) ||
+                items.length >= 50
               }
             >
               Tambah Jenis Barang
@@ -440,7 +490,7 @@ export default function DirectStockPurchaseForm({
                           unitPrice: stockItem.unitPrice,
                         });
                       }}
-                      disabled={isPending}
+                      disabled={isPending || Boolean(initialTicketId)}
                     >
                       <SelectTrigger
                         className="min-w-48"
@@ -468,7 +518,7 @@ export default function DirectStockPurchaseForm({
                       onChange={(event) =>
                         updateLine(line.key, { quantity: event.target.value })
                       }
-                      disabled={isPending}
+                      disabled={isPending || Boolean(initialTicketId)}
                     />
                   </TableCell>
                   <TableCell>
@@ -490,7 +540,11 @@ export default function DirectStockPurchaseForm({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      disabled={isPending || items.length === 1}
+                      disabled={
+                        isPending ||
+                        Boolean(initialTicketId) ||
+                        items.length === 1
+                      }
                       onClick={() =>
                         setItems((current) =>
                           current.filter((item) => item.key !== line.key),
@@ -542,6 +596,12 @@ export default function DirectStockPurchaseForm({
       <p className="text-right text-sm font-semibold">
         Total estimasi: {currency.format(total)}
       </p>
+      {hasInvalidItems && (
+        <p className="text-sm text-destructive" role="alert">
+          Pilih barang, isi jumlah, dan masukkan harga satuan lebih besar dari
+          Rp 0 untuk setiap baris sebelum mencatat pembelian.
+        </p>
+      )}
 
       {message && (
         <p className="text-sm text-muted-foreground" role="status">
@@ -566,7 +626,8 @@ export default function DirectStockPurchaseForm({
             isPending ||
             isSavingNewItem ||
             !availableVendors.length ||
-            !catalogItems.length
+            !catalogItems.length ||
+            hasInvalidItems
           }
         >
           {isPending ? "Mencatat..." : "Catat Pembelian"}

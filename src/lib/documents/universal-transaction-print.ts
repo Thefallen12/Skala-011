@@ -56,12 +56,32 @@ const currency = (amount: number) =>
 const detail = (row: { label: string; value: string }) =>
   `<p class="detail"><strong>${escapeHtml(row.label)}</strong><span>:</span><span>${escapeHtml(row.value || "-")}</span></p>`;
 
+const bilingualText = (value: string, className: string) => {
+  const [indonesian, ...englishParts] = value.split("/");
+  const english = englishParts.join("/").trim();
+  return `<span class="${className}"><span>${escapeHtml(indonesian.trim())}</span>${
+    english ? `<small>${escapeHtml(english)}</small>` : ""
+  }</span>`;
+};
+
 export function renderUniversalTransactionDocument(
   document: UniversalDocumentData,
 ) {
+  const isDeliveryOrder = document.kind === "DO";
   const rows = document.items
     .map(
-      (item, index) => `
+      (item, index) =>
+        isDeliveryOrder
+          ? `
+        <tr>
+          <td class="center">${index + 1}</td>
+          <td class="center">${escapeHtml(item.itemCode || "-")}</td>
+          <td>${escapeHtml(item.description)}</td>
+          <td class="${isDeliveryOrder ? "center" : "number"}">${escapeHtml(item.quantity.toLocaleString("id-ID"))}</td>
+          <td class="center">${escapeHtml(item.unit)}</td>
+          <td>${escapeHtml(item.remarks || "-")}</td>
+        </tr>`
+          : `
         <tr>
           <td class="center">${index + 1}</td>
           <td class="center">${escapeHtml(item.itemCode || "-")}</td>
@@ -94,26 +114,28 @@ export function renderUniversalTransactionDocument(
         .join("")}</ol></section>`
     : "";
   const approval = [
-    document.qrDataUrl
-      ? `<section class="approval"><strong>Verifikasi dokumen</strong><img src="${escapeHtml(document.qrDataUrl)}" alt="QR verifikasi dokumen" /></section>`
-      : "",
     document.approvalQrDataUrl
       ? `<section class="approval"><strong>Verifikasi persetujuan PO</strong><img src="${escapeHtml(document.approvalQrDataUrl)}" alt="QR verifikasi persetujuan PO" /></section>`
       : "",
   ].join("");
   const signatures = document.signatures
-    .map(
-      (signature) => `
-        <div class="signature">
-          <strong>${escapeHtml(signature.heading)}</strong>
+    .map((signature, index) => {
+      const signatureQr =
+        index === 0 && document.qrDataUrl
+          ? `<span class="signature-qr"><img src="${escapeHtml(document.qrDataUrl)}" alt="QR verifikasi dokumen" /></span>`
+          : "";
+      return `
+        <div class="signature${signatureQr ? " signature-with-qr" : ""}">
+          ${bilingualText(signature.heading, "signature-heading")}
+          ${signatureQr}
           <span class="signature-name">${
             signature.name
               ? `<strong>${escapeHtml(signature.name)}</strong>`
               : "........................"
           }</span>
-          <span>${escapeHtml(signature.role)}</span>
-        </div>`,
-    )
+          ${bilingualText(signature.role, "signature-role")}
+        </div>`;
+    })
     .join("");
 
   return `<!doctype html>
@@ -165,9 +187,15 @@ export function renderUniversalTransactionDocument(
           .doc-terms ol { margin: 5px 0; padding-left: 18px; }
           .approval { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding: 8px 10px; border-left: 4px solid #102a4d; background: #f1f5f9; }
           .approval img { width: 58px; height: 58px; object-fit: contain; }
-          .doc-signatures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; text-align: center; break-inside: avoid; }
-          .signature { min-height: 95px; display: flex; flex-direction: column; justify-content: space-between; }
-          .signature-name { min-height: 42px; display: flex; align-items: end; justify-content: center; }
+          .doc-signatures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; text-align: center; break-inside: avoid; }
+          .signature { min-height: 100px; display: flex; flex-direction: column; align-items: center; }
+          .signature-heading, .signature-role { display: flex; width: 100%; flex-direction: column; align-items: center; line-height: 1.25; text-align: center; }
+          .signature-heading { min-height: 26px; font-weight: 700; }
+          .signature-heading small, .signature-role small { margin-top: 2px; color: #64748b; font-size: 7.5pt; font-weight: 400; }
+          .signature-name { min-height: 42px; display: flex; align-items: end; justify-content: center; margin-top: auto; }
+          .signature-with-qr { min-height: 160px; }
+          .signature-qr { display: flex; width: 100%; align-self: stretch; align-items: center; justify-content: center; margin: 4px 0 0; text-align: center; }
+          .signature-qr img { display: block; width: 84px; height: 84px; margin-inline: auto; object-fit: contain; }
           .doc-footer { display: flex; align-items: center; gap: 10px; margin-top: 18px; color: #c9772d; font-weight: 900; letter-spacing: 1.5px; }
           .doc-footer::before { content: ""; height: 4px; flex: 1; background: #c9772d; }
           @media print {
@@ -196,7 +224,11 @@ export function renderUniversalTransactionDocument(
           </section>
           <table class="items">
             <thead>
-              <tr><th>No</th><th>KODE BARANG / ITEM CODE</th><th>DESKRIPSI BARANG / DESCRIPTION</th><th>QTY</th><th>SATUAN / UNIT</th><th>HARGA SATUAN / UNIT PRICE</th><th>TOTAL / AMOUNT</th></tr>
+              ${
+                isDeliveryOrder
+                  ? "<tr><th>No</th><th>KODE BARANG / ITEM CODE</th><th>MATERIAL</th><th>QTY</th><th>SATUAN / UNIT</th><th>KETERANGAN</th></tr>"
+                  : "<tr><th>No</th><th>KODE BARANG / ITEM CODE</th><th>DESKRIPSI BARANG / DESCRIPTION</th><th>QTY</th><th>SATUAN / UNIT</th><th>HARGA SATUAN / UNIT PRICE</th><th>TOTAL / AMOUNT</th></tr>"
+              }
             </thead>
             <tbody>${rows}</tbody>
           </table>

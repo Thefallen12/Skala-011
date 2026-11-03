@@ -14,6 +14,7 @@ import type {
   TicketProjectOption,
   TicketRow,
 } from "@/app/(DashboardLayout)/types/ticket";
+import type { PurchaseVendorOption } from "@/app/components/forms/CreateVendorInline";
 import { TicketStatus, TicketType, UserRole } from "@/generated/prisma/enums";
 import {
   formatTicketCurrency,
@@ -86,12 +87,22 @@ function isTicketStatus(value: string | undefined): value is TicketStatus {
 export default function TicketsApp({
   tickets,
   projects,
+  vendors,
+  stockItems,
   role,
   initialOpenSheet,
   initialFilter,
 }: {
   tickets: TicketRow[];
   projects: TicketProjectOption[];
+  vendors: PurchaseVendorOption[];
+  stockItems: {
+    id: string;
+    sku: string;
+    name: string;
+    unit: string;
+    unitPrice: string;
+  }[];
   role: TicketPageRole;
   initialOpenSheet?: string;
   initialFilter?: string;
@@ -255,6 +266,8 @@ export default function TicketsApp({
           <TicketListing
             tickets={visibleTickets}
             projects={projects}
+            vendors={vendors}
+            stockItems={stockItems}
             role={role}
             ticketSearch={ticketSearch}
             searchTickets={setTicketSearch}

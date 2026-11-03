@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import BreadcrumbComp from "../../layout/shared/breadcrumb/BreadcrumbComp";
 import LogisticsHub from "@/app/components/apps/logistics/LogisticsHub";
 import MoverWorkspace from "@/app/components/apps/logistics/MoverWorkspace";
+import DocumentSignoffQueue from "@/app/components/apps/documents/DocumentSignoffQueue";
 import type { TicketRow } from "../../types/ticket";
 import type { Prisma } from "@/generated/prisma/client";
 import {
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
 const logisticsRoles: UserRole[] = [
   UserRole.LOGISTICS,
   UserRole.MOVER,
+  UserRole.KOORDINATOR,
   UserRole.DIRECTOR,
   UserRole.ADMINISTRATIONS,
 ];
@@ -39,6 +41,52 @@ export default async function LogisticsPage({
   const session = await auth();
   if (!session?.user) redirect("/auth/login");
   if (!logisticsRoles.includes(session.user.role)) redirect("/apps/tickets");
+
+  if (session.user.role === UserRole.KOORDINATOR) {
+    const pendingDeliveryOrderAcknowledgments =
+      await prisma.deliveryOrder.findMany({
+        where: { signedAt: { not: null }, acknowledgedAt: null },
+        orderBy: { createdAt: "asc" },
+        select: {
+          id: true,
+          publicCode: true,
+          doNumber: true,
+          signedBy: { select: { name: true } },
+          signedAt: true,
+          acknowledgedBy: { select: { name: true } },
+          acknowledgedAt: true,
+        },
+      });
+
+    return (
+      <main className="mx-auto w-full max-w-5xl space-y-5 p-4 md:p-6">
+        <div>
+          <h1 className="text-2xl font-bold text-primary">
+            Konfirmasi Delivery Order
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tinjau DO yang telah ditandatangani Logistik, lalu berikan
+            konfirmasi sebagai Koordinator Lapangan.
+          </p>
+        </div>
+        <DocumentSignoffQueue
+          tasks={pendingDeliveryOrderAcknowledgments.map((document) => ({
+            id: document.id,
+            kind: "DO" as const,
+            number: document.doNumber,
+            action: "acknowledge" as const,
+            signedByName: document.signedBy?.name ?? null,
+            signedAt: document.signedAt?.toISOString() ?? null,
+            acknowledgedByName: document.acknowledgedBy?.name ?? null,
+            acknowledgedAt: document.acknowledgedAt?.toISOString() ?? null,
+            previewUrl: `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(document.publicCode)}`,
+          }))}
+          title="DO Menunggu Konfirmasi"
+          description="QR tanda tangan Logistik menunjukkan status DO dan menjadi valid setelah konfirmasi ini diselesaikan."
+        />
+      </main>
+    );
+  }
 
   if (session.user.role === UserRole.MOVER) {
     const assignedToMover = [
@@ -361,6 +409,9 @@ export default async function LogisticsPage({
             totalAmount: true,
             status: true,
             isApprovedByDirector: true,
+            vendorInvoiceUrl: true,
+            vendorInvoiceUploadedAt: true,
+            vendorInvoiceUploadedBy: { select: { name: true } },
             createdAt: true,
             receivedAt: true,
             arrivalPhotoUrl: true,
@@ -576,6 +627,9 @@ export default async function LogisticsPage({
         vendorName: true,
         status: true,
         isApprovedByDirector: true,
+        vendorInvoiceUrl: true,
+        vendorInvoiceUploadedAt: true,
+        vendorInvoiceUploadedBy: { select: { name: true } },
         totalAmount: true,
         createdAt: true,
         receivedAt: true,
@@ -689,6 +743,12 @@ export default async function LogisticsPage({
       ...purchase,
       totalAmount: purchase.totalAmount.toString(),
       createdAt: purchase.createdAt.toISOString(),
+      vendorInvoiceUploadedAt:
+        purchase.vendorInvoiceUploadedAt?.toISOString() ?? null,
+      items: purchase.items.map((item) => ({
+        ...item,
+        quantity: item.quantity.toString(),
+      })),
     })),
     deliveryOrders: ticket.deliveryOrders.map((deliveryOrder) => ({
       ...deliveryOrder,
@@ -721,6 +781,8 @@ export default async function LogisticsPage({
           ),
           createdAt: purchase.createdAt.toISOString(),
           receivedAt: purchase.receivedAt?.toISOString() ?? null,
+          vendorInvoiceUploadedAt:
+            purchase.vendorInvoiceUploadedAt?.toISOString() ?? null,
           items: purchase.items.map((item) => ({
             ...item,
             quantity: item.quantity.toString(),

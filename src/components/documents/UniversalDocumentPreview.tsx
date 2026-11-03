@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ChevronDown,
   Download,
@@ -15,20 +15,40 @@ import { Button } from "@/components/ui/button";
 type UniversalDocumentPreviewProps = {
   title: string;
   src: string;
-  documentNumber?: string;
+  documentNumber: string;
   onCreateTemplate?: () => void;
 };
 
 export default function UniversalDocumentPreview({
   title,
   src,
-  documentNumber = "PO-CONTOH-2026",
+  documentNumber,
   onCreateTemplate,
 }: UniversalDocumentPreviewProps) {
   const [zoom, setZoom] = useState(90);
+  const previewViewportRef = useRef<HTMLDivElement>(null);
+  const previewSrc = `${src}${src.includes("?") ? "&" : "?"}format=html`;
+
+  const resetPreviewScroll = () => {
+    previewViewportRef.current?.scrollTo({ top: 0, left: 0 });
+  };
+
+  useEffect(() => {
+    const viewport = previewViewportRef.current;
+    if (!viewport) return;
+
+    const frame = requestAnimationFrame(() => {
+      viewport.scrollTo({ top: 0, left: 0 });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [previewSrc]);
 
   const printDocument = () => {
-    const printWindow = window.open(src, "_blank", "noopener,noreferrer");
+    const printWindow = window.open(
+      previewSrc,
+      "_blank",
+      "noopener,noreferrer",
+    );
     if (!printWindow) return;
     printWindow.addEventListener("load", () => printWindow.print(), {
       once: true,
@@ -36,8 +56,8 @@ export default function UniversalDocumentPreview({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-700 bg-[#3f4145] shadow-inner">
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-600 bg-[#25272b] px-3 py-2 text-slate-100">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-slate-700 bg-[#3f4145] shadow-inner">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-slate-600 bg-[#25272b] px-3 py-2 text-slate-100">
         <Button
           type="button"
           variant="ghost"
@@ -116,17 +136,29 @@ export default function UniversalDocumentPreview({
           <span className="sm:hidden">Cetak</span>
         </Button>
       </div>
-      <div className="flex min-h-[620px] justify-center overflow-auto p-6 sm:p-8">
+      <div
+        ref={previewViewportRef}
+        className="flex min-h-0 flex-1 justify-start overflow-auto p-4 sm:p-6"
+      >
         <div
-          className="relative h-[297mm] w-[210mm] shrink-0 origin-top bg-white shadow-2xl transition-transform"
-          style={{ transform: `scale(${zoom / 100})` }}
+          className="relative mx-auto shrink-0"
+          style={{
+            width: `calc(210mm * ${zoom / 100})`,
+            height: `calc(297mm * ${zoom / 100})`,
+          }}
         >
-          <iframe
-            title={title}
-            src={src}
-            scrolling="no"
-            className="block h-full w-full overflow-hidden border-0 bg-white"
-          />
+          <div
+            className="absolute left-0 top-0 h-[297mm] w-[210mm] origin-top-left bg-white shadow-2xl"
+            style={{ transform: `scale(${zoom / 100})` }}
+          >
+            <iframe
+              title={title}
+              src={previewSrc}
+              scrolling="no"
+              onLoad={resetPreviewScroll}
+              className="block h-full w-full overflow-hidden border-0 bg-white"
+            />
+          </div>
         </div>
       </div>
     </div>

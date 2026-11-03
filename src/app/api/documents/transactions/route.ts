@@ -145,7 +145,6 @@ function sampleDocument(kind: DocumentKind): UniversalDocumentData {
       rightDetails: [
         { label: "Driver / Mover", value: "Andi Saputra" },
         { label: "Plat Kendaraan", value: "BL 1234 AB" },
-        { label: "No. Dokumen Kendaraan", value: "STNK-123456" },
         { label: "No. HP Driver", value: "0812 3456 7890" },
         { label: "Penerima", value: "Fachri Maulana Hattami" },
         { label: "Persetujuan Eksekutif", value: "PO disetujui Direksi" },
@@ -158,9 +157,9 @@ function sampleDocument(kind: DocumentKind): UniversalDocumentData {
       terms: undefined,
       notes: "Material diterima dalam kondisi baik.",
       signatures: [
-        { heading: "Ditandatangani Oleh / Signed By", name: "Fachri Maulana Hattami", role: "Koordinator Logistik" },
-        { heading: "Diketahui Oleh / Acknowledged By", name: "Siti Rahmawati", role: "Keuangan" },
-        { heading: "Diterima Oleh / Received By", name: "Penerima Proyek", role: "Penerima" },
+        { heading: "Ditandatangani Oleh / Signed By", name: "Fachri Maulana Hattami", role: "Koordinator Logistik / Logistics Coordinator" },
+        { heading: "Diketahui Oleh / Acknowledged By", name: "Siti Rahmawati", role: "Keuangan / Finance" },
+        { heading: "Diterima Oleh / Received By", name: "Penerima Proyek", role: "Penerima / Recipient" },
       ],
     },
   } satisfies Record<
@@ -214,7 +213,7 @@ async function loadDocument(
         paymentAccountName: true,
         includeTax: true,
         createdAt: true,
-        createdBy: { select: { name: true } },
+        createdBy: { select: { name: true, role: true } },
         reviewedBy: { select: { name: true } },
         approvedBy: { select: { name: true } },
         vendor: {
@@ -280,9 +279,9 @@ async function loadDocument(
         "Invoice harus disertai Surat Jalan (DO) dan salinan PO ini.",
       ],
       signatures: [
-        { heading: "Dibuat Oleh / Prepared By", name: order.createdBy?.name ?? undefined, role: "Logistik" },
-        { heading: "Diperiksa Oleh / Checked By", name: order.reviewedBy?.name ?? undefined, role: "Keuangan" },
-        { heading: "Disetujui Oleh / Approved By", name: order.approvedBy?.name ?? undefined, role: "Direktur" },
+        { heading: "Dibuat Oleh / Prepared By", name: order.createdBy?.name ?? undefined, role: order.createdBy?.role === UserRole.LOGISTICS ? "Koordinator Logistik / Logistics Coordinator" : "Logistik / Logistics" },
+        { heading: "Diperiksa Oleh / Checked By", name: order.reviewedBy?.name ?? undefined, role: "Keuangan / Finance" },
+        { heading: "Disetujui Oleh / Approved By", name: order.approvedBy?.name ?? undefined, role: "Direktur / Director" },
       ],
       logoDataUrl: "",
     };
@@ -302,13 +301,13 @@ async function loadDocument(
         receiverName: true,
         receivedAt: true,
         createdAt: true,
-        createdBy: { select: { name: true } },
+        createdBy: { select: { name: true, role: true } },
         receivedBy: { select: { name: true } },
         publicCode: true,
         signedAt: true,
-        signedBy: { select: { name: true } },
+        signedBy: { select: { name: true, role: true } },
         acknowledgedAt: true,
-        acknowledgedBy: { select: { name: true } },
+        acknowledgedBy: { select: { name: true, role: true } },
         po: {
           select: {
             publicCode: true,
@@ -317,6 +316,19 @@ async function loadDocument(
             status: true,
             approvedAt: true,
             approvedBy: { select: { name: true } },
+            project: {
+              select: {
+                code: true,
+                fieldPic: {
+                  select: { name: true, role: true, isActive: true },
+                },
+                subkonContracts: {
+                  orderBy: { createdAt: "desc" },
+                  take: 1,
+                  select: { contractNumber: true },
+                },
+              },
+            },
           },
         },
         ticket: {
@@ -333,7 +345,22 @@ async function loadDocument(
                 user: { select: { name: true } },
               },
             },
-            project: { select: { kelompokTani: true, location: true, vendor: true } },
+            project: {
+              select: {
+                code: true,
+                kelompokTani: true,
+                location: true,
+                vendor: true,
+                fieldPic: {
+                  select: { name: true, role: true, isActive: true },
+                },
+                subkonContracts: {
+                  orderBy: { createdAt: "desc" },
+                  take: 1,
+                  select: { contractNumber: true },
+                },
+              },
+            },
           },
         },
         items: {
@@ -345,11 +372,44 @@ async function loadDocument(
             qtyDelivered: true,
             unit: true,
             remarks: true,
+            ticketItems: {
+              select: {
+                poItem: {
+                  select: {
+                    itemCode: true,
+                    stockItem: { select: { sku: true } },
+                  },
+                },
+              },
+            },
           },
         },
       },
     });
     if (!order) return null;
+    const activeCoordinator = await prisma.user.findFirst({
+      where: { role: UserRole.KOORDINATOR, isActive: true },
+      orderBy: { createdAt: "asc" },
+      select: { name: true },
+    });
+    const stockItems = await prisma.stockItem.findMany({
+      where: {
+        OR: order.items.map((item) => ({
+          name: item.itemName,
+          unit: item.unit,
+        })),
+      },
+      select: { sku: true, name: true, unit: true },
+    });
+    const normalizeStockItem = (value: string) =>
+      value.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID");
+    const stockSkusByItem = new Map<string, string[]>();
+    for (const stockItem of stockItems) {
+      const key = `${normalizeStockItem(stockItem.name)}|${normalizeStockItem(stockItem.unit)}`;
+      const skus = stockSkusByItem.get(key) ?? [];
+      skus.push(stockItem.sku);
+      stockSkusByItem.set(key, skus);
+    }
     const approvalLog = order.ticket?.auditLogs[0];
     const approvalLabel =
       order.po?.status === "APPROVED"
@@ -357,6 +417,17 @@ async function loadDocument(
         : order.ticket?.isApprovedByDirector
           ? `Tiket disetujui ${approvalLog?.user.name ?? "Direktur/Wakil Direktur"} pada ${formatDateTime(approvalLog?.createdAt)}`
           : "Persetujuan eksekutif belum tercatat";
+    const projectFieldPic =
+      order.ticket?.project?.fieldPic ?? order.po?.project?.fieldPic;
+    const fieldCoordinatorName =
+      (order.acknowledgedBy?.role === UserRole.KOORDINATOR
+        ? order.acknowledgedBy.name
+        : null) ??
+      (projectFieldPic?.role === UserRole.KOORDINATOR &&
+      projectFieldPic.isActive
+        ? projectFieldPic.name
+        : null) ??
+      activeCoordinator?.name;
     return {
       kind,
       title: "DELIVERY ORDER",
@@ -364,43 +435,84 @@ async function loadDocument(
       number: order.doNumber,
       date: formatDate(order.createdAt),
       leftDetails: [
-        { label: "No. PO / Kontrak", value: order.po?.poNumber ?? "-" },
+        {
+          label: "No. SPK / Work Order",
+          value: (() => {
+            const project = order.ticket?.project ?? order.po?.project;
+            return (
+              project?.code ??
+              project?.subkonContracts[0]?.contractNumber ??
+              "-"
+            );
+          })(),
+        },
         { label: "Proyek / Site", value: projectSiteName(
           order.ticket?.project?.kelompokTani,
           order.ticket?.project?.location,
         ) },
-        { label: "Vendor / Tujuan", value: order.po?.vendorName ?? order.ticket?.project?.vendor ?? "-" },
         { label: "No. Tiket", value: order.ticket?.ticketNumber ?? "-" },
       ],
       rightDetails: [
         { label: "Driver / Mover", value: order.driverName ?? "-" },
         { label: "Plat Kendaraan", value: order.vehiclePlateNumber ?? order.vehiclePlate ?? "-" },
-        { label: "No. Dokumen Kendaraan", value: order.vehicleDocumentNumber ?? "-" },
-        { label: "NIK Driver", value: order.driverIdentityNumber ?? "-" },
         { label: "No. HP Driver", value: order.driverPhone ?? "-" },
         { label: "Penerima", value: order.receivedBy?.name ?? order.receiverName ?? "-" },
         { label: "Persetujuan Eksekutif", value: approvalLabel },
       ],
       items: documentItems(order.items.map((item) => ({
-        itemCode: item.itemCode,
+        itemCode:
+          item.itemCode ||
+          item.ticketItems
+            .map(
+              (ticketItem) =>
+                ticketItem.poItem?.stockItem?.sku ??
+                ticketItem.poItem?.itemCode,
+            )
+            .find((code) => Boolean(code)) ||
+          (() => {
+            const skus = stockSkusByItem.get(
+              `${normalizeStockItem(item.itemName)}|${normalizeStockItem(item.unit)}`,
+            );
+            return skus?.length === 1 ? skus[0] : null;
+          })() ||
+          null,
         description: item.itemName,
         quantity: item.qtyDelivered || item.qtyOrdered,
         unit: item.unit,
         remarks: item.remarks,
       }))),
       notes: [
-        order.ticket?.title,
-        `Korelasi persetujuan eksekutif: ${approvalLabel}`,
+        order.ticket?.ticketNumber
+          ? `Pengiriman material untuk Tiket ${order.ticket.ticketNumber}.`
+          : "Pengiriman material sesuai rincian pada dokumen ini.",
+        `Status persetujuan: ${approvalLabel}`,
+        "QR Tampilan Dokumen DO / DO Document Preview QR",
       ]
         .filter(Boolean)
         .join("\n"),
       approvalPublicCode: order.po?.publicCode,
-      verificationPublicCode:
-        order.signedAt && order.acknowledgedAt ? order.publicCode : null,
+      verificationPublicCode: order.publicCode,
       signatures: [
-        { heading: "Ditandatangani Oleh / Signed By", name: order.signedBy?.name ?? undefined, role: "Logistik" },
-        { heading: "Diketahui Oleh / Acknowledged By", name: order.acknowledgedBy?.name ?? undefined, role: "Keuangan" },
-        { heading: "Diterima Oleh / Received By", name: order.receivedBy?.name ?? order.receiverName ?? undefined, role: "Penerima" },
+        {
+          heading: order.signedAt
+            ? "Ditandatangani Oleh / Signed By"
+            : "Diterbitkan Oleh / Issued By",
+          name: order.signedBy?.name ?? order.createdBy?.name ?? undefined,
+          role:
+            order.signedBy?.role === UserRole.LOGISTICS ||
+            order.createdBy?.role === UserRole.LOGISTICS
+              ? "Koordinator Logistik / Logistics Coordinator"
+              : "Logistik / Logistics",
+        },
+        {
+          heading: "Diketahui Oleh / Acknowledged By",
+          name: fieldCoordinatorName ?? undefined,
+          role:
+            order.acknowledgedBy?.role === UserRole.FINANCE
+              ? "Keuangan / Finance"
+              : "Koordinator Lapangan / Field Coordinator",
+        },
+        { heading: "Diterima Oleh / Received By", role: "Penerima / Recipient" },
       ],
       logoDataUrl: "",
     };
@@ -423,7 +535,7 @@ async function loadDocument(
         createdAt: true,
         publicCode: true,
         signedAt: true,
-        signedBy: { select: { name: true } },
+        signedBy: { select: { name: true, role: true } },
         acknowledgedAt: true,
         acknowledgedBy: { select: { name: true } },
         project: { select: { kelompokTani: true, location: true } },
@@ -464,8 +576,7 @@ async function loadDocument(
       subtitle: invoice.subkonTermyn ? "UPAH TUKANG & LANSIR" : "TAGIHAN VENDOR",
       number: invoice.invoiceNumber,
       date: invoice.periodOrDate ?? formatDate(invoice.createdAt),
-      verificationPublicCode:
-        invoice.signedAt && invoice.acknowledgedAt ? invoice.publicCode : null,
+      verificationPublicCode: invoice.signedAt ? invoice.publicCode : null,
       leftDetails: [
         { label: "Nama Toko / Mandor", value: invoice.vendorName },
         { label: "Proyek / Site", value: projectSiteName(project?.kelompokTani, project?.location) },
@@ -480,8 +591,8 @@ async function loadDocument(
       summary: summary(invoice.subTotal, invoice.tax ?? 0, invoice.deduction ?? 0),
       notes: invoice.documentUrl ? `Dokumen invoice vendor: ${invoice.documentUrl}` : undefined,
       signatures: [
-        { heading: "Ditandatangani Oleh / Signed By", name: invoice.signedBy?.name ?? undefined, role: "Keuangan" },
-        { heading: "Diketahui Oleh / Acknowledged By", name: invoice.acknowledgedBy?.name ?? undefined, role: "Direktur" },
+        { heading: "Ditandatangani Oleh / Signed By", name: invoice.signedBy?.name ?? undefined, role: "Keuangan / Finance" },
+        { heading: "Diketahui Oleh / Acknowledged By", name: invoice.acknowledgedBy?.name ?? undefined, role: "Direktur / Director" },
         { heading: "Diterima Oleh / Received By", role: "Vendor / Mandor" },
       ],
       logoDataUrl: "",
@@ -497,7 +608,7 @@ async function loadDocument(
       koNumber: true,
       publicCode: true,
       signedAt: true,
-      signedBy: { select: { name: true } },
+      signedBy: { select: { name: true, role: true } },
       acknowledgedAt: true,
       acknowledgedBy: { select: { name: true } },
       paymentType: true,
@@ -584,10 +695,9 @@ async function loadDocument(
       subtitle: "KONFIRMASI ORDER",
       number: confirmation.koNumber,
       date: formatDateTime(confirmation.paidAt ?? payment?.paidAt),
-      verificationPublicCode:
-        confirmation.signedAt && confirmation.acknowledgedAt
-          ? confirmation.publicCode
-          : null,
+      verificationPublicCode: confirmation.signedAt
+        ? confirmation.publicCode
+        : null,
       leftDetails: [
         { label: "Kepada / Vendor", value: po.vendorName },
         { label: "No. PO Pelanggan", value: po.poNumber },
@@ -604,8 +714,8 @@ async function loadDocument(
       summary: summary(subtotal, tax),
       notes: `Nominal pembayaran transaksi ini: Rp ${paymentAmount.toLocaleString("id-ID")}.`,
       signatures: [
-        { heading: "Ditandatangani Oleh / Signed By", name: confirmation.signedBy?.name ?? undefined, role: "Logistik" },
-        { heading: "Diketahui Oleh / Acknowledged By", name: confirmation.acknowledgedBy?.name ?? undefined, role: "Keuangan" },
+        { heading: "Ditandatangani Oleh / Signed By", name: confirmation.signedBy?.name ?? undefined, role: "Koordinator Logistik / Logistics Coordinator" },
+        { heading: "Diketahui Oleh / Acknowledged By", name: confirmation.acknowledgedBy?.name ?? undefined, role: "Keuangan / Finance" },
         { heading: "Diterima Oleh / Vendor", role: "Vendor" },
       ],
       logoDataUrl: "",
@@ -695,6 +805,7 @@ export async function GET(request: NextRequest) {
   const recordId = request.nextUrl.searchParams.get("id") ?? "";
   const publicCode = request.nextUrl.searchParams.get("publicCode") ?? "";
   const previewOnly = request.nextUrl.searchParams.get("preview") === "1";
+  const htmlPreview = request.nextUrl.searchParams.get("format") === "html";
   if (
     !kind ||
     (!previewOnly && (kind === "PO" || kind === "DO" ? !publicCode : !recordId))
@@ -726,7 +837,9 @@ export async function GET(request: NextRequest) {
     const verificationCode =
       kind === "PO" ? publicCode : document.verificationPublicCode;
     const verificationPath = verificationCode
-      ? `/verify/${kind.toLowerCase()}/${encodeURIComponent(verificationCode)}`
+      ? kind === "DO"
+        ? `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(verificationCode)}&format=html`
+        : `/verify/${kind.toLowerCase()}/${encodeURIComponent(verificationCode)}`
       : null;
     const publicAppUrl =
       resolvePublicAppUrl() ?? new URL(request.url).origin;
@@ -767,7 +880,7 @@ export async function GET(request: NextRequest) {
       approvalQrResult.status === "fulfilled" ? approvalQrResult.value : null;
     delete document.approvalPublicCode;
     const documentHtml = renderUniversalTransactionDocument(document);
-    if (previewOnly) {
+    if (previewOnly || htmlPreview) {
       return new NextResponse(documentHtml, {
         headers: {
           "Content-Type": "text/html; charset=utf-8",

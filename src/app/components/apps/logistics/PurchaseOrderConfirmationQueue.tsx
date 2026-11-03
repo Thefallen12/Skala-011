@@ -182,6 +182,7 @@ export default function PurchaseOrderConfirmationQueue({
           <div className="space-y-3">
             <UniversalDocumentPreview
               title={`Konfirmasi Order ${selected.confirmationOrderNumber}`}
+              documentNumber={selected.confirmationOrderNumber}
               src={`/api/documents/transactions?kind=KO&id=${encodeURIComponent(selected.id)}`}
             />
             {selected.po.vendorInvoiceUrl && (

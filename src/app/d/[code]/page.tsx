@@ -372,7 +372,7 @@ export default async function OrderEditPage({
           }))}
           qrDataUrl={await makeQrDataUrl(
             code,
-            `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(code)}`,
+            `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(code)}&format=html`,
           )}
         />
       </main>

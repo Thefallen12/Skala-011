@@ -40,7 +40,7 @@ const Tickets = async ({
     session.user.id,
   );
 
-  const [tickets, projects, stockItems, movers] = await Promise.all([
+  const [tickets, projects, stockItems, vendors, movers] = await Promise.all([
     prisma.ticket.findMany({
       where,
       orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
@@ -178,8 +178,40 @@ const Tickets = async ({
     }),
     prisma.stockItem.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, name: true, unit: true, stockQuantity: true },
+      select: {
+        id: true,
+        sku: true,
+        name: true,
+        unit: true,
+        unitPrice: true,
+        stockQuantity: true,
+      },
     }),
+    session.user.role === UserRole.LOGISTICS ||
+    session.user.role === UserRole.ADMINISTRATIONS
+      ? prisma.vendor.findMany({
+          where: { isApproved: true },
+          orderBy: { name: "asc" },
+          select: {
+            id: true,
+            name: true,
+            bankName: true,
+            bankAccount: true,
+            bankHolder: true,
+            bankAccounts: {
+              orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+              select: {
+                id: true,
+                label: true,
+                bankName: true,
+                bankAccount: true,
+                bankHolder: true,
+                isPrimary: true,
+              },
+            },
+          },
+        })
+      : Promise.resolve([]),
     session.user.role === UserRole.FIELD_TEAM
       ? prisma.user.findMany({
           where: { role: UserRole.MOVER, isActive: true },
@@ -328,6 +360,7 @@ const Tickets = async ({
             cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
             stockItems={stockItems.map((item) => ({
               ...item,
+              unitPrice: item.unitPrice.toString(),
               stockQuantity: item.stockQuantity.toString(),
             }))}
           />
@@ -336,6 +369,14 @@ const Tickets = async ({
       <TicketsApp
         tickets={ticketRows}
         projects={projects}
+        vendors={vendors}
+        stockItems={stockItems.map((item) => ({
+          id: item.id,
+          sku: item.sku,
+          name: item.name,
+          unit: item.unit,
+          unitPrice: item.unitPrice.toString(),
+        }))}
         role={session.user.role}
         initialOpenSheet={openSheet}
         initialFilter={filter}

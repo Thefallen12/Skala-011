@@ -764,7 +764,7 @@ export default function DOEditForm({
 
       {showQr && (
         <Card className="flex flex-col items-center gap-3 p-5 text-center">
-          <h2 className="font-semibold">QR verifikasi / bukti serah terima</h2>
+          <h2 className="font-semibold">QR Dokumen Delivery Order</h2>
           {qrDataUrl ? (
             <Image
               src={qrDataUrl}
@@ -781,8 +781,18 @@ export default function DOEditForm({
             </p>
           )}
           <p className="text-xs text-muted-foreground">
-            Pindai QR untuk membuka halaman DO. Penerima tetap harus masuk untuk mengubah status.
+            Pindai QR untuk membuka tampilan dokumen Delivery Order.
           </p>
+          {publicCode && (
+            <a
+              className="text-xs font-medium text-primary underline underline-offset-4"
+              href={`/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(publicCode)}&format=html`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Buka tampilan dokumen DO
+            </a>
+          )}
         </Card>
       )}
 
@@ -833,7 +843,7 @@ export default function DOEditForm({
           title={`Pratinjau DO ${doNumber}`}
           description="Pratinjau dokumen Delivery Order / Surat Jalan sesuai format cetak."
           className="max-w-6xl"
-          bodyClassName="flex min-h-[65vh] flex-1 flex-col"
+          bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden"
           footerNote=""
           footer={
             <Button
@@ -846,7 +856,8 @@ export default function DOEditForm({
           }
         >
           <UniversalDocumentPreview
-            title={`Delivery Order ${doNumber}`}
+            title={`Delivery Order ${doNumber ?? "DO"}`}
+            documentNumber={doNumber ?? "DO"}
             src={`/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(publicCode)}`}
           />
         </GlobalModal>

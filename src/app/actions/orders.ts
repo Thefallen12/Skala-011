@@ -157,7 +157,9 @@ function isDeliveryOrderItem(value: unknown): value is DeliveryOrderItemInput {
       (typeof item.id === "string" &&
         item.id.length > 0 &&
         item.id.length <= 64)) &&
-    (item.itemCode === undefined || isText(item.itemCode, 100, true)) &&
+    (item.itemCode === undefined ||
+      item.itemCode === null ||
+      isText(item.itemCode, 100, true)) &&
     isText(item.itemName, 180) &&
     typeof item.qtyOrdered === "number" &&
     Number.isFinite(item.qtyOrdered) &&
@@ -169,7 +171,9 @@ function isDeliveryOrderItem(value: unknown): value is DeliveryOrderItemInput {
     item.qtyDelivered <= item.qtyOrdered &&
     new Prisma.Decimal(item.qtyDelivered.toString()).decimalPlaces() <= 3 &&
     isText(item.unit, 40) &&
-    (item.remarks === undefined || isText(item.remarks, 1000, true))
+    (item.remarks === undefined ||
+      item.remarks === null ||
+      isText(item.remarks, 1000, true))
   );
 }
 

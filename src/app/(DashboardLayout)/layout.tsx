@@ -160,6 +160,7 @@ export default async function Layout({
       canAccessLogistics={
         session.user.role === UserRole.LOGISTICS ||
         session.user.role === UserRole.MOVER ||
+        session.user.role === UserRole.KOORDINATOR ||
         canManageUsers(session.user.role)
       }
       canAccessExecutive={

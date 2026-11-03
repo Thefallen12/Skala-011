@@ -84,6 +84,9 @@ export default async function LogisticsStockPage({
             vendorName: true,
             status: true,
             isApprovedByDirector: true,
+            vendorInvoiceUrl: true,
+            vendorInvoiceUploadedAt: true,
+            vendorInvoiceUploadedBy: { select: { name: true } },
             totalAmount: true,
             createdAt: true,
             receivedAt: true,
@@ -127,11 +130,11 @@ export default async function LogisticsStockPage({
         projects={projects}
         role={session.user.role}
         mode="stock"
+        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         initialAction={initialAction}
         purchaseTickets={purchaseTickets}
         vendors={vendors}
-        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         stockItems={stockItems.map((item) => ({
           ...item,
           stockQuantity: item.stockQuantity.toString(),
@@ -147,6 +150,8 @@ export default async function LogisticsStockPage({
           ),
           createdAt: purchase.createdAt.toISOString(),
           receivedAt: purchase.receivedAt?.toISOString() ?? null,
+          vendorInvoiceUploadedAt:
+            purchase.vendorInvoiceUploadedAt?.toISOString() ?? null,
           items: purchase.items.map((item) => ({
             ...item,
             quantity: item.quantity.toString(),

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DOStatus, POStatus } from "@/generated/prisma/enums";
+import { DOStatus, POStatus, UserRole } from "@/generated/prisma/enums";
 import { isValidPublicCode } from "@/lib/documents/random-code";
 import { prisma } from "@/lib/prisma";
 
@@ -36,7 +36,7 @@ export default async function VerifyDeliveryOrderPage({
       signedAt: true,
       signedBy: { select: { name: true } },
       acknowledgedAt: true,
-      acknowledgedBy: { select: { name: true } },
+      acknowledgedBy: { select: { name: true, role: true } },
       po: {
         select: {
           poNumber: true,
@@ -51,6 +51,10 @@ export default async function VerifyDeliveryOrderPage({
   const isPoApproved = deliveryOrder.po?.status === POStatus.APPROVED;
   const isVerified =
     Boolean(deliveryOrder.signedAt) && Boolean(deliveryOrder.acknowledgedAt);
+  const acknowledgedRole =
+    deliveryOrder.acknowledgedBy?.role === UserRole.FINANCE
+      ? "Keuangan"
+      : "Koordinator Lapangan";
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-2xl items-center p-4">
@@ -72,8 +76,8 @@ export default async function VerifyDeliveryOrderPage({
           role="status"
         >
           {isVerified
-            ? "Dokumen valid: telah ditandatangani Logistik dan diketahui Keuangan."
-            : "Dokumen belum valid: tanda tangan Logistik dan konfirmasi Keuangan harus lengkap."}
+            ? `Dokumen valid: telah ditandatangani Logistik dan diketahui ${acknowledgedRole}.`
+            : "Dokumen belum valid: tanda tangan Logistik dan konfirmasi Koordinator Lapangan harus lengkap."}
         </p>
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -106,7 +110,7 @@ export default async function VerifyDeliveryOrderPage({
             </dd>
           </div>
           <div>
-            <dt className="text-sm text-muted-foreground">Diketahui Keuangan</dt>
+            <dt className="text-sm text-muted-foreground">Diketahui {acknowledgedRole}</dt>
             <dd className="mt-1 font-semibold">
               {deliveryOrder.acknowledgedBy?.name ?? "Belum dikonfirmasi"}
               {deliveryOrder.acknowledgedAt

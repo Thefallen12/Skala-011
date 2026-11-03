@@ -11,11 +11,11 @@ import {
   checkTicketItemsStock,
   approveByDirector,
   fulfillTicketItemsFromStock,
-  switchTicketItemsToPurchase,
   submitTicket,
   type TicketActionResult,
 } from "@/app/actions/tickets";
 import CreatePOForm from "@/app/components/forms/CreatePOForm";
+import DirectStockPurchaseForm from "@/app/components/forms/DirectStockPurchaseForm";
 import ExpeditionArrivalModal from "@/app/components/apps/tickets/ExpeditionArrivalModal";
 import type {
   TicketPageRole,
@@ -41,6 +41,7 @@ import { Input } from "@/components/ui/input";
 import {
   DialogFooter,
 } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { GlobalModal } from "@/components/ui/global-modal";
 import FinanceActionModal from "./FinanceActionModal";
 import LogisticsActionModal from "./LogisticsActionModal";
@@ -59,6 +60,7 @@ import {
   photoDownloadLinkProps,
   withLocalPhotoPreview,
 } from "@/lib/photo-urls";
+import type { VendorBankAccountOption } from "@/lib/vendor-bank-accounts";
 
 const statusLabels: Record<TicketStatus, string> = {
   DRAFT: "Draft",
@@ -213,6 +215,7 @@ type TicketVendorOption = {
   bankName: string | null;
   bankAccount: string | null;
   bankHolder: string | null;
+  bankAccounts?: VendorBankAccountOption[];
 };
 
 type TicketStockItemOption = {
@@ -258,7 +261,9 @@ export default function TicketListing({
     itemIds: string[];
   } | null>(null);
   const [doDialogOpen, setDoDialogOpen] = useState(false);
-  const [stockFallbackRequired, setStockFallbackRequired] = useState(false);
+  const [stockAvailability, setStockAvailability] = useState<
+    NonNullable<TicketActionResult["stockAvailability"]>
+  >([]);
   const [moverOptions, setMoverOptions] = useState<
     { id: string; name: string }[]
   >([]);
@@ -274,6 +279,9 @@ export default function TicketListing({
   const [selectedMoverId, setSelectedMoverId] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
   const [poDialogOpen, setPoDialogOpen] = useState(false);
+  const [purchaseMode, setPurchaseMode] = useState<
+    "PURCHASE_ORDER" | "DIRECT_PURCHASE"
+  >("PURCHASE_ORDER");
   const [fulfillmentPending, setFulfillmentPending] = useState(false);
   const [fulfillmentMessage, setFulfillmentMessage] = useState("");
   const [selectedReceipt, setSelectedReceipt] = useState<{
@@ -300,9 +308,27 @@ export default function TicketListing({
           item.status === FulfillmentStatus.PENDING,
       )
     : [];
-  const selectedWarehouseItems = selectedTicketItems.filter(
-    (item) => item.categoryHint === "WAREHOUSE",
-  );
+  const readyTicketItemIds = stockAvailability
+    .filter((item) => item.ready)
+    .map((item) => item.ticketItemId);
+  const readyStockItems =
+    selectedTicket?.items.filter((item) =>
+      readyTicketItemIds.includes(item.id),
+    ) ?? [];
+  const selectedStockItems =
+    stockAvailability.length > 0 ? readyStockItems : selectedTicketItems;
+  const needsOrderTicketItemIds = stockAvailability
+    .filter((item) => !item.ready && !item.pendingPurchaseNumber)
+    .map((item) => item.ticketItemId);
+  const pendingTicketItemIds =
+    selectedTicket?.items
+      .filter((item) => item.status === FulfillmentStatus.PENDING)
+      .map((item) => item.id) ?? [];
+  const allPendingItemsSelected =
+    pendingTicketItemIds.length > 0 &&
+    pendingTicketItemIds.every((id) => selectedItemIds.includes(id));
+  const somePendingItemsSelected =
+    pendingTicketItemIds.some((id) => selectedItemIds.includes(id));
   const canSplitFulfillment =
     role === UserRole.LOGISTICS &&
     selectedTicket?.type === TicketType.MATERIAL &&
@@ -311,6 +337,7 @@ export default function TicketListing({
   const openTicketSheet = (ticket: TicketRow) => {
     setItemSelection(null);
     setFulfillmentMessage("");
+    setStockAvailability([]);
     setSelectedMoverId("");
     setSelectedTicket(ticket);
   };
@@ -330,7 +357,7 @@ export default function TicketListing({
   };
 
   const fulfillSelectedItemsFromStock = async () => {
-    if (!selectedTicket || selectedWarehouseItems.length === 0) return;
+    if (!selectedTicket || readyStockItems.length === 0) return;
     if (!selectedMoverId || !selectedVehicleId) {
       setFulfillmentMessage("Pilih Mover dan kendaraan sebelum membuat DO.");
       return;
@@ -340,20 +367,17 @@ export default function TicketListing({
     try {
       const result = await fulfillTicketItemsFromStock(
         selectedTicket.id,
-        selectedWarehouseItems.map((item) => item.id),
+        readyTicketItemIds,
         selectedMoverId,
         selectedVehicleId,
       );
       setFulfillmentMessage(result.message);
       if (result.success) {
         setDoDialogOpen(false);
-        setStockFallbackRequired(false);
+        setStockAvailability([]);
         setSelectedTicket(null);
         setItemSelection(null);
         router.refresh();
-      } else if (result.fallbackRequired) {
-        setStockFallbackRequired(true);
-        setFulfillmentMessage(warehouseInsufficientMessage);
       }
     } catch (error) {
       console.error("Ticket stock fulfillment failed:", error);
@@ -366,10 +390,10 @@ export default function TicketListing({
   };
 
   const prepareWarehouseFulfillment = async () => {
-    if (!selectedTicket || selectedWarehouseItems.length === 0) return;
+    if (!selectedTicket || selectedStockItems.length === 0) return;
     setFulfillmentPending(true);
     setFulfillmentMessage("");
-    setStockFallbackRequired(false);
+    setStockAvailability([]);
     setMoverOptions([]);
     setVehicleOptions([]);
     setSelectedMoverId("");
@@ -377,16 +401,17 @@ export default function TicketListing({
     try {
       const result = await checkTicketItemsStock(
         selectedTicket.id,
-        selectedWarehouseItems.map((item) => item.id),
+        selectedStockItems.map((item) => item.id),
       );
-      if (result.fallbackRequired) {
-        setStockFallbackRequired(true);
-        setFulfillmentMessage(warehouseInsufficientMessage);
-        setDoDialogOpen(true);
-      } else if (!result.success) {
+      if (!result.success) {
         setFulfillmentMessage(result.message);
         setDoDialogOpen(true);
       } else {
+        setStockAvailability(result.stockAvailability ?? []);
+        setItemSelection({
+          ticketId: selectedTicket.id,
+          itemIds: result.readyItemIds ?? [],
+        });
         setMoverOptions(result.movers ?? []);
         setVehicleOptions(result.vehicles ?? []);
         setSelectedVehicleId(result.vehicles?.[0]?.id ?? "");
@@ -406,43 +431,16 @@ export default function TicketListing({
     }
   };
 
-  const switchSelectedItemsToPurchase = async () => {
-    if (!selectedTicket || selectedWarehouseItems.length === 0) return;
+  const openPurchaseOrderForUnavailableItems = () => {
+    if (!selectedTicket || needsOrderTicketItemIds.length === 0) return;
     const ticketId = selectedTicket.id;
-    const itemIds = selectedWarehouseItems.map((item) => item.id);
-    setFulfillmentPending(true);
+    const itemIds = needsOrderTicketItemIds;
     setFulfillmentMessage("");
-    try {
-      const result = await switchTicketItemsToPurchase(ticketId, itemIds);
-      setFulfillmentMessage(result.message);
-      if (result.success) {
-        setSelectedTicket((current) =>
-          current?.id === ticketId
-            ? {
-                ...current,
-                items: current.items.map((item) =>
-                  itemIds.includes(item.id)
-                    ? { ...item, categoryHint: "PURCHASE" }
-                    : item,
-                ),
-              }
-            : current,
-        );
-        setStockFallbackRequired(false);
-        setDoDialogOpen(false);
-        setPoDialogOpen(true);
-        router.refresh();
-      } else {
-        setStockFallbackRequired(false);
-      }
-    } catch (error) {
-      console.error("Ticket item procurement fallback failed:", error);
-      setFulfillmentMessage(
-        "Item gagal dialihkan ke pengadaan baru. Silakan coba kembali.",
-      );
-    } finally {
-      setFulfillmentPending(false);
-    }
+    setDoDialogOpen(false);
+    setStockAvailability([]);
+    setItemSelection({ ticketId, itemIds });
+    setPurchaseMode("PURCHASE_ORDER");
+    setPoDialogOpen(true);
   };
 
   const runAction = (
@@ -985,7 +983,7 @@ export default function TicketListing({
                   {canSplitFulfillment && (
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm text-muted-foreground">
-                        Pilih item untuk dipenuhi dari stok atau dibelikan lewat PO.
+                        Pilih item untuk diperiksa stoknya. PO hanya tersedia jika stok tidak mencukupi.
                       </p>
                       <div className="flex flex-wrap gap-2">
                         <Button
@@ -993,26 +991,12 @@ export default function TicketListing({
                           variant="outline"
                           size="sm"
                           disabled={
-                            selectedWarehouseItems.length === 0 ||
+                            selectedStockItems.length === 0 ||
                             fulfillmentPending
                           }
                           onClick={prepareWarehouseFulfillment}
                         >
                           Penuhi dari Stok (DO)
-                        </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          disabled={
-                            selectedTicketItems.length === 0 ||
-                            fulfillmentPending
-                          }
-                          onClick={() => {
-                            setFulfillmentMessage("");
-                            setPoDialogOpen(true);
-                          }}
-                        >
-                          Beli via Vendor (PO)
                         </Button>
                       </div>
                     </div>
@@ -1022,7 +1006,28 @@ export default function TicketListing({
                       <TableHeader>
                         <TableRow>
                           {canSplitFulfillment && (
-                            <TableHead className="w-10">Pilih</TableHead>
+                            <TableHead className="w-10">
+                              <Checkbox
+                                checked={
+                                  allPendingItemsSelected
+                                    ? true
+                                    : somePendingItemsSelected
+                                      ? "indeterminate"
+                                      : false
+                                }
+                                disabled={pendingTicketItemIds.length === 0}
+                                aria-label="Pilih semua item yang belum dipenuhi"
+                                onCheckedChange={(checked) =>
+                                  setItemSelection({
+                                    ticketId: selectedTicket.id,
+                                    itemIds:
+                                      checked === true
+                                        ? pendingTicketItemIds
+                                        : [],
+                                  })
+                                }
+                              />
+                            </TableHead>
                           )}
                           <TableHead>Item</TableHead>
                           <TableHead>Jumlah</TableHead>
@@ -1171,25 +1176,74 @@ export default function TicketListing({
         onClose={() => {
           setDoDialogOpen(false);
           setFulfillmentMessage("");
-          setStockFallbackRequired(false);
+          setStockAvailability([]);
         }}
         title="Konfirmasi pemenuhan dari stok"
-        description={
-          stockFallbackRequired
-            ? warehouseInsufficientMessage
-            : fulfillmentMessage
-              ? "Periksa kembali saldo atau data sebelum membuat DO."
-              : "Saldo gudang sudah diperiksa. Buat DO hanya untuk item yang dipilih; stok berkurang setelah DO berhasil dibuat."
-        }
+        description="Status stok dihitung untuk barang yang dipilih. Buat DO untuk barang ready dan teruskan hanya barang yang belum cukup ke pengadaan."
       >
-          <ul className="space-y-2 rounded-md border p-3 text-sm">
-            {selectedWarehouseItems.map((item) => (
-              <li key={item.id}>
-                {item.itemName} · {item.quantity} {item.unit}
-              </li>
-            ))}
-          </ul>
-          {!stockFallbackRequired && (
+          <div className="overflow-x-auto rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Barang yang dibutuhkan</TableHead>
+                  <TableHead>Jumlah</TableHead>
+                  <TableHead>Stok tersedia</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {(stockAvailability.length > 0
+                  ? selectedTicket?.items.filter((item) =>
+                      stockAvailability.some(
+                        (availability) =>
+                          availability.ticketItemId === item.id,
+                      ),
+                    ) ?? []
+                  : selectedStockItems
+                ).map((item) => {
+                  const availability = stockAvailability.find(
+                    (entry) => entry.ticketItemId === item.id,
+                  );
+                  return (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.itemName}</TableCell>
+                      <TableCell>
+                        {item.quantity} {item.unit}
+                      </TableCell>
+                      <TableCell>
+                        {availability
+                          ? `${availability.availableQuantity} ${item.unit}`
+                          : "Belum diperiksa"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            availability?.ready
+                              ? "lightSuccess"
+                              : "lightWarning"
+                          }
+                        >
+                          {availability
+                            ? availability.pendingPurchaseNumber
+                              ? "Sedang Dipesan"
+                              : availability.ready
+                                ? "Ready"
+                                : "Perlu Pemesanan"
+                            : "Menunggu pemeriksaan"}
+                        </Badge>
+                        {availability?.message && (
+                          <span className="mt-1 block text-xs text-muted-foreground">
+                            {availability.message}
+                          </span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+          {readyStockItems.length > 0 && (
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="space-y-1.5 text-sm">
                 <span className="font-medium">Mover untuk pengiriman</span>
@@ -1239,7 +1293,7 @@ export default function TicketListing({
               </label>
             </div>
           )}
-          {fulfillmentMessage && !stockFallbackRequired && (
+          {fulfillmentMessage && (
             <p className="text-sm text-destructive" role="alert">
               {fulfillmentMessage}
             </p>
@@ -1251,30 +1305,33 @@ export default function TicketListing({
               onClick={() => setDoDialogOpen(false)}
               disabled={fulfillmentPending}
             >
-              {stockFallbackRequired ? "Batalkan" : "Batal"}
+              Batal
             </Button>
-            {stockFallbackRequired ? (
+            {needsOrderTicketItemIds.length > 0 && (
               <Button
                 type="button"
-                onClick={switchSelectedItemsToPurchase}
-                disabled={fulfillmentPending || selectedWarehouseItems.length === 0}
+                onClick={openPurchaseOrderForUnavailableItems}
+                disabled={fulfillmentPending}
               >
                 {fulfillmentPending
                   ? "Memproses..."
-                  : "Alihkan ke Pengadaan Baru (Beli Baru)"}
+                  : `Buat Pesanan untuk ${needsOrderTicketItemIds.length} Barang`}
               </Button>
-            ) : (
+            )}
+            {readyStockItems.length > 0 && (
               <Button
                 type="button"
                 onClick={fulfillSelectedItemsFromStock}
                 disabled={
                   fulfillmentPending ||
-                  selectedWarehouseItems.length === 0 ||
+                  readyStockItems.length === 0 ||
                   !selectedMoverId ||
                   !selectedVehicleId
                 }
               >
-                {fulfillmentPending ? "Memproses..." : "Buat DO"}
+                {fulfillmentPending
+                  ? "Memproses..."
+                  : `Terbitkan DO untuk ${readyStockItems.length} Barang Ready`}
               </Button>
             )}
           </DialogFooter>
@@ -1285,11 +1342,56 @@ export default function TicketListing({
           setPoDialogOpen(false);
           setFulfillmentMessage("");
         }}
-        title="Beli item melalui vendor (PO)"
-        description="Item yang dipilih akan diprefill ke PO. Setelah PO tersimpan, item terkait ditandai sebagai diproses via PO."
+        title="Pilih Mode Pengadaan"
+        description="Pilih jalur pengadaan untuk barang yang stoknya belum mencukupi. Hanya barang yang perlu dipesan yang akan disertakan."
         className="sm:max-w-5xl"
       >
-          {selectedTicket && selectedTicketItems.length > 0 && (
+          <RadioGroup
+            value={purchaseMode}
+            onValueChange={(value) =>
+              setPurchaseMode(
+                value === "DIRECT_PURCHASE"
+                  ? "DIRECT_PURCHASE"
+                  : "PURCHASE_ORDER",
+              )
+            }
+            className="grid gap-3 sm:grid-cols-2"
+          >
+            <label
+              htmlFor="ticket-procurement-po"
+              className="flex cursor-pointer items-start gap-3 rounded-lg border p-4"
+            >
+              <RadioGroupItem
+                value="PURCHASE_ORDER"
+                id="ticket-procurement-po"
+              />
+              <span>
+                <span className="block font-medium">Purchase Order (PO)</span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Pengadaan melalui PO vendor dan alur persetujuan.
+                </span>
+              </span>
+            </label>
+            <label
+              htmlFor="ticket-procurement-direct"
+              className="flex cursor-pointer items-start gap-3 rounded-lg border p-4"
+            >
+              <RadioGroupItem
+                value="DIRECT_PURCHASE"
+                id="ticket-procurement-direct"
+              />
+              <span>
+                <span className="block font-medium">
+                  Pembelian Langsung ke Toko
+                </span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Catat pembelian barang yang dibutuhkan tanpa membuat PO.
+                </span>
+              </span>
+            </label>
+          </RadioGroup>
+          {selectedTicket && selectedTicketItems.length > 0 &&
+          purchaseMode === "PURCHASE_ORDER" ? (
             <CreatePOForm
               key={`${selectedTicket.id}:${selectedTicketItems
                 .map((item) => item.id)
@@ -1316,6 +1418,39 @@ export default function TicketListing({
                 router.refresh();
               }}
             />
+          ) : selectedTicket && selectedTicketItems.length > 0 ? (
+            <DirectStockPurchaseForm
+              key={`direct:${selectedTicket.id}:${selectedTicketItems
+                .map((item) => item.id)
+                .join(",")}`}
+              vendors={vendors}
+              stockItems={stockItems}
+              tickets={[
+                {
+                  id: selectedTicket.id,
+                  ticketNumber: selectedTicket.ticketNumber,
+                  title: selectedTicket.title,
+                },
+              ]}
+              initialTicketId={selectedTicket.id}
+              initialTicketItems={selectedTicketItems.map((item) => ({
+                ticketItemId: item.id,
+                itemName: item.itemName,
+                quantity: item.quantity,
+                unit: item.unit,
+              }))}
+              onCancel={() => setPoDialogOpen(false)}
+              onCreated={() => {
+                setPoDialogOpen(false);
+                setSelectedTicket(null);
+                setItemSelection(null);
+                router.refresh();
+              }}
+            />
+          ) : (
+            <p className="text-sm text-destructive" role="alert">
+              Tidak ada barang yang perlu dipesan. Tutup dan periksa kembali stok.
+            </p>
           )}
       </GlobalModal>
       <GlobalModal

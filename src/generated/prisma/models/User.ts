@@ -262,6 +262,7 @@ export type UserWhereInput = {
   tickets?: Prisma.TicketListRelationFilter
   processedPaymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseListRelationFilter
   ticketAuditLogs?: Prisma.TicketAuditLogListRelationFilter
   assignedProjects?: Prisma.ProjectListRelationFilter
   fieldSurveys?: Prisma.FieldSurveyListRelationFilter
@@ -349,6 +350,7 @@ export type UserOrderByWithRelationInput = {
   tickets?: Prisma.TicketOrderByRelationAggregateInput
   processedPaymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseOrderByRelationAggregateInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseOrderByRelationAggregateInput
   ticketAuditLogs?: Prisma.TicketAuditLogOrderByRelationAggregateInput
   assignedProjects?: Prisma.ProjectOrderByRelationAggregateInput
   fieldSurveys?: Prisma.FieldSurveyOrderByRelationAggregateInput
@@ -439,6 +441,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tickets?: Prisma.TicketListRelationFilter
   processedPaymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseListRelationFilter
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseListRelationFilter
   ticketAuditLogs?: Prisma.TicketAuditLogListRelationFilter
   assignedProjects?: Prisma.ProjectListRelationFilter
   fieldSurveys?: Prisma.FieldSurveyListRelationFilter
@@ -566,6 +569,7 @@ export type UserCreateInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -653,6 +657,7 @@ export type UserUncheckedCreateInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -740,6 +745,7 @@ export type UserUpdateInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -827,6 +833,7 @@ export type UserUncheckedUpdateInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -1355,6 +1362,12 @@ export type UserCreateNestedOneWithoutApprovedDirectStockPurchasesInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedDirectStockPurchaseInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedDirectStockPurchaseInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserCreateNestedOneWithoutReceivedDirectStockPurchasesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedDirectStockPurchasesInput, Prisma.UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedDirectStockPurchasesInput
@@ -1375,6 +1388,16 @@ export type UserUpdateOneWithoutApprovedDirectStockPurchasesNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedDirectStockPurchasesInput, Prisma.UserUpdateWithoutApprovedDirectStockPurchasesInput>, Prisma.UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput>
+}
+
+export type UserUpdateOneWithoutUploadedDirectStockPurchaseInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedDirectStockPurchaseInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploadedDirectStockPurchaseInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutUploadedDirectStockPurchaseInvoicesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUpdateWithoutUploadedDirectStockPurchaseInvoicesInput>, Prisma.UserUncheckedUpdateWithoutUploadedDirectStockPurchaseInvoicesInput>
 }
 
 export type UserUpdateOneWithoutReceivedDirectStockPurchasesNestedInput = {
@@ -2087,6 +2110,7 @@ export type UserCreateWithoutNotesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -2173,6 +2197,7 @@ export type UserUncheckedCreateWithoutNotesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -2275,6 +2300,7 @@ export type UserUpdateWithoutNotesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -2361,6 +2387,7 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -2448,6 +2475,7 @@ export type UserCreateWithoutNotificationsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -2534,6 +2562,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -2636,6 +2665,7 @@ export type UserUpdateWithoutNotificationsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -2722,6 +2752,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -2807,6 +2838,7 @@ export type UserCreateWithoutCalendarEventInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -2893,6 +2925,7 @@ export type UserUncheckedCreateWithoutCalendarEventInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -2995,6 +3028,7 @@ export type UserUpdateWithoutCalendarEventInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -3081,6 +3115,7 @@ export type UserUncheckedUpdateWithoutCalendarEventInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -3168,6 +3203,7 @@ export type UserCreateWithoutCalendarRemindersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -3254,6 +3290,7 @@ export type UserUncheckedCreateWithoutCalendarRemindersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -3356,6 +3393,7 @@ export type UserUpdateWithoutCalendarRemindersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -3442,6 +3480,7 @@ export type UserUncheckedUpdateWithoutCalendarRemindersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -3528,6 +3567,7 @@ export type UserCreateWithoutCalendarEventParticipantsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -3614,6 +3654,7 @@ export type UserUncheckedCreateWithoutCalendarEventParticipantsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -3716,6 +3757,7 @@ export type UserUpdateWithoutCalendarEventParticipantsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -3802,6 +3844,7 @@ export type UserUncheckedUpdateWithoutCalendarEventParticipantsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -3887,6 +3930,7 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -3973,6 +4017,7 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_approverId
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -4064,6 +4109,7 @@ export type UserCreateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -4150,6 +4196,7 @@ export type UserUncheckedCreateWithoutMaterialRequest_MaterialRequest_requesterI
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -4252,6 +4299,7 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_approverIdToUserInp
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -4338,6 +4386,7 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_approverId
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -4435,6 +4484,7 @@ export type UserUpdateWithoutMaterialRequest_MaterialRequest_requesterIdToUserIn
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -4521,6 +4571,7 @@ export type UserUncheckedUpdateWithoutMaterialRequest_MaterialRequest_requesterI
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -4607,6 +4658,7 @@ export type UserCreateWithoutSessionInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -4693,6 +4745,7 @@ export type UserUncheckedCreateWithoutSessionInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -4795,6 +4848,7 @@ export type UserUpdateWithoutSessionInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -4881,6 +4935,7 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -4968,6 +5023,7 @@ export type UserCreateWithoutHabitsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -5054,6 +5110,7 @@ export type UserUncheckedCreateWithoutHabitsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -5156,6 +5213,7 @@ export type UserUpdateWithoutHabitsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -5242,6 +5300,7 @@ export type UserUncheckedUpdateWithoutHabitsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -5328,6 +5387,7 @@ export type UserCreateWithoutCreatedWorkTasksInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -5414,6 +5474,7 @@ export type UserUncheckedCreateWithoutCreatedWorkTasksInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -5505,6 +5566,7 @@ export type UserCreateWithoutAssignedWorkTasksInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -5591,6 +5653,7 @@ export type UserUncheckedCreateWithoutAssignedWorkTasksInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -5693,6 +5756,7 @@ export type UserUpdateWithoutCreatedWorkTasksInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -5779,6 +5843,7 @@ export type UserUncheckedUpdateWithoutCreatedWorkTasksInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -5876,6 +5941,7 @@ export type UserUpdateWithoutAssignedWorkTasksInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -5962,6 +6028,7 @@ export type UserUncheckedUpdateWithoutAssignedWorkTasksInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -6048,6 +6115,7 @@ export type UserCreateWithoutWorkTaskMembershipsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -6134,6 +6202,7 @@ export type UserUncheckedCreateWithoutWorkTaskMembershipsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -6236,6 +6305,7 @@ export type UserUpdateWithoutWorkTaskMembershipsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -6322,6 +6392,7 @@ export type UserUncheckedUpdateWithoutWorkTaskMembershipsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -6408,6 +6479,7 @@ export type UserCreateWithoutTimesheetEntriesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -6494,6 +6566,7 @@ export type UserUncheckedCreateWithoutTimesheetEntriesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -6596,6 +6669,7 @@ export type UserUpdateWithoutTimesheetEntriesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -6682,6 +6756,7 @@ export type UserUncheckedUpdateWithoutTimesheetEntriesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -6768,6 +6843,7 @@ export type UserCreateWithoutAssignedProjectsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
@@ -6854,6 +6930,7 @@ export type UserUncheckedCreateWithoutAssignedProjectsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
@@ -6956,6 +7033,7 @@ export type UserUpdateWithoutAssignedProjectsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
@@ -7042,6 +7120,7 @@ export type UserUncheckedUpdateWithoutAssignedProjectsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
@@ -7128,6 +7207,7 @@ export type UserCreateWithoutFieldSurveysInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
@@ -7214,6 +7294,7 @@ export type UserUncheckedCreateWithoutFieldSurveysInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
@@ -7316,6 +7397,7 @@ export type UserUpdateWithoutFieldSurveysInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
@@ -7402,6 +7484,7 @@ export type UserUncheckedUpdateWithoutFieldSurveysInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
@@ -7488,6 +7571,7 @@ export type UserCreateWithoutProposedWorkPointWagesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -7574,6 +7658,7 @@ export type UserUncheckedCreateWithoutProposedWorkPointWagesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -7665,6 +7750,7 @@ export type UserCreateWithoutApprovedWorkPointWagesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -7751,6 +7837,7 @@ export type UserUncheckedCreateWithoutApprovedWorkPointWagesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -7853,6 +7940,7 @@ export type UserUpdateWithoutProposedWorkPointWagesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -7939,6 +8027,7 @@ export type UserUncheckedUpdateWithoutProposedWorkPointWagesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -8036,6 +8125,7 @@ export type UserUpdateWithoutApprovedWorkPointWagesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -8122,6 +8212,7 @@ export type UserUncheckedUpdateWithoutApprovedWorkPointWagesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -8208,6 +8299,7 @@ export type UserCreateWithoutDraftedBlueprintsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -8294,6 +8386,7 @@ export type UserUncheckedCreateWithoutDraftedBlueprintsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -8385,6 +8478,7 @@ export type UserCreateWithoutReviewedBlueprintsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -8471,6 +8565,7 @@ export type UserUncheckedCreateWithoutReviewedBlueprintsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -8573,6 +8668,7 @@ export type UserUpdateWithoutDraftedBlueprintsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -8659,6 +8755,7 @@ export type UserUncheckedUpdateWithoutDraftedBlueprintsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -8756,6 +8853,7 @@ export type UserUpdateWithoutReviewedBlueprintsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -8842,6 +8940,7 @@ export type UserUncheckedUpdateWithoutReviewedBlueprintsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -8928,6 +9027,7 @@ export type UserCreateWithoutUploadedDrawingDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -9014,6 +9114,7 @@ export type UserUncheckedCreateWithoutUploadedDrawingDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -9116,6 +9217,7 @@ export type UserUpdateWithoutUploadedDrawingDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -9202,6 +9304,7 @@ export type UserUncheckedUpdateWithoutUploadedDrawingDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -9288,6 +9391,7 @@ export type UserCreateWithoutCreatedDrawingLogsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -9374,6 +9478,7 @@ export type UserUncheckedCreateWithoutCreatedDrawingLogsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -9476,6 +9581,7 @@ export type UserUpdateWithoutCreatedDrawingLogsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -9562,6 +9668,7 @@ export type UserUncheckedUpdateWithoutCreatedDrawingLogsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -9648,6 +9755,7 @@ export type UserCreateWithoutCreatedStockMovementsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -9734,6 +9842,7 @@ export type UserUncheckedCreateWithoutCreatedStockMovementsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -9836,6 +9945,7 @@ export type UserUpdateWithoutCreatedStockMovementsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -9922,6 +10032,7 @@ export type UserUncheckedUpdateWithoutCreatedStockMovementsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -10008,6 +10119,7 @@ export type UserCreateWithoutStockPurchasesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -10094,6 +10206,7 @@ export type UserUncheckedCreateWithoutStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -10196,6 +10309,7 @@ export type UserUpdateWithoutStockPurchasesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -10282,6 +10396,7 @@ export type UserUncheckedUpdateWithoutStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -10367,6 +10482,7 @@ export type UserCreateWithoutApprovedDirectStockPurchasesInput = {
   Session?: Prisma.SessionCreateNestedManyWithoutUserInput
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -10453,6 +10569,7 @@ export type UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput = {
   Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -10522,6 +10639,185 @@ export type UserCreateOrConnectWithoutApprovedDirectStockPurchasesInput = {
   create: Prisma.XOR<Prisma.UserCreateWithoutApprovedDirectStockPurchasesInput, Prisma.UserUncheckedCreateWithoutApprovedDirectStockPurchasesInput>
 }
 
+export type UserCreateWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogCreateNestedManyWithoutCreatedByInput
+  createdSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowCreateNestedManyWithoutRecorderInput
+  officeExpensesReceived?: Prisma.OfficeExpenseCreateNestedManyWithoutRecipientInput
+  officeExpensesRecorded?: Prisma.OfficeExpenseCreateNestedManyWithoutRecorderInput
+}
+
+export type UserUncheckedCreateWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  profilePhotoUrl?: string | null
+  bankName?: string | null
+  bankAccountName?: string | null
+  bankAccountNumber?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt: Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.UserNoteUncheckedCreateNestedManyWithoutUserInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_approverIdToUserInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedCreateNestedManyWithoutUser_MaterialRequest_requesterIdToUserInput
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
+  assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutWageApprovedByInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutDrafterInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedCreateNestedManyWithoutReviewerInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutApprovedByInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutCreatedByInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFieldVerifiedByInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutFinanceReviewedByInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutApprovedByInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedCreateNestedManyWithoutPaidByInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutCreatedByInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedCreateNestedManyWithoutApprovedByInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedCreateNestedManyWithoutApprovedByInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCreatedByInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedCreateNestedManyWithoutCreatedByInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedCreateNestedManyWithoutRetentionReleasedByInput
+  habits?: Prisma.HabitUncheckedCreateNestedManyWithoutUserInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutCreatorInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedCreateNestedManyWithoutUserInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedCreateNestedManyWithoutUserInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedCreateNestedManyWithoutUserInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutReviewedByInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutApprovedByInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorPoSentByInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutPreparedByInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutSignedByInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedCreateNestedManyWithoutIssuedByInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedCreateNestedManyWithoutIssuerInput
+  assignedMoverTickets?: Prisma.TicketUncheckedCreateNestedManyWithoutMoverAssigneeInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutReceivedByInput
+  createdStockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutReceivedByInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutVendorSentByInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutVendorSentByInput
+  signedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutSignedByInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedCreateNestedManyWithoutChangedByInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedCreateNestedManyWithoutPaidByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedCreateNestedManyWithoutRecorderInput
+  officeExpensesReceived?: Prisma.OfficeExpenseUncheckedCreateNestedManyWithoutRecipientInput
+  officeExpensesRecorded?: Prisma.OfficeExpenseUncheckedCreateNestedManyWithoutRecorderInput
+}
+
+export type UserCreateOrConnectWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedDirectStockPurchaseInvoicesInput>
+}
+
 export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   id?: string
   name: string
@@ -10545,6 +10841,7 @@ export type UserCreateWithoutReceivedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -10631,6 +10928,7 @@ export type UserUncheckedCreateWithoutReceivedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -10722,6 +11020,7 @@ export type UserCreateWithoutCreatedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -10808,6 +11107,7 @@ export type UserUncheckedCreateWithoutCreatedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -10909,6 +11209,7 @@ export type UserUpdateWithoutApprovedDirectStockPurchasesInput = {
   Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -10995,6 +11296,192 @@ export type UserUncheckedUpdateWithoutApprovedDirectStockPurchasesInput = {
   Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUncheckedUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUncheckedUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUncheckedUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUncheckedUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUncheckedUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUncheckedUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUncheckedUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUncheckedUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUncheckedUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUncheckedUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUncheckedUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUncheckedUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUncheckedUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUncheckedUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUncheckedUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUncheckedUpdateManyWithoutRecorderNestedInput
+  officeExpensesReceived?: Prisma.OfficeExpenseUncheckedUpdateManyWithoutRecipientNestedInput
+  officeExpensesRecorded?: Prisma.OfficeExpenseUncheckedUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUpsertWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedUpdateWithoutUploadedDirectStockPurchaseInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedCreateWithoutUploadedDirectStockPurchaseInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUploadedDirectStockPurchaseInvoicesInput, Prisma.UserUncheckedUpdateWithoutUploadedDirectStockPurchaseInvoicesInput>
+}
+
+export type UserUpdateWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
+  assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
+  fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
+  proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
+  approvedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutWageApprovedByNestedInput
+  draftedBlueprints?: Prisma.BlueprintUpdateManyWithoutDrafterNestedInput
+  reviewedBlueprints?: Prisma.BlueprintUpdateManyWithoutReviewerNestedInput
+  uploadedDrawingDocuments?: Prisma.DrawingDocumentUpdateManyWithoutUploadedByNestedInput
+  createdDrawingLogs?: Prisma.DrawingLogUpdateManyWithoutCreatedByNestedInput
+  createdSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutCreatedByNestedInput
+  approvedSubkonContracts?: Prisma.SubkonContractUpdateManyWithoutApprovedByNestedInput
+  createdSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutCreatedByNestedInput
+  verifiedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFieldVerifiedByNestedInput
+  reviewedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutFinanceReviewedByNestedInput
+  approvedSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutApprovedByNestedInput
+  paidSubkonTermyns?: Prisma.SubkonTermynUpdateManyWithoutPaidByNestedInput
+  createdProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutCreatedByNestedInput
+  approvedProjectAddendums?: Prisma.ProjectAddendumUpdateManyWithoutApprovedByNestedInput
+  approvedBASTDocuments?: Prisma.BASTDocumentUpdateManyWithoutApprovedByNestedInput
+  createdEquipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCreatedByNestedInput
+  createdVehicleTripLogs?: Prisma.VehicleTripLogUpdateManyWithoutCreatedByNestedInput
+  vehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutRequestedByNestedInput
+  reviewedVehicleFuelRequests?: Prisma.VehicleFuelRequestUpdateManyWithoutReviewedByNestedInput
+  releasedSubkonRetentions?: Prisma.SubkonContractUpdateManyWithoutRetentionReleasedByNestedInput
+  habits?: Prisma.HabitUpdateManyWithoutUserNestedInput
+  createdWorkTasks?: Prisma.WorkTaskUpdateManyWithoutCreatorNestedInput
+  assignedWorkTasks?: Prisma.WorkTaskUpdateManyWithoutAssigneeNestedInput
+  workTaskMemberships?: Prisma.WorkTaskMemberUpdateManyWithoutUserNestedInput
+  timesheetEntries?: Prisma.TimesheetEntryUpdateManyWithoutUserNestedInput
+  calendarReminders?: Prisma.CalendarEventReminderUpdateManyWithoutUserNestedInput
+  calendarEventParticipants?: Prisma.CalendarEventParticipantUpdateManyWithoutUserNestedInput
+  createdDocumentTemplates?: Prisma.OperationalDocumentTemplateUpdateManyWithoutCreatedByNestedInput
+  createdPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  reviewedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutReviewedByNestedInput
+  approvedPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutApprovedByNestedInput
+  sentPurchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutVendorPoSentByNestedInput
+  uploadedPurchaseOrderInvoices?: Prisma.PurchaseOrderUpdateManyWithoutVendorInvoiceUploadedByNestedInput
+  createdDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutCreatedByNestedInput
+  preparedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutPreparedByNestedInput
+  signedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutSignedByNestedInput
+  issuedOperationalDocuments?: Prisma.OperationalDocumentUpdateManyWithoutIssuedByNestedInput
+  issuedDocuments?: Prisma.IssuedDocumentUpdateManyWithoutIssuerNestedInput
+  assignedMoverTickets?: Prisma.TicketUpdateManyWithoutMoverAssigneeNestedInput
+  stockPurchases?: Prisma.StockPurchaseUpdateManyWithoutCreatedByNestedInput
+  createdDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutCreatedByNestedInput
+  receivedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutReceivedByNestedInput
+  createdStockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  receivedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutReceivedByNestedInput
+  sentPaymentConfirmations?: Prisma.PaymentTransactionUpdateManyWithoutVendorSentByNestedInput
+  sentOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutVendorSentByNestedInput
+  signedInvoices?: Prisma.InvoiceUpdateManyWithoutSignedByNestedInput
+  acknowledgedInvoices?: Prisma.InvoiceUpdateManyWithoutAcknowledgedByNestedInput
+  signedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutSignedByNestedInput
+  acknowledgedOrderConfirmations?: Prisma.OrderConfirmationUpdateManyWithoutAcknowledgedByNestedInput
+  signedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutSignedByNestedInput
+  acknowledgedDeliveryOrders?: Prisma.DeliveryOrderUpdateManyWithoutAcknowledgedByNestedInput
+  wageAuditLogs?: Prisma.WageAuditLogUpdateManyWithoutChangedByNestedInput
+  createdProjectWageDisbursements?: Prisma.ProjectWageDisbursementUpdateManyWithoutPaidByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  cashflowsRecorded?: Prisma.CashflowUpdateManyWithoutRecorderNestedInput
+  officeExpensesReceived?: Prisma.OfficeExpenseUpdateManyWithoutRecipientNestedInput
+  officeExpensesRecorded?: Prisma.OfficeExpenseUpdateManyWithoutRecorderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUploadedDirectStockPurchaseInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  CalendarEvent?: Prisma.CalendarEventUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.UserNoteUncheckedUpdateManyWithoutUserNestedInput
+  MaterialRequest_MaterialRequest_approverIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_approverIdToUserNestedInput
+  MaterialRequest_MaterialRequest_requesterIdToUser?: Prisma.MaterialRequestUncheckedUpdateManyWithoutUser_MaterialRequest_requesterIdToUserNestedInput
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
+  processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
+  approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -11093,6 +11580,7 @@ export type UserUpdateWithoutReceivedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -11179,6 +11667,7 @@ export type UserUncheckedUpdateWithoutReceivedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -11276,6 +11765,7 @@ export type UserUpdateWithoutCreatedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -11362,6 +11852,7 @@ export type UserUncheckedUpdateWithoutCreatedDirectStockPurchasesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -11448,6 +11939,7 @@ export type UserCreateWithoutWageAuditLogsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -11534,6 +12026,7 @@ export type UserUncheckedCreateWithoutWageAuditLogsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -11636,6 +12129,7 @@ export type UserUpdateWithoutWageAuditLogsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -11722,6 +12216,7 @@ export type UserUncheckedUpdateWithoutWageAuditLogsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -11808,6 +12303,7 @@ export type UserCreateWithoutCreatedProjectWageDisbursementsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -11894,6 +12390,7 @@ export type UserUncheckedCreateWithoutCreatedProjectWageDisbursementsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -11996,6 +12493,7 @@ export type UserUpdateWithoutCreatedProjectWageDisbursementsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -12082,6 +12580,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectWageDisbursementsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -12168,6 +12667,7 @@ export type UserCreateWithoutCreatedSubkonContractsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -12254,6 +12754,7 @@ export type UserUncheckedCreateWithoutCreatedSubkonContractsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -12345,6 +12846,7 @@ export type UserCreateWithoutApprovedSubkonContractsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -12431,6 +12933,7 @@ export type UserUncheckedCreateWithoutApprovedSubkonContractsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -12522,6 +13025,7 @@ export type UserCreateWithoutReleasedSubkonRetentionsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -12608,6 +13112,7 @@ export type UserUncheckedCreateWithoutReleasedSubkonRetentionsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -12710,6 +13215,7 @@ export type UserUpdateWithoutCreatedSubkonContractsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -12796,6 +13302,7 @@ export type UserUncheckedUpdateWithoutCreatedSubkonContractsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -12893,6 +13400,7 @@ export type UserUpdateWithoutApprovedSubkonContractsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -12979,6 +13487,7 @@ export type UserUncheckedUpdateWithoutApprovedSubkonContractsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -13076,6 +13585,7 @@ export type UserUpdateWithoutReleasedSubkonRetentionsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -13162,6 +13672,7 @@ export type UserUncheckedUpdateWithoutReleasedSubkonRetentionsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -13248,6 +13759,7 @@ export type UserCreateWithoutCreatedSubkonTermynsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -13334,6 +13846,7 @@ export type UserUncheckedCreateWithoutCreatedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -13425,6 +13938,7 @@ export type UserCreateWithoutVerifiedSubkonTermynsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -13511,6 +14025,7 @@ export type UserUncheckedCreateWithoutVerifiedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -13602,6 +14117,7 @@ export type UserCreateWithoutReviewedSubkonTermynsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -13688,6 +14204,7 @@ export type UserUncheckedCreateWithoutReviewedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -13779,6 +14296,7 @@ export type UserCreateWithoutApprovedSubkonTermynsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -13865,6 +14383,7 @@ export type UserUncheckedCreateWithoutApprovedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -13956,6 +14475,7 @@ export type UserCreateWithoutPaidSubkonTermynsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -14042,6 +14562,7 @@ export type UserUncheckedCreateWithoutPaidSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -14144,6 +14665,7 @@ export type UserUpdateWithoutCreatedSubkonTermynsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -14230,6 +14752,7 @@ export type UserUncheckedUpdateWithoutCreatedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -14327,6 +14850,7 @@ export type UserUpdateWithoutVerifiedSubkonTermynsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -14413,6 +14937,7 @@ export type UserUncheckedUpdateWithoutVerifiedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -14510,6 +15035,7 @@ export type UserUpdateWithoutReviewedSubkonTermynsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -14596,6 +15122,7 @@ export type UserUncheckedUpdateWithoutReviewedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -14693,6 +15220,7 @@ export type UserUpdateWithoutApprovedSubkonTermynsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -14779,6 +15307,7 @@ export type UserUncheckedUpdateWithoutApprovedSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -14876,6 +15405,7 @@ export type UserUpdateWithoutPaidSubkonTermynsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -14962,6 +15492,7 @@ export type UserUncheckedUpdateWithoutPaidSubkonTermynsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -15048,6 +15579,7 @@ export type UserCreateWithoutCreatedEquipmentLogsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -15134,6 +15666,7 @@ export type UserUncheckedCreateWithoutCreatedEquipmentLogsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -15236,6 +15769,7 @@ export type UserUpdateWithoutCreatedEquipmentLogsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -15322,6 +15856,7 @@ export type UserUncheckedUpdateWithoutCreatedEquipmentLogsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -15408,6 +15943,7 @@ export type UserCreateWithoutCreatedProjectAddendumsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -15494,6 +16030,7 @@ export type UserUncheckedCreateWithoutCreatedProjectAddendumsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -15585,6 +16122,7 @@ export type UserCreateWithoutApprovedProjectAddendumsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -15671,6 +16209,7 @@ export type UserUncheckedCreateWithoutApprovedProjectAddendumsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -15773,6 +16312,7 @@ export type UserUpdateWithoutCreatedProjectAddendumsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -15859,6 +16399,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectAddendumsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -15956,6 +16497,7 @@ export type UserUpdateWithoutApprovedProjectAddendumsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -16042,6 +16584,7 @@ export type UserUncheckedUpdateWithoutApprovedProjectAddendumsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -16128,6 +16671,7 @@ export type UserCreateWithoutApprovedBASTDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -16214,6 +16758,7 @@ export type UserUncheckedCreateWithoutApprovedBASTDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -16316,6 +16861,7 @@ export type UserUpdateWithoutApprovedBASTDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -16402,6 +16948,7 @@ export type UserUncheckedUpdateWithoutApprovedBASTDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -16487,6 +17034,7 @@ export type UserCreateWithoutTicketsInput = {
   Session?: Prisma.SessionCreateNestedManyWithoutUserInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -16573,6 +17121,7 @@ export type UserUncheckedCreateWithoutTicketsInput = {
   Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -16665,6 +17214,7 @@ export type UserCreateWithoutAssignedMoverTicketsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -16751,6 +17301,7 @@ export type UserUncheckedCreateWithoutAssignedMoverTicketsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -16852,6 +17403,7 @@ export type UserUpdateWithoutTicketsInput = {
   Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -16938,6 +17490,7 @@ export type UserUncheckedUpdateWithoutTicketsInput = {
   Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -17036,6 +17589,7 @@ export type UserUpdateWithoutAssignedMoverTicketsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -17122,6 +17676,7 @@ export type UserUncheckedUpdateWithoutAssignedMoverTicketsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -17208,6 +17763,7 @@ export type UserCreateWithoutCreatedDocumentTemplatesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -17294,6 +17850,7 @@ export type UserUncheckedCreateWithoutCreatedDocumentTemplatesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -17396,6 +17953,7 @@ export type UserUpdateWithoutCreatedDocumentTemplatesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -17482,6 +18040,7 @@ export type UserUncheckedUpdateWithoutCreatedDocumentTemplatesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -17568,6 +18127,7 @@ export type UserCreateWithoutUploadedPurchaseOrderInvoicesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -17654,6 +18214,7 @@ export type UserUncheckedCreateWithoutUploadedPurchaseOrderInvoicesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -17745,6 +18306,7 @@ export type UserCreateWithoutSentPurchaseOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -17831,6 +18393,7 @@ export type UserUncheckedCreateWithoutSentPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -17922,6 +18485,7 @@ export type UserCreateWithoutCreatedPurchaseOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -18008,6 +18572,7 @@ export type UserUncheckedCreateWithoutCreatedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -18099,6 +18664,7 @@ export type UserCreateWithoutReviewedPurchaseOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -18185,6 +18751,7 @@ export type UserUncheckedCreateWithoutReviewedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -18276,6 +18843,7 @@ export type UserCreateWithoutApprovedPurchaseOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -18362,6 +18930,7 @@ export type UserUncheckedCreateWithoutApprovedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -18464,6 +19033,7 @@ export type UserUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -18550,6 +19120,7 @@ export type UserUncheckedUpdateWithoutUploadedPurchaseOrderInvoicesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -18647,6 +19218,7 @@ export type UserUpdateWithoutSentPurchaseOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -18733,6 +19305,7 @@ export type UserUncheckedUpdateWithoutSentPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -18830,6 +19403,7 @@ export type UserUpdateWithoutCreatedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -18916,6 +19490,7 @@ export type UserUncheckedUpdateWithoutCreatedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -19013,6 +19588,7 @@ export type UserUpdateWithoutReviewedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -19099,6 +19675,7 @@ export type UserUncheckedUpdateWithoutReviewedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -19196,6 +19773,7 @@ export type UserUpdateWithoutApprovedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -19282,6 +19860,7 @@ export type UserUncheckedUpdateWithoutApprovedPurchaseOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -19367,6 +19946,7 @@ export type UserCreateWithoutProcessedPaymentTransactionsInput = {
   Session?: Prisma.SessionCreateNestedManyWithoutUserInput
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -19453,6 +20033,7 @@ export type UserUncheckedCreateWithoutProcessedPaymentTransactionsInput = {
   Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -19545,6 +20126,7 @@ export type UserCreateWithoutSentPaymentConfirmationsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -19631,6 +20213,7 @@ export type UserUncheckedCreateWithoutSentPaymentConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -19732,6 +20315,7 @@ export type UserUpdateWithoutProcessedPaymentTransactionsInput = {
   Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -19818,6 +20402,7 @@ export type UserUncheckedUpdateWithoutProcessedPaymentTransactionsInput = {
   Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -19916,6 +20501,7 @@ export type UserUpdateWithoutSentPaymentConfirmationsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -20002,6 +20588,7 @@ export type UserUncheckedUpdateWithoutSentPaymentConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -20088,6 +20675,7 @@ export type UserCreateWithoutCreatedDeliveryOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -20174,6 +20762,7 @@ export type UserUncheckedCreateWithoutCreatedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -20265,6 +20854,7 @@ export type UserCreateWithoutReceivedDeliveryOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -20351,6 +20941,7 @@ export type UserUncheckedCreateWithoutReceivedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -20442,6 +21033,7 @@ export type UserCreateWithoutSignedDeliveryOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -20528,6 +21120,7 @@ export type UserUncheckedCreateWithoutSignedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -20619,6 +21212,7 @@ export type UserCreateWithoutAcknowledgedDeliveryOrdersInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -20705,6 +21299,7 @@ export type UserUncheckedCreateWithoutAcknowledgedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -20807,6 +21402,7 @@ export type UserUpdateWithoutCreatedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -20893,6 +21489,7 @@ export type UserUncheckedUpdateWithoutCreatedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -20990,6 +21587,7 @@ export type UserUpdateWithoutReceivedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -21076,6 +21674,7 @@ export type UserUncheckedUpdateWithoutReceivedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -21173,6 +21772,7 @@ export type UserUpdateWithoutSignedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -21259,6 +21859,7 @@ export type UserUncheckedUpdateWithoutSignedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -21356,6 +21957,7 @@ export type UserUpdateWithoutAcknowledgedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -21442,6 +22044,7 @@ export type UserUncheckedUpdateWithoutAcknowledgedDeliveryOrdersInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -21528,6 +22131,7 @@ export type UserCreateWithoutCreatedVehicleTripLogsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -21614,6 +22218,7 @@ export type UserUncheckedCreateWithoutCreatedVehicleTripLogsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -21716,6 +22321,7 @@ export type UserUpdateWithoutCreatedVehicleTripLogsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -21802,6 +22408,7 @@ export type UserUncheckedUpdateWithoutCreatedVehicleTripLogsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -21888,6 +22495,7 @@ export type UserCreateWithoutVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -21974,6 +22582,7 @@ export type UserUncheckedCreateWithoutVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -22065,6 +22674,7 @@ export type UserCreateWithoutReviewedVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -22151,6 +22761,7 @@ export type UserUncheckedCreateWithoutReviewedVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -22253,6 +22864,7 @@ export type UserUpdateWithoutVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -22339,6 +22951,7 @@ export type UserUncheckedUpdateWithoutVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -22436,6 +23049,7 @@ export type UserUpdateWithoutReviewedVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -22522,6 +23136,7 @@ export type UserUncheckedUpdateWithoutReviewedVehicleFuelRequestsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -22608,6 +23223,7 @@ export type UserCreateWithoutSignedInvoicesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -22694,6 +23310,7 @@ export type UserUncheckedCreateWithoutSignedInvoicesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -22785,6 +23402,7 @@ export type UserCreateWithoutAcknowledgedInvoicesInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -22871,6 +23489,7 @@ export type UserUncheckedCreateWithoutAcknowledgedInvoicesInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -22973,6 +23592,7 @@ export type UserUpdateWithoutSignedInvoicesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -23059,6 +23679,7 @@ export type UserUncheckedUpdateWithoutSignedInvoicesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -23156,6 +23777,7 @@ export type UserUpdateWithoutAcknowledgedInvoicesInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -23242,6 +23864,7 @@ export type UserUncheckedUpdateWithoutAcknowledgedInvoicesInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -23328,6 +23951,7 @@ export type UserCreateWithoutCashflowsRecordedInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -23414,6 +24038,7 @@ export type UserUncheckedCreateWithoutCashflowsRecordedInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -23516,6 +24141,7 @@ export type UserUpdateWithoutCashflowsRecordedInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -23602,6 +24228,7 @@ export type UserUncheckedUpdateWithoutCashflowsRecordedInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -23688,6 +24315,7 @@ export type UserCreateWithoutOfficeExpensesReceivedInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -23774,6 +24402,7 @@ export type UserUncheckedCreateWithoutOfficeExpensesReceivedInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -23865,6 +24494,7 @@ export type UserCreateWithoutOfficeExpensesRecordedInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -23951,6 +24581,7 @@ export type UserUncheckedCreateWithoutOfficeExpensesRecordedInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -24053,6 +24684,7 @@ export type UserUpdateWithoutOfficeExpensesReceivedInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -24139,6 +24771,7 @@ export type UserUncheckedUpdateWithoutOfficeExpensesReceivedInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -24236,6 +24869,7 @@ export type UserUpdateWithoutOfficeExpensesRecordedInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -24322,6 +24956,7 @@ export type UserUncheckedUpdateWithoutOfficeExpensesRecordedInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -24408,6 +25043,7 @@ export type UserCreateWithoutSentOrderConfirmationsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -24494,6 +25130,7 @@ export type UserUncheckedCreateWithoutSentOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -24585,6 +25222,7 @@ export type UserCreateWithoutSignedOrderConfirmationsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -24671,6 +25309,7 @@ export type UserUncheckedCreateWithoutSignedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -24762,6 +25401,7 @@ export type UserCreateWithoutAcknowledgedOrderConfirmationsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -24848,6 +25488,7 @@ export type UserUncheckedCreateWithoutAcknowledgedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -24950,6 +25591,7 @@ export type UserUpdateWithoutSentOrderConfirmationsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -25036,6 +25678,7 @@ export type UserUncheckedUpdateWithoutSentOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -25133,6 +25776,7 @@ export type UserUpdateWithoutSignedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -25219,6 +25863,7 @@ export type UserUncheckedUpdateWithoutSignedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -25316,6 +25961,7 @@ export type UserUpdateWithoutAcknowledgedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -25402,6 +26048,7 @@ export type UserUncheckedUpdateWithoutAcknowledgedOrderConfirmationsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -25488,6 +26135,7 @@ export type UserCreateWithoutIssuedDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -25574,6 +26222,7 @@ export type UserUncheckedCreateWithoutIssuedDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -25676,6 +26325,7 @@ export type UserUpdateWithoutIssuedDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -25762,6 +26412,7 @@ export type UserUncheckedUpdateWithoutIssuedDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -25848,6 +26499,7 @@ export type UserCreateWithoutPreparedOperationalDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -25934,6 +26586,7 @@ export type UserUncheckedCreateWithoutPreparedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -26025,6 +26678,7 @@ export type UserCreateWithoutSignedOperationalDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -26111,6 +26765,7 @@ export type UserUncheckedCreateWithoutSignedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -26202,6 +26857,7 @@ export type UserCreateWithoutIssuedOperationalDocumentsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
@@ -26288,6 +26944,7 @@ export type UserUncheckedCreateWithoutIssuedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedCreateNestedManyWithoutUserInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
@@ -26390,6 +27047,7 @@ export type UserUpdateWithoutPreparedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -26476,6 +27134,7 @@ export type UserUncheckedUpdateWithoutPreparedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -26573,6 +27232,7 @@ export type UserUpdateWithoutSignedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -26659,6 +27319,7 @@ export type UserUncheckedUpdateWithoutSignedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -26756,6 +27417,7 @@ export type UserUpdateWithoutIssuedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
@@ -26842,6 +27504,7 @@ export type UserUncheckedUpdateWithoutIssuedOperationalDocumentsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   ticketAuditLogs?: Prisma.TicketAuditLogUncheckedUpdateManyWithoutUserNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
@@ -26928,6 +27591,7 @@ export type UserCreateWithoutTicketAuditLogsInput = {
   tickets?: Prisma.TicketCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseCreateNestedManyWithoutVendorInvoiceUploadedByInput
   assignedProjects?: Prisma.ProjectCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointCreateNestedManyWithoutProposedByInput
@@ -27014,6 +27678,7 @@ export type UserUncheckedCreateWithoutTicketAuditLogsInput = {
   tickets?: Prisma.TicketUncheckedCreateNestedManyWithoutRequesterInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutProcessedByInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutApprovedByInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedCreateNestedManyWithoutVendorInvoiceUploadedByInput
   assignedProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutFieldPicInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedCreateNestedManyWithoutSurveyorInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedCreateNestedManyWithoutProposedByInput
@@ -27116,6 +27781,7 @@ export type UserUpdateWithoutTicketAuditLogsInput = {
   tickets?: Prisma.TicketUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   assignedProjects?: Prisma.ProjectUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUpdateManyWithoutProposedByNestedInput
@@ -27202,6 +27868,7 @@ export type UserUncheckedUpdateWithoutTicketAuditLogsInput = {
   tickets?: Prisma.TicketUncheckedUpdateManyWithoutRequesterNestedInput
   processedPaymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutProcessedByNestedInput
   approvedDirectStockPurchases?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutApprovedByNestedInput
+  uploadedDirectStockPurchaseInvoices?: Prisma.DirectStockPurchaseUncheckedUpdateManyWithoutVendorInvoiceUploadedByNestedInput
   assignedProjects?: Prisma.ProjectUncheckedUpdateManyWithoutFieldPicNestedInput
   fieldSurveys?: Prisma.FieldSurveyUncheckedUpdateManyWithoutSurveyorNestedInput
   proposedWorkPointWages?: Prisma.ProjectWorkPointUncheckedUpdateManyWithoutProposedByNestedInput
@@ -27279,6 +27946,7 @@ export type UserCountOutputType = {
   tickets: number
   processedPaymentTransactions: number
   approvedDirectStockPurchases: number
+  uploadedDirectStockPurchaseInvoices: number
   ticketAuditLogs: number
   assignedProjects: number
   fieldSurveys: number
@@ -27352,6 +28020,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   tickets?: boolean | UserCountOutputTypeCountTicketsArgs
   processedPaymentTransactions?: boolean | UserCountOutputTypeCountProcessedPaymentTransactionsArgs
   approvedDirectStockPurchases?: boolean | UserCountOutputTypeCountApprovedDirectStockPurchasesArgs
+  uploadedDirectStockPurchaseInvoices?: boolean | UserCountOutputTypeCountUploadedDirectStockPurchaseInvoicesArgs
   ticketAuditLogs?: boolean | UserCountOutputTypeCountTicketAuditLogsArgs
   assignedProjects?: boolean | UserCountOutputTypeCountAssignedProjectsArgs
   fieldSurveys?: boolean | UserCountOutputTypeCountFieldSurveysArgs
@@ -27479,6 +28148,13 @@ export type UserCountOutputTypeCountProcessedPaymentTransactionsArgs<ExtArgs ext
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountApprovedDirectStockPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DirectStockPurchaseWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUploadedDirectStockPurchaseInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DirectStockPurchaseWhereInput
 }
 
@@ -27940,6 +28616,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tickets?: boolean | Prisma.User$ticketsArgs<ExtArgs>
   processedPaymentTransactions?: boolean | Prisma.User$processedPaymentTransactionsArgs<ExtArgs>
   approvedDirectStockPurchases?: boolean | Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>
+  uploadedDirectStockPurchaseInvoices?: boolean | Prisma.User$uploadedDirectStockPurchaseInvoicesArgs<ExtArgs>
   ticketAuditLogs?: boolean | Prisma.User$ticketAuditLogsArgs<ExtArgs>
   assignedProjects?: boolean | Prisma.User$assignedProjectsArgs<ExtArgs>
   fieldSurveys?: boolean | Prisma.User$fieldSurveysArgs<ExtArgs>
@@ -28066,6 +28743,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tickets?: boolean | Prisma.User$ticketsArgs<ExtArgs>
   processedPaymentTransactions?: boolean | Prisma.User$processedPaymentTransactionsArgs<ExtArgs>
   approvedDirectStockPurchases?: boolean | Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>
+  uploadedDirectStockPurchaseInvoices?: boolean | Prisma.User$uploadedDirectStockPurchaseInvoicesArgs<ExtArgs>
   ticketAuditLogs?: boolean | Prisma.User$ticketAuditLogsArgs<ExtArgs>
   assignedProjects?: boolean | Prisma.User$assignedProjectsArgs<ExtArgs>
   fieldSurveys?: boolean | Prisma.User$fieldSurveysArgs<ExtArgs>
@@ -28144,6 +28822,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tickets: Prisma.$TicketPayload<ExtArgs>[]
     processedPaymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     approvedDirectStockPurchases: Prisma.$DirectStockPurchasePayload<ExtArgs>[]
+    uploadedDirectStockPurchaseInvoices: Prisma.$DirectStockPurchasePayload<ExtArgs>[]
     ticketAuditLogs: Prisma.$TicketAuditLogPayload<ExtArgs>[]
     assignedProjects: Prisma.$ProjectPayload<ExtArgs>[]
     fieldSurveys: Prisma.$FieldSurveyPayload<ExtArgs>[]
@@ -28624,6 +29303,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tickets<T extends Prisma.User$ticketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   processedPaymentTransactions<T extends Prisma.User$processedPaymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$processedPaymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedDirectStockPurchases<T extends Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedDirectStockPurchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  uploadedDirectStockPurchaseInvoices<T extends Prisma.User$uploadedDirectStockPurchaseInvoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedDirectStockPurchaseInvoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectStockPurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ticketAuditLogs<T extends Prisma.User$ticketAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ticketAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TicketAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedProjects<T extends Prisma.User$assignedProjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fieldSurveys<T extends Prisma.User$fieldSurveysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fieldSurveysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldSurveyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -29293,6 +29973,30 @@ export type User$processedPaymentTransactionsArgs<ExtArgs extends runtime.Types.
  * User.approvedDirectStockPurchases
  */
 export type User$approvedDirectStockPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DirectStockPurchase
+   */
+  select?: Prisma.DirectStockPurchaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DirectStockPurchase
+   */
+  omit?: Prisma.DirectStockPurchaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DirectStockPurchaseInclude<ExtArgs> | null
+  where?: Prisma.DirectStockPurchaseWhereInput
+  orderBy?: Prisma.DirectStockPurchaseOrderByWithRelationInput | Prisma.DirectStockPurchaseOrderByWithRelationInput[]
+  cursor?: Prisma.DirectStockPurchaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DirectStockPurchaseScalarFieldEnum | Prisma.DirectStockPurchaseScalarFieldEnum[]
+}
+
+/**
+ * User.uploadedDirectStockPurchaseInvoices
+ */
+export type User$uploadedDirectStockPurchaseInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the DirectStockPurchase
    */

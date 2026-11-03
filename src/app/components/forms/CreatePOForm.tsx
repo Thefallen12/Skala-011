@@ -321,13 +321,20 @@ export default function CreatePOForm({
         </div>
         <div className="space-y-1">
           <Label>Metode pembayaran</Label>
-          <p>
+          <div>
             <Badge variant="outline">
               {paymentMethod === POPaymentMethod.TRANSFER ? "Transfer" : "Cash"}
             </Badge>
-          </p>
+          </div>
         </div>
       </div>
+      {ticketId && (
+        <p className="rounded-md border border-blue-500/30 bg-blue-500/5 p-3 text-sm text-muted-foreground">
+          Invoice atau bon faktur belum diunggah pada tahap pengajuan. Setelah PO
+          disetujui dan dikirim ke vendor, Logistik dapat melampirkan dokumen
+          pada tahap berikutnya agar Finance dapat memproses pembayaran.
+        </p>
+      )}
 
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2">

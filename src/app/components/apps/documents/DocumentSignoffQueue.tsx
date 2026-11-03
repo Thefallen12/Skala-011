@@ -105,7 +105,9 @@ export default function DocumentSignoffQueue({
                   ? "Menyimpan..."
                   : task.action === "sign"
                     ? "Tanda Tangani"
-                    : "Konfirmasi Diketahui"}
+                    : task.kind === "DO"
+                      ? "Konfirmasi Koordinator Lapangan"
+                      : "Konfirmasi Diketahui"}
               </Button>
             </div>
           </article>
