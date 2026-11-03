@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getVendorBankAccounts } from "@/lib/vendor-bank-accounts";
 import { Switch } from "@/components/ui/switch";
 import {
   DialogFooter,
@@ -82,6 +83,7 @@ export default function DirectStockPurchaseForm({
   ]);
   const [catalogItems, setCatalogItems] = useState(stockItems);
   const [vendorId, setVendorId] = useState("");
+  const [vendorBankAccountId, setVendorBankAccountId] = useState("");
   const [availableVendors, setAvailableVendors] = useState(vendors);
   const [ticketId, setTicketId] = useState("");
   const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);
@@ -98,8 +100,15 @@ export default function DirectStockPurchaseForm({
   const vendor = availableVendors.find(
     (candidate) => candidate.id === vendorId,
   );
+  const vendorBankAccounts = vendor ? getVendorBankAccounts(vendor) : [];
+  const selectedBankAccount =
+    vendorBankAccounts.find((account) => account.id === vendorBankAccountId) ??
+    vendorBankAccounts.find((account) => account.isPrimary) ??
+    vendorBankAccounts[0];
   const hasBankDetails = Boolean(
-    vendor?.bankName && vendor.bankAccount && vendor.bankHolder,
+    selectedBankAccount?.bankName &&
+      selectedBankAccount.bankAccount &&
+      selectedBankAccount.bankHolder,
   );
   const paymentMethod = hasBankDetails
     ? POPaymentMethod.TRANSFER
@@ -198,6 +207,7 @@ export default function DirectStockPurchaseForm({
       try {
         const result = await createDirectStockPurchase({
           vendorId: vendor.id,
+          vendorBankAccountId: selectedBankAccount?.id,
           ...(ticketId ? { ticketId } : {}),
           items: items.map(({ stockItemId, quantity, unitPrice }) => ({
             stockItemId,
@@ -247,12 +257,16 @@ export default function DirectStockPurchaseForm({
                     ),
               );
               setVendorId(createdVendor.id);
+              setVendorBankAccountId("");
             }}
           />
         </div>
         <Select
           value={vendorId}
-          onValueChange={setVendorId}
+          onValueChange={(value) => {
+            setVendorId(value);
+            setVendorBankAccountId("");
+          }}
           disabled={isPending}
         >
           <SelectTrigger id="direct-stock-vendor">
@@ -274,19 +288,43 @@ export default function DirectStockPurchaseForm({
       </div>
 
       {vendor && (
-        <div className="grid gap-2 rounded-md border p-3 text-sm sm:grid-cols-3">
+        <div className="space-y-3 rounded-md border p-3 text-sm">
+          {vendorBankAccounts.length > 1 && (
+            <div className="space-y-1.5">
+              <Label htmlFor="direct-stock-bank-account">Rekening tujuan</Label>
+              <Select
+                value={selectedBankAccount?.id ?? ""}
+                onValueChange={setVendorBankAccountId}
+                disabled={isPending}
+              >
+                <SelectTrigger id="direct-stock-bank-account">
+                  <SelectValue placeholder="Pilih rekening vendor" />
+                </SelectTrigger>
+                <SelectContent>
+                  {vendorBankAccounts.map((account) => (
+                    <SelectItem key={account.id} value={account.id}>
+                      {account.label || account.bankName} · {account.bankAccount}
+                      {account.isPrimary ? " (Utama)" : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <div className="grid gap-2 sm:grid-cols-3">
           <p>
             <span className="text-muted-foreground">Bank tujuan:</span>{" "}
-            {hasBankDetails ? vendor.bankName : "Tidak digunakan (Cash)"}
+            {hasBankDetails ? selectedBankAccount?.bankName : "Tidak digunakan (Cash)"}
           </p>
           <p>
             <span className="text-muted-foreground">No. rekening:</span>{" "}
-            {hasBankDetails ? vendor.bankAccount : "—"}
+            {hasBankDetails ? selectedBankAccount?.bankAccount : "—"}
           </p>
           <p>
             <span className="text-muted-foreground">Pemilik rekening:</span>{" "}
-            {hasBankDetails ? vendor.bankHolder : "—"}
+            {hasBankDetails ? selectedBankAccount?.bankHolder : "—"}
           </p>
+          </div>
         </div>
       )}
 

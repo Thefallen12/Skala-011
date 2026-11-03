@@ -23,6 +23,7 @@ import {
 } from "@/generated/prisma/enums";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import { resolveVendorBankAccount } from "@/lib/vendor-bank-accounts";
 import { nextDocumentNumber } from "@/lib/documents/numbering";
 import {
   generateAvailablePublicCode,
@@ -660,6 +661,7 @@ const directPurchaseFailure = (
 
 export async function createDirectStockPurchase(input: {
   vendorId: string;
+  vendorBankAccountId?: string;
   ticketId?: string;
   items: { stockItemId: string; quantity: string; unitPrice: string }[];
   reference?: string;
@@ -680,6 +682,10 @@ export async function createDirectStockPurchase(input: {
     !input ||
     typeof input.vendorId !== "string" ||
     !input.vendorId.trim() ||
+    (input.vendorBankAccountId !== undefined &&
+      (typeof input.vendorBankAccountId !== "string" ||
+        !input.vendorBankAccountId.trim() ||
+        input.vendorBankAccountId.length > 64)) ||
     (input.ticketId !== undefined &&
       (typeof input.ticketId !== "string" ||
         !input.ticketId.trim() ||
@@ -727,10 +733,27 @@ export async function createDirectStockPurchase(input: {
           bankName: true,
           bankAccount: true,
           bankHolder: true,
+          bankAccounts: {
+            select: {
+              id: true,
+              bankName: true,
+              bankAccount: true,
+              bankHolder: true,
+              isPrimary: true,
+            },
+          },
         },
       });
       if (!vendor) {
         throw new Error("Vendor tidak ditemukan atau belum disetujui.");
+      }
+      const vendorBankAccount = resolveVendorBankAccount(
+        vendor.bankAccounts,
+        vendor,
+        input.vendorBankAccountId,
+      );
+      if (input.vendorBankAccountId && !vendorBankAccount) {
+        throw new Error("Rekening yang dipilih tidak terdaftar pada vendor ini.");
       }
 
       const ticket = input.ticketId
@@ -777,9 +800,7 @@ export async function createDirectStockPurchase(input: {
         ? subtotal.mul(1.11).toDecimalPlaces(2)
         : subtotal;
       const number = await nextDocumentNumber(transaction, "STOCK");
-      const hasBankDetails = Boolean(
-        vendor.bankName && vendor.bankAccount && vendor.bankHolder,
-      );
+      const hasBankDetails = Boolean(vendorBankAccount);
 
       await transaction.directStockPurchase.create({
         data: {
@@ -790,9 +811,13 @@ export async function createDirectStockPurchase(input: {
           paymentMethod: hasBankDetails
             ? POPaymentMethod.TRANSFER
             : POPaymentMethod.CASH,
-          paymentBankName: hasBankDetails ? vendor.bankName : null,
-          paymentAccountNumber: hasBankDetails ? vendor.bankAccount : null,
-          paymentAccountName: hasBankDetails ? vendor.bankHolder : null,
+          paymentBankName: hasBankDetails ? vendorBankAccount?.bankName : null,
+          paymentAccountNumber: hasBankDetails
+            ? vendorBankAccount?.bankAccount
+            : null,
+          paymentAccountName: hasBankDetails
+            ? vendorBankAccount?.bankHolder
+            : null,
           paymentTerms: "Pembelian langsung tanpa PO",
           includeTax: input.includeTax ?? false,
           totalAmount,
@@ -838,7 +863,8 @@ export async function createDirectStockPurchase(input: {
       error instanceof Error &&
         (error.message.startsWith("Vendor ") ||
         error.message.startsWith("Tiket ") ||
-        error.message.startsWith("Satu atau lebih"))
+        error.message.startsWith("Satu atau lebih") ||
+        error.message.startsWith("Rekening "))
         ? error.message
         : "Pembelian stok gagal dicatat. Periksa data lalu coba kembali.",
     );
@@ -2332,6 +2358,7 @@ export async function createLogisticsPurchaseOrderForTicket(
   }>,
   payment: {
     vendorId: string;
+    vendorBankAccountId?: string;
     method: POPaymentMethod;
     bankName?: string;
     accountNumber?: string;
@@ -2348,10 +2375,13 @@ export async function createLogisticsPurchaseOrderForTicket(
     !isBoundedText(vendorName, 180) ||
     !payment ||
     !isBoundedText(payment.vendorId, 64) ||
+    (payment.vendorBankAccountId !== undefined &&
+      !isBoundedText(payment.vendorBankAccountId, 64)) ||
     !Object.values(POPaymentMethod).includes(payment.method) ||
     (payment.includeTax !== undefined &&
       typeof payment.includeTax !== "boolean") ||
     (payment.method === POPaymentMethod.TRANSFER &&
+      !payment.vendorBankAccountId &&
       (!isBoundedText(payment.bankName, 120) ||
         !isBoundedText(payment.accountNumber, 80) ||
         !isBoundedText(payment.accountName, 180))) ||
@@ -2415,10 +2445,27 @@ export async function createLogisticsPurchaseOrderForTicket(
           bankName: true,
           bankAccount: true,
           bankHolder: true,
+          bankAccounts: {
+            select: {
+              id: true,
+              bankName: true,
+              bankAccount: true,
+              bankHolder: true,
+              isPrimary: true,
+            },
+          },
         },
       });
       if (!vendor) {
         throw new Error("Vendor tidak ditemukan atau belum disetujui.");
+      }
+      const vendorBankAccount = resolveVendorBankAccount(
+        vendor.bankAccounts,
+        vendor,
+        payment.vendorBankAccountId,
+      );
+      if (payment.vendorBankAccountId && !vendorBankAccount) {
+        throw new Error("Rekening yang dipilih tidak terdaftar pada vendor ini.");
       }
       const selectedTicketItemIds = items.map((item) => item.ticketItemId);
       if (
@@ -2484,9 +2531,7 @@ export async function createLogisticsPurchaseOrderForTicket(
         unitPrice: item.unitPrice,
         totalPrice: item.quantity * item.unitPrice,
       }));
-      const vendorHasTransferDetails = Boolean(
-        vendor.bankName && vendor.bankAccount && vendor.bankHolder,
-      );
+      const vendorHasTransferDetails = Boolean(vendorBankAccount);
       const paymentMethod = vendorHasTransferDetails
         ? POPaymentMethod.TRANSFER
         : POPaymentMethod.CASH;
@@ -2497,12 +2542,14 @@ export async function createLogisticsPurchaseOrderForTicket(
           vendorId: vendor.id,
           vendorName: vendor.name,
           paymentMethod,
-          paymentBankName: vendorHasTransferDetails ? vendor.bankName : null,
+          paymentBankName: vendorHasTransferDetails
+            ? vendorBankAccount?.bankName
+            : null,
           paymentAccountNumber: vendorHasTransferDetails
-            ? vendor.bankAccount
+            ? vendorBankAccount?.bankAccount
             : null,
           paymentAccountName: vendorHasTransferDetails
-            ? vendor.bankHolder
+            ? vendorBankAccount?.bankHolder
             : null,
           paymentTerms: `Pembelian untuk tiket ${ticket.ticketNumber}`,
           includeTax: payment.includeTax ?? false,

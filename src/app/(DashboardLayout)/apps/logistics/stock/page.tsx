@@ -60,6 +60,17 @@ export default async function LogisticsStockPage({
         bankName: true,
         bankAccount: true,
         bankHolder: true,
+        bankAccounts: {
+          orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+          select: {
+            id: true,
+            label: true,
+            bankName: true,
+            bankAccount: true,
+            bankHolder: true,
+            isPrimary: true,
+          },
+        },
       },
     }),
     session.user.role === UserRole.MOVER

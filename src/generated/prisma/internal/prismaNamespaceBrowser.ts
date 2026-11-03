@@ -87,6 +87,7 @@ export const ModelName = {
   DirectStockPurchase: 'DirectStockPurchase',
   DirectStockPurchaseItem: 'DirectStockPurchaseItem',
   Vendor: 'Vendor',
+  VendorBankAccount: 'VendorBankAccount',
   WageAuditLog: 'WageAuditLog',
   ProjectWageDisbursement: 'ProjectWageDisbursement',
   EquipmentMaster: 'EquipmentMaster',
@@ -715,6 +716,21 @@ export const VendorScalarFieldEnum = {
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
+
+
+export const VendorBankAccountScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  label: 'label',
+  bankName: 'bankName',
+  bankAccount: 'bankAccount',
+  bankHolder: 'bankHolder',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
 
 
 export const WageAuditLogScalarFieldEnum = {

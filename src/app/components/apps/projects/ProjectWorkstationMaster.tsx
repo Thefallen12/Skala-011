@@ -100,6 +100,60 @@ import {
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
+function calculateWorkPointTotal(volumeValue: string, unitPriceValue: string) {
+  if (!volumeValue || !unitPriceValue) return "";
+  const volume = Number(volumeValue);
+  const unitPrice = Number(unitPriceValue);
+  if (!Number.isFinite(volume) || !Number.isFinite(unitPrice)) return "";
+
+  const total = Math.round((volume * unitPrice + Number.EPSILON) * 100) / 100;
+  return Number.isFinite(total) ? total.toFixed(2) : "";
+}
+
+function formatRupiahInput(value: string) {
+  const amount = Number(value);
+  if (!value || !Number.isFinite(amount)) return "";
+  return new Intl.NumberFormat("id-ID", {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  }).format(amount);
+}
+
+function RupiahInput({
+  name,
+  value,
+  onValueChange,
+}: {
+  name: string;
+  value: string;
+  onValueChange: (value: string, form: HTMLFormElement | null) => void;
+}) {
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className="flex h-10 w-full items-center overflow-hidden rounded-lg border border-border bg-transparent focus-within:border-primary">
+      <span className="pl-3 text-sm text-muted-foreground">Rp</span>
+      <Input
+        type="text"
+        inputMode="decimal"
+        value={isFocused ? value.replace(".", ",") : formatRupiahInput(value)}
+        required
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(event) => {
+          const enteredValue = event.currentTarget.value.replace(",", ".");
+          if (/^\d*(?:\.\d{0,2})?$/.test(enteredValue)) {
+            onValueChange(enteredValue, event.currentTarget.closest("form"));
+          }
+        }}
+        aria-label={name === "proposedUnitPrice" ? "Harga satuan Rupiah" : "Total upah Rupiah"}
+        className="h-full min-w-0 flex-1 border-0 bg-transparent text-foreground focus-visible:border-0 focus-visible:ring-0"
+      />
+      <input type="hidden" name={name} value={value} />
+    </div>
+  );
+}
+
 export type ProjectWorkstationMasterData = {
   id: string;
   code: string;
@@ -414,6 +468,8 @@ export default function ProjectWorkstationMaster({
   >(null);
   const [search, setSearch] = useState("");
   const [projectPage, setProjectPage] = useState(1);
+  const [proposedUnitPrice, setProposedUnitPrice] = useState("");
+  const [proposedTotalWage, setProposedTotalWage] = useState("");
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [confirmArchiveOpen, setConfirmArchiveOpen] = useState(false);
@@ -589,6 +645,8 @@ export default function ProjectWorkstationMaster({
         setNotice(result.message);
         if (result.success) {
           form.reset();
+          setProposedUnitPrice("");
+          setProposedTotalWage("");
           router.refresh();
         }
       } catch (error) {
@@ -1368,15 +1426,45 @@ export default function ProjectWorkstationMaster({
                         <CardContent>
                           <form className="grid gap-3 sm:grid-cols-2" onSubmit={submitWorkPoint}>
                             <Label>Nama titik / tugas<Input name="title" required maxLength={180} /></Label>
-                            <Label>Lokasi titik<Input name="location" maxLength={240} /></Label>
+                            <Label>Koordinat<Input name="location" maxLength={240} /></Label>
                             <Label>Tanggal mulai rencana<Input name="plannedStartDate" type="date" /></Label>
                             <Label>Tanggal target selesai<Input name="targetDate" type="date" /></Label>
-                            <Label>Volume pekerjaan<Input name="proposedVolume" type="number" min="0.001" step="0.001" required /></Label>
+                            <Label>Volume pekerjaan<Input name="proposedVolume" type="number" min="0.001" step="0.001" required onChange={(event) => {
+                              const form = event.currentTarget.form;
+                              if (!form) return;
+                              const formData = new FormData(form);
+                              setProposedTotalWage(calculateWorkPointTotal(
+                                String(formData.get("proposedVolume") ?? ""),
+                                String(formData.get("proposedUnitPrice") ?? ""),
+                              ));
+                            }} /></Label>
                             <Label>Satuan volume<Input name="proposedUnit" maxLength={40} placeholder="m, m², m³, unit" required /></Label>
-                            <Label>Harga satuan (Rp)<Input name="proposedUnitPrice" type="number" min="0" step="0.01" required /></Label>
-                            <Label>Total upah (Rp)<Input name="proposedTotalWage" type="number" min="0.01" step="0.01" required /></Label>
+                            <Label>
+                              Harga satuan
+                              <RupiahInput
+                                name="proposedUnitPrice"
+                                value={proposedUnitPrice}
+                                onValueChange={(value, form) => {
+                                  setProposedUnitPrice(value);
+                                  const volume = String(
+                                    new FormData(form ?? undefined).get("proposedVolume") ?? "",
+                                  );
+                                  setProposedTotalWage(
+                                    calculateWorkPointTotal(volume, value),
+                                  );
+                                }}
+                              />
+                            </Label>
+                            <Label>
+                              Total upah
+                              <RupiahInput
+                                name="proposedTotalWage"
+                                value={proposedTotalWage}
+                                onValueChange={setProposedTotalWage}
+                              />
+                            </Label>
                             <p className="text-xs text-muted-foreground sm:col-span-2">
-                              Total harus sama dengan volume × harga satuan.
+                              Otomatis dihitung dari volume × harga satuan dan tetap dapat disesuaikan.
                             </p>
                             <Button type="submit" disabled={isPending} className="sm:col-span-2">
                               {isPending ? "Mengirim..." : "Kirim usulan ke Direktur"}

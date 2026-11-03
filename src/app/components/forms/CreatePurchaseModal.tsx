@@ -9,6 +9,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
+import type { VendorBankAccountOption } from "@/lib/vendor-bank-accounts";
 
 type PurchaseModalType = "PURCHASE_ORDER" | "DIRECT_PURCHASE";
 
@@ -29,6 +30,7 @@ type PurchaseVendor = {
   bankName: string | null;
   bankAccount: string | null;
   bankHolder: string | null;
+  bankAccounts?: VendorBankAccountOption[];
 };
 
 type PurchaseTicket = {

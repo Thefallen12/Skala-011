@@ -659,18 +659,6 @@ const workPointInputSchema = z
       });
     }
     if (
-      !volume
-        .mul(unitPrice)
-        .toDecimalPlaces(2, Prisma.Decimal.ROUND_HALF_UP)
-        .equals(total)
-    ) {
-      context.addIssue({
-        code: "custom",
-        path: ["proposedTotalWage"],
-        message: "Total upah harus sama dengan volume dikali harga satuan.",
-      });
-    }
-    if (
       value.plannedStartDate &&
       value.targetDate &&
       value.targetDate < value.plannedStartDate

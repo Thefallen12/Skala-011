@@ -19,6 +19,10 @@ import PurchaseOrderConfirmationQueue, {
 import PurchaseOrderInvoiceUpload from "@/app/components/apps/logistics/PurchaseOrderInvoiceUpload";
 import VehicleFleetPanel from "@/app/components/apps/logistics/VehicleFleetPanel";
 import VehicleOperationsPanel from "@/app/components/apps/logistics/VehicleOperationsPanel";
+import {
+  VendorBankAccountsEditor,
+  type EditableVendorBankAccount,
+} from "@/app/components/forms/VendorBankAccountsEditor";
 import type { VehicleSummary } from "@/app/actions/vehicles";
 import type { VehicleTripLogRow } from "@/lib/vehicle-trip-types";
 import type {
@@ -53,6 +57,10 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { Boxes, FileText, Fuel, Pencil, TicketCheck, Truck } from "lucide-react";
+import {
+  getVendorBankAccounts,
+  type VendorBankAccountOption,
+} from "@/lib/vendor-bank-accounts";
 
 type LogisticsStockItem = {
   id: string;
@@ -92,6 +100,7 @@ type LogisticsVendor = {
   bankName: string | null;
   bankAccount: string | null;
   bankHolder: string | null;
+  bankAccounts: VendorBankAccountOption[];
   rating: number;
 };
 
@@ -207,6 +216,7 @@ export default function LogisticsHub({
   const [equipmentMasterSheetOpen, setEquipmentMasterSheetOpen] = useState(false);
   const [vendorSheetOpen, setVendorSheetOpen] = useState(false);
   const [editingVendor, setEditingVendor] = useState<LogisticsVendor | null>(null);
+  const [vendorAccounts, setVendorAccounts] = useState<EditableVendorBankAccount[]>([]);
   const [vendorMessage, setVendorMessage] = useState("");
   const [isPending, startTransition] = useTransition();
   const openDocumentPreview = (document: NonNullable<DocumentSelection>) => {
@@ -281,9 +291,15 @@ export default function LogisticsHub({
       address: String(formData.get("address") ?? ""),
       phone: String(formData.get("phone") ?? ""),
       email: String(formData.get("email") ?? ""),
-      bankName: String(formData.get("bankName") ?? ""),
-      bankAccount: String(formData.get("bankAccount") ?? ""),
-      bankHolder: String(formData.get("bankHolder") ?? ""),
+      bankAccounts: vendorAccounts.map(
+        ({ label, bankName, bankAccount, bankHolder, isPrimary }) => ({
+          label,
+          bankName,
+          bankAccount,
+          bankHolder,
+          isPrimary,
+        }),
+      ),
     };
     setVendorMessage("");
     startTransition(async () => {
@@ -510,6 +526,7 @@ export default function LogisticsHub({
               onClick={() => {
                 setVendorMessage("");
                 setEditingVendor(null);
+                setVendorAccounts([]);
                 setVendorSheetOpen(true);
               }}
             >
@@ -530,12 +547,22 @@ export default function LogisticsHub({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {vendors.map((vendor) => (
+                  {vendors.map((vendor) => {
+                    const accounts = getVendorBankAccounts(vendor);
+                    const primaryAccount = accounts.find((account) => account.isPrimary) ?? accounts[0];
+                    return (
                     <TableRow key={vendor.id}>
                       <TableCell className="font-medium">{vendor.name}</TableCell>
                       <TableCell>{vendor.category}</TableCell>
-                      <TableCell>{vendor.bankName ?? "—"}</TableCell>
-                      <TableCell>{vendor.bankAccount ?? "—"}</TableCell>
+                      <TableCell>
+                        {primaryAccount?.bankName ?? "—"}
+                        {accounts.length > 1 && (
+                          <span className="ml-1 text-xs text-muted-foreground">
+                            +{accounts.length - 1} rekening
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell>{primaryAccount?.bankAccount ?? "—"}</TableCell>
                       <TableCell>{vendor.phone ?? vendor.email ?? "—"}</TableCell>
                       <TableCell className="text-right">
                         <Button
@@ -545,6 +572,12 @@ export default function LogisticsHub({
                           onClick={() => {
                             setVendorMessage("");
                             setEditingVendor(vendor);
+                            setVendorAccounts(
+                              getVendorBankAccounts(vendor).map((account) => ({
+                                ...account,
+                                label: account.label ?? "",
+                              })),
+                            );
                             setVendorSheetOpen(true);
                           }}
                         >
@@ -553,7 +586,8 @@ export default function LogisticsHub({
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  );
+                  })}
                   {vendors.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
@@ -681,10 +715,11 @@ export default function LogisticsHub({
         onClose={() => {
           setVendorSheetOpen(false);
           setEditingVendor(null);
+          setVendorAccounts([]);
         }}
         title={editingVendor ? "Edit Vendor" : "Tambah Vendor Baru"}
-        description="Data rekening vendor akan digunakan otomatis saat membuat PO."
-        className="sm:max-w-xl"
+        description="Simpan beberapa rekening dan tandai rekening utama. Rekening dapat dipilih saat membuat pembelian."
+        className="sm:max-w-2xl"
       >
           <form
             key={editingVendor?.id ?? "new-vendor"}
@@ -712,18 +747,12 @@ export default function LogisticsHub({
                 <Label htmlFor="vendor-address">Alamat</Label>
                 <Input id="vendor-address" name="address" maxLength={500} defaultValue={editingVendor?.address ?? ""} />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="vendor-bank">Nama Bank</Label>
-                <Input id="vendor-bank" name="bankName" maxLength={120} defaultValue={editingVendor?.bankName ?? ""} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="vendor-account">Nomor Rekening</Label>
-                <Input id="vendor-account" name="bankAccount" maxLength={80} defaultValue={editingVendor?.bankAccount ?? ""} />
-              </div>
-              <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="vendor-holder">Nama Pemilik Rekening</Label>
-                <Input id="vendor-holder" name="bankHolder" maxLength={180} defaultValue={editingVendor?.bankHolder ?? ""} />
-              </div>
+              <VendorBankAccountsEditor
+                accounts={vendorAccounts}
+                onChange={setVendorAccounts}
+                disabled={isPending}
+                idPrefix="vendor"
+              />
             </div>
             {vendorMessage && (
               <p className="text-sm text-muted-foreground" role="status">
@@ -738,6 +767,7 @@ export default function LogisticsHub({
                 onClick={() => {
                   setVendorSheetOpen(false);
                   setEditingVendor(null);
+                  setVendorAccounts([]);
                 }}
               >
                 Tutup

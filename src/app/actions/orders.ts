@@ -18,6 +18,7 @@ import {
 } from "@/generated/prisma/enums";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import { resolveVendorBankAccount } from "@/lib/vendor-bank-accounts";
 import {
   generateAvailablePublicCode,
   isValidPublicCode,
@@ -76,6 +77,7 @@ export type OrderActionResult = {
 type PurchaseOrderInput = {
   poNumber?: string;
   vendorId?: string;
+  vendorBankAccountId?: string;
   vendorName: string;
   paymentMethod?: POPaymentMethod;
   paymentBankName?: string;
@@ -261,6 +263,9 @@ export async function createPurchaseOrder(
     !isText(input.vendorName, 180) ||
     (input.vendorId !== undefined &&
       (!isText(input.vendorId, 64) || input.vendorId.length === 0)) ||
+    (input.vendorBankAccountId !== undefined &&
+      (!isText(input.vendorBankAccountId, 64) ||
+        input.vendorBankAccountId.length === 0)) ||
     !isValidPurchaseOrderPayment(input) ||
     (input.includeTax !== undefined && typeof input.includeTax !== "boolean") ||
     (input.paymentTerms !== undefined &&
@@ -281,6 +286,15 @@ export async function createPurchaseOrder(
               bankName: true,
               bankAccount: true,
               bankHolder: true,
+              bankAccounts: {
+                select: {
+                  id: true,
+                  bankName: true,
+                  bankAccount: true,
+                  bankHolder: true,
+                  isPrimary: true,
+                },
+              },
             },
           })
         : null;
@@ -323,9 +337,17 @@ export async function createPurchaseOrder(
       ) {
         throw new Error("Nama dan satuan PO harus sesuai dengan katalog barang.");
       }
-      const vendorHasTransferDetails = Boolean(
-        vendor?.bankName && vendor.bankAccount && vendor.bankHolder,
-      );
+      const vendorBankAccount = vendor
+        ? resolveVendorBankAccount(
+            vendor.bankAccounts,
+            vendor,
+            input.vendorBankAccountId,
+          )
+        : null;
+      if (vendor && input.vendorBankAccountId && !vendorBankAccount) {
+        throw new Error("Rekening yang dipilih tidak terdaftar pada vendor ini.");
+      }
+      const vendorHasTransferDetails = Boolean(vendorBankAccount);
       const paymentMethod = vendor
         ? vendorHasTransferDetails
           ? POPaymentMethod.TRANSFER
@@ -343,21 +365,21 @@ export async function createPurchaseOrder(
           paymentMethod,
           paymentBankName: vendor
             ? vendorHasTransferDetails
-              ? vendor.bankName
+              ? vendorBankAccount?.bankName
               : null
             : paymentMethod === POPaymentMethod.TRANSFER
               ? input.paymentBankName?.trim()
               : null,
           paymentAccountNumber: vendor
             ? vendorHasTransferDetails
-              ? vendor.bankAccount
+              ? vendorBankAccount?.bankAccount
               : null
             : paymentMethod === POPaymentMethod.TRANSFER
               ? input.paymentAccountNumber?.trim()
               : null,
           paymentAccountName: vendor
             ? vendorHasTransferDetails
-              ? vendor.bankHolder
+              ? vendorBankAccount?.bankHolder
               : null
             : paymentMethod === POPaymentMethod.TRANSFER
               ? input.paymentAccountName?.trim()
@@ -397,7 +419,13 @@ export async function createPurchaseOrder(
     };
   } catch (error) {
     console.error("Purchase Order creation failed:", error);
-    return fail("Purchase Order gagal dibuat. Periksa nomor PO dan coba kembali.");
+    return fail(
+      error instanceof Error &&
+        (error.message.startsWith("Vendor ") ||
+          error.message.startsWith("Rekening "))
+        ? error.message
+        : "Purchase Order gagal dibuat. Periksa nomor PO dan coba kembali.",
+    );
   }
 }
 

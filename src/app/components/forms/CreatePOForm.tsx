@@ -26,6 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  getVendorBankAccounts,
+} from "@/lib/vendor-bank-accounts";
 import { Switch } from "@/components/ui/switch";
 import {
   DialogFooter,
@@ -87,6 +90,7 @@ export default function CreatePOForm({
 }) {
   const router = useRouter();
   const [vendorId, setVendorId] = useState("");
+  const [vendorBankAccountId, setVendorBankAccountId] = useState("");
   const [availableVendors, setAvailableVendors] = useState(vendors);
   const [catalogItems, setCatalogItems] = useState(stockItems);
   const [items, setItems] = useState<FormItem[]>(() =>
@@ -128,10 +132,17 @@ export default function CreatePOForm({
   const selectedVendor = availableVendors.find(
     (vendor) => vendor.id === vendorId,
   );
+  const vendorBankAccounts = selectedVendor
+    ? getVendorBankAccounts(selectedVendor)
+    : [];
+  const selectedBankAccount =
+    vendorBankAccounts.find((account) => account.id === vendorBankAccountId) ??
+    vendorBankAccounts.find((account) => account.isPrimary) ??
+    vendorBankAccounts[0];
   const hasBankDetails = Boolean(
-    selectedVendor?.bankName &&
-      selectedVendor.bankAccount &&
-      selectedVendor.bankHolder,
+    selectedBankAccount?.bankName &&
+      selectedBankAccount.bankAccount &&
+      selectedBankAccount.bankHolder,
   );
   const paymentMethod = hasBankDetails
     ? POPaymentMethod.TRANSFER
@@ -274,19 +285,15 @@ export default function CreatePOForm({
               {
                 vendorId: selectedVendor.id,
                 method: paymentMethod,
-                bankName: selectedVendor.bankName ?? undefined,
-                accountNumber: selectedVendor.bankAccount ?? undefined,
-                accountName: selectedVendor.bankHolder ?? undefined,
+                vendorBankAccountId: selectedBankAccount?.id,
                 includeTax,
               },
             )
           : await createPurchaseOrder({
               vendorId: selectedVendor.id,
               vendorName: selectedVendor.name,
+              vendorBankAccountId: selectedBankAccount?.id,
               paymentMethod,
-              paymentBankName: selectedVendor.bankName ?? undefined,
-              paymentAccountNumber: selectedVendor.bankAccount ?? undefined,
-              paymentAccountName: selectedVendor.bankHolder ?? undefined,
               includeTax,
               items: parsedItems,
             });
@@ -335,12 +342,16 @@ export default function CreatePOForm({
                     ),
               );
               setVendorId(vendor.id);
+              setVendorBankAccountId("");
             }}
           />
         </div>
         <Select
           value={vendorId}
-          onValueChange={setVendorId}
+          onValueChange={(value) => {
+            setVendorId(value);
+            setVendorBankAccountId("");
+          }}
           disabled={isPending}
         >
           <SelectTrigger id="create-po-vendor">
@@ -362,19 +373,43 @@ export default function CreatePOForm({
       </div>
 
       {selectedVendor && (
-        <div className="grid gap-3 rounded-md border p-3 text-sm sm:grid-cols-3">
+        <div className="space-y-3 rounded-md border p-3 text-sm">
+          {vendorBankAccounts.length > 1 && (
+            <div className="space-y-1.5">
+              <Label htmlFor="create-po-bank-account">Rekening tujuan</Label>
+              <Select
+                value={selectedBankAccount?.id ?? ""}
+                onValueChange={setVendorBankAccountId}
+                disabled={isPending}
+              >
+                <SelectTrigger id="create-po-bank-account">
+                  <SelectValue placeholder="Pilih rekening vendor" />
+                </SelectTrigger>
+                <SelectContent>
+                  {vendorBankAccounts.map((account) => (
+                    <SelectItem key={account.id} value={account.id}>
+                      {account.label || account.bankName} · {account.bankAccount}
+                      {account.isPrimary ? " (Utama)" : ""}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <div className="grid gap-3 sm:grid-cols-3">
           <p>
             <span className="text-muted-foreground">Bank tujuan:</span>{" "}
-            {hasBankDetails ? selectedVendor.bankName : "Tidak digunakan (Cash)"}
+            {hasBankDetails ? selectedBankAccount?.bankName : "Tidak digunakan (Cash)"}
           </p>
           <p>
             <span className="text-muted-foreground">No. rekening:</span>{" "}
-            {hasBankDetails ? selectedVendor.bankAccount : "—"}
+            {hasBankDetails ? selectedBankAccount?.bankAccount : "—"}
           </p>
           <p>
             <span className="text-muted-foreground">Pemilik rekening:</span>{" "}
-            {hasBankDetails ? selectedVendor.bankHolder : "—"}
+            {hasBankDetails ? selectedBankAccount?.bankHolder : "—"}
           </p>
+          </div>
         </div>
       )}
 

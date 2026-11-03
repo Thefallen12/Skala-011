@@ -7,6 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { GlobalModal } from "@/components/ui/global-modal";
+import {
+  VendorBankAccountsEditor,
+  type EditableVendorBankAccount,
+} from "@/app/components/forms/VendorBankAccountsEditor";
+import {
+  getVendorBankAccounts,
+  type VendorBankAccountOption,
+} from "@/lib/vendor-bank-accounts";
 
 export type PurchaseVendorOption = {
   id: string;
@@ -14,6 +22,7 @@ export type PurchaseVendorOption = {
   bankName: string | null;
   bankAccount: string | null;
   bankHolder: string | null;
+  bankAccounts?: VendorBankAccountOption[];
 };
 
 export default function CreateVendorInline({
@@ -25,6 +34,7 @@ export default function CreateVendorInline({
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [accounts, setAccounts] = useState<EditableVendorBankAccount[]>([]);
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,16 +45,23 @@ export default function CreateVendorInline({
         const result = await createVendor({
           name: String(formData.get("name") ?? ""),
           category: String(formData.get("category") ?? ""),
-          bankName: String(formData.get("bankName") ?? ""),
-          bankAccount: String(formData.get("bankAccount") ?? ""),
-          bankHolder: String(formData.get("bankHolder") ?? ""),
+          bankAccounts: accounts.map(({ label, bankName, bankAccount, bankHolder, isPrimary }) => ({
+            label,
+            bankName,
+            bankAccount,
+            bankHolder,
+            isPrimary,
+          })),
         });
         if (!result.success || !result.vendor) {
           setMessage(result.message);
           return;
         }
 
-        onCreated(result.vendor);
+        onCreated({
+          ...result.vendor,
+          bankAccounts: getVendorBankAccounts(result.vendor),
+        });
         setOpen(false);
       } catch (error) {
         console.error("Inline vendor creation failed:", error);
@@ -61,6 +78,7 @@ export default function CreateVendorInline({
         size="sm"
         onClick={() => {
           setMessage("");
+          setAccounts([]);
           setOpen(true);
         }}
       >
@@ -71,7 +89,7 @@ export default function CreateVendorInline({
         onClose={() => setOpen(false)}
         title="Tambah Vendor"
         description="Vendor yang disimpan dapat langsung dipilih untuk pengajuan pembelian."
-        className="sm:max-w-lg"
+        className="sm:max-w-2xl"
       >
           <form className="space-y-4" onSubmit={submit}>
             <div className="space-y-2">
@@ -97,39 +115,12 @@ export default function CreateVendorInline({
                 disabled={isPending}
               />
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor={`${formId}-bank`}>Nama bank (opsional)</Label>
-                <Input
-                  id={`${formId}-bank`}
-                  name="bankName"
-                  maxLength={120}
-                  disabled={isPending}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`${formId}-account`}>
-                  Nomor rekening (opsional)
-                </Label>
-                <Input
-                  id={`${formId}-account`}
-                  name="bankAccount"
-                  maxLength={80}
-                  disabled={isPending}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor={`${formId}-holder`}>
-                Pemilik rekening (opsional)
-              </Label>
-              <Input
-                id={`${formId}-holder`}
-                name="bankHolder"
-                maxLength={180}
-                disabled={isPending}
-              />
-            </div>
+            <VendorBankAccountsEditor
+              accounts={accounts}
+              onChange={setAccounts}
+              disabled={isPending}
+              idPrefix={formId}
+            />
             {message && (
               <p className="text-sm text-destructive" role="alert">
                 {message}

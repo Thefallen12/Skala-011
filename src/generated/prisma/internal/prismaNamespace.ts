@@ -433,6 +433,7 @@ export const ModelName = {
   DirectStockPurchase: 'DirectStockPurchase',
   DirectStockPurchaseItem: 'DirectStockPurchaseItem',
   Vendor: 'Vendor',
+  VendorBankAccount: 'VendorBankAccount',
   WageAuditLog: 'WageAuditLog',
   ProjectWageDisbursement: 'ProjectWageDisbursement',
   EquipmentMaster: 'EquipmentMaster',
@@ -479,7 +480,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "menuAccess" | "pageMaintenance" | "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "projectPolygon" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "drawingDocument" | "drawingLog" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
+    modelProps: "menuAccess" | "pageMaintenance" | "user" | "userNote" | "notification" | "calendarEvent" | "calendarEventReminder" | "calendarEventParticipant" | "materialRequest" | "requestItem" | "session" | "verificationToken" | "habit" | "habitCompletion" | "workTask" | "workTaskMember" | "timesheetEntry" | "project" | "fieldSurvey" | "projectPolygon" | "surveyFeature" | "surveyPhoto" | "dailyReport" | "projectProgressPhoto" | "projectWorkPoint" | "blueprint" | "drawingDocument" | "drawingLog" | "projectWorkPointProgress" | "projectWorkPointProgressPhoto" | "stockMovement" | "stockItem" | "stockPurchase" | "directStockPurchase" | "directStockPurchaseItem" | "vendor" | "vendorBankAccount" | "wageAuditLog" | "projectWageDisbursement" | "equipmentMaster" | "subkonContract" | "subkonTermyn" | "equipmentLog" | "projectAddendum" | "bASTDocument" | "documentNumberSequence" | "ticket" | "operationalDocumentTemplate" | "documentTemplate" | "purchaseOrder" | "paymentTransaction" | "deliveryOrder" | "deliveryOrderProof" | "vehicle" | "vehicleTripLog" | "vehicleFuelRequest" | "pOItem" | "dOItem" | "invoice" | "invoiceItem" | "financeAccount" | "cashflow" | "orderConfirmation" | "kOItem" | "issuedDocument" | "operationalDocument" | "ticketItem" | "ticketAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3144,6 +3145,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.VendorCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.VendorCountAggregateOutputType> | number
+        }
+      }
+    }
+    VendorBankAccount: {
+      payload: Prisma.$VendorBankAccountPayload<ExtArgs>
+      fields: Prisma.VendorBankAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VendorBankAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VendorBankAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.VendorBankAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VendorBankAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        findMany: {
+          args: Prisma.VendorBankAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        create: {
+          args: Prisma.VendorBankAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        createMany: {
+          args: Prisma.VendorBankAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VendorBankAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.VendorBankAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        update: {
+          args: Prisma.VendorBankAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.VendorBankAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VendorBankAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VendorBankAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.VendorBankAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.VendorBankAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVendorBankAccount>
+        }
+        groupBy: {
+          args: Prisma.VendorBankAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorBankAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VendorBankAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorBankAccountCountAggregateOutputType> | number
         }
       }
     }
@@ -6061,6 +6136,21 @@ export const VendorScalarFieldEnum = {
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
 
 
+export const VendorBankAccountScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  label: 'label',
+  bankName: 'bankName',
+  bankAccount: 'bankAccount',
+  bankHolder: 'bankHolder',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
+
+
 export const WageAuditLogScalarFieldEnum = {
   id: 'id',
   workPointId: 'workPointId',
@@ -7517,6 +7607,7 @@ export type GlobalOmitConfig = {
   directStockPurchase?: Prisma.DirectStockPurchaseOmit
   directStockPurchaseItem?: Prisma.DirectStockPurchaseItemOmit
   vendor?: Prisma.VendorOmit
+  vendorBankAccount?: Prisma.VendorBankAccountOmit
   wageAuditLog?: Prisma.WageAuditLogOmit
   projectWageDisbursement?: Prisma.ProjectWageDisbursementOmit
   equipmentMaster?: Prisma.EquipmentMasterOmit

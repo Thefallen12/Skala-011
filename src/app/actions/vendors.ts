@@ -5,6 +5,10 @@ import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import {
+  parseVendorBankAccounts,
+  type VendorBankAccountInput,
+} from "@/lib/vendor-bank-accounts";
 
 type VendorInput = {
   name: string;
@@ -15,6 +19,7 @@ type VendorInput = {
   bankName?: string;
   bankAccount?: string;
   bankHolder?: string;
+  bankAccounts?: VendorBankAccountInput[];
 };
 
 export type VendorActionResult = {
@@ -26,6 +31,14 @@ export type VendorActionResult = {
     bankName: string | null;
     bankAccount: string | null;
     bankHolder: string | null;
+    bankAccounts: Array<{
+      id: string;
+      label: string | null;
+      bankName: string;
+      bankAccount: string;
+      bankHolder: string;
+      isPrimary: boolean;
+    }>;
   };
 };
 
@@ -66,6 +79,13 @@ export async function createVendor(
   ) {
     return failure("Data vendor tidak valid. Periksa kembali informasi yang diisi.");
   }
+  const bankAccounts = parseVendorBankAccounts(input.bankAccounts, input);
+  if (!bankAccounts) {
+    return failure(
+      "Setiap rekening harus memiliki nama bank, nomor rekening, dan nama pemilik yang valid.",
+    );
+  }
+  const primaryAccount = bankAccounts.find((account) => account.isPrimary);
 
   let vendor: NonNullable<VendorActionResult["vendor"]>;
   try {
@@ -77,9 +97,15 @@ export async function createVendor(
         address: input.address?.trim() || null,
         phone: input.phone?.trim() || null,
         email: input.email?.trim() || null,
-        bankName: input.bankName?.trim() || null,
-        bankAccount: input.bankAccount?.trim() || null,
-        bankHolder: input.bankHolder?.trim() || null,
+        bankName: primaryAccount?.bankName ?? null,
+        bankAccount: primaryAccount?.bankAccount ?? null,
+        bankHolder: primaryAccount?.bankHolder ?? null,
+        bankAccounts: {
+          create: bankAccounts.map((account) => ({
+            ...account,
+            label: account.label || null,
+          })),
+        },
       },
       select: {
         id: true,
@@ -87,6 +113,17 @@ export async function createVendor(
         bankName: true,
         bankAccount: true,
         bankHolder: true,
+        bankAccounts: {
+          orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+          select: {
+            id: true,
+            label: true,
+            bankName: true,
+            bankAccount: true,
+            bankHolder: true,
+            isPrimary: true,
+          },
+        },
       },
     });
   } catch (error) {
@@ -137,28 +174,63 @@ export async function updateVendor(
   ) {
     return failure("Data vendor tidak valid. Periksa kembali informasi yang diisi.");
   }
+  const bankAccounts = parseVendorBankAccounts(input.bankAccounts, input);
+  if (!bankAccounts) {
+    return failure(
+      "Setiap rekening harus memiliki nama bank, nomor rekening, dan nama pemilik yang valid.",
+    );
+  }
+  const primaryAccount = bankAccounts.find((account) => account.isPrimary);
 
   let vendor: NonNullable<VendorActionResult["vendor"]>;
   try {
-    vendor = await prisma.vendor.update({
-      where: { id: vendorId },
-      data: {
-        name: input.name.trim(),
-        category: input.category.trim(),
-        address: input.address?.trim() || null,
-        phone: input.phone?.trim() || null,
-        email: input.email?.trim() || null,
-        bankName: input.bankName?.trim() || null,
-        bankAccount: input.bankAccount?.trim() || null,
-        bankHolder: input.bankHolder?.trim() || null,
-      },
-      select: {
-        id: true,
-        name: true,
-        bankName: true,
-        bankAccount: true,
-        bankHolder: true,
-      },
+    vendor = await prisma.$transaction(async (transaction) => {
+      await transaction.vendor.update({
+        where: { id: vendorId },
+        data: {
+          name: input.name.trim(),
+          category: input.category.trim(),
+          address: input.address?.trim() || null,
+          phone: input.phone?.trim() || null,
+          email: input.email?.trim() || null,
+          bankName: primaryAccount?.bankName ?? null,
+          bankAccount: primaryAccount?.bankAccount ?? null,
+          bankHolder: primaryAccount?.bankHolder ?? null,
+        },
+      });
+      await transaction.vendorBankAccount.deleteMany({ where: { vendorId } });
+      if (bankAccounts.length > 0) {
+        await transaction.vendorBankAccount.createMany({
+          data: bankAccounts.map((account) => ({
+            ...account,
+            label: account.label || null,
+            vendorId,
+          })),
+        });
+      }
+      const updatedVendor = await transaction.vendor.findUnique({
+        where: { id: vendorId },
+        select: {
+          id: true,
+          name: true,
+          bankName: true,
+          bankAccount: true,
+          bankHolder: true,
+          bankAccounts: {
+            orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+            select: {
+              id: true,
+              label: true,
+              bankName: true,
+              bankAccount: true,
+              bankHolder: true,
+              isPrimary: true,
+            },
+          },
+        },
+      });
+      if (!updatedVendor) throw new Error("Vendor tidak ditemukan.");
+      return updatedVendor;
     });
   } catch (error) {
     if (

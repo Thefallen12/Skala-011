@@ -198,6 +198,11 @@ export type DirectStockPurchaseItem = Prisma.DirectStockPurchaseItemModel
  */
 export type Vendor = Prisma.VendorModel
 /**
+ * Model VendorBankAccount
+ *
+ */
+export type VendorBankAccount = Prisma.VendorBankAccountModel
+/**
  * Model WageAuditLog
  * 
  */

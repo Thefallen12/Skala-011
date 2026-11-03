@@ -12,6 +12,16 @@ import {
   SETTINGS_MENU_ROLES,
 } from "@/lib/config/menus";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const roleLabels: Record<string, string> = {
   DIRECTOR: "Direktur",
@@ -25,6 +35,8 @@ const roleLabels: Record<string, string> = {
   ADMINISTRATIONS: "Administrasi",
 };
 
+const MENU_ACCESS_PAGE_SIZE = 5;
+
 export default function MenuAccessControl({
   initialAccessMatrix,
   canManage,
@@ -34,12 +46,22 @@ export default function MenuAccessControl({
 }) {
   const router = useRouter();
   const [accessMatrix, setAccessMatrix] = useState(initialAccessMatrix);
+  const [page, setPage] = useState(1);
   const [pendingKey, setPendingKey] = useState<string | null>(null);
   const [message, setMessage] = useState<{
     type: "error" | "success";
     text: string;
   } | null>(null);
   const [, startTransition] = useTransition();
+  const pageCount = Math.max(
+    1,
+    Math.ceil(accessMatrix.length / MENU_ACCESS_PAGE_SIZE),
+  );
+  const currentPage = Math.min(page, pageCount);
+  const visibleAccessRows = accessMatrix.slice(
+    (currentPage - 1) * MENU_ACCESS_PAGE_SIZE,
+    currentPage * MENU_ACCESS_PAGE_SIZE,
+  );
 
   const toggleAccess = (role: string, menuKey: string, isAllowed: boolean) => {
     const previousMatrix = accessMatrix;
@@ -101,39 +123,48 @@ export default function MenuAccessControl({
           atau Administrasi yang dapat mengubah pengaturan.
         </p>
       )}
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
+      <div className="overflow-hidden rounded-xl bg-card shadow-sm">
         <div className="border-b border-border bg-muted px-5 py-3 text-[15px] font-black uppercase tracking-[0.12em] text-card-foreground">
           Matriks Hak Akses Menu
         </div>
-        <table className="w-full min-w-[780px] border-collapse text-left">
-          <thead>
-            <tr className="bg-muted/70 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-              <th scope="col" className="sticky left-0 bg-muted px-4 py-3">
+        <Table className="min-w-[1088px] table-fixed border-separate border-spacing-0">
+          <colgroup>
+            <col className="w-56" />
+            {APP_ROLES.map((role) => (
+              <col key={role} className="w-24" />
+            ))}
+          </colgroup>
+          <TableHeader>
+            <TableRow className="bg-muted/70 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground hover:bg-muted/70">
+              <TableHead className="sticky left-0 z-20 w-56 bg-muted">
                 Menu
-              </th>
+              </TableHead>
               {APP_ROLES.map((role) => (
-                <th key={role} scope="col" className="px-3 py-3 text-center">
+                <TableHead
+                  key={role}
+                  className="min-w-24 whitespace-normal px-2 text-center"
+                >
                   {roleLabels[role] ?? role}
-                </th>
+                </TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {accessMatrix.map((row) => (
-              <tr key={row.key} className="hover:bg-muted/50">
-                <th
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {visibleAccessRows.map((row) => (
+              <TableRow key={row.key} className="group">
+                <TableHead
                   scope="row"
-                  className="sticky left-0 bg-card px-4 py-3 text-sm font-semibold text-card-foreground"
+                  className="sticky left-0 z-10 w-56 whitespace-normal bg-card text-sm font-semibold text-card-foreground group-hover:bg-muted/40"
                 >
                   <span>{row.name}</span>
                   <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
                     {row.path}
                   </span>
-                </th>
+                </TableHead>
                 {APP_ROLES.map((role) => (
-                  <td
+                  <TableCell
                     key={`${row.key}:${role}`}
-                    className="px-3 py-3 text-center"
+                    className="px-2 text-center"
                   >
                     <Switch
                       checked={
@@ -159,12 +190,52 @@ export default function MenuAccessControl({
                       }
                       className="data-[state=checked]:bg-secondary"
                     />
-                  </td>
+                  </TableCell>
                 ))}
-              </tr>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
+        <div className="flex flex-col gap-3 border-t border-border px-4 py-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p aria-live="polite">
+            Menampilkan{" "}
+            {accessMatrix.length === 0
+              ? 0
+              : (currentPage - 1) * MENU_ACCESS_PAGE_SIZE + 1}
+            {"-"}
+            {Math.min(
+              currentPage * MENU_ACCESS_PAGE_SIZE,
+              accessMatrix.length,
+            )}{" "}
+            dari {accessMatrix.length} menu
+          </p>
+          <nav aria-label="Navigasi halaman menu" className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="Halaman menu sebelumnya"
+              className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+              disabled={currentPage <= 1}
+              onClick={() => setPage((value) => Math.max(1, value - 1))}
+            >
+              <ChevronLeft className="size-4" aria-hidden="true" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="Halaman menu berikutnya"
+              className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
+              disabled={currentPage >= pageCount}
+              onClick={() =>
+                setPage((value) => Math.min(pageCount, value + 1))
+              }
+            >
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </Button>
+          </nav>
+        </div>
       </div>
     </div>
   );

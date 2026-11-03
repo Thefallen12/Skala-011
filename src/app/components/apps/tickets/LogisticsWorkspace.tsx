@@ -35,6 +35,7 @@ import TicketListing from "@/app/components/apps/tickets/TicketListing";
 import type { VehicleSummary } from "@/app/actions/vehicles";
 import CreateTicketModal from "@/app/components/apps/tickets/CreateTicketModal";
 import CreatePurchaseModal from "@/app/components/forms/CreatePurchaseModal";
+import type { VendorBankAccountOption } from "@/lib/vendor-bank-accounts";
 import type {
   TicketPageRole,
   TicketProjectOption,
@@ -173,6 +174,7 @@ type LogisticsVendor = {
   bankName: string | null;
   bankAccount: string | null;
   bankHolder: string | null;
+  bankAccounts: VendorBankAccountOption[];
 };
 
 export default function LogisticsWorkspace({

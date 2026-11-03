@@ -1022,11 +1022,27 @@ model Vendor {
   isApproved           Boolean               @default(true)
   purchaseOrders       PurchaseOrder[]
   directStockPurchases DirectStockPurchase[]
+  bankAccounts         VendorBankAccount[]
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
 
   @@index([name])
   @@index([category, isApproved])
+}
+
+model VendorBankAccount {
+  id            String   @id @default(cuid())
+  vendorId      String
+  vendor        Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  label         String?
+  bankName      String
+  bankAccount   String
+  bankHolder    String
+  isPrimary     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([vendorId, isPrimary])
 }
 
 // Labor, equipment, and subcontract lifecycle.

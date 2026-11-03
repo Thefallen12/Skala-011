@@ -537,6 +537,17 @@ export default async function LogisticsPage({
         bankName: true,
         bankAccount: true,
         bankHolder: true,
+        bankAccounts: {
+          orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+          select: {
+            id: true,
+            label: true,
+            bankName: true,
+            bankAccount: true,
+            bankHolder: true,
+            isPrimary: true,
+          },
+        },
         rating: true,
       },
     }),
