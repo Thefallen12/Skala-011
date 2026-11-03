@@ -15,10 +15,12 @@ import type {
   IncomingFundInput,
 } from "@/app/actions/finance-cashflow";
 import { FINANCE_CASHFLOW_CLOUDINARY_FOLDER } from "@/lib/finance-cashflow-config";
+import { parseRupiahInput } from "@/lib/indonesian-currency";
 import { Button } from "@/components/ui/button";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import { ExternalLink, Upload, Wallet } from "lucide-react";
 
 export type FinanceAccountOption = {
@@ -92,6 +94,7 @@ export default function IncomingFundModal({
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [amountInput, setAmountInput] = useState("");
   const form = useForm<FundFormValues>({
     resolver: zodResolver(fundFormSchema),
     defaultValues: {
@@ -128,6 +131,7 @@ export default function IncomingFundModal({
   }, [accounts, form, mode, open]);
 
   const handleClose = () => {
+    setAmountInput("");
     setMessage("");
     setIsError(false);
     onClose();
@@ -246,13 +250,18 @@ export default function IncomingFundModal({
         <form id={formId} className="space-y-5" onSubmit={submit}>
           <div className="space-y-2">
             <Label htmlFor={`${formId}-amount`}>Nominal (Rp)</Label>
-            <Input
+            <input type="hidden" {...form.register("amount")} />
+            <RupiahAmountInput
               id={`${formId}-amount`}
-              type="number"
-              min="0.01"
-              step="0.01"
-              {...form.register("amount", { valueAsNumber: true })}
-              aria-invalid={Boolean(form.formState.errors.amount)}
+              value={amountInput}
+              onChange={(formatted) => {
+                setAmountInput(formatted);
+                form.setValue("amount", parseRupiahInput(formatted), {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                });
+              }}
+              required
             />
             {form.formState.errors.amount && (
               <p className="text-sm text-destructive" role="alert">

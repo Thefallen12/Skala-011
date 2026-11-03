@@ -25,6 +25,7 @@ import FinanceDashboard, {
 import PaymentModal, {
   type PaymentModalTarget,
 } from "@/app/components/apps/finance/PaymentModal";
+import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import FinancePaymentProofReplacement from "@/app/components/apps/finance/FinancePaymentProofReplacement";
 import FinanceLedger, {
@@ -76,6 +77,11 @@ import {
   photoDownloadHref,
   withLocalPhotoPreview,
 } from "@/lib/photo-urls";
+import {
+  formatRupiahNumber,
+  parseRupiahInput,
+  terbilangRupiah,
+} from "@/lib/indonesian-currency";
 import {
   POPaymentMethod,
   PaymentType,
@@ -788,7 +794,10 @@ export default function FinanceHub({
       setMessage("Pilih buku kas/bank sumber pembayaran terlebih dahulu.");
       return;
     }
-    const amount = paymentAmount ? Number(paymentAmount) : undefined;
+    const amount =
+      paymentType === PaymentType.FULL_PAYMENT
+        ? undefined
+        : parseRupiahInput(paymentAmount);
     setMessage("");
     startTransition(async () => {
       try {
@@ -1599,7 +1608,12 @@ export default function FinanceHub({
                   <div className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
                     <p>Nilai kotor: <strong>{currency(termyn.grossAmount)}</strong></p>
                     <p>Retensi (5%): <strong>{currency(termyn.retentionAmount)}</strong></p>
-                    <p>Nilai bersih: <strong>{currency(termyn.netAmount)}</strong></p>
+                    <p>
+                      Nilai bersih: <strong>{currency(termyn.netAmount)}</strong>
+                      <span className="mt-1 block text-muted-foreground">
+                        Terbilang: {terbilangRupiah(Number(termyn.netAmount))}
+                      </span>
+                    </p>
                   </div>
                   {termyn.status === "FIELD_VERIFIED" && role === UserRole.FINANCE && (
                     <Button
@@ -1670,6 +1684,9 @@ export default function FinanceHub({
                   <p className="text-sm text-muted-foreground">{contract.projectName}</p>
                   <p className="mt-1 text-sm">
                     Total retensi tertahan: <strong>{currency(contract.retainedAmount)}</strong>
+                    <span className="mt-1 block text-muted-foreground">
+                      Terbilang: {terbilangRupiah(Number(contract.retainedAmount))}
+                    </span>
                   </p>
                   {contract.eligible && role === UserRole.FINANCE ? (
                     <form
@@ -1773,7 +1790,14 @@ export default function FinanceHub({
                   </div>
                   <div className="grid gap-2 text-sm sm:grid-cols-4">
                     <p>Jenis BBM: <strong>{request.source === "SPBU" ? "SPBU" : "Eceran"}</strong></p>
-                    <p>Plafon reimbursement: <strong>{currency(request.requestedAmount)}</strong></p>
+                    <p>
+                      Plafon reimbursement:{" "}
+                      <strong>{currency(request.requestedAmount)}</strong>
+                      <span className="mt-1 block text-muted-foreground">
+                        Terbilang:{" "}
+                        {terbilangRupiah(Number(request.requestedAmount))}
+                      </span>
+                    </p>
                     <p>Estimasi liter: <strong>{request.estimatedFuelLiter} L</strong></p>
                     <p>Harga: <strong>Rp{Number(request.unitPrice).toLocaleString("id-ID")}/L</strong></p>
                     <p>Jarak ODO aktual: <strong>{request.tripDistanceKm ?? "—"} km</strong></p>
@@ -1799,6 +1823,14 @@ export default function FinanceHub({
                         </strong>
                       </p>
                       <p>Tujuan / penerima: {request.transferDestination}</p>
+                      <p>
+                        Jumlah pencairan:{" "}
+                        <strong>{currency(request.requestedAmount)}</strong>
+                      </p>
+                      <p className="text-muted-foreground">
+                        Terbilang:{" "}
+                        {terbilangRupiah(Number(request.requestedAmount))}
+                      </p>
                       {request.transferProofUrl && (
                         <a
                           className="font-medium text-primary underline"
@@ -2122,23 +2154,25 @@ export default function FinanceHub({
                       />
                       Pembayaran Termin
                     </label>
-                    {paymentType !== PaymentType.FULL_PAYMENT && (
-                      <div className="space-y-2">
-                        <Label htmlFor="standalone-payment-amount">
-                          Nominal Transfer (Rp)
-                        </Label>
-                        <Input
-                          id="standalone-payment-amount"
-                          type="number"
-                          min="0.01"
-                          max={Math.max(0, remainingAmount - 0.01)}
-                          step="0.01"
-                          required
-                          value={paymentAmount}
-                          onChange={(event) => setPaymentAmount(event.target.value)}
-                        />
-                      </div>
-                    )}
+                    <div className="space-y-2">
+                      <Label htmlFor="standalone-payment-amount">
+                        Nominal Pembayaran (Rp)
+                      </Label>
+                      <RupiahAmountInput
+                        id="standalone-payment-amount"
+                        value={
+                          paymentType === PaymentType.FULL_PAYMENT
+                            ? formatRupiahNumber(remainingAmount)
+                            : paymentAmount
+                        }
+                        onChange={setPaymentAmount}
+                        required
+                        disabled={
+                          isPending ||
+                          paymentType === PaymentType.FULL_PAYMENT
+                        }
+                      />
+                    </div>
                   </div>
                 </section>
                 <div className="space-y-2">
@@ -2182,7 +2216,7 @@ export default function FinanceHub({
                     financeAccounts.length === 0 ||
                     isPending ||
                     (paymentType !== PaymentType.FULL_PAYMENT &&
-                      (!paymentAmount || Number(paymentAmount) <= 0))
+                      parseRupiahInput(paymentAmount) <= 0)
                   }
                 >
                   {isPending
@@ -2272,23 +2306,25 @@ export default function FinanceHub({
                         />
                         Pembayaran Termin
                       </label>
-                      {paymentType !== PaymentType.FULL_PAYMENT && (
-                        <div className="space-y-2">
-                          <Label htmlFor="direct-purchase-payment-amount">
-                            Nominal Transfer (Rp)
-                          </Label>
-                          <Input
-                            id="direct-purchase-payment-amount"
-                            type="number"
-                            min="0.01"
-                            max={Math.max(0, remainingAmount - 0.01)}
-                            step="0.01"
-                            required
-                            value={paymentAmount}
-                            onChange={(event) => setPaymentAmount(event.target.value)}
-                          />
-                        </div>
-                      )}
+                      <div className="space-y-2">
+                        <Label htmlFor="direct-purchase-payment-amount">
+                          Nominal Pembayaran (Rp)
+                        </Label>
+                        <RupiahAmountInput
+                          id="direct-purchase-payment-amount"
+                          value={
+                            paymentType === PaymentType.FULL_PAYMENT
+                              ? formatRupiahNumber(remainingAmount)
+                              : paymentAmount
+                          }
+                          onChange={setPaymentAmount}
+                          required
+                          disabled={
+                            isPending ||
+                            paymentType === PaymentType.FULL_PAYMENT
+                          }
+                        />
+                      </div>
                     </section>
                     <div className="space-y-2">
                       <Label htmlFor="direct-purchase-transfer-destination">
@@ -2332,7 +2368,7 @@ export default function FinanceHub({
                         financeAccounts.length === 0 ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
-                          (!paymentAmount || Number(paymentAmount) <= 0))
+                          parseRupiahInput(paymentAmount) <= 0)
                       }
                     >
                       {isPending
@@ -2410,21 +2446,25 @@ export default function FinanceHub({
                         />
                         Pembayaran Termin
                       </label>
-                      {paymentType !== PaymentType.FULL_PAYMENT && (
-                        <div className="space-y-2">
-                          <Label htmlFor="ticket-payment-amount">Nominal Transfer (Rp)</Label>
-                          <Input
-                            id="ticket-payment-amount"
-                            type="number"
-                            min="0.01"
-                            max={Math.max(0, remainingAmount - 0.01)}
-                            step="0.01"
-                            required
-                            value={paymentAmount}
-                            onChange={(event) => setPaymentAmount(event.target.value)}
-                          />
-                        </div>
-                      )}
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-payment-amount">
+                          Nominal Pembayaran (Rp)
+                        </Label>
+                        <RupiahAmountInput
+                          id="ticket-payment-amount"
+                          value={
+                            paymentType === PaymentType.FULL_PAYMENT
+                              ? formatRupiahNumber(remainingAmount)
+                              : paymentAmount
+                          }
+                          onChange={setPaymentAmount}
+                          required
+                          disabled={
+                            isPending ||
+                            paymentType === PaymentType.FULL_PAYMENT
+                          }
+                        />
+                      </div>
                     </section>
                     <div className="space-y-2">
                       <Label htmlFor="transfer-destination">Keterangan tujuan transfer</Label>
@@ -2467,7 +2507,7 @@ export default function FinanceHub({
                         financeAccounts.length === 0 ||
                         isPending ||
                         (paymentType !== PaymentType.FULL_PAYMENT &&
-                          (!paymentAmount || Number(paymentAmount) <= 0))
+                          parseRupiahInput(paymentAmount) <= 0)
                       }
                     >
                       {isPending

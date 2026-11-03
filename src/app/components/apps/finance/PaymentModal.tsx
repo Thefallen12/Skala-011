@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { TicketActionResult } from "@/app/actions/tickets";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
+import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import type { FinanceAccountOption } from "@/app/components/apps/finance/IncomingFundModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PaymentType } from "@/generated/prisma/enums";
+import {
+  formatRupiahNumber,
+  parseRupiahInput,
+} from "@/lib/indonesian-currency";
 
 export type PaymentModalTarget = {
   id: string;
@@ -65,7 +70,9 @@ export default function PaymentModal({
   const [paidAmount, setPaidAmount] = useState(target?.paidAmount ?? 0);
   const [amount, setAmount] = useState(() =>
     target
-      ? String(Math.max(0, target.grandTotal - target.paidAmount))
+      ? formatRupiahNumber(
+          Math.max(0, target.grandTotal - target.paidAmount),
+        )
       : "",
   );
   const [paymentType, setPaymentType] = useState<PaymentType>(
@@ -103,7 +110,7 @@ export default function PaymentModal({
       setIsMessageError(true);
       return;
     }
-    const transferAmount = Number(amount);
+    const transferAmount = parseRupiahInput(amount);
     if (
       !destination.trim() ||
       !Number.isFinite(transferAmount) ||
@@ -150,7 +157,7 @@ export default function PaymentModal({
         0,
         Math.round((target.grandTotal - updatedPaid) * 100) / 100,
       );
-      setAmount(String(updatedRemaining));
+      setAmount(formatRupiahNumber(updatedRemaining));
       setPaymentType(PaymentType.FULL_PAYMENT);
       setProofUrl(null);
       router.refresh();
@@ -225,15 +232,11 @@ export default function PaymentModal({
                     <Label htmlFor="payment-modal-amount">
                       Nominal Transfer (Rp)
                     </Label>
-                    <Input
+                    <RupiahAmountInput
                       id="payment-modal-amount"
-                      type="number"
-                      min="0.01"
-                      max={remainingAmount}
-                      step="0.01"
-                      required
                       value={amount}
-                      onChange={(event) => setAmount(event.target.value)}
+                      onChange={setAmount}
+                      required
                       disabled={
                         isPending || paymentType === PaymentType.FULL_PAYMENT
                       }
@@ -247,7 +250,7 @@ export default function PaymentModal({
                         if (isPaymentType(value)) {
                           setPaymentType(value);
                           if (value === PaymentType.FULL_PAYMENT) {
-                            setAmount(String(remainingAmount));
+                            setAmount(formatRupiahNumber(remainingAmount));
                           }
                         }
                       }}

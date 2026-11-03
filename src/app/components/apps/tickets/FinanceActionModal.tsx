@@ -3,12 +3,17 @@
 import { useEffect, useState, useTransition, type FormEvent } from "react";
 import { submitPaymentRecord } from "@/app/actions/tickets";
 import { listFinanceAccountsForPayments } from "@/app/actions/finance-cashflow";
+import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PaymentType } from "@/generated/prisma/enums";
+import {
+  formatRupiahNumber,
+  parseRupiahInput,
+} from "@/lib/indonesian-currency";
 import type { TicketRow } from "@/app/(DashboardLayout)/types/ticket";
 
 type FinanceAccountOption = {
@@ -100,7 +105,10 @@ export default function FinanceActionModal({
           transferDestination,
           financeAccountId,
           paymentType,
-          amount: paymentAmount ? Number(paymentAmount) : undefined,
+          amount:
+            paymentType === PaymentType.FULL_PAYMENT
+              ? undefined
+              : parseRupiahInput(paymentAmount),
         });
         setMessage(result.message);
         if (result.success) {
@@ -236,21 +244,22 @@ export default function FinanceActionModal({
               />
               Bayar Uang Muka (DP) / Sebagian
             </label>
-            {paymentType !== PaymentType.FULL_PAYMENT && (
-              <label className="block space-y-2 font-medium">
-                Nominal DP (Rp)
-                <Input
-                  type="number"
-                  min="0.01"
-                  max={Math.max(0, remainingAmount - 0.01)}
-                  step="0.01"
-                  required
-                  value={paymentAmount}
-                  onChange={(event) => setPaymentAmount(event.target.value)}
-                  disabled={isPending}
-                />
-              </label>
-            )}
+            <label className="block space-y-2 font-medium">
+              Nominal Pembayaran (Rp)
+              <RupiahAmountInput
+                id="finance-action-payment-amount"
+                value={
+                  paymentType === PaymentType.FULL_PAYMENT
+                    ? formatRupiahNumber(remainingAmount)
+                    : paymentAmount
+                }
+                onChange={setPaymentAmount}
+                required
+                disabled={
+                  isPending || paymentType === PaymentType.FULL_PAYMENT
+                }
+              />
+            </label>
           </fieldset>
           <label className="block space-y-2 text-sm font-medium">
             Upload Bukti Transfer / Pengiriman Dana
@@ -281,7 +290,7 @@ export default function FinanceActionModal({
                 accountsLoading ||
                 accounts.length === 0 ||
                 (paymentType !== PaymentType.FULL_PAYMENT &&
-                  (!paymentAmount || Number(paymentAmount) <= 0))
+                  parseRupiahInput(paymentAmount) <= 0)
               }
             >
               {isPending
