@@ -7,10 +7,22 @@ import { PaymentStatus, UserRole } from "@/generated/prisma/enums";
 import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
 import {
+  CloudinaryConfigurationError,
+  CloudinaryPhotoValidationError,
+  removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import {
+  CloudinaryPrivatePdfValidationError,
+  isCloudinaryPrivateTicketReceiptPdf,
+} from "@/lib/cloudinary-private-pdfs";
+import { removeTicketReceipt, saveTicketReceipt } from "@/lib/ticket-receipts";
+import {
   isCashflowPaymentMethod,
   isFinanceCashflowProofUrl,
   type CashflowPaymentMethod,
 } from "@/lib/finance-cashflow";
+import { FINANCE_CASHFLOW_CLOUDINARY_FOLDER } from "@/lib/finance-cashflow-config";
 
 export type FinanceActionResult = {
   success: boolean;
@@ -23,7 +35,7 @@ export type IncomingFundInput = {
   accountId: string;
   paymentMethod: CashflowPaymentMethod;
   senderName?: string;
-  proofUrl: string;
+  proof: File;
   projectId?: string;
 };
 
@@ -38,7 +50,7 @@ export type FinanceTransferInput = {
   sourceAccountId: string;
   destinationAccountId: string;
   sourceDesc: string;
-  proofUrl: string;
+  proof: File;
 };
 
 export type HistoricalPaymentCashflowInput = {
@@ -74,6 +86,50 @@ function isText(
     value.trim().length >= minLength &&
     value.trim().length <= maxLength
   );
+}
+
+function isValidFinanceProofFile(file: unknown): file is File {
+  return (
+    file instanceof File &&
+    file.size > 0 &&
+    file.size <= 5 * 1024 * 1024 &&
+    ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(
+      file.type,
+    )
+  );
+}
+
+async function uploadCashflowProof(file: File): Promise<string> {
+  if (file.type === "application/pdf") {
+    const url = await saveTicketReceipt(file);
+    if (!isFinanceCashflowProofUrl(url)) {
+      await removeTicketReceipt(url);
+      throw new Error("URL PDF bukti transaksi tidak valid.");
+    }
+    return url;
+  }
+
+  const uploaded = await uploadCloudinaryPhoto(
+    file,
+    FINANCE_CASHFLOW_CLOUDINARY_FOLDER,
+  );
+  if (!isFinanceCashflowProofUrl(uploaded.secureUrl)) {
+    await removeCloudinaryPhoto(uploaded.secureUrl);
+    throw new Error("Cloudinary mengembalikan URL foto bukti yang tidak valid.");
+  }
+  return uploaded.secureUrl;
+}
+
+async function removeUploadedCashflowProof(url: string): Promise<void> {
+  try {
+    if (isCloudinaryPrivateTicketReceiptPdf(url)) {
+      await removeTicketReceipt(url);
+    } else {
+      await removeCloudinaryPhoto(url);
+    }
+  } catch (error) {
+    console.error("Removing unreferenced cashflow proof failed:", error);
+  }
 }
 
 export async function listFinanceAccountsForPayments(): Promise<
@@ -145,13 +201,29 @@ export async function recordIncomingFund(
       input.senderName !== null &&
       typeof input.senderName !== "string") ||
     (typeof input.senderName === "string" && input.senderName.length > 160) ||
-    typeof input.proofUrl !== "string" ||
-    !isFinanceCashflowProofUrl(input.proofUrl) ||
+    !isValidFinanceProofFile(input.proof) ||
     (input.projectId !== undefined &&
       input.projectId !== "" &&
       (typeof input.projectId !== "string" || input.projectId.length > 100))
   ) {
-    return fail("Data dana masuk tidak valid atau bukti bukan dari Cloudinary.");
+    return fail(
+      "Data dana masuk tidak valid. Bukti harus PDF, JPG, PNG, atau WEBP maksimal 5 MB.",
+    );
+  }
+
+  let proofUrl: string;
+  try {
+    proofUrl = await uploadCashflowProof(input.proof);
+  } catch (error) {
+    console.error("Incoming cashflow proof upload failed:", error);
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryConfigurationError ||
+      error instanceof CloudinaryPrivatePdfValidationError
+    ) {
+      return fail(error.message);
+    }
+    return fail("Bukti dana masuk gagal diunggah. Silakan coba kembali.");
   }
 
   try {
@@ -185,7 +257,7 @@ export async function recordIncomingFund(
               input.paymentMethod === "TRANSFER"
                 ? input.senderName!.trim()
                 : null,
-            proofUrl: input.proofUrl,
+            proofUrl,
             accountId: account.id,
             recordedBy: session.user.id,
           },
@@ -195,6 +267,7 @@ export async function recordIncomingFund(
     );
   } catch (error) {
     console.error("Incoming fund recording failed:", error);
+    await removeUploadedCashflowProof(proofUrl);
     return fail(
       error instanceof Error &&
         (error.message.includes("tidak ditemukan") ||
@@ -369,10 +442,26 @@ export async function transferBetweenFinanceAccounts(
     !isText(input.destinationAccountId ?? "", 100) ||
     input.sourceAccountId === input.destinationAccountId ||
     !isText(input.sourceDesc ?? "", 300, 3) ||
-    typeof input.proofUrl !== "string" ||
-    !isFinanceCashflowProofUrl(input.proofUrl)
+    !isValidFinanceProofFile(input.proof)
   ) {
-    return fail("Data transfer antar akun tidak valid.");
+    return fail(
+      "Data transfer tidak valid. Bukti harus PDF, JPG, PNG, atau WEBP maksimal 5 MB.",
+    );
+  }
+
+  let proofUrl: string;
+  try {
+    proofUrl = await uploadCashflowProof(input.proof);
+  } catch (error) {
+    console.error("Finance account transfer proof upload failed:", error);
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryConfigurationError ||
+      error instanceof CloudinaryPrivatePdfValidationError
+    ) {
+      return fail(error.message);
+    }
+    return fail("Bukti transfer gagal diunggah. Silakan coba kembali.");
   }
 
   const transferGroupId = randomUUID();
@@ -416,7 +505,7 @@ export async function transferBetweenFinanceAccounts(
               sourceDesc: `${description} · Transfer ke ${destination.accountName}`,
               paymentMethod: "TRANSFER",
               senderName: null,
-              proofUrl: input.proofUrl,
+              proofUrl,
               accountId: source.id,
               recordedBy: session.user.id,
               transferGroupId,
@@ -427,7 +516,7 @@ export async function transferBetweenFinanceAccounts(
               sourceDesc: `${description} · Transfer dari ${source.accountName}`,
               paymentMethod: "TRANSFER",
               senderName: source.accountName,
-              proofUrl: input.proofUrl,
+              proofUrl,
               accountId: destination.id,
               recordedBy: session.user.id,
               transferGroupId,
@@ -439,6 +528,7 @@ export async function transferBetweenFinanceAccounts(
     );
   } catch (error) {
     console.error("Finance account transfer failed:", error);
+    await removeUploadedCashflowProof(proofUrl);
     return fail(
       error instanceof Error &&
         (error.message.includes("tidak ditemukan") ||

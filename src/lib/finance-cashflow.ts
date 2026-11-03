@@ -1,9 +1,12 @@
 import { getCloudinaryPublicId } from "@/lib/cloudinary-photos";
+import { isCloudinaryPrivateTicketReceiptPdf } from "@/lib/cloudinary-private-pdfs";
 import { FINANCE_CASHFLOW_CLOUDINARY_FOLDER } from "@/lib/finance-cashflow-config";
 
 export type CashflowPaymentMethod = "TRANSFER" | "CASH" | "DEPOSIT";
 
 export function isFinanceCashflowProofUrl(url: string): boolean {
+  if (isCloudinaryPrivateTicketReceiptPdf(url)) return true;
+
   try {
     const parsed = new URL(url);
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;

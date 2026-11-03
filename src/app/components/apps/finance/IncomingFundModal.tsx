@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CldUploadWidget } from "next-cloudinary";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -14,14 +13,14 @@ import type {
   FinanceTransferInput,
   IncomingFundInput,
 } from "@/app/actions/finance-cashflow";
-import { FINANCE_CASHFLOW_CLOUDINARY_FOLDER } from "@/lib/finance-cashflow-config";
 import { parseRupiahInput } from "@/lib/indonesian-currency";
 import { Button } from "@/components/ui/button";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
-import { ExternalLink, Upload, Wallet } from "lucide-react";
+import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
+import { Wallet } from "lucide-react";
 
 export type FinanceAccountOption = {
   id: string;
@@ -42,7 +41,6 @@ type FundFormValues = {
   accountId: string;
   paymentMethod: "TRANSFER" | "CASH" | "DEPOSIT";
   senderName: string;
-  proofUrl: string;
   projectId: string;
   sourceAccountId: string;
   destinationAccountId: string;
@@ -54,7 +52,6 @@ const fundFormSchema = z.object({
   accountId: z.string(),
   paymentMethod: z.enum(["TRANSFER", "CASH", "DEPOSIT"]),
   senderName: z.string().max(160),
-  proofUrl: z.string().min(1, "Bukti penerimaan wajib diunggah."),
   projectId: z.string(),
   sourceAccountId: z.string(),
   destinationAccountId: z.string(),
@@ -79,21 +76,19 @@ export default function IncomingFundModal({
   mode,
   accounts,
   projects,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
 }: {
   open: boolean;
   onClose: () => void;
   mode: "incoming" | "transfer";
   accounts: FinanceAccountOption[];
   projects: FinanceProjectOption[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
 }) {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofError, setProofError] = useState("");
   const [amountInput, setAmountInput] = useState("");
   const form = useForm<FundFormValues>({
     resolver: zodResolver(fundFormSchema),
@@ -103,7 +98,6 @@ export default function IncomingFundModal({
       accountId: accounts[0]?.id ?? "",
       paymentMethod: "TRANSFER",
       senderName: "",
-      proofUrl: "",
       projectId: "",
       sourceAccountId: accounts[0]?.id ?? "",
       destinationAccountId: accounts[1]?.id ?? "",
@@ -113,8 +107,6 @@ export default function IncomingFundModal({
     control: form.control,
     name: "paymentMethod",
   });
-  const proofUrl = useWatch({ control: form.control, name: "proofUrl" });
-
   useEffect(() => {
     if (!open) return;
     form.reset({
@@ -123,7 +115,6 @@ export default function IncomingFundModal({
       accountId: accounts[0]?.id ?? "",
       paymentMethod: "TRANSFER",
       senderName: "",
-      proofUrl: "",
       projectId: "",
       sourceAccountId: accounts[0]?.id ?? "",
       destinationAccountId: accounts[1]?.id ?? "",
@@ -132,19 +123,19 @@ export default function IncomingFundModal({
 
   const handleClose = () => {
     setAmountInput("");
+    setProofFile(null);
+    setProofError("");
     setMessage("");
     setIsError(false);
     onClose();
   };
 
   const submit = form.handleSubmit(async (values) => {
-    if (!proofUrl) {
-      form.setError("proofUrl", {
-        type: "required",
-        message: "Unggah bukti penerimaan terlebih dahulu.",
-      });
+    if (!proofFile) {
+      setProofError("Unggah bukti transaksi terlebih dahulu.");
       return;
     }
+    setProofError("");
     if (mode === "incoming") {
       if (!values.accountId) {
         form.setError("accountId", {
@@ -183,7 +174,7 @@ export default function IncomingFundModal({
               accountId: values.accountId,
               paymentMethod: values.paymentMethod,
               senderName: values.senderName,
-              proofUrl: values.proofUrl,
+              proof: proofFile,
               projectId: values.projectId || undefined,
             } satisfies IncomingFundInput)
           : await transferBetweenFinanceAccounts({
@@ -191,7 +182,7 @@ export default function IncomingFundModal({
               sourceAccountId: values.sourceAccountId,
               destinationAccountId: values.destinationAccountId,
               sourceDesc: values.sourceDesc,
-              proofUrl: values.proofUrl,
+              proof: proofFile,
             } satisfies FinanceTransferInput);
       setMessage(result.message);
       setIsError(!result.success);
@@ -407,84 +398,19 @@ export default function IncomingFundModal({
 
           <div className="space-y-2 rounded-lg border border-slate-700 p-4">
             <Label>{mode === "incoming" ? proofLabels[paymentMethod] : "Unggah Bukti Transfer Antar Akun"}</Label>
-            {cloudinaryCloudName && cloudinaryApiKey ? (
-              <CldUploadWidget
-                config={{
-                  cloud: {
-                    cloudName: cloudinaryCloudName,
-                    apiKey: cloudinaryApiKey,
-                  },
-                }}
-                signatureEndpoint="/api/cloudinary/finance-cashflow-signature"
-                options={{
-                  folder: FINANCE_CASHFLOW_CLOUDINARY_FOLDER,
-                  resourceType: "auto",
-                  sources: ["local", "camera"],
-                  multiple: false,
-                  maxFiles: 1,
-                  maxFileSize: 5 * 1024 * 1024,
-                  clientAllowedFormats: ["pdf", "jpg", "jpeg", "png", "webp"],
-                  showPoweredBy: false,
-                }}
-                onSuccess={(result) => {
-                  if (
-                    result.event === "success" &&
-                    typeof result.info === "object" &&
-                    result.info !== null &&
-                    "secure_url" in result.info &&
-                    typeof result.info.secure_url === "string"
-                  ) {
-                    form.setValue("proofUrl", result.info.secure_url, {
-                      shouldDirty: true,
-                      shouldValidate: true,
-                    });
-                    form.clearErrors("proofUrl");
-                  }
-                }}
-                onError={(error) => {
-                  console.error("Cashflow proof upload failed:", error);
-                  form.setError("proofUrl", {
-                    type: "upload",
-                    message: "Bukti gagal diunggah. Silakan coba kembali.",
-                  });
-                }}
-              >
-                {({ open: openUpload }) => (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => openUpload()}
-                    disabled={isPending}
-                  >
-                    <Upload className="mr-2 size-4" aria-hidden="true" />
-                    {proofUrl ? "Ganti Bukti" : proofLabels[paymentMethod]}
-                  </Button>
-                )}
-              </CldUploadWidget>
-            ) : (
+            <FinancePaymentProofUpload
+              value={proofFile}
+              onChange={(file) => {
+                setProofFile(file);
+                setProofError("");
+              }}
+              disabled={isPending}
+            />
+            {proofError && (
               <p className="text-sm text-destructive" role="alert">
-                Upload bukti tidak tersedia. Periksa konfigurasi Cloudinary.
+                {proofError}
               </p>
             )}
-            {proofUrl && (
-              <a
-                className="inline-flex items-center gap-1 text-sm text-primary underline"
-                href={proofUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <ExternalLink className="size-3" aria-hidden="true" />
-                Lihat bukti terunggah
-              </a>
-            )}
-            {form.formState.errors.proofUrl && (
-              <p className="text-sm text-destructive" role="alert">
-                {form.formState.errors.proofUrl.message}
-              </p>
-            )}
-            <p className="text-xs text-muted-foreground">
-              PDF, JPG, PNG, atau WEBP; maksimal 5 MB.
-            </p>
           </div>
           {message && (
             <p

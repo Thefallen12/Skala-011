@@ -431,7 +431,7 @@ export default function FinanceHub({
     return null;
   });
   const [message, setMessage] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
+  const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
   const [paymentType, setPaymentType] = useState<PaymentType>(
     PaymentType.FULL_PAYMENT,
   );
@@ -814,7 +814,7 @@ export default function FinanceHub({
         if (!target) return;
         const result: TicketActionResult = await submitPaymentRecord({
           target,
-          proofOfTransferUrl: receiptUrl,
+          file: receiptUrl,
           transferDestination,
           financeAccountId,
           paymentType,
@@ -1127,8 +1127,6 @@ export default function FinanceHub({
               cashflows={cashflows}
               historicalPayments={historicalPayments}
               projects={financeProjects}
-              cloudinaryCloudName={cloudinaryCloudName}
-              cloudinaryApiKey={cloudinaryApiKey}
               canManage={
                 role === UserRole.FINANCE ||
                 role === UserRole.ADMINISTRATIONS
@@ -2204,8 +2202,6 @@ export default function FinanceHub({
                   <FinancePaymentProofUpload
                     value={receiptUrl}
                     onChange={setReceiptUrl}
-                    cloudinaryCloudName={cloudinaryCloudName}
-                    cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
                   />
                 </div>
@@ -2356,8 +2352,6 @@ export default function FinanceHub({
                       <FinancePaymentProofUpload
                         value={receiptUrl}
                         onChange={setReceiptUrl}
-                        cloudinaryCloudName={cloudinaryCloudName}
-                        cloudinaryApiKey={cloudinaryApiKey}
                         disabled={isPending}
                       />
                     </div>
@@ -2495,8 +2489,6 @@ export default function FinanceHub({
                       <FinancePaymentProofUpload
                         value={receiptUrl}
                         onChange={setReceiptUrl}
-                        cloudinaryCloudName={cloudinaryCloudName}
-                        cloudinaryApiKey={cloudinaryApiKey}
                         disabled={isPending}
                       />
                     </div>
@@ -2598,8 +2590,6 @@ export default function FinanceHub({
         target={selectedPaymentRow}
         accounts={financeAccounts}
         onPay={submitModalPayment}
-        cloudinaryCloudName={cloudinaryCloudName}
-        cloudinaryApiKey={cloudinaryApiKey}
       />
       <GlobalModal
         isOpen={receiptPreview !== null}

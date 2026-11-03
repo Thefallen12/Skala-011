@@ -80,8 +80,6 @@ export default function FinanceLedger({
   cashflows,
   historicalPayments,
   projects,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   canManage,
   fundMode,
   onFundModeChange,
@@ -93,8 +91,6 @@ export default function FinanceLedger({
   cashflows: FinanceCashflowRow[];
   historicalPayments: FinanceHistoricalPayment[];
   projects: FinanceProjectOption[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   canManage: boolean;
   fundMode: "incoming" | "transfer" | null;
   onFundModeChange: (mode: "incoming" | "transfer" | null) => void;
@@ -584,8 +580,6 @@ export default function FinanceLedger({
         mode={fundMode ?? "incoming"}
         accounts={accounts}
         projects={projects}
-        cloudinaryCloudName={cloudinaryCloudName}
-        cloudinaryApiKey={cloudinaryApiKey}
       />
 
       <GlobalModal

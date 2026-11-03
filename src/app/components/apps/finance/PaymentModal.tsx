@@ -49,15 +49,11 @@ export default function PaymentModal({
   target,
   accounts,
   onPay,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   target: PaymentModalTarget | null;
   accounts: FinanceAccountOption[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   onPay: (
     proof: string | File,
     transferDestination: string,
@@ -82,7 +78,7 @@ export default function PaymentModal({
     target?.transferDestination ?? "",
   );
   const [financeAccountId, setFinanceAccountId] = useState("");
-  const [proofUrl, setProofUrl] = useState<string | null>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
   const [isMessageError, setIsMessageError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -101,7 +97,7 @@ export default function PaymentModal({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!target || !proofUrl || !financeAccountId) {
+    if (!target || !proofFile || !financeAccountId) {
       setMessage(
         !financeAccountId
           ? "Pilih buku kas/bank sumber pembayaran."
@@ -135,7 +131,7 @@ export default function PaymentModal({
     setIsPending(true);
     try {
       const result = await onPay(
-        proofUrl,
+        proofFile,
         destination.trim(),
         paymentType,
         transferAmount,
@@ -159,7 +155,7 @@ export default function PaymentModal({
       );
       setAmount(formatRupiahNumber(updatedRemaining));
       setPaymentType(PaymentType.FULL_PAYMENT);
-      setProofUrl(null);
+      setProofFile(null);
       router.refresh();
     } catch (error) {
       console.error("Finance payment submission failed:", error);
@@ -185,7 +181,7 @@ export default function PaymentModal({
       isOpen={open}
       onClose={() => {
         if (isPending) return;
-        setProofUrl(null);
+        setProofFile(null);
         setMessage("");
         onOpenChange(false);
       }}
@@ -317,20 +313,18 @@ export default function PaymentModal({
                 <div className="space-y-2">
                   <Label>Bukti Transfer</Label>
                   <FinancePaymentProofUpload
-                    value={proofUrl}
-                    onChange={(url) => {
-                      setProofUrl(url);
+                    value={proofFile}
+                    onChange={(file) => {
+                      setProofFile(file);
                       setMessage("");
                       setIsMessageError(false);
                     }}
-                    cloudinaryCloudName={cloudinaryCloudName}
-                    cloudinaryApiKey={cloudinaryApiKey}
                     disabled={isPending}
                   />
                 </div>
                 <Button
                   type="submit"
-                  disabled={isPending || !proofUrl || !financeAccountId}
+                  disabled={isPending || !proofFile || !financeAccountId}
                 >
                   {isPending ? "Memproses..." : "Simpan Pembayaran"}
                 </Button>
