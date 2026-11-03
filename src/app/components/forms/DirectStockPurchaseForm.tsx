@@ -125,6 +125,23 @@ export default function DirectStockPurchaseForm({
     );
   };
 
+  const addPurchaseLine = () => {
+    const key = nextRowKey.current++;
+    setItems((current) =>
+      current.length >= 50
+        ? current
+        : [
+            ...current,
+            {
+              key,
+              stockItemId: "",
+              quantity: "",
+              unitPrice: "",
+            },
+          ],
+    );
+  };
+
   const addCatalogItem = () => {
     const name = newItemName.trim();
     const unit = newItemUnit.trim();
@@ -356,29 +373,45 @@ export default function DirectStockPurchaseForm({
       </div>
 
       <div className="space-y-2">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <Label>Barang dan harga</Label>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setNewItemName("");
-              setNewItemUnit("pcs");
-              setNewItemMessage("");
-              setNewItemDialogOpen(true);
-            }}
-            disabled={
-              isPending || isSavingNewItem || items.length >= 50
-            }
-          >
-            Tambah Jenis Barang
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addPurchaseLine}
+              disabled={
+                isPending ||
+                isSavingNewItem ||
+                catalogItems.length === 0 ||
+                items.length >= 50
+              }
+            >
+              Tambah Barang dari Stok
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setNewItemName("");
+                setNewItemUnit("pcs");
+                setNewItemMessage("");
+                setNewItemDialogOpen(true);
+              }}
+              disabled={
+                isPending || isSavingNewItem || items.length >= 50
+              }
+            >
+              Tambah Jenis Barang
+            </Button>
+          </div>
         </div>
         {catalogItems.length === 0 && (
           <p className="text-sm text-muted-foreground" role="status">
-            Katalog barang masih kosong. Tambahkan jenis barang untuk mengisi
-            pembelian.
+            Katalog barang masih kosong. Tambahkan jenis barang terlebih dahulu
+            untuk mengisi pembelian.
           </p>
         )}
         <div className="overflow-x-auto rounded-md border">
@@ -398,7 +431,7 @@ export default function DirectStockPurchaseForm({
                     <Select
                       value={line.stockItemId || undefined}
                       onValueChange={(stockItemId) => {
-                        const stockItem = stockItems.find(
+                        const stockItem = catalogItems.find(
                           (candidate) => candidate.id === stockItemId,
                         );
                         if (!stockItem) return;

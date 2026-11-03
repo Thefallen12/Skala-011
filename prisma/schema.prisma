@@ -114,6 +114,9 @@ enum TicketRequestCategory {
   OFFICE
   FIELD
   APH
+  REIMBURSEMENT
+  KASBON
+  OPERATING_EXPENSE
 }
 
 enum TicketFieldCategory {
@@ -393,6 +396,8 @@ model User {
   createdProjectWageDisbursements                   ProjectWageDisbursement[]     @relation("ProjectWageDisbursementCreator")
   notifications                                     Notification[]                @relation("UserNotifications")
   cashflowsRecorded                                 Cashflow[]                    @relation("CashflowRecorder")
+  officeExpensesReceived                            OfficeExpense[]               @relation("OfficeExpenseRecipient")
+  officeExpensesRecorded                            OfficeExpense[]               @relation("OfficeExpenseRecorder")
 }
 
 model UserNote {
@@ -1239,6 +1244,8 @@ model Ticket {
   requestedAmount           Float?
   isApprovedByDirector      Boolean                 @default(false)
   attachmentUrl             String?
+  receiptUrls               String[]                @default([])
+  paymentProofUrl           String?
   requestCategory           TicketRequestCategory?
   fieldCategory             TicketFieldCategory?
   requestPaymentMethod      POPaymentMethod?
@@ -1613,14 +1620,15 @@ model InvoiceItem {
 }
 
 model FinanceAccount {
-  id            String     @id @default(cuid())
-  accountName   String
-  accountNumber String?
-  holderName    String
-  balance       Float      @default(0)
-  transactions  Cashflow[]
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  id             String          @id @default(cuid())
+  accountName    String
+  accountNumber  String?
+  holderName     String
+  balance        Float           @default(0)
+  transactions   Cashflow[]
+  officeExpenses OfficeExpense[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Cashflow {
@@ -1640,11 +1648,33 @@ model Cashflow {
   transferGroupId      String?
   paymentTransactionId String?             @unique
   paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
+  officeExpense        OfficeExpense?
   createdAt            DateTime            @default(now())
 
   @@index([accountId, createdAt])
   @@index([projectId, createdAt])
   @@index([transferGroupId])
+}
+
+model OfficeExpense {
+  id            String         @id @default(cuid())
+  expenseType   String
+  description   String
+  amount        Float
+  recipientId   String
+  recipient     User           @relation("OfficeExpenseRecipient", fields: [recipientId], references: [id], onDelete: Restrict)
+  accountId     String
+  account       FinanceAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  paymentMethod String
+  proofUrls     String[]
+  recordedBy    String
+  recorder      User           @relation("OfficeExpenseRecorder", fields: [recordedBy], references: [id], onDelete: Restrict)
+  cashflowId    String         @unique
+  cashflow      Cashflow       @relation(fields: [cashflowId], references: [id], onDelete: Restrict)
+  createdAt     DateTime       @default(now())
+
+  @@index([recipientId, createdAt])
+  @@index([accountId, createdAt])
 }
 
 model OrderConfirmation {

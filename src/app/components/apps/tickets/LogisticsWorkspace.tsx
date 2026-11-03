@@ -1830,6 +1830,7 @@ export default function LogisticsWorkspace({
             <CreateTicketModal
               projects={projects}
               stockItems={stockItems}
+              requesterRole={role}
               triggerLabel="Order Baru"
             />
           )}

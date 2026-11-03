@@ -77,6 +77,8 @@ export default async function FinancePage({
     vendors,
     documentTemplates,
     financeAccounts,
+    officeExpenses,
+    officeExpenseRecipients,
     cashflows,
     unmatchedHistoricalPayments,
     dashboardIncomingFunds,
@@ -280,6 +282,7 @@ export default async function FinancePage({
         totalAmount: true,
         requestedAmount: true,
         purchaseReceiptUrl: true,
+        receiptUrls: true,
         requestCategory: true,
         requestPaymentMethod: true,
         requestPaymentDescription: true,
@@ -428,6 +431,32 @@ export default async function FinancePage({
         balance: true,
       },
     }),
+    session.user.role === UserRole.FINANCE ||
+    session.user.role === UserRole.ADMINISTRATIONS
+      ? prisma.officeExpense.findMany({
+          orderBy: { createdAt: "desc" },
+          take: 200,
+          select: {
+            id: true,
+            expenseType: true,
+            description: true,
+            amount: true,
+            paymentMethod: true,
+            proofUrls: true,
+            createdAt: true,
+            recipient: { select: { name: true, role: true } },
+            account: { select: { accountName: true } },
+          },
+        })
+      : Promise.resolve([]),
+    session.user.role === UserRole.FINANCE ||
+    session.user.role === UserRole.ADMINISTRATIONS
+      ? prisma.user.findMany({
+          where: { isActive: true },
+          orderBy: { name: "asc" },
+          select: { id: true, name: true, role: true },
+        })
+      : Promise.resolve([]),
     prisma.cashflow.findMany({
       where: canViewAPH
         ? undefined
@@ -740,6 +769,18 @@ export default async function FinancePage({
             OR "directStockPurchaseId" IS NOT NULL
           )
         GROUP BY 1, 3
+
+          UNION ALL
+
+          SELECT
+            to_char(date_trunc('month', "createdAt" AT TIME ZONE 'UTC'), 'YYYY-MM') AS "monthKey",
+            'OUT'::text AS "flowType",
+            'office-expense'::text AS "sourceCategory",
+            SUM(amount)::double precision AS "totalAmount"
+          FROM "OfficeExpense"
+          WHERE "createdAt" >= ${cashflowDashboardStart}
+            AND "createdAt" <= ${currentDate}
+          GROUP BY 1
       ) AS "financeFlows"
       GROUP BY 1, 2, 3
       ORDER BY 1 ASC
@@ -785,11 +826,13 @@ export default async function FinancePage({
     ticket: "Tiket",
     "purchase-order": "Purchase Order",
     "direct-material": "Belanja Material Langsung",
+    "office-expense": "Pengeluaran Kantor & Operasional",
   };
   const expenseCategoryKinds: FinanceExpenseCategory["kind"][] = [
     "ticket",
     "purchase-order",
     "direct-material",
+    "office-expense",
   ];
   const expenseCategories: FinanceExpenseCategory[] = expenseCategoryKinds.map((kind) => ({
     kind,
@@ -944,6 +987,14 @@ export default async function FinancePage({
         cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         dashboardMonths={dashboardMonths}
         financeAccounts={financeAccounts}
+        officeExpenses={officeExpenses.map((expense) => ({
+          ...expense,
+          createdAt: expense.createdAt.toISOString(),
+          expenseType: expense.expenseType,
+          recipientName: expense.recipient.name,
+          recipientRole: expense.recipient.role,
+        }))}
+        officeExpenseRecipients={officeExpenseRecipients}
         dashboardTransactions={dashboardTransactions}
         expenseCategories={expenseCategories}
         cashflows={cashflows.map((cashflow) => ({
@@ -1108,6 +1159,8 @@ export default async function FinancePage({
             null,
           purchaseReceiptUrl: ticket.purchaseReceiptUrl,
           requestCategory: ticket.requestCategory,
+          receiptUrls: ticket.receiptUrls,
+          requesterName: ticket.requester.name,
           requestPaymentMethod: ticket.requestPaymentMethod,
           requestPaymentDescription: ticket.requestPaymentDescription,
           recipientName:

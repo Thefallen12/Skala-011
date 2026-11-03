@@ -284,6 +284,7 @@ export type CashflowWhereInput = {
   account?: Prisma.XOR<Prisma.FinanceAccountScalarRelationFilter, Prisma.FinanceAccountWhereInput>
   recorder?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   paymentTransaction?: Prisma.XOR<Prisma.PaymentTransactionNullableScalarRelationFilter, Prisma.PaymentTransactionWhereInput> | null
+  officeExpense?: Prisma.XOR<Prisma.OfficeExpenseNullableScalarRelationFilter, Prisma.OfficeExpenseWhereInput> | null
 }
 
 export type CashflowOrderByWithRelationInput = {
@@ -304,6 +305,7 @@ export type CashflowOrderByWithRelationInput = {
   account?: Prisma.FinanceAccountOrderByWithRelationInput
   recorder?: Prisma.UserOrderByWithRelationInput
   paymentTransaction?: Prisma.PaymentTransactionOrderByWithRelationInput
+  officeExpense?: Prisma.OfficeExpenseOrderByWithRelationInput
 }
 
 export type CashflowWhereUniqueInput = Prisma.AtLeast<{
@@ -327,6 +329,7 @@ export type CashflowWhereUniqueInput = Prisma.AtLeast<{
   account?: Prisma.XOR<Prisma.FinanceAccountScalarRelationFilter, Prisma.FinanceAccountWhereInput>
   recorder?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   paymentTransaction?: Prisma.XOR<Prisma.PaymentTransactionNullableScalarRelationFilter, Prisma.PaymentTransactionWhereInput> | null
+  officeExpense?: Prisma.XOR<Prisma.OfficeExpenseNullableScalarRelationFilter, Prisma.OfficeExpenseWhereInput> | null
 }, "id" | "paymentTransactionId">
 
 export type CashflowOrderByWithAggregationInput = {
@@ -383,6 +386,7 @@ export type CashflowCreateInput = {
   account: Prisma.FinanceAccountCreateNestedOneWithoutTransactionsInput
   recorder: Prisma.UserCreateNestedOneWithoutCashflowsRecordedInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutCashflowInput
+  officeExpense?: Prisma.OfficeExpenseCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUncheckedCreateInput = {
@@ -399,6 +403,7 @@ export type CashflowUncheckedCreateInput = {
   transferGroupId?: string | null
   paymentTransactionId?: string | null
   createdAt?: Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUpdateInput = {
@@ -415,6 +420,7 @@ export type CashflowUpdateInput = {
   account?: Prisma.FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput
   recorder?: Prisma.UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutCashflowNestedInput
+  officeExpense?: Prisma.OfficeExpenseUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateInput = {
@@ -431,6 +437,7 @@ export type CashflowUncheckedUpdateInput = {
   transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowCreateManyInput = {
@@ -546,6 +553,11 @@ export type CashflowMinOrderByAggregateInput = {
 
 export type CashflowSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+}
+
+export type CashflowScalarRelationFilter = {
+  is?: Prisma.CashflowWhereInput
+  isNot?: Prisma.CashflowWhereInput
 }
 
 export type CashflowCreateNestedManyWithoutRecorderInput = {
@@ -706,6 +718,20 @@ export type CashflowUncheckedUpdateManyWithoutAccountNestedInput = {
   deleteMany?: Prisma.CashflowScalarWhereInput | Prisma.CashflowScalarWhereInput[]
 }
 
+export type CashflowCreateNestedOneWithoutOfficeExpenseInput = {
+  create?: Prisma.XOR<Prisma.CashflowCreateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedCreateWithoutOfficeExpenseInput>
+  connectOrCreate?: Prisma.CashflowCreateOrConnectWithoutOfficeExpenseInput
+  connect?: Prisma.CashflowWhereUniqueInput
+}
+
+export type CashflowUpdateOneRequiredWithoutOfficeExpenseNestedInput = {
+  create?: Prisma.XOR<Prisma.CashflowCreateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedCreateWithoutOfficeExpenseInput>
+  connectOrCreate?: Prisma.CashflowCreateOrConnectWithoutOfficeExpenseInput
+  upsert?: Prisma.CashflowUpsertWithoutOfficeExpenseInput
+  connect?: Prisma.CashflowWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CashflowUpdateToOneWithWhereWithoutOfficeExpenseInput, Prisma.CashflowUpdateWithoutOfficeExpenseInput>, Prisma.CashflowUncheckedUpdateWithoutOfficeExpenseInput>
+}
+
 export type CashflowCreateWithoutRecorderInput = {
   id?: string
   type: string
@@ -719,6 +745,7 @@ export type CashflowCreateWithoutRecorderInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutCashflowsInput
   account: Prisma.FinanceAccountCreateNestedOneWithoutTransactionsInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutCashflowInput
+  officeExpense?: Prisma.OfficeExpenseCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUncheckedCreateWithoutRecorderInput = {
@@ -734,6 +761,7 @@ export type CashflowUncheckedCreateWithoutRecorderInput = {
   transferGroupId?: string | null
   paymentTransactionId?: string | null
   createdAt?: Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowCreateOrConnectWithoutRecorderInput = {
@@ -794,6 +822,7 @@ export type CashflowCreateWithoutProjectInput = {
   account: Prisma.FinanceAccountCreateNestedOneWithoutTransactionsInput
   recorder: Prisma.UserCreateNestedOneWithoutCashflowsRecordedInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutCashflowInput
+  officeExpense?: Prisma.OfficeExpenseCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUncheckedCreateWithoutProjectInput = {
@@ -809,6 +838,7 @@ export type CashflowUncheckedCreateWithoutProjectInput = {
   transferGroupId?: string | null
   paymentTransactionId?: string | null
   createdAt?: Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowCreateOrConnectWithoutProjectInput = {
@@ -850,6 +880,7 @@ export type CashflowCreateWithoutPaymentTransactionInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutCashflowsInput
   account: Prisma.FinanceAccountCreateNestedOneWithoutTransactionsInput
   recorder: Prisma.UserCreateNestedOneWithoutCashflowsRecordedInput
+  officeExpense?: Prisma.OfficeExpenseCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUncheckedCreateWithoutPaymentTransactionInput = {
@@ -865,6 +896,7 @@ export type CashflowUncheckedCreateWithoutPaymentTransactionInput = {
   recordedBy: string
   transferGroupId?: string | null
   createdAt?: Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowCreateOrConnectWithoutPaymentTransactionInput = {
@@ -896,6 +928,7 @@ export type CashflowUpdateWithoutPaymentTransactionInput = {
   project?: Prisma.ProjectUpdateOneWithoutCashflowsNestedInput
   account?: Prisma.FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput
   recorder?: Prisma.UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput
+  officeExpense?: Prisma.OfficeExpenseUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateWithoutPaymentTransactionInput = {
@@ -911,6 +944,7 @@ export type CashflowUncheckedUpdateWithoutPaymentTransactionInput = {
   recordedBy?: Prisma.StringFieldUpdateOperationsInput | string
   transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowCreateWithoutAccountInput = {
@@ -926,6 +960,7 @@ export type CashflowCreateWithoutAccountInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutCashflowsInput
   recorder: Prisma.UserCreateNestedOneWithoutCashflowsRecordedInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutCashflowInput
+  officeExpense?: Prisma.OfficeExpenseCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowUncheckedCreateWithoutAccountInput = {
@@ -941,6 +976,7 @@ export type CashflowUncheckedCreateWithoutAccountInput = {
   transferGroupId?: string | null
   paymentTransactionId?: string | null
   createdAt?: Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedCreateNestedOneWithoutCashflowInput
 }
 
 export type CashflowCreateOrConnectWithoutAccountInput = {
@@ -967,6 +1003,86 @@ export type CashflowUpdateWithWhereUniqueWithoutAccountInput = {
 export type CashflowUpdateManyWithWhereWithoutAccountInput = {
   where: Prisma.CashflowScalarWhereInput
   data: Prisma.XOR<Prisma.CashflowUpdateManyMutationInput, Prisma.CashflowUncheckedUpdateManyWithoutAccountInput>
+}
+
+export type CashflowCreateWithoutOfficeExpenseInput = {
+  id?: string
+  type: string
+  amount: number
+  sourceDesc: string
+  paymentMethod: string
+  senderName?: string | null
+  proofUrl?: string | null
+  transferGroupId?: string | null
+  createdAt?: Date | string
+  project?: Prisma.ProjectCreateNestedOneWithoutCashflowsInput
+  account: Prisma.FinanceAccountCreateNestedOneWithoutTransactionsInput
+  recorder: Prisma.UserCreateNestedOneWithoutCashflowsRecordedInput
+  paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutCashflowInput
+}
+
+export type CashflowUncheckedCreateWithoutOfficeExpenseInput = {
+  id?: string
+  type: string
+  amount: number
+  sourceDesc: string
+  projectId?: string | null
+  paymentMethod: string
+  senderName?: string | null
+  proofUrl?: string | null
+  accountId: string
+  recordedBy: string
+  transferGroupId?: string | null
+  paymentTransactionId?: string | null
+  createdAt?: Date | string
+}
+
+export type CashflowCreateOrConnectWithoutOfficeExpenseInput = {
+  where: Prisma.CashflowWhereUniqueInput
+  create: Prisma.XOR<Prisma.CashflowCreateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedCreateWithoutOfficeExpenseInput>
+}
+
+export type CashflowUpsertWithoutOfficeExpenseInput = {
+  update: Prisma.XOR<Prisma.CashflowUpdateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedUpdateWithoutOfficeExpenseInput>
+  create: Prisma.XOR<Prisma.CashflowCreateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedCreateWithoutOfficeExpenseInput>
+  where?: Prisma.CashflowWhereInput
+}
+
+export type CashflowUpdateToOneWithWhereWithoutOfficeExpenseInput = {
+  where?: Prisma.CashflowWhereInput
+  data: Prisma.XOR<Prisma.CashflowUpdateWithoutOfficeExpenseInput, Prisma.CashflowUncheckedUpdateWithoutOfficeExpenseInput>
+}
+
+export type CashflowUpdateWithoutOfficeExpenseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  sourceDesc?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneWithoutCashflowsNestedInput
+  account?: Prisma.FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput
+  recorder?: Prisma.UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput
+  paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutCashflowNestedInput
+}
+
+export type CashflowUncheckedUpdateWithoutOfficeExpenseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  sourceDesc?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountId?: Prisma.StringFieldUpdateOperationsInput | string
+  recordedBy?: Prisma.StringFieldUpdateOperationsInput | string
+  transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CashflowCreateManyRecorderInput = {
@@ -997,6 +1113,7 @@ export type CashflowUpdateWithoutRecorderInput = {
   project?: Prisma.ProjectUpdateOneWithoutCashflowsNestedInput
   account?: Prisma.FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutCashflowNestedInput
+  officeExpense?: Prisma.OfficeExpenseUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateWithoutRecorderInput = {
@@ -1012,6 +1129,7 @@ export type CashflowUncheckedUpdateWithoutRecorderInput = {
   transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateManyWithoutRecorderInput = {
@@ -1057,6 +1175,7 @@ export type CashflowUpdateWithoutProjectInput = {
   account?: Prisma.FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput
   recorder?: Prisma.UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutCashflowNestedInput
+  officeExpense?: Prisma.OfficeExpenseUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateWithoutProjectInput = {
@@ -1072,6 +1191,7 @@ export type CashflowUncheckedUpdateWithoutProjectInput = {
   transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateManyWithoutProjectInput = {
@@ -1117,6 +1237,7 @@ export type CashflowUpdateWithoutAccountInput = {
   project?: Prisma.ProjectUpdateOneWithoutCashflowsNestedInput
   recorder?: Prisma.UserUpdateOneRequiredWithoutCashflowsRecordedNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutCashflowNestedInput
+  officeExpense?: Prisma.OfficeExpenseUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateWithoutAccountInput = {
@@ -1132,6 +1253,7 @@ export type CashflowUncheckedUpdateWithoutAccountInput = {
   transferGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpense?: Prisma.OfficeExpenseUncheckedUpdateOneWithoutCashflowNestedInput
 }
 
 export type CashflowUncheckedUpdateManyWithoutAccountInput = {
@@ -1169,6 +1291,7 @@ export type CashflowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   account?: boolean | Prisma.FinanceAccountDefaultArgs<ExtArgs>
   recorder?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Cashflow$paymentTransactionArgs<ExtArgs>
+  officeExpense?: boolean | Prisma.Cashflow$officeExpenseArgs<ExtArgs>
 }, ExtArgs["result"]["cashflow"]>
 
 export type CashflowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1233,6 +1356,7 @@ export type CashflowInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   account?: boolean | Prisma.FinanceAccountDefaultArgs<ExtArgs>
   recorder?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Cashflow$paymentTransactionArgs<ExtArgs>
+  officeExpense?: boolean | Prisma.Cashflow$officeExpenseArgs<ExtArgs>
 }
 export type CashflowIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.Cashflow$projectArgs<ExtArgs>
@@ -1254,6 +1378,7 @@ export type $CashflowPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     account: Prisma.$FinanceAccountPayload<ExtArgs>
     recorder: Prisma.$UserPayload<ExtArgs>
     paymentTransaction: Prisma.$PaymentTransactionPayload<ExtArgs> | null
+    officeExpense: Prisma.$OfficeExpensePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1667,6 +1792,7 @@ export interface Prisma__CashflowClient<T, Null = never, ExtArgs extends runtime
   account<T extends Prisma.FinanceAccountDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FinanceAccountDefaultArgs<ExtArgs>>): Prisma.Prisma__FinanceAccountClient<runtime.Types.Result.GetResult<Prisma.$FinanceAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   recorder<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentTransaction<T extends Prisma.Cashflow$paymentTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cashflow$paymentTransactionArgs<ExtArgs>>): Prisma.Prisma__PaymentTransactionClient<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  officeExpense<T extends Prisma.Cashflow$officeExpenseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Cashflow$officeExpenseArgs<ExtArgs>>): Prisma.Prisma__OfficeExpenseClient<runtime.Types.Result.GetResult<Prisma.$OfficeExpensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2145,6 +2271,25 @@ export type Cashflow$paymentTransactionArgs<ExtArgs extends runtime.Types.Extens
    */
   include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
   where?: Prisma.PaymentTransactionWhereInput
+}
+
+/**
+ * Cashflow.officeExpense
+ */
+export type Cashflow$officeExpenseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OfficeExpense
+   */
+  select?: Prisma.OfficeExpenseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OfficeExpense
+   */
+  omit?: Prisma.OfficeExpenseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OfficeExpenseInclude<ExtArgs> | null
+  where?: Prisma.OfficeExpenseWhereInput
 }
 
 /**

@@ -47,12 +47,16 @@ export type FinanceDashboardTransaction = {
 };
 
 export type FinanceExpenseCategory = {
-  kind: "ticket" | "purchase-order" | "direct-material";
+  kind:
+    | "ticket"
+    | "purchase-order"
+    | "direct-material"
+    | "office-expense";
   label: string;
   amount: number;
 };
 
-const colors = ["#3b82f6", "#60a5fa", "#93c5fd"];
+const colors = ["#3b82f6", "#60a5fa", "#93c5fd", "#f97345"];
 
 const compactCurrency = (value: number) =>
   `Rp ${new Intl.NumberFormat("id-ID", {

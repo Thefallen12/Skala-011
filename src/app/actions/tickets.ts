@@ -58,6 +58,7 @@ import {
 } from "@/lib/invoice-input";
 import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
 import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
+import { isTicketRequestReceiptUrl } from "@/lib/ticket-request-receipts";
 
 async function storeFinancePaymentProof(proof: File | string): Promise<string> {
   if (typeof proof === "string") {
@@ -106,6 +107,7 @@ export type CreateTicketInput = {
   transferDestination?: string;
   requestPaymentDescription?: string;
   requestedAmount?: number;
+  receiptUrls?: string[];
   items: TicketItemInput[];
 };
 
@@ -1404,7 +1406,58 @@ export async function createTicket(
     requestCategory === TicketRequestCategory.WAREHOUSE;
   const isFieldRequest =
     requestCategory === TicketRequestCategory.FIELD;
+  const isOfficeRequest =
+    requestCategory === TicketRequestCategory.OFFICE;
   const isAPHRequest = requestCategory === TicketRequestCategory.APH;
+  const isInternalFundingRequest = [
+    TicketRequestCategory.REIMBURSEMENT,
+    TicketRequestCategory.KASBON,
+    TicketRequestCategory.OPERATING_EXPENSE,
+  ].some((category) => category === requestCategory);
+  if (
+    isInternalFundingRequest &&
+    session.user.role !== UserRole.DRAFTER &&
+    session.user.role !== UserRole.FIELD_TEAM
+  ) {
+    return actionFailure(
+      "Pengajuan reimbursement dan kasbon hanya dapat dibuat oleh Drafter atau Tim Lapangan.",
+    );
+  }
+  if (
+    isOfficeRequest &&
+    session.user.role !== UserRole.ADMINISTRATIONS &&
+    session.user.role !== UserRole.DRAFTER &&
+    session.user.role !== UserRole.FINANCE
+  ) {
+    return actionFailure(
+      "Permintaan belanja kantor hanya dapat dibuat oleh Admin, Drafter, atau Keuangan.",
+    );
+  }
+  if (isFieldRequest && session.user.role !== UserRole.FIELD_TEAM) {
+    return actionFailure(
+      "Kebutuhan lapangan hanya dapat diajukan oleh Tim Lapangan.",
+    );
+  }
+  const receiptUrls = input.receiptUrls ?? [];
+  if (
+    !Array.isArray(receiptUrls) ||
+    receiptUrls.length > 5 ||
+    receiptUrls.some(
+      (url) =>
+        typeof url !== "string" ||
+        url.length > 2048 ||
+        !isTicketRequestReceiptUrl(url),
+    ) ||
+    new Set(receiptUrls).size !== receiptUrls.length ||
+    (requestCategory !== TicketRequestCategory.REIMBURSEMENT &&
+      receiptUrls.length > 0) ||
+    (requestCategory === TicketRequestCategory.REIMBURSEMENT &&
+      receiptUrls.length === 0)
+  ) {
+    return actionFailure(
+      "Bukti struk/nota tidak valid; reimbursement wajib menyertakan minimal satu bukti.",
+    );
+  }
   if (
     isAPHRequest &&
     session.user.role !== UserRole.DIRECTOR &&
@@ -1426,7 +1479,10 @@ export async function createTicket(
   const isOperationalFunding =
     requestCategory === TicketRequestCategory.OPS;
   const requiresRequestedAmount =
-    requiresRecipientPayment || isOperationalFunding || isAPHRequest;
+    requiresRecipientPayment ||
+    isOperationalFunding ||
+    isAPHRequest ||
+    isInternalFundingRequest;
   let operationalRecipient: {
     name: string;
     bankName: string;
@@ -1466,7 +1522,8 @@ export async function createTicket(
   if (
     (isFieldRequest &&
       (!input.fieldCategory ||
-        !Object.values(TicketFieldCategory).includes(input.fieldCategory))) ||
+        !Object.values(TicketFieldCategory).includes(input.fieldCategory) ||
+        input.fieldCategory === TicketFieldCategory.DIRECT_STORE)) ||
     (!isFieldRequest && input.fieldCategory !== undefined) ||
     input.type !== expectedType
   ) {
@@ -1562,6 +1619,23 @@ export async function createTicket(
     }
     if (input.items.length > 0) {
       return actionFailure("Permintaan dana APH tidak menggunakan rincian item.");
+    }
+  } else if (isInternalFundingRequest) {
+    if (
+      typeof input.requestedAmount !== "number" ||
+      !Number.isSafeInteger(input.requestedAmount) ||
+      input.requestedAmount <= 0 ||
+      input.requestedAmount > Number.MAX_SAFE_INTEGER
+    ) {
+      return actionFailure("Nominal reimbursement/kasbon harus lebih besar dari 0.");
+    }
+    if (!isBoundedText(input.description, 5100)) {
+      return actionFailure("Keterangan pengajuan wajib diisi.");
+    }
+    if (input.items.length > 0) {
+      return actionFailure(
+        "Pengajuan reimbursement/kasbon tidak menggunakan rincian barang.",
+      );
     }
   } else if (input.items.length < 1) {
     return actionFailure("Tambahkan setidaknya satu rincian item.");
@@ -1766,11 +1840,15 @@ export async function createTicket(
             ? input.transferDestination?.trim() || null
             : null,
           priority: input.priority,
-          status: TicketStatus.DRAFT,
+          status: isInternalFundingRequest
+            ? TicketStatus.PENDING_DIRECTOR
+            : TicketStatus.DRAFT,
           totalAmount,
           requestedAmount: requiresRequestedAmount
             ? input.requestedAmount!
             : null,
+          receiptUrls: isInternalFundingRequest ? receiptUrls : [],
+          paymentProofUrl: null,
           attachmentUrl: input.attachmentUrl?.trim() || null,
           recipientName: requiresRecipientPayment
             ? input.recipientName!.trim()
@@ -1803,11 +1881,23 @@ export async function createTicket(
               id: randomUUID(),
               userId: session.user.id,
               action: "CREATED",
-              notes: "Draft tiket dibuat.",
+              notes: isInternalFundingRequest
+                ? "Pengajuan reimbursement/kasbon diajukan untuk persetujuan Direktur."
+                : "Draft tiket dibuat.",
             },
           },
         },
       });
+      if (isInternalFundingRequest) {
+        await sendNotification({
+          roleTarget: [UserRole.DIRECTOR, UserRole.DEPUTY_DIRECTOR],
+          title: "Pengajuan Internal Menunggu Persetujuan",
+          message: `${ticketNumber} · ${input.title.trim()} menunggu persetujuan Direktur.`,
+          actionUrl: `/apps/approvals?tab=direct-purchase&openSheet=${encodeURIComponent(ticketNumber)}`,
+          type: NotificationType.APPROVAL,
+          database: transaction,
+        });
+      }
     });
   } catch (error) {
     if (isUniqueConstraintError(error)) {
@@ -1819,7 +1909,12 @@ export async function createTicket(
 
   revalidatePath("/apps/tickets");
   revalidatePath("/apps/project");
-  return { success: true, message: "Draft tiket berhasil dibuat." };
+  return {
+    success: true,
+    message: isInternalFundingRequest
+      ? "Pengajuan berhasil dikirim ke Direktur untuk persetujuan."
+      : "Draft tiket berhasil dibuat.",
+  };
 }
 
 export async function submitTicket(
@@ -3088,6 +3183,7 @@ export async function processFinancePayment(
   financeAccountId: string,
   paymentType: PaymentType = PaymentType.FULL_PAYMENT,
   requestedPaymentAmount?: number,
+  paymentMethod?: POPaymentMethod,
 ): Promise<TicketActionResult> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -3097,8 +3193,11 @@ export async function processFinancePayment(
     return actionFailure("Hanya Keuangan yang dapat menyelesaikan pembayaran.");
   }
   if (
-    !isBoundedText(transferDestination, 300) ||
-    !isBoundedText(financeAccountId, 100)
+    (!isBoundedText(transferDestination, 300) &&
+      paymentMethod !== POPaymentMethod.CASH) ||
+    !isBoundedText(financeAccountId, 100) ||
+    (paymentMethod !== undefined &&
+      !Object.values(POPaymentMethod).includes(paymentMethod))
   ) {
     return actionFailure(
       "Keterangan tujuan transfer dan buku bank/kas sumber wajib dipilih.",
@@ -3210,6 +3309,26 @@ export async function processFinancePayment(
 
       const isAPHRequest =
         ticket.requestCategory === TicketRequestCategory.APH;
+      const isInternalFundingRequest =
+        ticket.requestCategory !== null &&
+        [
+        TicketRequestCategory.REIMBURSEMENT,
+        TicketRequestCategory.KASBON,
+        TicketRequestCategory.OPERATING_EXPENSE,
+        ].some((category) => category === ticket.requestCategory);
+      if (
+        isInternalFundingRequest &&
+        (!paymentMethod ||
+          paymentType !== PaymentType.FULL_PAYMENT ||
+          ticket.status !== TicketStatus.WAITING_FINANCE_PAYMENT)
+      ) {
+        throw new Error(
+          "Pengajuan internal hanya dapat dibayar lunas dengan metode Cash atau Transfer setelah disetujui Direktur.",
+        );
+      }
+      if (!isInternalFundingRequest && paymentMethod !== undefined) {
+        throw new Error("Metode pembayaran khusus hanya berlaku untuk pengajuan internal.");
+      }
       if (
         isAPHRequest &&
         ticket.requestPaymentMethod !== POPaymentMethod.CASH &&
@@ -3251,6 +3370,21 @@ export async function processFinancePayment(
       if (!Number.isFinite(invoiceTotal) || invoiceTotal <= 0) {
         throw new Error("Total tagihan tiket tidak valid.");
       }
+      if (
+        isInternalFundingRequest &&
+        (!ticket.isApprovedByDirector ||
+          paymentType !== PaymentType.FULL_PAYMENT ||
+          (paymentMethod === POPaymentMethod.TRANSFER &&
+            !isBoundedText(transferDestination, 300)))
+      ) {
+        throw new Error(
+          "Pengajuan internal harus disetujui Direktur dan dibayar lunas; tujuan transfer wajib diisi untuk pembayaran transfer.",
+        );
+      }
+      const effectiveTransferDestination =
+        isInternalFundingRequest && paymentMethod === POPaymentMethod.CASH
+          ? "Tunai"
+          : transferDestination.trim();
       const previousPayments = await transaction.paymentTransaction.aggregate({
         where: {
           status: PaymentStatus.PAID,
@@ -3276,7 +3410,7 @@ export async function processFinancePayment(
           confirmationOrderNumber,
           paymentType,
           amount,
-          transferDestination: transferDestination.trim(),
+          transferDestination: effectiveTransferDestination,
           status: PaymentStatus.PAID,
           processedById: session.user.id,
           proofOfTransferUrl: receiptUrl,
@@ -3291,7 +3425,11 @@ export async function processFinancePayment(
         sourceDesc: `Pembayaran ${order?.poNumber ?? ticket.ticketNumber} · ${ticket.title}`,
         projectId: ticket.projectId,
         paymentMethod:
-          ticket.requestPaymentMethod === POPaymentMethod.CASH
+          isInternalFundingRequest
+            ? paymentMethod === POPaymentMethod.CASH
+              ? "CASH"
+              : "TRANSFER"
+            : ticket.requestPaymentMethod === POPaymentMethod.CASH
             ? "CASH"
             : "TRANSFER",
         proofUrl: receiptUrl,
@@ -3385,7 +3523,10 @@ export async function processFinancePayment(
                 : {}
               : { status: TicketStatus.COMPLETED }),
             transferReceiptUrl: receiptUrl,
-            transferDestination: transferDestination.trim(),
+            transferDestination: effectiveTransferDestination,
+            ...(isInternalFundingRequest
+              ? { paymentProofUrl: receiptUrl }
+              : {}),
             updatedAt: now,
           },
         });
@@ -3394,7 +3535,7 @@ export async function processFinancePayment(
           where: { id: ticketId },
           data: {
             transferReceiptUrl: receiptUrl,
-            transferDestination: transferDestination.trim(),
+            transferDestination: effectiveTransferDestination,
             updatedAt: now,
           },
         });
@@ -3943,6 +4084,7 @@ export async function submitPaymentRecord(input: {
   financeAccountId: string;
   paymentType: PaymentType;
   amount?: number;
+  paymentMethod?: POPaymentMethod;
 }): Promise<TicketActionResult> {
   if (
     !input ||
@@ -3958,7 +4100,9 @@ export async function submitPaymentRecord(input: {
     (Boolean(input.file) === Boolean(input.proofOfTransferUrl)) ||
     !isBoundedText(input.transferDestination, 300) ||
     !isBoundedText(input.financeAccountId, 100) ||
-    !Object.values(PaymentType).includes(input.paymentType)
+    !Object.values(PaymentType).includes(input.paymentType) ||
+    (input.paymentMethod !== undefined &&
+      !Object.values(POPaymentMethod).includes(input.paymentMethod))
   ) {
     return actionFailure("Data pembayaran atau bukti transfer tidak valid.");
   }
@@ -3974,6 +4118,7 @@ export async function submitPaymentRecord(input: {
       input.financeAccountId,
       input.paymentType,
       input.amount,
+      input.paymentMethod,
     );
   }
   if (input.target.kind === "purchase-order") {

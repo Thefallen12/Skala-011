@@ -14,7 +14,7 @@ const categories = [
   },
   {
     value: TicketRequestCategory.MATERIAL,
-    label: "Belanja Material",
+    label: "Permintaan Material",
     color: "var(--color-info)",
   },
   {
@@ -36,6 +36,21 @@ const categories = [
     value: TicketRequestCategory.APH,
     label: "APH",
     color: "var(--color-destructive)",
+  },
+  {
+    value: TicketRequestCategory.REIMBURSEMENT,
+    label: "Reimbursement",
+    color: "var(--color-warning)",
+  },
+  {
+    value: TicketRequestCategory.KASBON,
+    label: "Kasbon / Ambilan",
+    color: "var(--color-secondary)",
+  },
+  {
+    value: TicketRequestCategory.OPERATING_EXPENSE,
+    label: "Biaya Operasional",
+    color: "var(--color-success)",
   },
 ] as const;
 

@@ -934,13 +934,36 @@ export default function TicketListing({
                       Buka lampiran / quotation
                     </a>
                   )}
+                  {selectedTicket.receiptUrls.map((url, index) => (
+                    <Button
+                      key={url}
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="mr-2"
+                      onClick={() =>
+                        setSelectedReceipt({
+                          label: `Bukti pengajuan ${index + 1}`,
+                          url,
+                        })
+                      }
+                    >
+                      <Eye aria-hidden="true" />
+                      Lihat bukti pengajuan {index + 1}
+                    </Button>
+                  ))}
                   {[
+                    ["Bukti pembayaran", selectedTicket.paymentProofUrl],
                     ["Bukti pembelian", selectedTicket.purchaseReceiptUrl],
                     ["Bukti transfer", selectedTicket.transferReceiptUrl],
                     ["Bukti pengiriman", selectedTicket.deliveryReceiptUrl],
                   ]
                     .filter((receipt): receipt is [string, string] =>
-                      Boolean(receipt[1]),
+                      Boolean(receipt[1]) &&
+                      !(
+                        receipt[0] === "Bukti transfer" &&
+                        receipt[1] === selectedTicket.paymentProofUrl
+                      ),
                     )
                     .map(([label, url]) => (
                       <Button

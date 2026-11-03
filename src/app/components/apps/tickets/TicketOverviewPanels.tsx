@@ -1,6 +1,7 @@
 "use client";
 
-import { format, formatDistanceToNowStrict } from "date-fns";
+import { useEffect, useState } from "react";
+import { format, formatDistanceStrict } from "date-fns";
 import { id } from "date-fns/locale";
 import {
   Activity,
@@ -63,6 +64,17 @@ const activityLabels: Record<string, string> = {
   COMPLETED: "Pemrosesan selesai",
 };
 
+function relativeTimeLabel(createdAt: string, now: Date | null) {
+  if (!now) {
+    return `${createdAt.slice(0, 16).replace("T", " ")} UTC`;
+  }
+
+  return formatDistanceStrict(new Date(createdAt), now, {
+    addSuffix: true,
+    locale: id,
+  });
+}
+
 const statuses = Object.values(TicketStatus);
 const requestCategories = [
   {
@@ -101,6 +113,24 @@ const requestCategories = [
     color: "bg-destructive",
     textColor: "text-destructive",
   },
+  {
+    value: TicketRequestCategory.REIMBURSEMENT,
+    label: "Reimbursement",
+    color: "bg-warning",
+    textColor: "text-warning",
+  },
+  {
+    value: TicketRequestCategory.KASBON,
+    label: "Kasbon / Ambilan",
+    color: "bg-warning",
+    textColor: "text-warning",
+  },
+  {
+    value: TicketRequestCategory.OPERATING_EXPENSE,
+    label: "Biaya Operasional",
+    color: "bg-warning",
+    textColor: "text-warning",
+  },
 ] as const;
 
 const requestCategoryLabels: Record<TicketRequestCategory, string> = {
@@ -110,6 +140,9 @@ const requestCategoryLabels: Record<TicketRequestCategory, string> = {
   OFFICE: "Belanja Kantor",
   FIELD: "Kebutuhan Tim Lapangan",
   APH: "APH",
+  REIMBURSEMENT: "Reimbursement",
+  KASBON: "Kasbon / Ambilan",
+  OPERATING_EXPENSE: "Biaya Operasional",
 };
 
 const fieldCategoryLabels: Record<TicketFieldCategory, string> = {
@@ -205,9 +238,11 @@ function TicketStatusDistribution({ tickets }: { tickets: TicketRow[] }) {
 function RecentTicketActivity({
   tickets,
   onSelectTicket,
+  now,
 }: {
   tickets: TicketRow[];
   onSelectTicket: (ticketNumber: string) => void;
+  now: Date | null;
 }) {
   const activities = tickets
     .flatMap((ticket) =>
@@ -255,10 +290,9 @@ function RecentTicketActivity({
                   </span>
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">
-                  {formatDistanceToNowStrict(new Date(activity.createdAt), {
-                    addSuffix: true,
-                    locale: id,
-                  })}
+                  <time dateTime={activity.createdAt}>
+                    {relativeTimeLabel(activity.createdAt, now)}
+                  </time>
                 </span>
               </span>
               <span className="mt-1 block text-xs text-muted-foreground">
@@ -287,6 +321,16 @@ export default function TicketOverviewPanels({
   onSelectTicket: (ticketNumber: string) => void;
   onFilter: (filter: string) => void;
 }) {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    const updateNow = () => setNow(new Date());
+    updateNow();
+    const intervalId = window.setInterval(updateNow, 60_000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
   const alerts = actionRequired
     .slice()
     .sort(
@@ -355,6 +399,7 @@ export default function TicketOverviewPanels({
       <RecentTicketActivity
         tickets={tickets}
         onSelectTicket={onSelectTicket}
+        now={now}
       />
 
       <div className="grid gap-6">
@@ -398,10 +443,9 @@ export default function TicketOverviewPanels({
                     </span>
                   </span>
                   <span className="shrink-0 text-xs text-muted-foreground">
-                    {formatDistanceToNowStrict(new Date(ticket.createdAt), {
-                      addSuffix: true,
-                      locale: id,
-                    })}
+                    <time dateTime={ticket.createdAt}>
+                      {relativeTimeLabel(ticket.createdAt, now)}
+                    </time>
                   </span>
                 </button>
               ))

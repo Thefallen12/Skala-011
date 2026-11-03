@@ -218,6 +218,8 @@ const Tickets = async ({
       ticket.totalAmount?.toString() ??
       null,
     attachmentUrl: ticket.attachmentUrl,
+    receiptUrls: ticket.receiptUrls,
+    paymentProofUrl: ticket.paymentProofUrl,
     purchaseReceiptUrl: ticket.purchaseReceiptUrl,
     transferReceiptUrl: ticket.transferReceiptUrl,
     deliveryReceiptUrl: ticket.deliveryReceiptUrl,
@@ -322,6 +324,8 @@ const Tickets = async ({
             projects={projects}
             requesterRole={session.user.role}
             movers={movers}
+            cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
+            cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
             stockItems={stockItems.map((item) => ({
               ...item,
               stockQuantity: item.stockQuantity.toString(),

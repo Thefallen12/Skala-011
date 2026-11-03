@@ -642,6 +642,8 @@ export default async function LogisticsPage({
     canSubmit: ticket.requesterId === session.user.id,
     totalAmount: ticket.totalAmount?.toString() ?? null,
     attachmentUrl: ticket.attachmentUrl,
+    receiptUrls: ticket.receiptUrls,
+    paymentProofUrl: ticket.paymentProofUrl,
     purchaseReceiptUrl: ticket.purchaseReceiptUrl,
     transferReceiptUrl: ticket.transferReceiptUrl,
     deliveryReceiptUrl: ticket.deliveryReceiptUrl,

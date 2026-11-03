@@ -28,6 +28,7 @@ import PaymentModal, {
 import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import FinancePaymentProofReplacement from "@/app/components/apps/finance/FinancePaymentProofReplacement";
+import OfficeExpenseModal from "@/app/components/apps/finance/OfficeExpenseModal";
 import FinanceLedger, {
   type FinanceCashflowRow,
   type FinanceHistoricalPayment,
@@ -98,6 +99,7 @@ import {
   FileText,
   Fuel,
   History,
+  Plus,
   ReceiptText,
   Search,
   Wallet,
@@ -147,6 +149,8 @@ type FinanceTicket = {
   title: string;
   totalAmount: string | null;
   purchaseReceiptUrl: string | null;
+  receiptUrls: string[];
+  requesterName: string;
   recipientName: string | null;
   bankName: string | null;
   accountNumber: string | null;
@@ -206,6 +210,19 @@ type FinanceTermyn = {
   status: string;
 };
 
+type FinanceOfficeExpense = {
+  id: string;
+  expenseType: string;
+  description: string;
+  amount: number;
+  paymentMethod: string;
+  proofUrls: string[];
+  createdAt: string;
+  recipientName: string;
+  recipientRole: UserRole;
+  account: { accountName: string };
+};
+
 type RetentionContract = {
   id: string;
   contractNumber: string;
@@ -226,6 +243,12 @@ type FinancePaymentRow = PaymentModalTarget & {
   kind: "ticket" | "standalone-po" | "direct-purchase";
 };
 
+const internalFundingCategories = [
+  TicketRequestCategory.REIMBURSEMENT,
+  TicketRequestCategory.KASBON,
+  TicketRequestCategory.OPERATING_EXPENSE,
+] as const;
+
 const currency = (amount: number | string | null) =>
   amount === null
     ? "—"
@@ -234,6 +257,12 @@ const currency = (amount: number | string | null) =>
         currency: "IDR",
         maximumFractionDigits: 0,
       }).format(Number(amount));
+
+const expenseTypeLabels: Record<string, string> = {
+  SALARY: "Gaji",
+  ADVANCE: "Kasbon / Ambilan",
+  REIMBURSEMENT: "Reimbursement",
+};
 
 function FinanceAccountField({
   id,
@@ -303,6 +332,8 @@ export default function FinanceHub({
   cloudinaryApiKey,
   dashboardMonths,
   financeAccounts,
+  officeExpenses,
+  officeExpenseRecipients,
   cashflows,
   historicalPayments,
   financeProjects,
@@ -328,6 +359,8 @@ export default function FinanceHub({
   cloudinaryApiKey: string;
   dashboardMonths: FinanceDashboardMonth[];
   financeAccounts: FinanceAccountOption[];
+  officeExpenses: FinanceOfficeExpense[];
+  officeExpenseRecipients: { id: string; name: string; role: UserRole }[];
   cashflows: FinanceCashflowRow[];
   historicalPayments: FinanceHistoricalPayment[];
   financeProjects: FinanceProjectOption[];
@@ -346,6 +379,7 @@ export default function FinanceHub({
     history: "history",
     operations: "operations",
     ledger: "ledger",
+    "office-expense": "office-expense",
   };
   const resolvedTab = legacyOperationalTabs.includes(initialTab ?? "")
     ? "operations"
@@ -358,6 +392,9 @@ export default function FinanceHub({
   const [ledgerTypeFilter, setLedgerTypeFilter] = useState<"IN" | "OUT" | null>(
     null,
   );
+  const [officeExpenseOpen, setOfficeExpenseOpen] = useState(false);
+  const canManageOfficeExpenses =
+    role === UserRole.FINANCE || role === UserRole.ADMINISTRATIONS;
   useEffect(() => {
     const targetId =
       activeTab === "ledger"
@@ -492,6 +529,11 @@ export default function FinanceHub({
         (ticket.vendorBankName && ticket.vendorAccountNumber
           ? `Ditransfer ke: ${ticket.vendorBankName}, ${ticket.vendorAccountNumber}, a.n. ${ticket.vendorAccountName ?? ""}`
           : ""),
+      isInternalFunding: internalFundingCategories.some(
+        (category) => category === ticket.requestCategory,
+      ),
+      requesterName: ticket.requesterName,
+      receiptUrls: ticket.receiptUrls,
     })),
     ...standalonePayments.map((order) => ({
       id: order.publicCode,
@@ -820,6 +862,7 @@ export default function FinanceHub({
     type: PaymentType,
     amount: number,
     financeAccountId: string,
+    paymentMethod?: POPaymentMethod,
   ): Promise<TicketActionResult> => {
     if (!selectedPaymentRow) {
       return { success: false, message: "Tagihan tidak ditemukan." };
@@ -835,10 +878,14 @@ export default function FinanceHub({
       ...(typeof proof === "string"
         ? { proofOfTransferUrl: proof }
         : { file: proof }),
-      transferDestination,
+      transferDestination:
+        paymentMethod === POPaymentMethod.CASH
+          ? "Tunai"
+          : transferDestination,
       financeAccountId,
       paymentType: type,
       amount,
+      ...(paymentMethod ? { paymentMethod } : {}),
     });
   };
 
@@ -1056,7 +1103,7 @@ export default function FinanceHub({
         onValueChange={setActiveTab}
         className="space-y-5"
       >
-        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl border border-border/70 bg-muted/40 p-2 min-[480px]:grid-cols-2 xl:grid-cols-5">
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl border border-border/70 bg-muted/40 p-2 min-[480px]:grid-cols-2 xl:grid-cols-6">
           <TabsTrigger
             value="check"
             className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -1089,6 +1136,18 @@ export default function FinanceHub({
             <span className="min-w-0 flex-1">4. Buku Kas &amp; Arus Dana</span>
             <Badge variant="secondary">{cashflows.length}</Badge>
           </TabsTrigger>
+          {canManageOfficeExpenses && (
+            <TabsTrigger
+              value="office-expense"
+              className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
+            >
+              <ReceiptText className="size-4 shrink-0" />
+              <span className="min-w-0 flex-1">
+                5. Pengeluaran Kantor &amp; Tim
+              </span>
+              <Badge variant="secondary">{officeExpenses.length}</Badge>
+            </TabsTrigger>
+          )}
           <TabsTrigger
             value="operations"
             className="h-auto min-h-11 min-w-0 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left leading-snug data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -1120,6 +1179,115 @@ export default function FinanceHub({
             />
           </TabsContent>
         </div>
+
+        {canManageOfficeExpenses && (
+          <TabsContent value="office-expense">
+            <Card>
+              <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="space-y-1">
+                  <CardTitle>Pengeluaran Kantor &amp; Operasional</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Riwayat gaji, kasbon, dan reimbursement yang dipotong dari
+                    akun kas/bank.
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => setOfficeExpenseOpen(true)}
+                  className="bg-orange-600 text-white hover:bg-orange-700"
+                >
+                  <Plus className="mr-2 size-4" aria-hidden="true" />
+                  Catat Pengeluaran Internal
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {officeExpenses.length === 0 ? (
+                  <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+                    Belum ada pengeluaran kantor atau operasional yang dicatat.
+                  </p>
+                ) : (
+                  <NativeDataTable itemLabel="pengeluaran">
+                    <table className="app-data-table w-full min-w-[850px] text-left text-sm">
+                      <thead>
+                        <tr className="border-b text-muted-foreground">
+                          <th className="py-2 pr-3">Tanggal</th>
+                          <th className="py-2 pr-3">Penerima</th>
+                          <th className="py-2 pr-3">Tipe</th>
+                          <th className="py-2 pr-3 text-right">Nominal</th>
+                          <th className="py-2 pr-3">Sumber Akun</th>
+                          <th className="py-2">Status Bukti</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {officeExpenses.map((expense) => {
+                          const typeLabel =
+                            expenseTypeLabels[
+                              expense.expenseType as keyof typeof expenseTypeLabels
+                            ] ?? expense.expenseType;
+                          return (
+                            <tr key={expense.id} className="border-b last:border-0">
+                              <td className="py-2 pr-3">
+                                {new Date(expense.createdAt).toLocaleDateString(
+                                  "id-ID",
+                                  { dateStyle: "medium" },
+                                )}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <p className="font-medium">{expense.recipientName}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {expense.recipientRole.replaceAll("_", " ")}
+                                </p>
+                              </td>
+                              <td className="py-2 pr-3">
+                                <p>{typeLabel}</p>
+                                <p className="max-w-56 truncate text-xs text-muted-foreground">
+                                  {expense.description}
+                                </p>
+                              </td>
+                              <td className="py-2 pr-3 text-right font-semibold">
+                                {currency(expense.amount)}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <p>{expense.account.accountName}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {expense.paymentMethod === "CASH"
+                                    ? "Cash"
+                                    : "Transfer"}
+                                </p>
+                              </td>
+                              <td className="py-2">
+                                <div className="flex flex-col items-start gap-1">
+                                  <Badge variant="success">
+                                    Lengkap · {expense.proofUrls.length} bukti
+                                  </Badge>
+                                  {expense.proofUrls.map((url, index) => (
+                                    <button
+                                      key={url}
+                                      type="button"
+                                      className="text-xs text-primary underline"
+                                      onClick={() =>
+                                        setReceiptPreview({
+                                          url,
+                                          label: `Bukti ${typeLabel} · ${expense.recipientName} (${index + 1})`,
+                                        })
+                                      }
+                                    >
+                                      Lihat bukti {index + 1}
+                                    </button>
+                                  ))}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </NativeDataTable>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
 
         <TabsContent value="check">
           <Card>
@@ -2612,6 +2780,16 @@ export default function FinanceHub({
             </>
           )}
       </GlobalModal>
+      {canManageOfficeExpenses && officeExpenseOpen && (
+        <OfficeExpenseModal
+          open
+          onClose={() => setOfficeExpenseOpen(false)}
+          accounts={financeAccounts}
+          recipients={officeExpenseRecipients}
+          cloudinaryCloudName={cloudinaryCloudName}
+          cloudinaryApiKey={cloudinaryApiKey}
+        />
+      )}
     </div>
   );
 }

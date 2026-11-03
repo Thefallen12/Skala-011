@@ -233,6 +233,7 @@ export type FinanceAccountWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"FinanceAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FinanceAccount"> | Date | string
   transactions?: Prisma.CashflowListRelationFilter
+  officeExpenses?: Prisma.OfficeExpenseListRelationFilter
 }
 
 export type FinanceAccountOrderByWithRelationInput = {
@@ -244,6 +245,7 @@ export type FinanceAccountOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   transactions?: Prisma.CashflowOrderByRelationAggregateInput
+  officeExpenses?: Prisma.OfficeExpenseOrderByRelationAggregateInput
 }
 
 export type FinanceAccountWhereUniqueInput = Prisma.AtLeast<{
@@ -258,6 +260,7 @@ export type FinanceAccountWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"FinanceAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FinanceAccount"> | Date | string
   transactions?: Prisma.CashflowListRelationFilter
+  officeExpenses?: Prisma.OfficeExpenseListRelationFilter
 }, "id">
 
 export type FinanceAccountOrderByWithAggregationInput = {
@@ -297,6 +300,7 @@ export type FinanceAccountCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.CashflowCreateNestedManyWithoutAccountInput
+  officeExpenses?: Prisma.OfficeExpenseCreateNestedManyWithoutAccountInput
 }
 
 export type FinanceAccountUncheckedCreateInput = {
@@ -308,6 +312,7 @@ export type FinanceAccountUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.CashflowUncheckedCreateNestedManyWithoutAccountInput
+  officeExpenses?: Prisma.OfficeExpenseUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type FinanceAccountUpdateInput = {
@@ -319,6 +324,7 @@ export type FinanceAccountUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.CashflowUpdateManyWithoutAccountNestedInput
+  officeExpenses?: Prisma.OfficeExpenseUpdateManyWithoutAccountNestedInput
 }
 
 export type FinanceAccountUncheckedUpdateInput = {
@@ -330,6 +336,7 @@ export type FinanceAccountUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.CashflowUncheckedUpdateManyWithoutAccountNestedInput
+  officeExpenses?: Prisma.OfficeExpenseUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type FinanceAccountCreateManyInput = {
@@ -419,6 +426,20 @@ export type FinanceAccountUpdateOneRequiredWithoutTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FinanceAccountUpdateToOneWithWhereWithoutTransactionsInput, Prisma.FinanceAccountUpdateWithoutTransactionsInput>, Prisma.FinanceAccountUncheckedUpdateWithoutTransactionsInput>
 }
 
+export type FinanceAccountCreateNestedOneWithoutOfficeExpensesInput = {
+  create?: Prisma.XOR<Prisma.FinanceAccountCreateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedCreateWithoutOfficeExpensesInput>
+  connectOrCreate?: Prisma.FinanceAccountCreateOrConnectWithoutOfficeExpensesInput
+  connect?: Prisma.FinanceAccountWhereUniqueInput
+}
+
+export type FinanceAccountUpdateOneRequiredWithoutOfficeExpensesNestedInput = {
+  create?: Prisma.XOR<Prisma.FinanceAccountCreateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedCreateWithoutOfficeExpensesInput>
+  connectOrCreate?: Prisma.FinanceAccountCreateOrConnectWithoutOfficeExpensesInput
+  upsert?: Prisma.FinanceAccountUpsertWithoutOfficeExpensesInput
+  connect?: Prisma.FinanceAccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FinanceAccountUpdateToOneWithWhereWithoutOfficeExpensesInput, Prisma.FinanceAccountUpdateWithoutOfficeExpensesInput>, Prisma.FinanceAccountUncheckedUpdateWithoutOfficeExpensesInput>
+}
+
 export type FinanceAccountCreateWithoutTransactionsInput = {
   id?: string
   accountName: string
@@ -427,6 +448,7 @@ export type FinanceAccountCreateWithoutTransactionsInput = {
   balance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  officeExpenses?: Prisma.OfficeExpenseCreateNestedManyWithoutAccountInput
 }
 
 export type FinanceAccountUncheckedCreateWithoutTransactionsInput = {
@@ -437,6 +459,7 @@ export type FinanceAccountUncheckedCreateWithoutTransactionsInput = {
   balance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  officeExpenses?: Prisma.OfficeExpenseUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type FinanceAccountCreateOrConnectWithoutTransactionsInput = {
@@ -463,6 +486,7 @@ export type FinanceAccountUpdateWithoutTransactionsInput = {
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpenses?: Prisma.OfficeExpenseUpdateManyWithoutAccountNestedInput
 }
 
 export type FinanceAccountUncheckedUpdateWithoutTransactionsInput = {
@@ -473,6 +497,67 @@ export type FinanceAccountUncheckedUpdateWithoutTransactionsInput = {
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  officeExpenses?: Prisma.OfficeExpenseUncheckedUpdateManyWithoutAccountNestedInput
+}
+
+export type FinanceAccountCreateWithoutOfficeExpensesInput = {
+  id?: string
+  accountName: string
+  accountNumber?: string | null
+  holderName: string
+  balance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transactions?: Prisma.CashflowCreateNestedManyWithoutAccountInput
+}
+
+export type FinanceAccountUncheckedCreateWithoutOfficeExpensesInput = {
+  id?: string
+  accountName: string
+  accountNumber?: string | null
+  holderName: string
+  balance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transactions?: Prisma.CashflowUncheckedCreateNestedManyWithoutAccountInput
+}
+
+export type FinanceAccountCreateOrConnectWithoutOfficeExpensesInput = {
+  where: Prisma.FinanceAccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.FinanceAccountCreateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedCreateWithoutOfficeExpensesInput>
+}
+
+export type FinanceAccountUpsertWithoutOfficeExpensesInput = {
+  update: Prisma.XOR<Prisma.FinanceAccountUpdateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedUpdateWithoutOfficeExpensesInput>
+  create: Prisma.XOR<Prisma.FinanceAccountCreateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedCreateWithoutOfficeExpensesInput>
+  where?: Prisma.FinanceAccountWhereInput
+}
+
+export type FinanceAccountUpdateToOneWithWhereWithoutOfficeExpensesInput = {
+  where?: Prisma.FinanceAccountWhereInput
+  data: Prisma.XOR<Prisma.FinanceAccountUpdateWithoutOfficeExpensesInput, Prisma.FinanceAccountUncheckedUpdateWithoutOfficeExpensesInput>
+}
+
+export type FinanceAccountUpdateWithoutOfficeExpensesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  holderName?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transactions?: Prisma.CashflowUpdateManyWithoutAccountNestedInput
+}
+
+export type FinanceAccountUncheckedUpdateWithoutOfficeExpensesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  holderName?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transactions?: Prisma.CashflowUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 
@@ -482,10 +567,12 @@ export type FinanceAccountUncheckedUpdateWithoutTransactionsInput = {
 
 export type FinanceAccountCountOutputType = {
   transactions: number
+  officeExpenses: number
 }
 
 export type FinanceAccountCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactions?: boolean | FinanceAccountCountOutputTypeCountTransactionsArgs
+  officeExpenses?: boolean | FinanceAccountCountOutputTypeCountOfficeExpensesArgs
 }
 
 /**
@@ -505,6 +592,13 @@ export type FinanceAccountCountOutputTypeCountTransactionsArgs<ExtArgs extends r
   where?: Prisma.CashflowWhereInput
 }
 
+/**
+ * FinanceAccountCountOutputType without action
+ */
+export type FinanceAccountCountOutputTypeCountOfficeExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OfficeExpenseWhereInput
+}
+
 
 export type FinanceAccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -515,6 +609,7 @@ export type FinanceAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   transactions?: boolean | Prisma.FinanceAccount$transactionsArgs<ExtArgs>
+  officeExpenses?: boolean | Prisma.FinanceAccount$officeExpensesArgs<ExtArgs>
   _count?: boolean | Prisma.FinanceAccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["financeAccount"]>
 
@@ -551,6 +646,7 @@ export type FinanceAccountSelectScalar = {
 export type FinanceAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "accountName" | "accountNumber" | "holderName" | "balance" | "createdAt" | "updatedAt", ExtArgs["result"]["financeAccount"]>
 export type FinanceAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactions?: boolean | Prisma.FinanceAccount$transactionsArgs<ExtArgs>
+  officeExpenses?: boolean | Prisma.FinanceAccount$officeExpensesArgs<ExtArgs>
   _count?: boolean | Prisma.FinanceAccountCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FinanceAccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -560,6 +656,7 @@ export type $FinanceAccountPayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "FinanceAccount"
   objects: {
     transactions: Prisma.$CashflowPayload<ExtArgs>[]
+    officeExpenses: Prisma.$OfficeExpensePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -964,6 +1061,7 @@ readonly fields: FinanceAccountFieldRefs;
 export interface Prisma__FinanceAccountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   transactions<T extends Prisma.FinanceAccount$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FinanceAccount$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CashflowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  officeExpenses<T extends Prisma.FinanceAccount$officeExpensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FinanceAccount$officeExpensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfficeExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1414,6 +1512,30 @@ export type FinanceAccount$transactionsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.CashflowScalarFieldEnum | Prisma.CashflowScalarFieldEnum[]
+}
+
+/**
+ * FinanceAccount.officeExpenses
+ */
+export type FinanceAccount$officeExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OfficeExpense
+   */
+  select?: Prisma.OfficeExpenseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OfficeExpense
+   */
+  omit?: Prisma.OfficeExpenseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OfficeExpenseInclude<ExtArgs> | null
+  where?: Prisma.OfficeExpenseWhereInput
+  orderBy?: Prisma.OfficeExpenseOrderByWithRelationInput | Prisma.OfficeExpenseOrderByWithRelationInput[]
+  cursor?: Prisma.OfficeExpenseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OfficeExpenseScalarFieldEnum | Prisma.OfficeExpenseScalarFieldEnum[]
 }
 
 /**

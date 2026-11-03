@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import type { TicketActionResult } from "@/app/actions/tickets";
 import FinancePaymentProofUpload from "@/app/components/apps/finance/FinancePaymentProofUpload";
 import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
@@ -18,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PaymentType } from "@/generated/prisma/enums";
+import { POPaymentMethod, PaymentType } from "@/generated/prisma/enums";
 import {
   formatRupiahNumber,
   parseRupiahInput,
@@ -31,6 +32,9 @@ export type PaymentModalTarget = {
   grandTotal: number;
   paidAmount: number;
   transferDestination: string;
+  isInternalFunding?: boolean;
+  requesterName?: string;
+  receiptUrls?: string[];
 };
 
 const currency = (amount: number) =>
@@ -60,6 +64,7 @@ export default function PaymentModal({
     paymentType: PaymentType,
     amount: number,
     financeAccountId: string,
+    paymentMethod?: POPaymentMethod,
   ) => Promise<TicketActionResult>;
 }) {
   const router = useRouter();
@@ -78,6 +83,9 @@ export default function PaymentModal({
     target?.transferDestination ?? "",
   );
   const [financeAccountId, setFinanceAccountId] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<POPaymentMethod>(
+    POPaymentMethod.TRANSFER,
+  );
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
   const [isMessageError, setIsMessageError] = useState(false);
@@ -94,6 +102,10 @@ export default function PaymentModal({
       : paidAmount > 0
         ? "DIBAYAR SEBAGIAN"
         : "BELUM DIBAYAR";
+  const insufficientInternalAccounts = Boolean(
+    target?.isInternalFunding &&
+      !accounts.some((account) => account.balance >= remainingAmount),
+  );
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,16 +120,21 @@ export default function PaymentModal({
     }
     const transferAmount = parseRupiahInput(amount);
     if (
-      !destination.trim() ||
+      ((!target.isInternalFunding ||
+        paymentMethod === POPaymentMethod.TRANSFER) &&
+        !destination.trim()) ||
       !Number.isFinite(transferAmount) ||
       transferAmount <= 0 ||
       transferAmount > remainingAmount ||
-      (paymentType === PaymentType.FULL_PAYMENT &&
+      ((target.isInternalFunding ||
+        paymentType === PaymentType.FULL_PAYMENT) &&
         transferAmount !== remainingAmount) ||
-      (paymentType !== PaymentType.FULL_PAYMENT &&
+      (!target.isInternalFunding &&
+        paymentType !== PaymentType.FULL_PAYMENT &&
         transferAmount >= remainingAmount)
     ) {
       setMessage(
+        target.isInternalFunding ||
         paymentType === PaymentType.FULL_PAYMENT
           ? "Nominal pelunasan harus sama dengan sisa tagihan."
           : "Nominal DP/termin harus lebih kecil dari sisa tagihan.",
@@ -136,6 +153,7 @@ export default function PaymentModal({
         paymentType,
         transferAmount,
         financeAccountId,
+        target.isInternalFunding ? paymentMethod : undefined,
       );
       setMessage(result.message);
       setIsMessageError(!result.success);
@@ -195,6 +213,74 @@ export default function PaymentModal({
     >
         {target && (
           <form className="space-y-4" onSubmit={submit}>
+            {target.isInternalFunding && (
+              <>
+                <section className="space-y-3 rounded-lg border p-4">
+                  <div className="text-sm">
+                    Pemohon
+                    <strong className="mt-1 block">
+                      {target.requesterName ?? "—"}
+                    </strong>
+                  </div>
+                  {target.receiptUrls && target.receiptUrls.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Struk / nota asli</p>
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                        {target.receiptUrls.map((url, index) => (
+                          <a
+                            key={url}
+                            href={url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="overflow-hidden rounded-md border text-sm text-primary"
+                          >
+                            {/\/image\/upload\//.test(url) ? (
+                              <Image
+                                src={url}
+                                alt={`Bukti pengajuan ${index + 1}`}
+                                width={320}
+                                height={220}
+                                unoptimized
+                                className="h-28 w-full object-cover"
+                              />
+                            ) : (
+                              <span className="flex h-28 items-center justify-center">
+                                Buka dokumen {index + 1}
+                              </span>
+                            )}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </section>
+                <div className="space-y-2">
+                  <Label htmlFor="payment-modal-method">Metode Pembayaran</Label>
+                  <Select
+                    value={paymentMethod}
+                    onValueChange={(value) => {
+                      if (
+                        value === POPaymentMethod.CASH ||
+                        value === POPaymentMethod.TRANSFER
+                      ) {
+                        setPaymentMethod(value);
+                      }
+                    }}
+                    disabled={isPending}
+                  >
+                    <SelectTrigger id="payment-modal-method">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={POPaymentMethod.TRANSFER}>
+                        Transfer
+                      </SelectItem>
+                      <SelectItem value={POPaymentMethod.CASH}>Cash</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
+            )}
             <section className="grid gap-2 rounded-lg border p-4 text-sm sm:grid-cols-3">
               <div>
                 Tagihan
@@ -226,7 +312,9 @@ export default function PaymentModal({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="payment-modal-amount">
-                      Nominal Transfer (Rp)
+                      {target.isInternalFunding
+                        ? "Nominal Dibayarkan (Rp)"
+                        : "Nominal Transfer (Rp)"}
                     </Label>
                     <RupiahAmountInput
                       id="payment-modal-amount"
@@ -234,11 +322,13 @@ export default function PaymentModal({
                       onChange={setAmount}
                       required
                       disabled={
-                        isPending || paymentType === PaymentType.FULL_PAYMENT
+                        isPending ||
+                        target.isInternalFunding ||
+                        paymentType === PaymentType.FULL_PAYMENT
                       }
                     />
                   </div>
-                  <div className="space-y-2">
+                  {!target.isInternalFunding && <div className="space-y-2">
                     <Label htmlFor="payment-modal-type">Jenis Pembayaran</Label>
                     <Select
                       value={paymentType}
@@ -267,7 +357,7 @@ export default function PaymentModal({
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+                  </div>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="payment-modal-finance-account">
@@ -283,7 +373,14 @@ export default function PaymentModal({
                     </SelectTrigger>
                     <SelectContent>
                       {accounts.map((account) => (
-                        <SelectItem key={account.id} value={account.id}>
+                        <SelectItem
+                          key={account.id}
+                          value={account.id}
+                          disabled={
+                            target.isInternalFunding &&
+                            account.balance < remainingAmount
+                          }
+                        >
                           {account.accountName} · {currency(account.balance)}
                         </SelectItem>
                       ))}
@@ -296,9 +393,20 @@ export default function PaymentModal({
                     </p>
                   )}
                 </div>
+                {target.isInternalFunding &&
+                  insufficientInternalAccounts && (
+                    <p className="text-sm text-destructive" role="alert">
+                      Tidak ada akun dengan saldo yang mencukupi untuk
+                      pengajuan ini.
+                    </p>
+                  )}
+                {(!target.isInternalFunding ||
+                  paymentMethod === POPaymentMethod.TRANSFER) && (
                 <div className="space-y-2">
                   <Label htmlFor="payment-modal-destination">
-                    Ditransfer Ke (Bank/Rekening/Atas Nama)
+                    {target.isInternalFunding
+                      ? "Tujuan Transfer"
+                      : "Ditransfer Ke (Bank/Rekening/Atas Nama)"}
                   </Label>
                   <Input
                     id="payment-modal-destination"
@@ -310,8 +418,13 @@ export default function PaymentModal({
                     placeholder="Nama bank, nomor rekening, atas nama"
                   />
                 </div>
+                )}
                 <div className="space-y-2">
-                  <Label>Bukti Transfer</Label>
+                  <Label>
+                    {target.isInternalFunding && paymentMethod === POPaymentMethod.CASH
+                      ? "Bukti Kwitansi / Tanda Terima"
+                      : "Bukti Transfer"}
+                  </Label>
                   <FinancePaymentProofUpload
                     value={proofFile}
                     onChange={(file) => {
@@ -324,14 +437,21 @@ export default function PaymentModal({
                 </div>
                 <Button
                   type="submit"
-                  disabled={isPending || !proofFile || !financeAccountId}
+                  disabled={
+                    isPending ||
+                    !proofFile ||
+                    !financeAccountId ||
+                    (target.isInternalFunding && insufficientInternalAccounts)
+                  }
                 >
                   {isPending ? "Memproses..." : "Simpan Pembayaran"}
                 </Button>
               </>
             ) : (
               <p className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-900">
-                PO ini sudah lunas.
+                {target.isInternalFunding
+                  ? "Pengajuan ini sudah dibayar lunas."
+                  : "PO ini sudah lunas."}
               </p>
             )}
             {message && (

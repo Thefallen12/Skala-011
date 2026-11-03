@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary";
 import { format, startOfDay } from "date-fns";
 import { id } from "date-fns/locale";
 import { CalendarDays, Plus, Trash2 } from "lucide-react";
@@ -41,9 +43,12 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { formatRupiahNumber, parseRupiahInput } from "@/lib/indonesian-currency";
+import { REQUEST_DOCUMENT_CLOUDINARY_FOLDER } from "@/lib/request-document-config";
 
 const requestCategories = Object.values(TicketRequestCategory);
-const fieldCategories = Object.values(TicketFieldCategory);
+const fieldCategories = Object.values(TicketFieldCategory).filter(
+  (category) => category !== TicketFieldCategory.DIRECT_STORE,
+);
 const itemCategoryHints = Object.values(TicketCategoryHint);
 const priorities = ["NON_URGENT", "URGENT", "EMERGENCY"] as const;
 
@@ -54,7 +59,21 @@ const requestCategoryLabels: Record<TicketRequestCategory, string> = {
   OFFICE: "Belanja Kantor",
   FIELD: "Belanja Kebutuhan Tim Lapangan",
   APH: "APH",
+  REIMBURSEMENT: "Reimbursement",
+  KASBON: "Kasbon / Ambilan",
+  OPERATING_EXPENSE: "Biaya Operasional",
 };
+
+const internalFundingCategories = [
+  TicketRequestCategory.REIMBURSEMENT,
+  TicketRequestCategory.KASBON,
+  TicketRequestCategory.OPERATING_EXPENSE,
+] as const;
+
+const isInternalFundingCategory = (
+  category: TicketRequestCategory,
+): category is (typeof internalFundingCategories)[number] =>
+  internalFundingCategories.some((value) => value === category);
 
 const fieldCategoryLabels: Record<TicketFieldCategory, string> = {
   HAULING: "Biaya Langsir",
@@ -89,6 +108,7 @@ const ticketFormSchema = z
     requestPaymentMethod: z.enum(Object.values(POPaymentMethod)).optional(),
     transferDestination: z.string().optional(),
     requestPaymentDescription: z.string().optional(),
+    receiptUrls: z.array(z.string().url()).max(5),
     operationalRequestType: z.enum(["GENERAL", "SURVEY"]),
     operationalAmount: z
       .number()
@@ -125,6 +145,7 @@ const ticketFormSchema = z
       values.requestCategory === TicketRequestCategory.WAREHOUSE ||
       values.requestCategory === TicketRequestCategory.FIELD;
     const isAPHRequest = values.requestCategory === TicketRequestCategory.APH;
+    const isInternalFunding = isInternalFundingCategory(values.requestCategory);
     if (projectLinkedRequest && !values.projectId) {
       context.addIssue({
         code: "custom",
@@ -138,6 +159,7 @@ const ticketFormSchema = z
     if (
       !hasPerItemDeliveryDates &&
       !isAPHRequest &&
+      !isInternalFunding &&
       (!values.neededDate || Number.isNaN(values.neededDate.getTime()))
     ) {
       context.addIssue({
@@ -217,10 +239,45 @@ const ticketFormSchema = z
         });
       }
     }
+    if (isInternalFunding) {
+      if (values.requestedAmount === undefined) {
+        context.addIssue({
+          code: "custom",
+          path: ["requestedAmount"],
+          message: "Nominal pengajuan harus lebih besar dari 0.",
+        });
+      }
+      if (
+        !values.requestPaymentDescription?.trim() ||
+        values.requestPaymentDescription.trim().length > 5000
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["requestPaymentDescription"],
+          message: "Keterangan pengajuan wajib diisi (maksimal 5.000 karakter).",
+        });
+      }
+      if (
+        values.requestCategory === TicketRequestCategory.REIMBURSEMENT &&
+        values.receiptUrls.length === 0
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["receiptUrls"],
+          message: "Unggah minimal satu struk atau nota asli untuk reimbursement.",
+        });
+      }
+      if (values.items.length > 0) {
+        context.addIssue({
+          code: "custom",
+          path: ["items"],
+          message: "Pengajuan internal tidak menggunakan rincian barang.",
+        });
+      }
+    }
     const requiresRecipientPayment =
       values.requestCategory === TicketRequestCategory.FIELD &&
-      values.fieldCategory !== undefined &&
-      values.fieldCategory !== TicketFieldCategory.DIRECT_STORE;
+      values.fieldCategory !== undefined;
     const isOperationalFunding =
       values.requestCategory === TicketRequestCategory.OPS;
     if (requiresRecipientPayment) {
@@ -278,7 +335,7 @@ const ticketFormSchema = z
           });
         }
       }
-    } else if (isAPHRequest) {
+    } else if (isAPHRequest || isInternalFunding) {
       if (values.items.length > 0) {
         context.addIssue({
           code: "custom",
@@ -343,12 +400,66 @@ const formatCurrency = (amount: number) =>
     maximumFractionDigits: 0,
   }).format(amount);
 
-const requestCategoriesForRole = (role?: UserRole) =>
-  role === UserRole.DIRECTOR || role === UserRole.FINANCE
-  ? requestCategories
-  : requestCategories.filter(
-      (category) => category !== TicketRequestCategory.APH,
+const getRequestTypeOptions = (
+  role?: UserRole,
+  selectedProjectId?: string,
+): { label: string; value: TicketRequestCategory }[] => {
+  const options: { label: string; value: TicketRequestCategory }[] = [
+    {
+      label: "Operasional (OPS)",
+      value: TicketRequestCategory.OPS,
+    },
+  ];
+
+  if (selectedProjectId) {
+    options.push(
+      {
+        label: "Permintaan Material",
+        value: TicketRequestCategory.MATERIAL,
+      },
+      {
+        label: requestCategoryLabels[TicketRequestCategory.WAREHOUSE],
+        value: TicketRequestCategory.WAREHOUSE,
+      },
     );
+  }
+
+  if (
+    role === UserRole.ADMINISTRATIONS ||
+    role === UserRole.DRAFTER ||
+    role === UserRole.FINANCE
+  ) {
+    options.push({
+      label: "Belanja Kantor",
+      value: TicketRequestCategory.OFFICE,
+    });
+  }
+
+  if (role === UserRole.FIELD_TEAM && selectedProjectId) {
+    options.push({
+      label: "Belanja Kebutuhan Tim Lapangan",
+      value: TicketRequestCategory.FIELD,
+    });
+  }
+
+  if (role === UserRole.DIRECTOR || role === UserRole.FINANCE) {
+    options.push({
+      label: requestCategoryLabels[TicketRequestCategory.APH],
+      value: TicketRequestCategory.APH,
+    });
+  }
+
+  if (role === UserRole.DRAFTER || role === UserRole.FIELD_TEAM) {
+    options.push(
+      ...internalFundingCategories.map((category) => ({
+        label: requestCategoryLabels[category],
+        value: category,
+      })),
+    );
+  }
+
+  return options;
+};
 
 export default function CreateTicketModal({
   projects,
@@ -357,6 +468,8 @@ export default function CreateTicketModal({
   movers = [],
   triggerLabel = "Tambah Tiket Baru",
   initialWageRequest,
+  cloudinaryCloudName = "",
+  cloudinaryApiKey = "",
 }: {
   projects: TicketProjectOption[];
   stockItems?: Array<{
@@ -373,6 +486,8 @@ export default function CreateTicketModal({
     projectTitle: string;
     workPointTitle: string;
   };
+  cloudinaryCloudName?: string;
+  cloudinaryApiKey?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -381,6 +496,8 @@ export default function CreateTicketModal({
   const [requestedAmountEdit, setRequestedAmountEdit] = useState<string | null>(
     null,
   );
+  const [receiptUrls, setReceiptUrls] = useState<string[]>([]);
+  const [receiptUploadError, setReceiptUploadError] = useState("");
   const router = useRouter();
   const form = useForm<TicketFormValues>({
     resolver: zodResolver(ticketFormSchema),
@@ -389,7 +506,7 @@ export default function CreateTicketModal({
       moverAssigneeId: "",
       requestCategory: initialWageRequest
         ? TicketRequestCategory.FIELD
-        : TicketRequestCategory.MATERIAL,
+        : TicketRequestCategory.OPS,
       fieldCategory: initialWageRequest
         ? TicketFieldCategory.LABOR
         : undefined,
@@ -409,6 +526,7 @@ export default function CreateTicketModal({
       requestPaymentMethod: POPaymentMethod.CASH,
       transferDestination: "",
       requestPaymentDescription: "",
+      receiptUrls: [],
       operationalRequestType: "GENERAL",
       operationalAmount: undefined,
       surveyConsumptionAmount: 0,
@@ -420,10 +538,19 @@ export default function CreateTicketModal({
     control: form.control,
     name: "items",
   });
-  const requestCategory = useWatch({
+  const selectedProjectId = useWatch({
+    control: form.control,
+    name: "projectId",
+  });
+  const selectedRequestType = useWatch({
     control: form.control,
     name: "requestCategory",
   });
+  const requestCategory = selectedRequestType;
+  const requestTypeOptions = useMemo(
+    () => getRequestTypeOptions(requesterRole, selectedProjectId),
+    [requesterRole, selectedProjectId],
+  );
   const fieldCategory = useWatch({
     control: form.control,
     name: "fieldCategory",
@@ -452,19 +579,62 @@ export default function CreateTicketModal({
     control: form.control,
     name: "surveyFuelAmount",
   });
+  useEffect(() => {
+    if (
+      requestTypeOptions.some((option) => option.value === requestCategory)
+    ) {
+      return;
+    }
+
+    const nextRequestCategory =
+      requestTypeOptions[0]?.value ?? TicketRequestCategory.OPS;
+    form.setValue("requestCategory", nextRequestCategory, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    form.setValue("fieldCategory", undefined);
+    if (
+      nextRequestCategory === TicketRequestCategory.MATERIAL ||
+      nextRequestCategory === TicketRequestCategory.WAREHOUSE
+    ) {
+      form.setValue(
+        "items",
+        [
+          {
+            itemName: "",
+            unit: "pcs",
+            quantity: 1,
+            estimatedCost: undefined,
+            categoryHint:
+              nextRequestCategory === TicketRequestCategory.WAREHOUSE
+                ? TicketCategoryHint.WAREHOUSE
+                : TicketCategoryHint.PURCHASE,
+            expectedDeliveryDate: "",
+          },
+        ],
+        { shouldValidate: true },
+      );
+    } else {
+      form.setValue("items", [], { shouldValidate: true });
+    }
+    form.clearErrors(["fieldCategory", "items"]);
+  }, [form, requestCategory, requestTypeOptions]);
   const showMoverSelection =
     requesterRole === UserRole.FIELD_TEAM &&
     (requestCategory === TicketRequestCategory.MATERIAL ||
       requestCategory === TicketRequestCategory.WAREHOUSE);
   const requiresRecipientPayment =
     requestCategory === TicketRequestCategory.FIELD &&
-    fieldCategory !== undefined &&
-    fieldCategory !== TicketFieldCategory.DIRECT_STORE;
+    fieldCategory !== undefined;
   const isOperationalFunding =
     requestCategory === TicketRequestCategory.OPS;
   const isAPHRequest = requestCategory === TicketRequestCategory.APH;
+  const isInternalFunding = isInternalFundingCategory(requestCategory);
   const requiresFundingRequest =
-    requiresRecipientPayment || isOperationalFunding || isAPHRequest;
+    requiresRecipientPayment ||
+    isOperationalFunding ||
+    isAPHRequest ||
+    isInternalFunding;
   const operationalRequestedAmount =
     operationalRequestType === "SURVEY"
       ? (watchedSurveyConsumptionAmount ?? 0) + (watchedSurveyFuelAmount ?? 0)
@@ -493,7 +663,12 @@ export default function CreateTicketModal({
 
   const submit = form.handleSubmit(async (values) => {
     setError("");
-    if (!usesItemDeliveryDates && !isAPHRequest && !values.neededDate) {
+    if (
+      !usesItemDeliveryDates &&
+      !isAPHRequest &&
+      !isInternalFunding &&
+      !values.neededDate
+    ) {
       setError("Pilih tanggal perlu dibayarkan/disediakan terlebih dahulu.");
       return;
     }
@@ -523,6 +698,8 @@ export default function CreateTicketModal({
       ? `Operasional: ${operationalRequestLabel}`
       : isAPHRequest
         ? "Permintaan APH"
+      : isInternalFunding
+        ? `${categoryLabel}: ${values.requestPaymentDescription?.trim()}`.slice(0, 160)
       : requiresRecipientPayment
       ? `${subCategoryLabel}: ${values.recipientName?.trim()}`.slice(0, 160)
       : `${categoryLabel}: ${firstItemName}`.slice(0, 160);
@@ -541,6 +718,12 @@ export default function CreateTicketModal({
         : null,
       isAPHRequest
         ? `Jumlah dana diminta: ${formatCurrency(values.requestedAmount ?? 0)}`
+        : null,
+      isInternalFunding
+        ? `Nominal pengajuan: ${formatCurrency(values.requestedAmount ?? 0)}`
+        : null,
+      isInternalFunding
+        ? `Keterangan: ${values.requestPaymentDescription?.trim()}`
         : null,
       isOperationalFunding
         ? `Keperluan: ${operationalRequestLabel}`
@@ -569,14 +752,11 @@ export default function CreateTicketModal({
       .filter(Boolean)
       .join("\n");
 
-    // Material and direct-to-store requests are routed to Logistics by the workflow action.
     const ticketType =
       values.requestCategory === "OPS"
         ? TicketType.OPERATIONAL
         : values.requestCategory === "MATERIAL" ||
-              values.requestCategory === TicketRequestCategory.WAREHOUSE ||
-              (values.requestCategory === "FIELD" &&
-              values.fieldCategory === "DIRECT_STORE")
+              values.requestCategory === TicketRequestCategory.WAREHOUSE
           ? TicketType.MATERIAL
           : TicketType.COST;
     const priority =
@@ -620,9 +800,10 @@ export default function CreateTicketModal({
           ? values.requestedAmount
           : isOperationalFunding
             ? operationalAmount
-            : isAPHRequest
+            : isAPHRequest || isInternalFunding
               ? values.requestedAmount
               : undefined,
+        receiptUrls: isInternalFunding ? receiptUrls : [],
         items: requiresFundingRequest
           ? []
           : values.items.map((item) => ({
@@ -646,6 +827,8 @@ export default function CreateTicketModal({
       }
       setOpen(false);
       form.reset();
+      setReceiptUrls([]);
+      setReceiptUploadError("");
       setRequestedAmountEdit(null);
       router.refresh();
     } catch (submitError) {
@@ -784,6 +967,13 @@ export default function CreateTicketModal({
                     value={field.value}
                     onValueChange={(value) => {
                       field.onChange(value);
+                      if (value !== TicketRequestCategory.REIMBURSEMENT) {
+                        setReceiptUrls([]);
+                        setReceiptUploadError("");
+                        form.setValue("receiptUrls", [], {
+                          shouldValidate: true,
+                        });
+                      }
                       if (value !== "FIELD") {
                         form.setValue("fieldCategory", undefined);
                         form.clearErrors("fieldCategory");
@@ -809,7 +999,16 @@ export default function CreateTicketModal({
                           [],
                           { shouldValidate: true },
                         );
-                      } else if (requestCategory === TicketRequestCategory.APH) {
+                      } else if (
+                        internalFundingCategories.some(
+                          (category) => category === value,
+                        )
+                      ) {
+                        form.setValue("items", [], { shouldValidate: true });
+                      } else if (
+                        requestCategory === TicketRequestCategory.APH ||
+                        isInternalFundingCategory(requestCategory)
+                      ) {
                         form.setValue(
                           "items",
                           [{
@@ -833,9 +1032,9 @@ export default function CreateTicketModal({
                       <SelectValue placeholder="Pilih jenis permintaan" />
                     </SelectTrigger>
                     <SelectContent>
-                      {requestCategoriesForRole(requesterRole).map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {requestCategoryLabels[category]}
+                      {requestTypeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -848,6 +1047,212 @@ export default function CreateTicketModal({
                 </p>
               )}
             </div>
+
+            {isInternalFunding && (
+              <section className="space-y-4 rounded-lg border border-orange-500/30 bg-orange-500/5 p-4 md:col-span-2">
+                <div>
+                  <h3 className="font-semibold">
+                    Pengajuan {requestCategoryLabels[requestCategory]}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Pengajuan akan masuk ke Direktur untuk persetujuan, lalu
+                    diteruskan ke Keuangan untuk pembayaran.
+                  </p>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="ticket-internal-amount">
+                      Nominal Pengajuan (Rp)
+                    </Label>
+                    <RupiahAmountInput
+                      id="ticket-internal-amount"
+                      value={
+                        watchedRequestedAmount === undefined
+                          ? ""
+                          : formatRupiahNumber(watchedRequestedAmount)
+                      }
+                      onChange={(value) => {
+                        const amount = parseRupiahInput(value);
+                        form.setValue(
+                          "requestedAmount",
+                          amount > 0 ? amount : undefined,
+                          { shouldDirty: true, shouldValidate: true },
+                        );
+                      }}
+                      required
+                    />
+                    {form.formState.errors.requestedAmount && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.requestedAmount.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="ticket-internal-description">
+                      Keterangan / Rincian
+                    </Label>
+                    <Textarea
+                      id="ticket-internal-description"
+                      maxLength={5000}
+                      rows={3}
+                      placeholder="Jelaskan rincian pengeluaran, tanggal, atau keperluan dana"
+                      {...form.register("requestPaymentDescription")}
+                    />
+                    {form.formState.errors.requestPaymentDescription && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.requestPaymentDescription.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {requestCategory === TicketRequestCategory.REIMBURSEMENT && (
+                  <div className="space-y-2">
+                    <Label>Unggah Struk / Nota Asli (wajib)</Label>
+                    {cloudinaryCloudName && cloudinaryApiKey ? (
+                      <CldUploadWidget
+                        config={{
+                          cloud: {
+                            cloudName: cloudinaryCloudName,
+                            apiKey: cloudinaryApiKey,
+                          },
+                        }}
+                        signatureEndpoint="/api/cloudinary/request-document-signature"
+                        options={{
+                          folder: REQUEST_DOCUMENT_CLOUDINARY_FOLDER,
+                          resourceType: "auto",
+                          sources: ["local", "camera"],
+                          multiple: true,
+                          maxFiles: Math.max(0, 5 - receiptUrls.length),
+                          maxFileSize: 10 * 1024 * 1024,
+                          clientAllowedFormats: [
+                            "pdf",
+                            "jpg",
+                            "jpeg",
+                            "png",
+                            "webp",
+                          ],
+                          showPoweredBy: false,
+                        }}
+                        onSuccess={(result) => {
+                          if (
+                            result.event === "success" &&
+                            typeof result.info === "object" &&
+                            result.info !== null &&
+                            "secure_url" in result.info &&
+                            typeof result.info.secure_url === "string"
+                          ) {
+                            const url = result.info.secure_url;
+                            const current = form.getValues("receiptUrls");
+                            if (
+                              current.includes(url) ||
+                              current.length >= 5
+                            ) {
+                              return;
+                            }
+                            const next = [...current, url];
+                            setReceiptUrls(next);
+                            form.setValue("receiptUrls", next, {
+                              shouldValidate: true,
+                            });
+                            setReceiptUploadError("");
+                          }
+                        }}
+                        onError={(uploadError) => {
+                          console.error(
+                            "Ticket reimbursement receipt upload failed:",
+                            uploadError,
+                          );
+                          setReceiptUploadError(
+                            "Struk/nota gagal diunggah. Silakan coba kembali.",
+                          );
+                        }}
+                      >
+                        {({ open: openUpload }) => (
+                          <button
+                            type="button"
+                            disabled={receiptUrls.length >= 5}
+                            onClick={() => openUpload()}
+                            className="flex min-h-24 w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-orange-500/50 px-4 py-3 text-center text-sm text-muted-foreground hover:bg-orange-500/10 disabled:opacity-50"
+                          >
+                            <span className="text-orange-600">
+                              <Plus className="inline size-5" aria-hidden="true" />
+                            </span>
+                            <span>Unggah struk/nota asli</span>
+                            <span className="text-xs">
+                              PDF, JPG, PNG, WEBP · maks. 10 MB/file · maks. 5 file
+                            </span>
+                          </button>
+                        )}
+                      </CldUploadWidget>
+                    ) : (
+                      <p className="text-sm text-destructive" role="alert">
+                        Upload bukti tidak tersedia. Periksa konfigurasi Cloudinary.
+                      </p>
+                    )}
+                    {receiptUploadError && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {receiptUploadError}
+                      </p>
+                    )}
+                    {form.formState.errors.receiptUrls && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.receiptUrls.message}
+                      </p>
+                    )}
+                    {receiptUrls.length > 0 && (
+                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                        {receiptUrls.map((url, index) => (
+                          <div
+                            key={url}
+                            className="overflow-hidden rounded-md border bg-background"
+                          >
+                            {/\/image\/upload\//.test(url) ? (
+                              <Image
+                                src={url}
+                                alt={`Struk reimbursement ${index + 1}`}
+                                width={240}
+                                height={160}
+                                unoptimized
+                                className="h-24 w-full object-cover"
+                              />
+                            ) : (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="flex h-24 items-center justify-center text-sm text-primary underline"
+                              >
+                                Lihat dokumen {index + 1}
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              className="w-full border-t py-1 text-xs text-destructive"
+                              onClick={() => {
+                                const next = receiptUrls.filter(
+                                  (item) => item !== url,
+                                );
+                                setReceiptUrls(next);
+                                form.setValue("receiptUrls", next, {
+                                  shouldValidate: true,
+                                });
+                              }}
+                            >
+                              Hapus bukti
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {receiptUrls.length === 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        Reimbursement wajib memiliki minimal satu struk atau nota.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </section>
+            )}
 
             {requestCategory === "FIELD" && (
               <div className="space-y-2 md:col-span-2">
@@ -1039,7 +1444,7 @@ export default function CreateTicketModal({
             </section>
           )}
 
-          {!isAPHRequest && <section className="space-y-3">
+          {!isAPHRequest && !isInternalFunding && <section className="space-y-3">
             {requiresRecipientPayment ? (
               <div className="space-y-4 rounded-md border p-4">
                 <div>
@@ -1681,7 +2086,7 @@ export default function CreateTicketModal({
             />
           </div>
 
-          {!usesItemDeliveryDates && !isAPHRequest && (
+          {!usesItemDeliveryDates && !isAPHRequest && !isInternalFunding && (
             <div className="space-y-2">
               <Label>Tanggal Perlu Dibayarkan/Disediakan</Label>
               <Controller

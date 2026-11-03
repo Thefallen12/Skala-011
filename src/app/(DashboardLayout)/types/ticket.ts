@@ -41,6 +41,8 @@ export type TicketRow = {
     reference: string;
   }[];
   attachmentUrl: string | null;
+  receiptUrls: string[];
+  paymentProofUrl: string | null;
   purchaseReceiptUrl: string | null;
   transferReceiptUrl: string | null;
   deliveryReceiptUrl: string | null;
