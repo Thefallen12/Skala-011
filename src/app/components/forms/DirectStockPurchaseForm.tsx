@@ -382,7 +382,7 @@ export default function DirectStockPurchaseForm({
           </p>
         )}
         <div className="overflow-x-auto rounded-md border">
-          <Table>
+          <Table pagination={false}>
             <TableHeader>
               <TableRow>
                 <TableHead>Barang / SKU</TableHead>

@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { GlobalModal } from "@/components/ui/global-modal";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -316,7 +317,7 @@ export default function FinanceLedger({
               {historicalMessage}
             </p>
           )}
-          <div className="overflow-x-auto rounded-lg border">
+          <NativeDataTable itemLabel="transaksi">
             <table className="app-data-table w-full min-w-[920px] text-sm">
               <thead className="bg-muted/60 text-left">
                 <tr>
@@ -564,7 +565,7 @@ export default function FinanceLedger({
                 )}
               </tbody>
             </table>
-          </div>
+          </NativeDataTable>
           <p className="mt-3 text-xs text-muted-foreground">
             Ditampilkan hingga 200 transaksi terbaru. Saldo berubah otomatis
             saat pembayaran baru, dana masuk, atau transfer antar akun dicatat.

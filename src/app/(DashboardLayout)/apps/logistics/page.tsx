@@ -9,6 +9,7 @@ import {
   DODeliveryMethod,
   PaymentStatus,
   POStatus,
+  TicketRequestCategory,
   TicketStatus,
   TicketType,
   UserRole,
@@ -289,7 +290,22 @@ export default async function LogisticsPage({
     vehicleTripLogs,
   ] = await Promise.all([
     prisma.ticket.findMany({
-      where,
+      where: {
+        AND: [
+          where,
+          ...(session.user.role === UserRole.DIRECTOR ||
+          session.user.role === UserRole.FINANCE
+            ? []
+            : [
+                {
+                  OR: [
+                    { requestCategory: { not: TicketRequestCategory.APH } },
+                    { requestCategory: null },
+                  ],
+                },
+              ]),
+        ],
+      },
       orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
       include: {
         requester: { select: { name: true } },
@@ -617,6 +633,9 @@ export default async function LogisticsPage({
     type: ticket.type,
     requestCategory: ticket.requestCategory,
     fieldCategory: ticket.fieldCategory,
+    requestPaymentMethod: ticket.requestPaymentMethod,
+    requestPaymentDescription: ticket.requestPaymentDescription,
+    transferDestination: ticket.transferDestination,
     priority: ticket.priority,
     status: ticket.status,
     fulfillmentStatus: ticket.fulfillmentStatus,

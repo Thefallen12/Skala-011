@@ -45,6 +45,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TablePaginationControls,
   TableRow,
 } from "@/components/ui/table";
 
@@ -145,7 +146,7 @@ export default function ProjectMainTable({
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [kecamatanFilter, setKecamatanFilter] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 5;
   const kecamatanOptions = useMemo(
     () =>
       Array.from(
@@ -186,16 +187,6 @@ export default function ProjectMainTable({
   const paginatedProjects = filteredProjects.slice(
     pageStartIndex,
     pageStartIndex + pageSize,
-  );
-  const firstResult = filteredProjects.length ? pageStartIndex + 1 : 0;
-  const lastResult = Math.min(pageStartIndex + pageSize, filteredProjects.length);
-  const firstVisiblePage = Math.max(
-    1,
-    Math.min(visiblePage - 2, pageCount - 4),
-  );
-  const pageNumbers = Array.from(
-    { length: Math.min(pageCount, 5) },
-    (_, index) => firstVisiblePage + index,
   );
   const renderProjectActions = (project: ProjectDashboardRow) => (
     <DropdownMenu>
@@ -348,7 +339,7 @@ export default function ProjectMainTable({
           </div>
         </div>
         <div className="overflow-x-auto rounded-md border border-border">
-          <Table>
+          <Table pagination={false}>
             <TableHeader>
               <TableRow>
                 <TableHead>Nama Kelompok Tani</TableHead>
@@ -463,49 +454,13 @@ export default function ProjectMainTable({
             </TableBody>
           </Table>
         </div>
-        <div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">
-            Showing {firstResult} to {lastResult} of {filteredProjects.length} results
-          </p>
-          <nav
-            aria-label="Pagination proyek"
-            className="flex flex-wrap items-center justify-end gap-1"
-          >
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={visiblePage <= 1}
-              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-            >
-              Previous
-            </Button>
-            {pageNumbers.map((page) => (
-              <Button
-                key={page}
-                type="button"
-                variant={page === visiblePage ? "default" : "outline"}
-                size="sm"
-                aria-label={`Halaman ${page}`}
-                aria-current={page === visiblePage ? "page" : undefined}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </Button>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={visiblePage >= pageCount}
-              onClick={() =>
-                setCurrentPage((page) => Math.min(pageCount, page + 1))
-              }
-            >
-              Next
-            </Button>
-          </nav>
-        </div>
+        <TablePaginationControls
+          count={filteredProjects.length}
+          pageSize={pageSize}
+          page={visiblePage}
+          itemLabel="proyek"
+          onPageChange={setCurrentPage}
+        />
       </CardBox>
       <ProjectFinancialModal
         project={financialProject}

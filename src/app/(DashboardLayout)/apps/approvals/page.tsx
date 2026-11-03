@@ -7,6 +7,7 @@ import {
   ProjectAddendumStatus,
   SPKStatus,
   SubkonTermynStatus,
+  TicketRequestCategory,
   TicketStatus,
   UserRole,
 } from "@/generated/prisma/enums";
@@ -94,7 +95,13 @@ export default async function ApprovalsPage({
     (session.user.role === UserRole.DIRECTOR ||
       session.user.role === UserRole.DEPUTY_DIRECTOR)
       ? prisma.ticket.findMany({
-          where: { status: TicketStatus.PENDING_DIRECTOR },
+          where: {
+            status: TicketStatus.PENDING_DIRECTOR,
+            OR: [
+              { requestCategory: { not: TicketRequestCategory.APH } },
+              { requestCategory: null },
+            ],
+          },
           orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
           select: {
             id: true,

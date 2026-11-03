@@ -102,6 +102,9 @@ export type CreateTicketInput = {
   recipientName?: string;
   bankName?: string;
   accountNumber?: string;
+  requestPaymentMethod?: POPaymentMethod;
+  transferDestination?: string;
+  requestPaymentDescription?: string;
   requestedAmount?: number;
   items: TicketItemInput[];
 };
@@ -1401,6 +1404,14 @@ export async function createTicket(
     requestCategory === TicketRequestCategory.WAREHOUSE;
   const isFieldRequest =
     requestCategory === TicketRequestCategory.FIELD;
+  const isAPHRequest = requestCategory === TicketRequestCategory.APH;
+  if (
+    isAPHRequest &&
+    session.user.role !== UserRole.DIRECTOR &&
+    session.user.role !== UserRole.FINANCE
+  ) {
+    return actionFailure("APH hanya dapat diminta oleh Direktur atau Keuangan.");
+  }
   const requiresProject =
     requestCategory === TicketRequestCategory.MATERIAL ||
     requestCategory === TicketRequestCategory.WAREHOUSE ||
@@ -1415,7 +1426,7 @@ export async function createTicket(
   const isOperationalFunding =
     requestCategory === TicketRequestCategory.OPS;
   const requiresRequestedAmount =
-    requiresRecipientPayment || isOperationalFunding;
+    requiresRecipientPayment || isOperationalFunding || isAPHRequest;
   let operationalRecipient: {
     name: string;
     bankName: string;
@@ -1429,6 +1440,28 @@ export async function createTicket(
           isDirectStore
         ? TicketType.MATERIAL
         : TicketType.COST;
+
+  if (isAPHRequest) {
+    if (
+      !input.requestPaymentMethod ||
+      !Object.values(POPaymentMethod).includes(input.requestPaymentMethod) ||
+      !isBoundedText(input.requestPaymentDescription, 2000) ||
+      (input.requestPaymentMethod === POPaymentMethod.TRANSFER &&
+        !isBoundedText(input.transferDestination, 300)) ||
+      (input.requestPaymentMethod === POPaymentMethod.CASH &&
+        input.transferDestination !== undefined)
+    ) {
+      return actionFailure(
+        "Metode pembayaran, tujuan transfer, atau keterangan APH tidak valid.",
+      );
+    }
+  } else if (
+    input.requestPaymentMethod !== undefined ||
+    input.transferDestination !== undefined ||
+    input.requestPaymentDescription !== undefined
+  ) {
+    return actionFailure("Detail pembayaran APH tidak boleh digunakan pada tiket lain.");
+  }
 
   if (
     (isFieldRequest &&
@@ -1516,6 +1549,20 @@ export async function createTicket(
       bankName: requesterProfile.bankName.trim(),
       accountNumber: requesterProfile.bankAccountNumber,
     };
+  } else if (isAPHRequest) {
+    if (
+      typeof input.requestedAmount !== "number" ||
+      !Number.isSafeInteger(input.requestedAmount) ||
+      input.requestedAmount <= 0 ||
+      input.requestedAmount > Number.MAX_SAFE_INTEGER
+    ) {
+      return actionFailure(
+        "Jumlah dana APH harus berupa angka lebih besar dari 0.",
+      );
+    }
+    if (input.items.length > 0) {
+      return actionFailure("Permintaan dana APH tidak menggunakan rincian item.");
+    }
   } else if (input.items.length < 1) {
     return actionFailure("Tambahkan setidaknya satu rincian item.");
   }
@@ -1709,6 +1756,15 @@ export async function createTicket(
           type: input.type,
           requestCategory,
           fieldCategory: input.fieldCategory ?? null,
+          requestPaymentMethod: isAPHRequest
+            ? input.requestPaymentMethod
+            : null,
+          requestPaymentDescription: isAPHRequest
+            ? input.requestPaymentDescription!.trim()
+            : null,
+          transferDestination: isAPHRequest
+            ? input.transferDestination?.trim() || null
+            : null,
           priority: input.priority,
           status: TicketStatus.DRAFT,
           totalAmount,
@@ -1775,27 +1831,62 @@ export async function submitTicket(
   }
   const ticket = await prisma.ticket.findUnique({
     where: { id: ticketId },
-    select: { type: true, title: true, ticketNumber: true, requesterId: true },
+    select: {
+      type: true,
+      title: true,
+      ticketNumber: true,
+      requesterId: true,
+      requestCategory: true,
+      requester: { select: { role: true } },
+    },
   });
   if (!ticket || ticket.requesterId !== session.user.id) {
     return actionFailure("Tiket tidak ditemukan atau bukan milik Anda.");
   }
+  const isAPHRequest = ticket.requestCategory === TicketRequestCategory.APH;
+  if (
+    isAPHRequest &&
+    ticket.requester.role !== UserRole.DIRECTOR &&
+    ticket.requester.role !== UserRole.FINANCE
+  ) {
+    return actionFailure("APH hanya dapat diajukan oleh Direktur atau Keuangan.");
+  }
+  const submittedByFinance =
+    isAPHRequest && ticket.requester.role === UserRole.FINANCE;
+  const nextStatus =
+    isAPHRequest ? TicketStatus.WAITING_FINANCE_PAYMENT : TicketStatus.PENDING_DIRECTOR;
   return transitionTicket({
     ticketId,
     expectedStatus: TicketStatus.DRAFT,
-    nextStatus: TicketStatus.PENDING_DIRECTOR,
+    nextStatus,
     allowedRoles: null,
     action: "SUBMITTED",
-    notes: "Tiket diajukan untuk persetujuan Direktur.",
+    notes: isAPHRequest
+      ? "Permintaan APH diajukan langsung ke antrean pembayaran Keuangan."
+      : "Tiket diajukan untuk persetujuan Direktur.",
     requesterOnly: true,
     notifications: [
-      {
-        roleTarget: [UserRole.DIRECTOR, UserRole.DEPUTY_DIRECTOR],
-        title: "Tiket Menunggu Persetujuan",
-        message: `${ticket.ticketNumber} · ${ticket.title} membutuhkan persetujuan eksekutif.`,
-        actionUrl: `/apps/approvals?tab=direct-purchase&openSheet=${encodeURIComponent(ticketId)}`,
-        type: NotificationType.APPROVAL,
-      },
+      ...(isAPHRequest
+        ? submittedByFinance
+          ? []
+          : [
+              {
+                roleTarget: UserRole.FINANCE,
+                title: "Permintaan APH Menunggu Pembayaran",
+                message: `${ticket.ticketNumber} · ${ticket.title} menunggu pembayaran Keuangan.`,
+                actionUrl: `/apps/tickets?openSheet=${encodeURIComponent(ticketId)}`,
+                type: NotificationType.APPROVAL,
+              },
+            ]
+        : [
+            {
+              roleTarget: [UserRole.DIRECTOR, UserRole.DEPUTY_DIRECTOR],
+              title: "Tiket Menunggu Persetujuan",
+              message: `${ticket.ticketNumber} · ${ticket.title} membutuhkan persetujuan eksekutif.`,
+              actionUrl: `/apps/approvals?tab=direct-purchase&openSheet=${encodeURIComponent(ticketId)}`,
+              type: NotificationType.APPROVAL,
+            },
+          ]),
       ...(ticket.type === TicketType.MATERIAL
         ? [
             {
@@ -1830,10 +1921,15 @@ export async function approveByDirector(
 
   const ticket = await prisma.ticket.findUnique({
     where: { id: ticketId },
-    select: { type: true },
+    select: { type: true, requestCategory: true },
   });
   if (!ticket) {
     return actionFailure("Tiket tidak ditemukan.");
+  }
+  if (ticket.requestCategory === TicketRequestCategory.APH) {
+    return actionFailure(
+      "Permintaan APH diteruskan langsung ke Keuangan dan tidak memerlukan persetujuan Direktur.",
+    );
   }
   if (ticket.type !== type) {
     return actionFailure("Jenis tiket tidak sesuai dengan data tiket.");
@@ -3044,10 +3140,13 @@ export async function processFinancePayment(
           type: true,
           status: true,
           isApprovedByDirector: true,
+          requestCategory: true,
+          requestPaymentMethod: true,
           requestedAmount: true,
           totalAmount: true,
           projectId: true,
           purchaseReceiptUrl: true,
+          requester: { select: { role: true } },
           purchaseOrders: {
             where: { status: POStatus.APPROVED },
             orderBy: { createdAt: "desc" },
@@ -3109,8 +3208,21 @@ export async function processFinancePayment(
         throw new Error("Tiket belum siap dibayar atau statusnya sudah berubah.");
       }
 
+      const isAPHRequest =
+        ticket.requestCategory === TicketRequestCategory.APH;
+      if (
+        isAPHRequest &&
+        ticket.requestPaymentMethod !== POPaymentMethod.CASH &&
+        ticket.requestPaymentMethod !== POPaymentMethod.TRANSFER
+      ) {
+        throw new Error("Metode pembayaran APH tidak valid.");
+      }
       const order = ticket.purchaseOrders[0];
-      if (!order && !ticket.isApprovedByDirector) {
+      const isDirectAPHRequest =
+        isAPHRequest &&
+        (ticket.requester.role === UserRole.DIRECTOR ||
+          ticket.requester.role === UserRole.FINANCE);
+      if (!order && !ticket.isApprovedByDirector && !isDirectAPHRequest) {
         throw new Error(
           "Tiket tanpa PO wajib disetujui Direktur sebelum pembayaran.",
         );
@@ -3178,7 +3290,10 @@ export async function processFinancePayment(
         amount,
         sourceDesc: `Pembayaran ${order?.poNumber ?? ticket.ticketNumber} · ${ticket.title}`,
         projectId: ticket.projectId,
-        paymentMethod: "TRANSFER",
+        paymentMethod:
+          ticket.requestPaymentMethod === POPaymentMethod.CASH
+            ? "CASH"
+            : "TRANSFER",
         proofUrl: receiptUrl,
         recordedBy: session.user.id,
       });

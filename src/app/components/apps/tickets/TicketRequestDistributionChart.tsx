@@ -32,6 +32,11 @@ const categories = [
     label: "Kebutuhan Tim Lapangan",
     color: "var(--color-warning)",
   },
+  {
+    value: TicketRequestCategory.APH,
+    label: "APH",
+    color: "var(--color-destructive)",
+  },
 ] as const;
 
 export default function TicketRequestDistributionChart({

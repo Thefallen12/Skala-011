@@ -34,6 +34,7 @@ const categoryOptions = [
     value: TicketRequestCategory.FIELD,
     label: "Belanja Kebutuhan Tim Lapangan",
   },
+  { value: TicketRequestCategory.APH, label: "APH" },
 ] as const;
 
 type CategoryFilter = (typeof categoryOptions)[number]["value"];

@@ -11,6 +11,7 @@ import { toggleWorkspaceEventReminder, type WorkspaceActionResult } from "@/app/
 import CardBox from "@/app/components/shared/CardBox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 
 type Member = { id: string; name: string };
 type TaskRecord = {
@@ -180,8 +181,8 @@ export default function RoadmapWorkspace({
                       {project.tasks.length} milestone · {Math.round(project.progress)}% project progress
                     </span>
                   </summary>
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[700px] text-[10px]">
+                  <NativeDataTable itemLabel="tugas">
+                    <table className="app-data-table min-w-[700px] text-[10px]">
                       <thead className="border-b border-border text-left text-muted-foreground">
                         <tr>
                           <th className="w-7 px-2 py-2" aria-label="Nomor" />
@@ -266,7 +267,7 @@ export default function RoadmapWorkspace({
                         </tr>
                       </tfoot>
                     </table>
-                  </div>
+                  </NativeDataTable>
                 </details>
               );
             })}

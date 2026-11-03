@@ -61,6 +61,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TablePaginationControls,
   TableRow,
 } from "@/components/ui/table";
 import { GlobalModal } from "@/components/ui/global-modal";
@@ -266,7 +267,7 @@ const currency = (amount: number | string) =>
     maximumFractionDigits: 0,
   }).format(Number(amount));
 
-const PROJECTS_PER_PAGE = 6;
+const PROJECTS_PER_PAGE = 5;
 
 const formatProjectDate = (date: string | null) =>
   date
@@ -892,7 +893,7 @@ export default function ProjectWorkstationMaster({
             </p>
           )}
           <div className="overflow-x-auto rounded-xl border border-border">
-            <Table className="text-xs">
+            <Table pagination={false} className="text-xs">
               <TableHeader>
                 <TableRow className="border-border bg-muted hover:bg-muted">
                   <TableHead className="px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
@@ -1103,50 +1104,13 @@ export default function ProjectWorkstationMaster({
               </TableBody>
             </Table>
           </div>
-          <div className="flex flex-col gap-3 border-t border-border pt-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p aria-live="polite">
-              Menampilkan{" "}
-              {filteredProjects.length === 0
-                ? 0
-                : (currentProjectPage - 1) * PROJECTS_PER_PAGE + 1}
-              {"-"}
-              {Math.min(
-                currentProjectPage * PROJECTS_PER_PAGE,
-                filteredProjects.length,
-              )}{" "}
-              dari {filteredProjects.length} proyek
-            </p>
-            <nav aria-label="Navigasi halaman proyek" className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                aria-label="Halaman proyek sebelumnya"
-                className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
-                disabled={currentProjectPage <= 1}
-                onClick={() =>
-                  setProjectPage((page) => Math.max(1, page - 1))
-                }
-              >
-                <ChevronLeft className="size-4" aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                aria-label="Halaman proyek berikutnya"
-                className="size-9 border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground"
-                disabled={currentProjectPage >= projectPageCount}
-                onClick={() =>
-                  setProjectPage((page) =>
-                    Math.min(projectPageCount, page + 1),
-                  )
-                }
-              >
-                <ChevronRight className="size-4" aria-hidden="true" />
-              </Button>
-            </nav>
-          </div>
+          <TablePaginationControls
+            count={filteredProjects.length}
+            pageSize={PROJECTS_PER_PAGE}
+            page={currentProjectPage}
+            itemLabel="proyek"
+            onPageChange={setProjectPage}
+          />
         </CardContent>
       </Card>
       )}

@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { GlobalModal } from "@/components/ui/global-modal";
+import { TablePaginationControls } from "@/components/ui/table";
 import { getWeekDateKeys, shiftDateKey } from "@/lib/habit-date";
 
 type ProjectOption = { id: string; code: string; name: string };
@@ -82,7 +83,7 @@ export default function ProjectTimesheet({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [message, setMessage] = useState<WorkspaceActionResult | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [memberFilter, setMemberFilter] = useState(initialMemberId);
   const [teamFilter, setTeamFilter] = useState(initialTeam);
   const [projectFilter, setProjectFilter] = useState(initialProjectId);
@@ -126,9 +127,8 @@ export default function ProjectTimesheet({
         left.minutes.reduce((total, item) => total + item, 0),
     );
   }, [dates, filteredEntries, timeframe]);
-  const rowsPerPage = 8;
-  const visibleRows = grouped.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-  const pageCount = Math.max(1, Math.ceil(grouped.length / rowsPerPage));
+  const rowsPerPage = 5;
+  const visibleRows = grouped.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   const totalMinutes = filteredEntries.reduce(
     (total, entry) => total + entry.durationMinutes,
     0,
@@ -157,14 +157,14 @@ export default function ProjectTimesheet({
   };
 
   const navigatePeriod = (offset: -1 | 1) => {
-    setPage(0);
+    setPage(1);
     router.push(
       timesheetHref(shiftDateKey(selectedDate, offset * timeframe)),
       { scroll: false },
     );
   };
   const changeTimeframe = (value: string) => {
-    setPage(0);
+    setPage(1);
     router.push(timesheetHref(selectedDate, Number(value)), { scroll: false });
   };
   const onCreateEntry = (formData: FormData) => {
@@ -232,7 +232,7 @@ export default function ProjectTimesheet({
                     team: teamFilter,
                     projectId: projectFilter,
                   });
-                  setPage(0);
+                  setPage(1);
                 }}
                 className="h-8 max-w-36 rounded border border-input bg-background px-2"
               >
@@ -255,7 +255,7 @@ export default function ProjectTimesheet({
                     team,
                     projectId: projectFilter,
                   });
-                  setPage(0);
+                  setPage(1);
                 }}
                 className="h-8 max-w-32 rounded border border-input bg-background px-2"
               >
@@ -291,7 +291,7 @@ export default function ProjectTimesheet({
                     team: teamFilter,
                     projectId,
                   });
-                  setPage(0);
+                  setPage(1);
                 }}
                 className="h-8 max-w-36 rounded border border-input bg-background px-2"
               >
@@ -326,7 +326,7 @@ export default function ProjectTimesheet({
           </Button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[850px] border-collapse text-[10px]">
+          <table className="app-data-table min-w-[850px] text-[10px]">
             <thead>
               <tr className="bg-muted/30 text-left">
                 <th className="min-w-36 px-3 py-2 font-semibold">Project</th>
@@ -390,20 +390,13 @@ export default function ProjectTimesheet({
             </tbody>
           </table>
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border px-4 py-2.5 text-[10px] text-muted-foreground">
-          <span>
-            Menampilkan {grouped.length ? page * rowsPerPage + 1 : 0}–
-            {Math.min((page + 1) * rowsPerPage, grouped.length)} dari {grouped.length} baris
-          </span>
-          <div className="flex gap-1.5">
-            <Button variant="outline" size="sm" className="h-7 px-2 text-[10px]" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0}>
-              Previous
-            </Button>
-            <Button variant="outline" size="sm" className="h-7 px-2 text-[10px]" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1}>
-              Next
-            </Button>
-          </div>
-        </div>
+        <TablePaginationControls
+          count={grouped.length}
+          pageSize={rowsPerPage}
+          page={page}
+          itemLabel="baris"
+          onPageChange={setPage}
+        />
       </CardBox>
 
       <GlobalModal

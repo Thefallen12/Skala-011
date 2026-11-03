@@ -23,6 +23,7 @@ import {
 } from "@/lib/photo-urls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -888,7 +889,8 @@ export default function MoverWorkspace({
             <CardHeader>
               <CardTitle>Riwayat Log Anda</CardTitle>
             </CardHeader>
-            <CardContent className="overflow-x-auto">
+            <CardContent>
+              <NativeDataTable itemLabel="log alat">
               <table className="app-data-table w-full min-w-[620px] text-sm">
                 <thead className="text-left">
                   <tr className="border-b">
@@ -928,6 +930,7 @@ export default function MoverWorkspace({
                   )}
                 </tbody>
               </table>
+              </NativeDataTable>
             </CardContent>
           </Card>
         </div>

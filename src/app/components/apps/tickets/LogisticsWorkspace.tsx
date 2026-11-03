@@ -78,6 +78,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TablePaginationControls,
   TableRow,
 } from "@/components/ui/table";
 
@@ -569,7 +570,7 @@ export default function LogisticsWorkspace({
         (stockFilter === "AVAILABLE" && quantity > minimum);
       return matchesSearch && matchesFilter;
     });
-    const stockPageSize = 10;
+    const stockPageSize = 5;
     const stockPageCount = Math.max(
       1,
       Math.ceil(visibleStockItems.length / stockPageSize),
@@ -1061,7 +1062,7 @@ export default function LogisticsWorkspace({
           </div>
           {stockItems.length ? (
             <div className="overflow-x-auto">
-              <Table>
+              <Table pagination={false}>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Material</TableHead>
@@ -1208,43 +1209,13 @@ export default function LogisticsWorkspace({
             </p>
           )}
           {stockItems.length > 0 && (
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-5 py-3 text-sm">
-              <p className="text-muted-foreground">
-                Menampilkan{" "}
-                {visibleStockItems.length === 0
-                  ? 0
-                  : (currentStockPage - 1) * stockPageSize + 1}
-                {" - "}
-                {Math.min(currentStockPage * stockPageSize, visibleStockItems.length)}
-                {" dari "}
-                {visibleStockItems.length} barang
-              </p>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={currentStockPage <= 1}
-                  onClick={() => setStockPage((page) => Math.max(1, page - 1))}
-                >
-                  Sebelumnya
-                </Button>
-                <span aria-live="polite" className="min-w-16 text-center">
-                  {currentStockPage} / {stockPageCount}
-                </span>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={currentStockPage >= stockPageCount}
-                  onClick={() =>
-                    setStockPage((page) => Math.min(stockPageCount, page + 1))
-                  }
-                >
-                  Berikutnya
-                </Button>
-              </div>
-            </div>
+            <TablePaginationControls
+              count={visibleStockItems.length}
+              pageSize={stockPageSize}
+              page={currentStockPage}
+              itemLabel="barang"
+              onPageChange={setStockPage}
+            />
           )}
         </CardBox>
 

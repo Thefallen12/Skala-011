@@ -13,6 +13,7 @@ import {
 } from "@/app/actions/vehicles";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import {
   Card,
   CardContent,
@@ -163,7 +164,7 @@ export default function VehicleFleetPanel({
               {message}
             </p>
           )}
-          <div className="overflow-x-auto">
+          <NativeDataTable itemLabel="kendaraan">
             <table className="app-data-table w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b text-left">
@@ -230,7 +231,7 @@ export default function VehicleFleetPanel({
                             <Trash2 className="size-4" />
                             Hapus
                           </Button>
-                        </div>
+                          </div>
                       ) : (
                         <span className="text-muted-foreground">—</span>
                       )}
@@ -250,7 +251,7 @@ export default function VehicleFleetPanel({
                 )}
               </tbody>
             </table>
-          </div>
+          </NativeDataTable>
         </CardContent>
       </Card>
 

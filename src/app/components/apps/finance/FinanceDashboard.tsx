@@ -14,6 +14,14 @@ import {
 } from "lucide-react";
 import type { FinanceAccountOption } from "@/app/components/apps/finance/IncomingFundModal";
 import { Button } from "@/components/ui/button";
+import { DataTableTemplate } from "@/components/ui/data-table-template";
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -101,7 +109,6 @@ export default function FinanceDashboard({
     (total, account) => total + account.balance,
     0,
   );
-  const recentTransactions = transactions.slice(0, 5);
   const populatedExpenseCategories = expenseCategories.filter(
     (category) => category.amount > 0,
   );
@@ -472,7 +479,7 @@ export default function FinanceDashboard({
             <div>
               <h2 className="font-semibold">Daftar Transaksi Terbaru (Arus Kas)</h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Menampilkan hingga lima dari 200 transaksi terbaru
+                Maksimal lima transaksi per halaman
               </p>
             </div>
           </div>
@@ -487,111 +494,116 @@ export default function FinanceDashboard({
             <ExternalLink className="ml-1 size-3.5" aria-hidden="true" />
           </Button>
         </header>
-        <div className="overflow-x-auto">
-          <table className="app-data-table w-full min-w-[760px] text-left text-xs sm:text-sm">
-            <thead className="bg-muted/70 text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2.5 font-medium">Tanggal &amp; Waktu</th>
-                <th className="px-4 py-2.5 font-medium">Deskripsi &amp; Kategori</th>
-                <th className="px-4 py-2.5 font-medium">Metode / Termin &amp; Bukti</th>
-                <th className="px-4 py-2.5 font-medium">Pihak &amp; Rekening Tujuan</th>
-                <th className="px-4 py-2.5 text-right font-medium">Status &amp; Jumlah</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {recentTransactions.map((transaction) => (
-                <tr
-                  key={`${transaction.type}-${transaction.id}`}
-                  className="text-foreground"
-                >
-                  <td className="whitespace-nowrap px-4 py-3">
-                    <span className="block text-foreground">
-                      {new Date(transaction.createdAt).toLocaleDateString("id-ID", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                    <span className="mt-0.5 block text-muted-foreground">
-                      {new Date(transaction.createdAt).toLocaleTimeString("id-ID", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </td>
-                  <td className="max-w-[280px] px-4 py-3">
-                    <span className="block truncate font-medium text-foreground">
-                      {transaction.sourceDesc}
-                    </span>
-                    <span className="mt-0.5 block truncate text-muted-foreground">
-                      {transaction.projectName || transaction.category}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3">
-                    <span className="block">
-                      {transaction.paymentMethod}
-                    </span>
-                    {transaction.proofUrl && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (transaction.proofUrl) {
-                            onPreviewProof(
-                              transaction.proofUrl,
-                              `Bukti transaksi ${transaction.sourceDesc}`,
-                            );
-                          }
-                        }}
-                        className="mt-1 inline-flex items-center gap-1 text-blue-300 hover:underline"
-                      >
-                        <ExternalLink className="size-3" aria-hidden="true" />
-                        Lihat bukti
-                      </button>
-                    )}
-                  </td>
-                  <td className="max-w-[220px] px-4 py-3">
-                    <span className="block truncate">
-                      {transaction.counterparty}
-                    </span>
-                    <span className="mt-0.5 block truncate text-muted-foreground">
-                      {transaction.accountOrDestination}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3 text-right">
-                    <span
-                      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${
-                        transaction.type === "IN"
-                          ? "bg-emerald-500/15 text-emerald-300"
-                          : "bg-rose-500/15 text-rose-300"
-                      }`}
-                    >
-                      {transaction.type === "IN" ? (
-                        <ArrowDownLeft className="size-3" aria-hidden="true" />
-                      ) : (
-                        <ArrowUpRight className="size-3" aria-hidden="true" />
-                      )}
-                      {transaction.type === "IN" ? "Masuk" : "Keluar"}
-                    </span>
-                    <span className="mt-1 block font-semibold tabular-nums text-foreground">
-                      {transaction.type === "IN" ? "+" : "-"}
-                      {currency(transaction.amount)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              {recentTransactions.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="px-4 py-10 text-center text-muted-foreground"
+        <DataTableTemplate
+          data={transactions}
+          itemLabel="transaksi"
+          pageSize={5}
+          tableClassName="min-w-[900px] text-left text-xs sm:text-sm"
+        >
+          {(pageData) => (
+            <>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Tanggal &amp; Waktu</TableHead>
+                  <TableHead>Deskripsi &amp; Kategori</TableHead>
+                  <TableHead>Metode / Termin &amp; Bukti</TableHead>
+                  <TableHead>Pihak &amp; Rekening Tujuan</TableHead>
+                  <TableHead className="text-right">Status &amp; Jumlah</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pageData.map((transaction) => (
+                  <TableRow
+                    key={`${transaction.type}-${transaction.id}`}
+                    className="text-foreground"
                   >
-                    Belum ada transaksi arus kas.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                    <TableCell className="whitespace-nowrap">
+                      <span className="block text-foreground">
+                        {new Date(transaction.createdAt).toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                      <span className="mt-0.5 block text-muted-foreground">
+                        {new Date(transaction.createdAt).toLocaleTimeString("id-ID", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </TableCell>
+                    <TableCell className="max-w-[280px]">
+                      <span className="block truncate font-medium text-foreground">
+                        {transaction.sourceDesc}
+                      </span>
+                      <span className="mt-0.5 block truncate text-muted-foreground">
+                        {transaction.projectName || transaction.category}
+                      </span>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <span className="block">{transaction.paymentMethod}</span>
+                      {transaction.proofUrl && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (transaction.proofUrl) {
+                              onPreviewProof(
+                                transaction.proofUrl,
+                                `Bukti transaksi ${transaction.sourceDesc}`,
+                              );
+                            }
+                          }}
+                          className="mt-1 inline-flex items-center gap-1 text-blue-300 hover:underline"
+                        >
+                          <ExternalLink className="size-3" aria-hidden="true" />
+                          Lihat bukti
+                        </button>
+                      )}
+                    </TableCell>
+                    <TableCell className="max-w-[220px]">
+                      <span className="block truncate">
+                        {transaction.counterparty}
+                      </span>
+                      <span className="mt-0.5 block truncate text-muted-foreground">
+                        {transaction.accountOrDestination}
+                      </span>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap text-right">
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold sm:text-[11px] ${
+                          transaction.type === "IN"
+                            ? "bg-emerald-500/15 text-emerald-300"
+                            : "bg-rose-500/15 text-rose-300"
+                        }`}
+                      >
+                        {transaction.type === "IN" ? (
+                          <ArrowDownLeft className="size-3" aria-hidden="true" />
+                        ) : (
+                          <ArrowUpRight className="size-3" aria-hidden="true" />
+                        )}
+                        {transaction.type === "IN" ? "Masuk" : "Keluar"}
+                      </span>
+                      <span className="mt-1 block font-semibold tabular-nums text-foreground">
+                        {transaction.type === "IN" ? "+" : "-"}
+                        {currency(transaction.amount)}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {pageData.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      className="px-4 py-10 text-center text-muted-foreground"
+                    >
+                      Belum ada transaksi arus kas.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </>
+          )}
+        </DataTableTemplate>
       </article>
     </section>
   );

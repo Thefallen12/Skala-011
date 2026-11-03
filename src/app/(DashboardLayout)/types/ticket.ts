@@ -8,6 +8,7 @@ import type {
   TicketStatus,
   TicketType,
   UserRole,
+  POPaymentMethod,
   DOStatus,
   OperationalDocumentKind,
   OperationalDocumentStatus,
@@ -22,6 +23,9 @@ export type TicketRow = {
   type: TicketType;
   requestCategory: TicketRequestCategory | null;
   fieldCategory: TicketFieldCategory | null;
+  requestPaymentMethod: POPaymentMethod | null;
+  requestPaymentDescription: string | null;
+  transferDestination: string | null;
   priority: TicketPriority;
   status: TicketStatus;
   fulfillmentStatus: TicketFulfillmentStatus;

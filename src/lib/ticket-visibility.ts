@@ -1,6 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import {
   TicketStatus,
+  TicketRequestCategory,
   TicketType,
   UserRole,
 } from "@/generated/prisma/enums";
@@ -12,8 +13,15 @@ export function getTicketPageVisibilityWhere(
   const requesterTickets: Prisma.TicketWhereInput = {
     requesterId: userId,
   };
+  const nonAPHWhere: Prisma.TicketWhereInput = {
+    OR: [
+      { requestCategory: { not: TicketRequestCategory.APH } },
+      { requestCategory: null },
+    ],
+  };
 
-  switch (role) {
+  const roleWhere = (() => {
+    switch (role) {
     case UserRole.DIRECTOR:
       return {
         OR: [
@@ -73,5 +81,12 @@ export function getTicketPageVisibilityWhere(
       return {};
     default:
       return requesterTickets;
+    }
+  })();
+
+  if (role === UserRole.DIRECTOR || role === UserRole.FINANCE) {
+    return roleWhere;
   }
+
+  return { AND: [roleWhere, nonAPHWhere] };
 }

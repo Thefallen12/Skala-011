@@ -15,6 +15,7 @@ import {
   SubkonTermynStatus,
   TicketType,
   TicketStatus,
+  TicketRequestCategory,
   UserRole,
 } from "@/generated/prisma/enums";
 import { auth } from "../../../../../auth";
@@ -45,6 +46,26 @@ export default async function FinancePage({
   const cashflowDashboardStart = new Date(
     Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth() - 5, 1),
   );
+  const canViewAPH =
+    session.user.role === UserRole.FINANCE ||
+    session.user.role === UserRole.DIRECTOR;
+  const visibleTicketPayments = canViewAPH
+    ? {}
+    : {
+        OR: [
+          { ticketId: null },
+          {
+            ticket: {
+              is: {
+                OR: [
+                  { requestCategory: { not: TicketRequestCategory.APH } },
+                  { requestCategory: null },
+                ],
+              },
+            },
+          },
+        ],
+      };
 
   const [
     orders,
@@ -225,10 +246,30 @@ export default async function FinancePage({
             TicketStatus.COMPLETED,
           ],
         },
-        isApprovedByDirector: true,
-        OR: [
-          { type: { not: TicketType.MATERIAL } },
-          { purchaseReceiptUrl: { not: null } },
+        AND: [
+          {
+            OR: [
+              { isApprovedByDirector: true },
+              { requestCategory: TicketRequestCategory.APH },
+            ],
+          },
+          {
+            OR: [
+              { type: { not: TicketType.MATERIAL } },
+              { purchaseReceiptUrl: { not: null } },
+            ],
+          },
+          ...(session.user.role === UserRole.FINANCE ||
+          session.user.role === UserRole.DIRECTOR
+            ? []
+            : [
+                {
+                  OR: [
+                    { requestCategory: { not: TicketRequestCategory.APH } },
+                    { requestCategory: null },
+                  ],
+                },
+              ]),
         ],
       },
       orderBy: { createdAt: "asc" },
@@ -239,6 +280,10 @@ export default async function FinancePage({
         totalAmount: true,
         requestedAmount: true,
         purchaseReceiptUrl: true,
+        requestCategory: true,
+        requestPaymentMethod: true,
+        requestPaymentDescription: true,
+        transferDestination: true,
         recipientName: true,
         bankName: true,
         accountNumber: true,
@@ -384,6 +429,32 @@ export default async function FinancePage({
       },
     }),
     prisma.cashflow.findMany({
+      where: canViewAPH
+        ? undefined
+        : {
+            OR: [
+              { paymentTransactionId: null },
+              { paymentTransaction: { is: { ticketId: null } } },
+              {
+                paymentTransaction: {
+                  is: {
+                    ticket: {
+                      is: {
+                        OR: [
+                          {
+                            requestCategory: {
+                              not: TicketRequestCategory.APH,
+                            },
+                          },
+                          { requestCategory: null },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
       orderBy: { createdAt: "desc" },
       take: 200,
       select: {
@@ -403,13 +474,18 @@ export default async function FinancePage({
     }),
     prisma.paymentTransaction.findMany({
       where: {
-        status: PaymentStatus.PAID,
-        paidAt: { not: null },
-        cashflow: null,
-        OR: [
-          { ticketId: { not: null } },
-          { poId: { not: null } },
-          { directStockPurchaseId: { not: null } },
+        AND: [
+          {
+            status: PaymentStatus.PAID,
+            paidAt: { not: null },
+            cashflow: null,
+            OR: [
+              { ticketId: { not: null } },
+              { poId: { not: null } },
+              { directStockPurchaseId: { not: null } },
+            ],
+          },
+          visibleTicketPayments,
         ],
       },
       orderBy: { paidAt: "desc" },
@@ -450,12 +526,17 @@ export default async function FinancePage({
     }),
     prisma.paymentTransaction.findMany({
       where: {
-        status: PaymentStatus.PAID,
-        paidAt: { not: null },
-        OR: [
-          { ticketId: { not: null } },
-          { poId: { not: null } },
-          { directStockPurchaseId: { not: null } },
+        AND: [
+          {
+            status: PaymentStatus.PAID,
+            paidAt: { not: null },
+            OR: [
+              { ticketId: { not: null } },
+              { poId: { not: null } },
+              { directStockPurchaseId: { not: null } },
+            ],
+          },
+          visibleTicketPayments,
         ],
       },
       orderBy: { paidAt: "desc" },
@@ -1026,6 +1107,9 @@ export default async function FinancePage({
             ticket.totalAmount?.toString() ??
             null,
           purchaseReceiptUrl: ticket.purchaseReceiptUrl,
+          requestCategory: ticket.requestCategory,
+          requestPaymentMethod: ticket.requestPaymentMethod,
+          requestPaymentDescription: ticket.requestPaymentDescription,
           recipientName:
             ticket.recipientName ??
             ticket.requester.bankAccountName ??
@@ -1034,7 +1118,9 @@ export default async function FinancePage({
           accountNumber:
             ticket.accountNumber ?? ticket.requester.bankAccountNumber,
           transferDestination:
-            ticket.purchaseOrders[0]?.paymentBankName &&
+            ticket.requestCategory === TicketRequestCategory.APH
+              ? ticket.transferDestination
+              : ticket.purchaseOrders[0]?.paymentBankName &&
             ticket.purchaseOrders[0]?.paymentAccountNumber
               ? `Ditransfer ke: ${ticket.purchaseOrders[0].paymentBankName} & ${ticket.purchaseOrders[0].paymentAccountNumber}`
               : null,

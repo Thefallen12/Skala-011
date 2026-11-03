@@ -15,6 +15,7 @@ import {
   TicketRequestCategory,
   TicketType,
   UserRole,
+  POPaymentMethod,
 } from "@/generated/prisma/enums";
 import type { TicketProjectOption } from "@/app/(DashboardLayout)/types/ticket";
 import { createTicket } from "@/app/actions/tickets";
@@ -23,12 +24,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import RupiahAmountInput from "@/app/components/apps/finance/RupiahAmountInput";
 import {
   Select,
   SelectContent,
@@ -37,6 +40,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { formatRupiahNumber, parseRupiahInput } from "@/lib/indonesian-currency";
 
 const requestCategories = Object.values(TicketRequestCategory);
 const fieldCategories = Object.values(TicketFieldCategory);
@@ -49,6 +53,7 @@ const requestCategoryLabels: Record<TicketRequestCategory, string> = {
   WAREHOUSE: "Permintaan Material dari Gudang",
   OFFICE: "Belanja Kantor",
   FIELD: "Belanja Kebutuhan Tim Lapangan",
+  APH: "APH",
 };
 
 const fieldCategoryLabels: Record<TicketFieldCategory, string> = {
@@ -81,6 +86,9 @@ const ticketFormSchema = z
     recipientName: z.string().optional(),
     bankName: z.string().optional(),
     accountNumber: z.string().optional(),
+    requestPaymentMethod: z.enum(Object.values(POPaymentMethod)).optional(),
+    transferDestination: z.string().optional(),
+    requestPaymentDescription: z.string().optional(),
     operationalRequestType: z.enum(["GENERAL", "SURVEY"]),
     operationalAmount: z
       .number()
@@ -116,6 +124,7 @@ const ticketFormSchema = z
       values.requestCategory === TicketRequestCategory.MATERIAL ||
       values.requestCategory === TicketRequestCategory.WAREHOUSE ||
       values.requestCategory === TicketRequestCategory.FIELD;
+    const isAPHRequest = values.requestCategory === TicketRequestCategory.APH;
     if (projectLinkedRequest && !values.projectId) {
       context.addIssue({
         code: "custom",
@@ -128,6 +137,7 @@ const ticketFormSchema = z
       values.requestCategory === TicketRequestCategory.WAREHOUSE;
     if (
       !hasPerItemDeliveryDates &&
+      !isAPHRequest &&
       (!values.neededDate || Number.isNaN(values.neededDate.getTime()))
     ) {
       context.addIssue({
@@ -170,6 +180,42 @@ const ticketFormSchema = z
         path: ["fieldCategory"],
         message: "Pilih jenis kebutuhan lapangan.",
       });
+    }
+    if (isAPHRequest) {
+      if (!values.requestPaymentMethod) {
+        context.addIssue({
+          code: "custom",
+          path: ["requestPaymentMethod"],
+          message: "Pilih metode pembayaran Cash atau Transfer.",
+        });
+      }
+      if (
+        values.requestPaymentMethod === POPaymentMethod.TRANSFER &&
+        !values.transferDestination?.trim()
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["transferDestination"],
+          message: "Tujuan transfer wajib diisi.",
+        });
+      }
+      if (
+        !values.requestPaymentDescription?.trim() ||
+        values.requestPaymentDescription.trim().length > 2000
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["requestPaymentDescription"],
+          message: "Keterangan wajib diisi (maksimal 2.000 karakter).",
+        });
+      }
+      if (values.requestedAmount === undefined) {
+        context.addIssue({
+          code: "custom",
+          path: ["requestedAmount"],
+          message: "Jumlah dana yang diminta harus lebih besar dari 0.",
+        });
+      }
     }
     const requiresRecipientPayment =
       values.requestCategory === TicketRequestCategory.FIELD &&
@@ -232,6 +278,14 @@ const ticketFormSchema = z
           });
         }
       }
+    } else if (isAPHRequest) {
+      if (values.items.length > 0) {
+        context.addIssue({
+          code: "custom",
+          path: ["items"],
+          message: "Permintaan dana APH tidak menggunakan rincian item.",
+        });
+      }
     } else {
       if (values.items.length === 0) {
         context.addIssue({
@@ -289,6 +343,13 @@ const formatCurrency = (amount: number) =>
     maximumFractionDigits: 0,
   }).format(amount);
 
+const requestCategoriesForRole = (role?: UserRole) =>
+  role === UserRole.DIRECTOR || role === UserRole.FINANCE
+  ? requestCategories
+  : requestCategories.filter(
+      (category) => category !== TicketRequestCategory.APH,
+    );
+
 export default function CreateTicketModal({
   projects,
   stockItems = [],
@@ -345,6 +406,9 @@ export default function CreateTicketModal({
       recipientName: "",
       bankName: "",
       accountNumber: "",
+      requestPaymentMethod: POPaymentMethod.CASH,
+      transferDestination: "",
+      requestPaymentDescription: "",
       operationalRequestType: "GENERAL",
       operationalAmount: undefined,
       surveyConsumptionAmount: 0,
@@ -363,6 +427,10 @@ export default function CreateTicketModal({
   const fieldCategory = useWatch({
     control: form.control,
     name: "fieldCategory",
+  });
+  const watchedRequestPaymentMethod = useWatch({
+    control: form.control,
+    name: "requestPaymentMethod",
   });
   const watchedRequestedAmount = useWatch({
     control: form.control,
@@ -394,8 +462,9 @@ export default function CreateTicketModal({
     fieldCategory !== TicketFieldCategory.DIRECT_STORE;
   const isOperationalFunding =
     requestCategory === TicketRequestCategory.OPS;
+  const isAPHRequest = requestCategory === TicketRequestCategory.APH;
   const requiresFundingRequest =
-    requiresRecipientPayment || isOperationalFunding;
+    requiresRecipientPayment || isOperationalFunding || isAPHRequest;
   const operationalRequestedAmount =
     operationalRequestType === "SURVEY"
       ? (watchedSurveyConsumptionAmount ?? 0) + (watchedSurveyFuelAmount ?? 0)
@@ -424,7 +493,7 @@ export default function CreateTicketModal({
 
   const submit = form.handleSubmit(async (values) => {
     setError("");
-    if (!usesItemDeliveryDates && !values.neededDate) {
+    if (!usesItemDeliveryDates && !isAPHRequest && !values.neededDate) {
       setError("Pilih tanggal perlu dibayarkan/disediakan terlebih dahulu.");
       return;
     }
@@ -452,11 +521,27 @@ export default function CreateTicketModal({
         : values.operationalAmount;
     const title = isOperationalFunding
       ? `Operasional: ${operationalRequestLabel}`
+      : isAPHRequest
+        ? "Permintaan APH"
       : requiresRecipientPayment
       ? `${subCategoryLabel}: ${values.recipientName?.trim()}`.slice(0, 160)
       : `${categoryLabel}: ${firstItemName}`.slice(0, 160);
     const description = [
       `Jenis permintaan: ${categoryLabel}`,
+      isAPHRequest
+        ? `Metode pembayaran: ${values.requestPaymentMethod === POPaymentMethod.CASH ? "Cash" : "Transfer"}`
+        : null,
+      isAPHRequest &&
+      values.requestPaymentMethod === POPaymentMethod.TRANSFER &&
+      values.transferDestination?.trim()
+        ? `Tujuan transfer: ${values.transferDestination.trim()}`
+        : null,
+      isAPHRequest
+        ? `Keterangan: ${values.requestPaymentDescription?.trim()}`
+        : null,
+      isAPHRequest
+        ? `Jumlah dana diminta: ${formatCurrency(values.requestedAmount ?? 0)}`
+        : null,
       isOperationalFunding
         ? `Keperluan: ${operationalRequestLabel}`
         : null,
@@ -508,6 +593,17 @@ export default function CreateTicketModal({
         type: ticketType,
         requestCategory: values.requestCategory,
         fieldCategory: values.fieldCategory,
+        requestPaymentMethod: isAPHRequest
+          ? values.requestPaymentMethod
+          : undefined,
+        transferDestination:
+          isAPHRequest &&
+          values.requestPaymentMethod === POPaymentMethod.TRANSFER
+            ? values.transferDestination
+            : undefined,
+        requestPaymentDescription: isAPHRequest
+          ? values.requestPaymentDescription
+          : undefined,
         priority,
         projectId: values.projectId || undefined,
         moverAssigneeId: showMoverSelection
@@ -524,7 +620,9 @@ export default function CreateTicketModal({
           ? values.requestedAmount
           : isOperationalFunding
             ? operationalAmount
-            : undefined,
+            : isAPHRequest
+              ? values.requestedAmount
+              : undefined,
         items: requiresFundingRequest
           ? []
           : values.items.map((item) => ({
@@ -705,6 +803,26 @@ export default function CreateTicketModal({
                           { shouldValidate: true },
                         );
                       }
+                      if (value === TicketRequestCategory.APH) {
+                        form.setValue(
+                          "items",
+                          [],
+                          { shouldValidate: true },
+                        );
+                      } else if (requestCategory === TicketRequestCategory.APH) {
+                        form.setValue(
+                          "items",
+                          [{
+                            itemName: "",
+                            unit: "pcs",
+                            quantity: 1,
+                            estimatedCost: undefined,
+                            categoryHint: TicketCategoryHint.PURCHASE,
+                            expectedDeliveryDate: "",
+                          }],
+                          { shouldValidate: true },
+                        );
+                      }
                     }}
                   >
                     <SelectTrigger
@@ -715,7 +833,7 @@ export default function CreateTicketModal({
                       <SelectValue placeholder="Pilih jenis permintaan" />
                     </SelectTrigger>
                     <SelectContent>
-                      {requestCategories.map((category) => (
+                      {requestCategoriesForRole(requesterRole).map((category) => (
                         <SelectItem key={category} value={category}>
                           {requestCategoryLabels[category]}
                         </SelectItem>
@@ -817,7 +935,111 @@ export default function CreateTicketModal({
             )}
           </div>
 
-          <section className="space-y-3">
+          {isAPHRequest && (
+            <section className="space-y-4 rounded-md border p-4">
+              <div>
+                <h3 className="font-semibold">Detail Permintaan APH</h3>
+                <p className="text-sm text-muted-foreground">
+                  Permintaan akan diteruskan ke Keuangan setelah diajukan.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label>Type pembayaran</Label>
+                <Controller
+                  control={form.control}
+                  name="requestPaymentMethod"
+                  render={({ field }) => (
+                    <RadioGroup
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      className="flex flex-wrap gap-4"
+                      aria-label="Type pembayaran APH"
+                    >
+                      <Label className="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2">
+                        <RadioGroupItem value={POPaymentMethod.CASH} />
+                        Cash
+                      </Label>
+                      <Label className="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2">
+                        <RadioGroupItem value={POPaymentMethod.TRANSFER} />
+                        Transfer
+                      </Label>
+                    </RadioGroup>
+                  )}
+                />
+                {form.formState.errors.requestPaymentMethod && (
+                  <p className="text-sm text-destructive" role="alert">
+                    {form.formState.errors.requestPaymentMethod.message}
+                  </p>
+                )}
+              </div>
+              {watchedRequestPaymentMethod === POPaymentMethod.TRANSFER && (
+                <div className="space-y-2">
+                  <Label htmlFor="ticket-aph-transfer-destination">
+                    Tujuan transfer
+                  </Label>
+                  <Input
+                    id="ticket-aph-transfer-destination"
+                    maxLength={300}
+                    placeholder="Nama penerima, bank, atau nomor rekening"
+                    aria-invalid={!!form.formState.errors.transferDestination}
+                    {...form.register("transferDestination")}
+                  />
+                  {form.formState.errors.transferDestination && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {form.formState.errors.transferDestination.message}
+                    </p>
+                  )}
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="ticket-aph-description">Keterangan</Label>
+                <Textarea
+                  id="ticket-aph-description"
+                  maxLength={2000}
+                  rows={3}
+                  placeholder="Jelaskan keperluan permintaan APH"
+                  aria-invalid={
+                    !!form.formState.errors.requestPaymentDescription
+                  }
+                  {...form.register("requestPaymentDescription")}
+                />
+                {form.formState.errors.requestPaymentDescription && (
+                  <p className="text-sm text-destructive" role="alert">
+                    {
+                      form.formState.errors.requestPaymentDescription.message
+                    }
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ticket-aph-amount">Jumlah dana yang diminta</Label>
+                <RupiahAmountInput
+                  id="ticket-aph-amount"
+                  value={
+                    watchedRequestedAmount === undefined
+                      ? ""
+                      : formatRupiahNumber(watchedRequestedAmount)
+                  }
+                  onChange={(value) => {
+                    const amount = parseRupiahInput(value);
+                    form.setValue(
+                      "requestedAmount",
+                      amount > 0 ? amount : undefined,
+                      { shouldDirty: true, shouldValidate: true },
+                    );
+                  }}
+                  required
+                />
+                {form.formState.errors.requestedAmount && (
+                  <p className="text-sm text-destructive" role="alert">
+                    {form.formState.errors.requestedAmount.message}
+                  </p>
+                )}
+              </div>
+            </section>
+          )}
+
+          {!isAPHRequest && <section className="space-y-3">
             {requiresRecipientPayment ? (
               <div className="space-y-4 rounded-md border p-4">
                 <div>
@@ -1401,7 +1623,7 @@ export default function CreateTicketModal({
             )}
               </>
             )}
-          </section>
+          </section>}
 
           <div className="space-y-2">
             <Label>Tingkat Prioritas</Label>
@@ -1459,7 +1681,7 @@ export default function CreateTicketModal({
             />
           </div>
 
-          {!usesItemDeliveryDates && (
+          {!usesItemDeliveryDates && !isAPHRequest && (
             <div className="space-y-2">
               <Label>Tanggal Perlu Dibayarkan/Disediakan</Label>
               <Controller

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GlobalModal } from "@/components/ui/global-modal";
@@ -771,8 +772,8 @@ export default function GISWorkspace({
             </h2>
             <Input className="h-8 max-w-[220px] text-xs" placeholder="Cari data survei..." />
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[900px] text-left text-xs">
+          <NativeDataTable itemLabel="survei">
+            <table className="app-data-table min-w-[900px] text-left text-xs">
               <thead className="bg-muted/70 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
                 <tr>
                   {["No", "ID Project / No. SPK", "Nama Project", "Lokasi / Kategori", "Luas (Ha)", "Tanggal Survei", "Tim & Koordinator", "Status", "Aksi"].map((heading) => (
@@ -781,12 +782,12 @@ export default function GISWorkspace({
                 </tr>
               </thead>
               <tbody>
-                {surveys.slice(0, 10).map((survey, index) => {
+                {surveys.map((survey) => {
                   const project = projects.find((item) => item.id === survey.projectId);
                   const running = ["RUNNING", "ON_PROGRESS", "ACTIVE"].includes(project?.status ?? "");
                   return (
                     <tr key={survey.id} className={`border-t border-border ${survey.projectId === activeProjectId ? "bg-orange-500/5" : "hover:bg-muted/30"}`}>
-                      <td className="px-3 py-3">{index + 1}</td>
+                      <td className="px-3 py-3">{surveys.indexOf(survey) + 1}</td>
                       <td className="px-3 py-3 font-semibold">{project?.code ?? survey.projectCode ?? "—"}</td>
                       <td className="px-3 py-3">{project?.title ?? survey.projectName}</td>
                       <td className="px-3 py-3">{survey.locationName}<span className="block text-[10px] text-muted-foreground">{survey.objectCategory ?? "Polygon"}</span></td>
@@ -806,8 +807,7 @@ export default function GISWorkspace({
                 })}
               </tbody>
             </table>
-          </div>
-          <div className="border-t border-border px-4 py-2 text-[10px] text-muted-foreground">Menampilkan {Math.min(surveys.length, 10)} dari {surveys.length} data</div>
+          </NativeDataTable>
         </Card>
       )}
 

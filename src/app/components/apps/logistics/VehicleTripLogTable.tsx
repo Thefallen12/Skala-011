@@ -1,4 +1,5 @@
 import type { VehicleTripLogRow } from "@/lib/vehicle-trip-types";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 
 export default function VehicleTripLogTable({
   logs,
@@ -8,7 +9,7 @@ export default function VehicleTripLogTable({
   emptyMessage?: string;
 }) {
   return (
-    <div className="overflow-x-auto">
+    <NativeDataTable itemLabel="log perjalanan">
       <table className="app-data-table w-full min-w-[900px] text-sm">
         <thead className="bg-[#102A4D] text-left text-white">
           <tr>
@@ -63,6 +64,6 @@ export default function VehicleTripLogTable({
           )}
         </tbody>
       </table>
-    </div>
+    </NativeDataTable>
   );
 }

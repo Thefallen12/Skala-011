@@ -9,7 +9,11 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PaymentType } from "@/generated/prisma/enums";
+import {
+  PaymentType,
+  POPaymentMethod,
+  TicketRequestCategory,
+} from "@/generated/prisma/enums";
 import {
   formatRupiahNumber,
   parseRupiahInput,
@@ -47,6 +51,10 @@ export default function FinanceActionModal({
     | "recipientName"
     | "bankName"
     | "accountNumber"
+    | "requestCategory"
+    | "requestPaymentMethod"
+    | "requestPaymentDescription"
+    | "transferDestination"
     | "purchaseOrders"
     | "paymentTransactions"
   >;
@@ -134,11 +142,19 @@ export default function FinanceActionModal({
     Number(ticket.totalAmount ?? 0) - amountPaid,
   );
   const defaultDestination =
-    purchaseOrder?.paymentBankName && purchaseOrder.paymentAccountNumber
+    ticket.requestCategory === TicketRequestCategory.APH &&
+    ticket.requestPaymentMethod === POPaymentMethod.CASH
+      ? "Pembayaran tunai"
+      : ticket.requestCategory === TicketRequestCategory.APH
+        ? ticket.transferDestination ?? ""
+      : purchaseOrder?.paymentBankName && purchaseOrder.paymentAccountNumber
       ? `Ditransfer ke: ${purchaseOrder.paymentBankName} & ${purchaseOrder.paymentAccountNumber}`
       : ticket.bankName && ticket.accountNumber
         ? `Ditransfer ke: ${ticket.bankName} & ${ticket.accountNumber}`
         : "";
+  const isAPHRequest = ticket.requestCategory === TicketRequestCategory.APH;
+  const isCashPayment =
+    isAPHRequest && ticket.requestPaymentMethod === POPaymentMethod.CASH;
 
   return (
     <GlobalModal
@@ -151,7 +167,7 @@ export default function FinanceActionModal({
         onOpenChange(false);
       }}
       title="Konfirmasi Pembayaran"
-      description="Periksa nilai dan tujuan dana berikut, lalu unggah bukti transfer. File PDF, JPG, PNG, atau WEBP maksimal 5 MB."
+      description={`Periksa nilai dan tujuan dana berikut, lalu unggah bukti ${isCashPayment ? "pembayaran tunai" : "transfer"}. File PDF, JPG, PNG, atau WEBP maksimal 5 MB.`}
     >
         <form className="space-y-4" onSubmit={submit}>
           <section className="space-y-2 rounded-md border p-4 text-sm">
@@ -164,6 +180,20 @@ export default function FinanceActionModal({
                 {formatCurrency(ticket.totalAmount)}
               </span>
             </p>
+            {isAPHRequest && (
+              <>
+                <p>
+                  <span className="text-muted-foreground">Type pembayaran: </span>
+                  {isCashPayment ? "Cash" : "Transfer"}
+                </p>
+                {ticket.requestPaymentDescription && (
+                  <p className="whitespace-pre-wrap">
+                    <span className="text-muted-foreground">Keterangan: </span>
+                    {ticket.requestPaymentDescription}
+                  </p>
+                )}
+              </>
+            )}
             <p>
               <span className="text-muted-foreground">Sisa tagihan: </span>
               <span className="font-semibold">
@@ -184,12 +214,16 @@ export default function FinanceActionModal({
             </p>
           </section>
           <label className="block space-y-2 text-sm font-medium">
-            Keterangan tujuan transfer
+            {isCashPayment ? "Keterangan pembayaran tunai" : "Tujuan transfer"}
             <Input
               key={ticket.id}
               name="transferDestination"
               defaultValue={defaultDestination}
-              placeholder="Ditransfer ke: [Nama Bank] & [Nomor Rekening Vendor]"
+              placeholder={
+                isCashPayment
+                  ? "Keterangan penyerahan tunai"
+                  : "Nama penerima, bank, atau nomor rekening tujuan"
+              }
               maxLength={300}
               required
               disabled={isPending}
@@ -262,7 +296,9 @@ export default function FinanceActionModal({
             </label>
           </fieldset>
           <label className="block space-y-2 text-sm font-medium">
-            Upload Bukti Transfer / Pengiriman Dana
+            {isCashPayment
+              ? "Upload Bukti Penyerahan Dana"
+              : "Upload Bukti Transfer / Pengiriman Dana"}
             <Input
               type="file"
               accept="image/jpeg,image/png,image/webp,application/pdf"

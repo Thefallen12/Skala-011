@@ -7,6 +7,7 @@ import { createVehicleTripLog } from "@/app/actions/vehicle-trips";
 import type { VehicleTripLogRow } from "@/lib/vehicle-trip-types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { GlobalModal } from "@/components/ui/global-modal";
@@ -161,7 +162,7 @@ export default function VehicleOperationsPanel({
         )}
         <section className="space-y-3">
           <h3 className="font-semibold text-primary">Daftar Kendaraan Aktif</h3>
-          <div className="overflow-x-auto">
+          <NativeDataTable itemLabel="kendaraan">
             <table className="app-data-table w-full min-w-[720px] text-sm">
               <thead className="bg-[#102A4D] text-left text-white">
                 <tr>
@@ -200,7 +201,7 @@ export default function VehicleOperationsPanel({
                 )}
               </tbody>
             </table>
-          </div>
+          </NativeDataTable>
         </section>
         <section className="space-y-3">
           <h3 className="font-semibold text-primary">Riwayat Log Perjalanan & BBM</h3>

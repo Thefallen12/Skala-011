@@ -50,6 +50,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import {
   Tabs,
   TabsContent,
@@ -659,7 +660,7 @@ export default function LogisticsHub({
                 )}
               </ul>
             </div>
-            <div className="overflow-x-auto">
+            <NativeDataTable itemLabel="log alat">
               <table className="app-data-table w-full min-w-[760px] text-sm">
                 <thead className="bg-[#102A4D] text-left text-white">
                   <tr>
@@ -695,7 +696,7 @@ export default function LogisticsHub({
                   )}
                 </tbody>
               </table>
-            </div>
+            </NativeDataTable>
           </CardContent>
         </Card>
         <VehicleOperationsPanel

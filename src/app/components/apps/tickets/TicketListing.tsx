@@ -27,12 +27,15 @@ import {
   FulfillmentStatus,
   DOStatus,
   PaymentType,
+  POPaymentMethod,
+  TicketRequestCategory,
   TicketStatus,
   TicketType,
   UserRole,
 } from "@/generated/prisma/enums";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -707,6 +710,30 @@ export default function TicketListing({
                   <p className="whitespace-pre-wrap text-sm text-muted-foreground">
                     {selectedTicket.description || "Tidak ada deskripsi."}
                   </p>
+                  {selectedTicket.requestCategory ===
+                    TicketRequestCategory.APH && (
+                    <div className="space-y-1 rounded-md border p-3 text-sm">
+                      <h4 className="font-semibold">Detail Pembayaran APH</h4>
+                      <p>
+                        Type pembayaran:{" "}
+                        {selectedTicket.requestPaymentMethod ===
+                        POPaymentMethod.CASH
+                          ? "Cash"
+                          : "Transfer"}
+                      </p>
+                      {selectedTicket.requestPaymentMethod ===
+                        POPaymentMethod.TRANSFER && (
+                        <p>
+                          Tujuan transfer:{" "}
+                          {selectedTicket.transferDestination || "—"}
+                        </p>
+                      )}
+                      <p className="whitespace-pre-wrap">
+                        Keterangan:{" "}
+                        {selectedTicket.requestPaymentDescription || "—"}
+                      </p>
+                    </div>
+                  )}
                   <p className="text-sm">
                     Pemohon: {selectedTicket.requester.name}
                   </p>
@@ -842,7 +869,7 @@ export default function TicketListing({
                           );
                         })()}
                       </div>
-                      <div className="overflow-x-auto">
+                      <NativeDataTable itemLabel="pembayaran">
                         <table className="app-data-table w-full min-w-[640px] text-left text-sm">
                           <thead>
                             <tr className="border-b text-muted-foreground">
@@ -894,7 +921,7 @@ export default function TicketListing({
                             ))}
                           </tbody>
                         </table>
-                      </div>
+                      </NativeDataTable>
                     </div>
                   )}
                   {selectedTicket.attachmentUrl && (

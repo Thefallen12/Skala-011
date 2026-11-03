@@ -1,7 +1,12 @@
 import { redirect } from "next/navigation";
 import UserProfile from "@/app/components/user-profile";
 import type { Metadata } from "next";
-import { WorkTaskStatus, ProjectStatus } from "@/generated/prisma/enums";
+import {
+  ProjectStatus,
+  TicketRequestCategory,
+  UserRole,
+  WorkTaskStatus,
+} from "@/generated/prisma/enums";
 import { auth } from "../../../../auth";
 import { prisma } from "@/lib/prisma";
 import BreadcrumbComp from "../layout/shared/breadcrumb/BreadcrumbComp";
@@ -94,7 +99,22 @@ export default async function UserProfilePage() {
         },
       }),
       prisma.ticket.findMany({
-        where: { requesterId: userId },
+        where: {
+          AND: [
+            { requesterId: userId },
+            ...(session.user.role === UserRole.DIRECTOR ||
+            session.user.role === UserRole.FINANCE
+              ? []
+              : [
+                  {
+                    OR: [
+                      { requestCategory: { not: TicketRequestCategory.APH } },
+                      { requestCategory: null },
+                    ],
+                  },
+                ]),
+          ],
+        },
         orderBy: [{ createdAt: "desc" }],
         take: 50,
         select: {

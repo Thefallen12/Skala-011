@@ -58,7 +58,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TablePaginationControls,
 } from "@/components/ui/table";
+import { NativeDataTable } from "@/components/ui/native-data-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -85,11 +87,10 @@ import {
 import {
   POPaymentMethod,
   PaymentType,
+  TicketRequestCategory,
   UserRole,
 } from "@/generated/prisma/enums";
 import {
-  ChevronLeft,
-  ChevronRight,
   Download,
   ExternalLink,
   Eye,
@@ -150,6 +151,9 @@ type FinanceTicket = {
   bankName: string | null;
   accountNumber: string | null;
   transferDestination: string | null;
+  requestCategory: TicketRequestCategory | null;
+  requestPaymentMethod: POPaymentMethod | null;
+  requestPaymentDescription: string | null;
   vendorBankName: string | null;
   vendorAccountNumber: string | null;
   vendorAccountName: string | null;
@@ -271,27 +275,7 @@ function FinanceAccountField({
   );
 }
 
-const PAYMENT_HISTORY_PAGE_SIZE = 10;
-
-function getPaymentHistoryPageNumbers(
-  currentPage: number,
-  pageCount: number,
-): (number | "ellipsis")[] {
-  if (pageCount <= 5) {
-    return Array.from({ length: pageCount }, (_, index) => index + 1);
-  }
-
-  const firstVisible = Math.max(2, Math.min(currentPage - 1, pageCount - 3));
-  const lastVisible = Math.min(pageCount - 1, firstVisible + 2);
-  const pages: (number | "ellipsis")[] = [1];
-  if (firstVisible > 2) pages.push("ellipsis");
-  for (let page = firstVisible; page <= lastVisible; page += 1) {
-    pages.push(page);
-  }
-  if (lastVisible < pageCount - 1) pages.push("ellipsis");
-  pages.push(pageCount);
-  return pages;
-}
+const PAYMENT_HISTORY_PAGE_SIZE = 5;
 
 const paymentReceiptHref = withLocalPhotoPreview;
 
@@ -655,10 +639,6 @@ export default function FinanceHub({
   const paymentHistoryPageRows = filteredPaymentHistoryRows.slice(
     (currentPaymentHistoryPage - 1) * PAYMENT_HISTORY_PAGE_SIZE,
     currentPaymentHistoryPage * PAYMENT_HISTORY_PAGE_SIZE,
-  );
-  const paymentHistoryPageNumbers = getPaymentHistoryPageNumbers(
-    currentPaymentHistoryPage,
-    paymentHistoryPageCount,
   );
   const selectedPaymentRow = paymentModalSelection
     ? paymentRows.find(
@@ -1391,7 +1371,7 @@ export default function FinanceHub({
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto rounded-lg border">
-                <Table>
+                <Table pagination={false}>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Tanggal</TableHead>
@@ -1474,86 +1454,13 @@ export default function FinanceHub({
                   </TableBody>
                 </Table>
               </div>
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-muted-foreground" aria-live="polite">
-                  Menampilkan{" "}
-                  {filteredPaymentHistoryRows.length === 0
-                    ? 0
-                    : (currentPaymentHistoryPage - 1) *
-                        PAYMENT_HISTORY_PAGE_SIZE +
-                      1}{" "}
-                  sampai{" "}
-                  {Math.min(
-                    currentPaymentHistoryPage * PAYMENT_HISTORY_PAGE_SIZE,
-                    filteredPaymentHistoryRows.length,
-                  )}{" "}
-                  dari {filteredPaymentHistoryRows.length} transaksi
-                </p>
-                <nav
-                  aria-label="Navigasi halaman riwayat pembayaran"
-                  className="flex flex-wrap items-center gap-1"
-                >
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      setPaymentHistoryPage((page) => Math.max(1, page - 1))
-                    }
-                    disabled={currentPaymentHistoryPage === 1}
-                    aria-label="Halaman sebelumnya"
-                  >
-                    <ChevronLeft className="size-4" aria-hidden="true" />
-                    <span className="sr-only">Sebelumnya</span>
-                  </Button>
-                  {paymentHistoryPageNumbers.map((page, index) =>
-                    page === "ellipsis" ? (
-                      <span
-                        key={`ellipsis-${index}`}
-                        className="px-2 text-sm text-muted-foreground"
-                        aria-hidden="true"
-                      >
-                        …
-                      </span>
-                    ) : (
-                      <Button
-                        key={page}
-                        type="button"
-                        variant={
-                          page === currentPaymentHistoryPage
-                            ? "default"
-                            : "outline"
-                        }
-                        size="sm"
-                        onClick={() => setPaymentHistoryPage(page)}
-                        aria-label={`Halaman ${page}`}
-                        aria-current={
-                          page === currentPaymentHistoryPage ? "page" : undefined
-                        }
-                      >
-                        {page}
-                      </Button>
-                    ),
-                  )}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      setPaymentHistoryPage((page) =>
-                        Math.min(paymentHistoryPageCount, page + 1),
-                      )
-                    }
-                    disabled={
-                      currentPaymentHistoryPage === paymentHistoryPageCount
-                    }
-                    aria-label="Halaman berikutnya"
-                  >
-                    <ChevronRight className="size-4" aria-hidden="true" />
-                    <span className="sr-only">Berikutnya</span>
-                  </Button>
-                </nav>
-              </div>
+              <TablePaginationControls
+                count={filteredPaymentHistoryRows.length}
+                pageSize={PAYMENT_HISTORY_PAGE_SIZE}
+                page={currentPaymentHistoryPage}
+                itemLabel="transaksi"
+                onPageChange={setPaymentHistoryPage}
+              />
             </CardContent>
             </Card>
           </TabsContent>
@@ -2247,7 +2154,7 @@ export default function FinanceHub({
                     {paymentStatusLabel}
                   </Badge>
                 </div>
-                <div className="overflow-x-auto">
+                <NativeDataTable itemLabel="barang">
                   <table className="app-data-table w-full min-w-[420px] text-left text-sm">
                     <thead>
                       <tr className="border-b text-muted-foreground">
@@ -2266,7 +2173,7 @@ export default function FinanceHub({
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </NativeDataTable>
                 <p className="text-sm">
                   Total tagihan: <strong>{currency(paymentTotal)}</strong> · Dibayar:{" "}
                   <strong>{currency(paidAmount)}</strong> · Sisa:{" "}
@@ -2384,6 +2291,29 @@ export default function FinanceHub({
                   <p>
                     Nilai: <strong>{currency(activeTicket.totalAmount)}</strong>
                   </p>
+                  {activeTicket.requestCategory ===
+                    TicketRequestCategory.APH && (
+                    <>
+                      <p>
+                        Type pembayaran:{" "}
+                        {activeTicket.requestPaymentMethod ===
+                        POPaymentMethod.CASH
+                          ? "Cash"
+                          : "Transfer"}
+                      </p>
+                      {activeTicket.requestPaymentMethod ===
+                        POPaymentMethod.TRANSFER && (
+                        <p>
+                          Tujuan transfer:{" "}
+                          {activeTicket.transferDestination || "—"}
+                        </p>
+                      )}
+                      <p className="whitespace-pre-wrap">
+                        Keterangan:{" "}
+                        {activeTicket.requestPaymentDescription || "—"}
+                      </p>
+                    </>
+                  )}
                   <p>Penerima: {activeTicket.recipientName ?? "Tidak dicantumkan"}</p>
                   <p>Bank: {activeTicket.bankName ?? "Tidak dicantumkan"}</p>
                   <p>Rekening: {activeTicket.accountNumber ?? "Tidak dicantumkan"}</p>
@@ -2462,19 +2392,38 @@ export default function FinanceHub({
                       </div>
                     </section>
                     <div className="space-y-2">
-                      <Label htmlFor="transfer-destination">Keterangan tujuan transfer</Label>
+                      <Label htmlFor="transfer-destination">
+                        {activeTicket.requestCategory ===
+                          TicketRequestCategory.APH &&
+                        activeTicket.requestPaymentMethod ===
+                          POPaymentMethod.CASH
+                          ? "Keterangan pembayaran tunai"
+                          : "Tujuan transfer"}
+                      </Label>
                       <Input
                         key={activeTicket.id}
                         id="transfer-destination"
                         name="transferDestination"
                         defaultValue={
-                          activeTicket.transferDestination ??
-                          (activeTicket.vendorBankName &&
+                          activeTicket.requestCategory ===
+                            TicketRequestCategory.APH &&
+                          activeTicket.requestPaymentMethod ===
+                            POPaymentMethod.CASH
+                            ? "Pembayaran tunai"
+                            : activeTicket.transferDestination ??
+                              (activeTicket.vendorBankName &&
                           activeTicket.vendorAccountNumber
                             ? `Ditransfer ke: ${activeTicket.vendorBankName} & ${activeTicket.vendorAccountNumber}`
                             : "")
                         }
-                        placeholder="Ditransfer ke: [Nama Bank] & [Nomor Rekening Vendor]"
+                        placeholder={
+                          activeTicket.requestCategory ===
+                            TicketRequestCategory.APH &&
+                          activeTicket.requestPaymentMethod ===
+                            POPaymentMethod.CASH
+                            ? "Keterangan penyerahan tunai"
+                            : "Nama penerima, bank, atau nomor rekening tujuan"
+                        }
                         maxLength={300}
                         required
                         disabled={isPending}
@@ -2486,7 +2435,14 @@ export default function FinanceHub({
                       disabled={isPending}
                     />
                     <div className="space-y-2">
-                      <Label>Bukti transfer</Label>
+                      <Label>
+                        {activeTicket.requestCategory ===
+                          TicketRequestCategory.APH &&
+                        activeTicket.requestPaymentMethod ===
+                          POPaymentMethod.CASH
+                          ? "Bukti penyerahan dana"
+                          : "Bukti transfer"}
+                      </Label>
                       <FinancePaymentProofUpload
                         value={receiptUrl}
                         onChange={setReceiptUrl}
@@ -2518,7 +2474,7 @@ export default function FinanceHub({
             {paymentHistory.length > 0 && (
               <section className="space-y-2 rounded-lg border p-4">
                 <h3 className="font-semibold">Riwayat Pembayaran</h3>
-                <div className="overflow-x-auto">
+                <NativeDataTable itemLabel="pembayaran">
                   <table className="app-data-table w-full min-w-[540px] text-left text-sm">
                     <thead>
                       <tr className="border-b text-muted-foreground">
@@ -2557,7 +2513,7 @@ export default function FinanceHub({
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </NativeDataTable>
                 <Badge
                   variant={
                     isPaymentSettled

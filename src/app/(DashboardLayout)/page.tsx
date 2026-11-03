@@ -144,6 +144,7 @@ export default async function DashboardPage() {
       },
     }),
     prisma.ticket.findMany({
+      where: getTicketPageVisibilityWhere(session.user.role, session.user.id),
       orderBy: { createdAt: "desc" },
       take: 6,
       select: {

@@ -113,6 +113,7 @@ enum TicketRequestCategory {
   WAREHOUSE
   OFFICE
   FIELD
+  APH
 }
 
 enum TicketFieldCategory {
@@ -823,21 +824,21 @@ model Blueprint {
 }
 
 model DrawingDocument {
-  id            String       @id @default(cuid())
-  drawingCode   String       @unique
-  projectId     String?
-  project       Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  title         String
-  category      String
-  version       Int          @default(0)
-  status        String       @default("DRAFT")
-  fileUrl       String?
-  thumbnailUrl  String?
-  uploadedById  String
-  uploadedBy    User         @relation("DrawingUploader", fields: [uploadedById], references: [id], onDelete: Restrict)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  logs          DrawingLog[]
+  id           String       @id @default(cuid())
+  drawingCode  String       @unique
+  projectId    String?
+  project      Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  title        String
+  category     String
+  version      Int          @default(0)
+  status       String       @default("DRAFT")
+  fileUrl      String?
+  thumbnailUrl String?
+  uploadedById String
+  uploadedBy   User         @relation("DrawingUploader", fields: [uploadedById], references: [id], onDelete: Restrict)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  logs         DrawingLog[]
 
   @@index([projectId, updatedAt])
   @@index([status, updatedAt])
@@ -1031,16 +1032,16 @@ model Vendor {
 }
 
 model VendorBankAccount {
-  id            String   @id @default(cuid())
-  vendorId      String
-  vendor        Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
-  label         String?
-  bankName      String
-  bankAccount   String
-  bankHolder    String
-  isPrimary     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id          String   @id @default(cuid())
+  vendorId    String
+  vendor      Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  label       String?
+  bankName    String
+  bankAccount String
+  bankHolder  String
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([vendorId, isPrimary])
 }
@@ -1226,43 +1227,45 @@ model DocumentNumberSequence {
 
 // Ticket intake and fulfillment.
 model Ticket {
-  id                      String                  @id @default(cuid())
-  ticketNumber            String                  @unique
-  title                   String
-  description             String?                 @db.Text
-  type                    TicketType
-  priority                TicketPriority          @default(MEDIUM)
-  status                  TicketStatus            @default(DRAFT)
-  fulfillmentStatus       TicketFulfillmentStatus @default(PENDING)
-  totalAmount             Decimal?                @db.Decimal(18, 2)
-  requestedAmount         Float?
-  isApprovedByDirector    Boolean                 @default(false)
-  attachmentUrl           String?
-  requestCategory         TicketRequestCategory?
-  fieldCategory           TicketFieldCategory?
-  recipientName           String?
-  bankName                String?
-  accountNumber           String?
-  purchaseReceiptUrl      String?
-  transferReceiptUrl      String?
-  transferDestination     String?
-  deliveryReceiptUrl      String?
-  deliveryOrderReceiptUrl String?
-  moverAssigneeId         String?
-  requesterId             String
-  requester               User                    @relation(fields: [requesterId], references: [id], onDelete: Restrict)
-  moverAssignee           User?                   @relation("Ticket_moverAssigneeIdToUser", fields: [moverAssigneeId], references: [id])
-  projectId               String?
-  project                 Project?                @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  items                   TicketItem[]
-  purchaseOrders          PurchaseOrder[]
-  directStockPurchases    DirectStockPurchase[]
-  paymentTransactions     PaymentTransaction[]
-  auditLogs               TicketAuditLog[]
-  operationalDocuments    OperationalDocument[]
-  deliveryOrders          DeliveryOrder[]
-  createdAt               DateTime                @default(now())
-  updatedAt               DateTime                @updatedAt
+  id                        String                  @id @default(cuid())
+  ticketNumber              String                  @unique
+  title                     String
+  description               String?                 @db.Text
+  type                      TicketType
+  priority                  TicketPriority          @default(MEDIUM)
+  status                    TicketStatus            @default(DRAFT)
+  fulfillmentStatus         TicketFulfillmentStatus @default(PENDING)
+  totalAmount               Decimal?                @db.Decimal(18, 2)
+  requestedAmount           Float?
+  isApprovedByDirector      Boolean                 @default(false)
+  attachmentUrl             String?
+  requestCategory           TicketRequestCategory?
+  fieldCategory             TicketFieldCategory?
+  requestPaymentMethod      POPaymentMethod?
+  requestPaymentDescription String?                 @db.Text
+  recipientName             String?
+  bankName                  String?
+  accountNumber             String?
+  purchaseReceiptUrl        String?
+  transferReceiptUrl        String?
+  transferDestination       String?
+  deliveryReceiptUrl        String?
+  deliveryOrderReceiptUrl   String?
+  moverAssigneeId           String?
+  requesterId               String
+  requester                 User                    @relation(fields: [requesterId], references: [id], onDelete: Restrict)
+  moverAssignee             User?                   @relation("Ticket_moverAssigneeIdToUser", fields: [moverAssigneeId], references: [id])
+  projectId                 String?
+  project                   Project?                @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  items                     TicketItem[]
+  purchaseOrders            PurchaseOrder[]
+  directStockPurchases      DirectStockPurchase[]
+  paymentTransactions       PaymentTransaction[]
+  auditLogs                 TicketAuditLog[]
+  operationalDocuments      OperationalDocument[]
+  deliveryOrders            DeliveryOrder[]
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
 
   @@index([status, type])
   @@index([status, priority])

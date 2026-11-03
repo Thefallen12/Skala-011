@@ -95,6 +95,12 @@ const requestCategories = [
     color: "bg-warning",
     textColor: "text-warning",
   },
+  {
+    value: TicketRequestCategory.APH,
+    label: "APH",
+    color: "bg-destructive",
+    textColor: "text-destructive",
+  },
 ] as const;
 
 const requestCategoryLabels: Record<TicketRequestCategory, string> = {
@@ -103,6 +109,7 @@ const requestCategoryLabels: Record<TicketRequestCategory, string> = {
   WAREHOUSE: "Permintaan Material dari Gudang",
   OFFICE: "Belanja Kantor",
   FIELD: "Kebutuhan Tim Lapangan",
+  APH: "APH",
 };
 
 const fieldCategoryLabels: Record<TicketFieldCategory, string> = {

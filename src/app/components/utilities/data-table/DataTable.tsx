@@ -17,6 +17,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TablePaginationControls,
   TableRow,
 } from '@/components/ui/table'
 import type { ColumnDef, SortingState } from '@tanstack/react-table'
@@ -417,7 +418,7 @@ const DataTable = <T extends Record<string, unknown>>({
 
             {/* Table */}
             <div className='overflow-x-auto border rounded-md border-ld'>
-              <Table>
+              <Table pagination={false}>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id} className=''>
@@ -480,26 +481,14 @@ const DataTable = <T extends Record<string, unknown>>({
             </div>
 
             {/* Pagination Controls */}
-            <div className='flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-border dark:border-white/10'>
-              <div className='flex gap-2'>
-                <Button
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  variant={'secondary'}>
-                  Previous
-                </Button>
-                <Button
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}>
-                  Next
-                </Button>
-              </div>
-
-              <div className='text-forest-black dark:text-white/90 font-medium text-base'>
-                Page {table.getState().pagination.pageIndex + 1} of{' '}
-                {table.getPageCount()}
-              </div>
-
+            <div className='flex flex-col gap-4 border-t border-border p-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/10'>
+              <TablePaginationControls
+                count={table.getFilteredRowModel().rows.length}
+                pageSize={table.getState().pagination.pageSize}
+                page={table.getState().pagination.pageIndex + 1}
+                itemLabel='baris'
+                onPageChange={(page) => table.setPageIndex(page - 1)}
+              />
               <div className='flex items-center gap-2'>
                 <Label
                   htmlFor='pageSize'
