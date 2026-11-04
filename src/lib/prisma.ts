@@ -7,6 +7,21 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is not set");
 }
 
+function normalizePostgresSslMode(value: string): string {
+  const url = new URL(value);
+  const legacyModes = new Set(["prefer", "require", "verify-ca"]);
+
+  for (const [key, mode] of url.searchParams) {
+    if (key.toLowerCase() === "sslmode" && legacyModes.has(mode.toLowerCase())) {
+      url.searchParams.set(key, "verify-full");
+    }
+  }
+
+  return url.toString();
+}
+
+const normalizedConnectionString = normalizePostgresSslMode(connectionString);
+
 const globalForPrisma = globalThis as typeof globalThis & {
   prisma?: PrismaClient;
 };
@@ -14,7 +29,7 @@ const globalForPrisma = globalThis as typeof globalThis & {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString }),
+    adapter: new PrismaPg({ connectionString: normalizedConnectionString }),
   });
 
 if (process.env.NODE_ENV !== "production") {
