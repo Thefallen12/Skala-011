@@ -5,7 +5,9 @@ import { prisma } from "@/lib/prisma";
 import {
   OperationalDocumentStatus,
   POStatus,
+  UserRole,
 } from "@/generated/prisma/enums";
+import { canManageUsers } from "@/lib/user-access";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +30,19 @@ export const metadata: Metadata = {
 export default async function IssuedDocumentsPage() {
   const session = await auth();
   if (!session?.user) redirect("/auth/login");
+
+  const role = session.user.role;
+  const canViewPO =
+    role === UserRole.LOGISTICS ||
+    role === UserRole.ADMINISTRATIONS ||
+    role === UserRole.FINANCE ||
+    role === UserRole.DIRECTOR ||
+    role === UserRole.DEPUTY_DIRECTOR;
+  const canViewDO =
+    canManageUsers(role) ||
+    role === UserRole.LOGISTICS ||
+    role === UserRole.FIELD_TEAM ||
+    role === UserRole.KOORDINATOR;
 
   const [documents, purchaseOrders, deliveryOrders] = await Promise.all([
     prisma.operationalDocument.findMany({
@@ -72,56 +87,54 @@ export default async function IssuedDocumentsPage() {
         issuedBy: { select: { name: true } },
       },
     }),
-    prisma.purchaseOrder.findMany({
-      where: { status: POStatus.APPROVED },
-      orderBy: { updatedAt: "desc" },
-      select: {
-        publicCode: true,
-        poNumber: true,
-        vendorName: true,
-        status: true,
-        updatedAt: true,
-        approvedAt: true,
-        approvedBy: { select: { name: true } },
-      },
-    }),
-    prisma.deliveryOrder.findMany({
-      where: {
-        OR: [
-          { ticket: { is: { isApprovedByDirector: true } } },
-          { po: { is: { status: POStatus.APPROVED } } },
-        ],
-      },
-      orderBy: { createdAt: "desc" },
-      select: {
-        publicCode: true,
-        doNumber: true,
-        status: true,
-        createdAt: true,
-        ticket: {
+    canViewPO
+      ? prisma.purchaseOrder.findMany({
+          orderBy: { updatedAt: "desc" },
           select: {
-            isApprovedByDirector: true,
-            auditLogs: {
-              where: { action: "APPROVED_BY_DIR" },
-              orderBy: { createdAt: "desc" },
-              take: 1,
-              select: {
-                createdAt: true,
-                user: { select: { name: true } },
-              },
-            },
-          },
-        },
-        po: {
-          select: {
+            publicCode: true,
             poNumber: true,
+            vendorName: true,
             status: true,
+            updatedAt: true,
             approvedAt: true,
             approvedBy: { select: { name: true } },
           },
-        },
-      },
-    }),
+        })
+      : Promise.resolve([]),
+    canViewDO
+      ? prisma.deliveryOrder.findMany({
+          orderBy: { createdAt: "desc" },
+          select: {
+            publicCode: true,
+            doNumber: true,
+            status: true,
+            createdAt: true,
+            ticket: {
+              select: {
+                ticketNumber: true,
+                isApprovedByDirector: true,
+                auditLogs: {
+                  where: { action: "APPROVED_BY_DIR" },
+                  orderBy: { createdAt: "desc" },
+                  take: 1,
+                  select: {
+                    createdAt: true,
+                    user: { select: { name: true } },
+                  },
+                },
+              },
+            },
+            po: {
+              select: {
+                poNumber: true,
+                status: true,
+                approvedAt: true,
+                approvedBy: { select: { name: true } },
+              },
+            },
+          },
+        })
+      : Promise.resolve([]),
   ]);
 
   return (
@@ -144,11 +157,11 @@ export default async function IssuedDocumentsPage() {
         }))}
         readOnly
       />
-      <CardBox>
+      {canViewPO && <CardBox>
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Dokumen Digital &amp; Verifikasi QR</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Purchase Order yang sudah disetujui, diambil langsung dari daftar Purchase Orders.
+            Semua Purchase Order yang dapat Anda akses, termasuk yang masih diproses.
           </p>
         </div>
         <div className="overflow-x-auto">
@@ -157,7 +170,8 @@ export default async function IssuedDocumentsPage() {
               <TableRow>
                 <TableHead>Nomor PO</TableHead>
                 <TableHead>Vendor</TableHead>
-                <TableHead>Persetujuan Eksekutif</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Persetujuan</TableHead>
                 <TableHead>Tanggal disetujui</TableHead>
                 <TableHead>Aksi</TableHead>
               </TableRow>
@@ -168,10 +182,11 @@ export default async function IssuedDocumentsPage() {
                   <TableCell className="font-medium">{order.poNumber}</TableCell>
                   <TableCell>{order.vendorName}</TableCell>
                   <TableCell>
-                    <Badge variant="lightSuccess">
-                      {order.approvedBy?.name ?? "Disetujui Direksi"}
+                    <Badge variant={order.status === POStatus.APPROVED ? "lightSuccess" : "outline"}>
+                      {order.status.replaceAll("_", " ")}
                     </Badge>
                   </TableCell>
+                  <TableCell>{order.approvedBy?.name ?? "—"}</TableCell>
                   <TableCell>
                     {order.approvedAt
                       ? new Intl.DateTimeFormat("id-ID", {
@@ -181,27 +196,27 @@ export default async function IssuedDocumentsPage() {
                   </TableCell>
                   <TableCell>
                     <Button size="sm" variant="outline" asChild>
-                      <Link href={`/d/${order.publicCode}`}>Review</Link>
+                      <Link href={`/d/${order.publicCode}`}>Buka PO</Link>
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
               {purchaseOrders.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
-                    Belum ada Purchase Order yang disetujui.
+                  <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                    Belum ada Purchase Order.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-      </CardBox>
-      <CardBox>
+      </CardBox>}
+      {canViewDO && <CardBox>
         <div className="mb-4">
-          <h2 className="text-xl font-semibold">Surat Jalan dengan Persetujuan Eksekutif</h2>
+          <h2 className="text-xl font-semibold">Semua Delivery Order / Surat Jalan</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Setiap DO menampilkan persetujuan tiket material atau PO yang menjadi sumber pengadaannya.
+            Semua DO yang dapat Anda akses, beserta status dan dokumen sumbernya.
           </p>
         </div>
         <div className="overflow-x-auto">
@@ -210,7 +225,8 @@ export default async function IssuedDocumentsPage() {
               <TableRow>
                 <TableHead>Nomor DO</TableHead>
                 <TableHead>Status DO</TableHead>
-                <TableHead>Persetujuan terkait</TableHead>
+                <TableHead>Dokumen sumber / persetujuan</TableHead>
+                <TableHead>Status persetujuan</TableHead>
                 <TableHead>Disetujui pada</TableHead>
                 <TableHead>Aksi</TableHead>
               </TableRow>
@@ -219,12 +235,18 @@ export default async function IssuedDocumentsPage() {
               {deliveryOrders.map((order) => {
                 const approvedByPo = order.po?.status === POStatus.APPROVED;
                 const ticketApproval = order.ticket?.auditLogs[0];
+                const ticketApproved = order.ticket?.isApprovedByDirector === true;
+                const isApproved = approvedByPo || ticketApproved;
                 const approvalName = approvedByPo
-                  ? order.po?.approvedBy?.name ?? "Direktur/Wakil Direktur"
-                  : ticketApproval?.user.name ?? "Direktur/Wakil Direktur";
+                  ? order.po?.approvedBy?.name ?? "Direksi"
+                  : ticketApproved
+                    ? ticketApproval?.user.name ?? "Direksi"
+                    : "Belum disetujui";
                 const approvalDate = approvedByPo
                   ? order.po?.approvedAt
-                  : ticketApproval?.createdAt;
+                  : ticketApproved
+                    ? ticketApproval?.createdAt
+                    : null;
                 return (
                   <TableRow key={order.publicCode}>
                     <TableCell className="font-medium">{order.doNumber}</TableCell>
@@ -234,10 +256,17 @@ export default async function IssuedDocumentsPage() {
                     <TableCell>
                       <div className="font-medium">{approvalName}</div>
                       <div className="text-xs text-muted-foreground">
-                        {approvedByPo
-                          ? `PO ${order.po?.poNumber}`
-                          : "Persetujuan tiket material"}
+                        {order.po
+                          ? `PO ${order.po.poNumber}`
+                          : order.ticket?.ticketNumber
+                            ? `Tiket ${order.ticket.ticketNumber}`
+                            : "—"}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={isApproved ? "lightSuccess" : "outline"}>
+                        {isApproved ? "Disetujui" : "Menunggu persetujuan"}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       {approvalDate
@@ -250,7 +279,7 @@ export default async function IssuedDocumentsPage() {
                     </TableCell>
                     <TableCell>
                       <Button size="sm" variant="outline" asChild>
-                        <Link href={`/d/${order.publicCode}`}>Review</Link>
+                        <Link href={`/d/${order.publicCode}`}>Buka DO</Link>
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -259,14 +288,14 @@ export default async function IssuedDocumentsPage() {
               {deliveryOrders.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
-                    Belum ada Surat Jalan dengan persetujuan eksekutif.
+                    Belum ada Delivery Order.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-      </CardBox>
+      </CardBox>}
     </>
   );
 }

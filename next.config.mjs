@@ -1,7 +1,14 @@
+import { existsSync, readFileSync } from "node:fs";
+
+const deploymentIdPath = new URL("./.deployment-id", import.meta.url);
+const generatedDeploymentId = existsSync(deploymentIdPath)
+    ? readFileSync(deploymentIdPath, "utf8").trim()
+    : undefined;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "standalone",
-    deploymentId: process.env.DEPLOYMENT_VERSION,
+    deploymentId: generatedDeploymentId || process.env.NEXT_DEPLOYMENT_ID || process.env.DEPLOYMENT_VERSION,
     reactStrictMode: false,
     serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
     images: {

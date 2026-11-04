@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { sanitizeDocumentTemplateHtml } from "@/lib/documents/sanitize-template-html";
 import { createBrandedQrDataUrl } from "@/lib/documents/qr-code";
 import { readDocumentTemplateImage } from "@/lib/document-template-images";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 
 export type DocumentLineItem = {
   description: string;
@@ -238,7 +239,7 @@ export async function generateDocument(
       throw new Error("Dokumen terbit tidak valid atau telah dicabut.");
     }
     const verificationUrl = new URL(
-      `/verify/${encodeURIComponent(issued.id)}`,
+      documentVerificationPath("issued", issued.id),
       verificationBaseUrl,
     ).toString();
     const qrImage = await createBrandedQrDataUrl(verificationUrl, 240);

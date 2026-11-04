@@ -8,6 +8,7 @@ import {
 } from "@/lib/documents/qr-code";
 import { projectSiteName } from "@/lib/documents/project-site-name";
 import { renderPdf } from "@/lib/documents/render-pdf";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 
 export const runtime = "nodejs";
 
@@ -82,7 +83,7 @@ export async function GET(request: NextRequest) {
       ? projectSiteName(contract.project.kelompokTani, contract.project.location)
       : projectSiteName(bast!.project.kelompokTani, bast!.project.location);
     const qrUrl = new URL(
-      `/api/documents/construction?publicCode=${encodeURIComponent(publicCode)}`,
+      documentVerificationPath(contract ? "spk" : "bast", publicCode),
       request.nextUrl.origin,
     ).toString();
     const [qrDataUrl, headerLogoDataUrl] = await Promise.all([
@@ -175,7 +176,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(pdf, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename="${encodeURIComponent(title)}.pdf"`,
+        "Content-Disposition": `${request.nextUrl.searchParams.get("download") === "1" ? "attachment" : "inline"}; filename="${encodeURIComponent(title)}.pdf"`,
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",
       },

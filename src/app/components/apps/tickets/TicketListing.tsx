@@ -46,6 +46,7 @@ import { GlobalModal } from "@/components/ui/global-modal";
 import FinanceActionModal from "./FinanceActionModal";
 import LogisticsActionModal from "./LogisticsActionModal";
 import MoverActionModal from "./MoverActionModal";
+import TicketManagementActions from "./TicketManagementActions";
 import {
   Table,
   TableBody,
@@ -119,8 +120,11 @@ const priorityLabels = {
 
 const auditActionLabels: Record<string, string> = {
   CREATED: "Draft dibuat",
+  UPDATED: "Detail tiket diperbarui",
   SUBMITTED: "Diajukan ke Direktur",
   APPROVED_BY_DIR: "Disetujui Direktur",
+  REJECTED_BY_DIR: "Ditolak Direktur",
+  REVISION_REQUESTED_BY_DIR: "Diminta revisi oleh Direktur",
   LOGISTICS_READY_WAREHOUSE: "Stok gudang siap; ditugaskan ke Mover",
   LOGISTICS_SWITCHED_TO_PURCHASE: "Dialihkan ke pengadaan baru",
   LOGISTICS_BUY_STORE: "Dibeli di toko; diteruskan ke Keuangan",
@@ -592,7 +596,8 @@ export default function TicketListing({
                   {formatCurrency(ticket.totalAmount)}
                 </TableCell>
                 <TableCell onClick={(event) => event.stopPropagation()}>
-                  {(() => {
+                  <div className="flex flex-nowrap items-center gap-1">
+                    {(() => {
                     const action = actionFor(role, ticket);
                     const workflow = workflowFor(role, ticket);
                     const canSubmit =
@@ -660,7 +665,9 @@ export default function TicketListing({
                         Detail
                       </Button>
                     );
-                  })()}
+                    })()}
+                    <TicketManagementActions ticket={ticket} role={role} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

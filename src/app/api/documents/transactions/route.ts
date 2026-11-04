@@ -14,6 +14,8 @@ import {
 import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
 import { projectSiteName } from "@/lib/documents/project-site-name";
 import { renderPdf } from "@/lib/documents/render-pdf";
+import { isValidPublicCode } from "@/lib/documents/random-code";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 
 export const runtime = "nodejs";
 
@@ -520,7 +522,7 @@ async function loadDocument(
 
   if (kind === "INVOICE") {
     const invoice = await prisma.invoice.findUnique({
-      where: { id: recordId },
+      where: publicCode ? { publicCode } : { id: recordId },
       select: {
         invoiceNumber: true,
         vendorName: true,
@@ -601,7 +603,12 @@ async function loadDocument(
 
   const confirmation = await prisma.orderConfirmation.findFirst({
     where: {
-      OR: [{ id: recordId }, { paymentTransactionId: recordId }],
+      OR: [
+        ...(recordId
+          ? [{ id: recordId }, { paymentTransactionId: recordId }]
+          : []),
+        ...(publicCode ? [{ publicCode }] : []),
+      ],
     },
     select: {
       id: true,
@@ -808,12 +815,47 @@ export async function GET(request: NextRequest) {
   const htmlPreview = request.nextUrl.searchParams.get("format") === "html";
   if (
     !kind ||
-    (!previewOnly && (kind === "PO" || kind === "DO" ? !publicCode : !recordId))
+    (!previewOnly &&
+      (kind === "PO" || kind === "DO"
+        ? !publicCode
+        : !recordId &&
+          (!publicCode ||
+            !["INVOICE", "KO"].includes(kind) ||
+            !isValidPublicCode(publicCode))))
   ) {
     return NextResponse.json({ message: "Jenis atau nomor dokumen tidak valid." }, { status: 400 });
   }
 
-  if (previewOnly || kind === "INVOICE" || kind === "KO") {
+  let publicSignedDocument = false;
+  if (
+    !previewOnly &&
+    !recordId &&
+    publicCode &&
+    (kind === "INVOICE" || kind === "KO")
+  ) {
+    const signedRecord =
+      kind === "INVOICE"
+        ? await prisma.invoice.findUnique({
+            where: { publicCode },
+            select: { signedAt: true, acknowledgedAt: true },
+          })
+        : await prisma.orderConfirmation.findUnique({
+            where: { publicCode },
+            select: { signedAt: true, acknowledgedAt: true },
+          });
+    if (!signedRecord?.signedAt || !signedRecord.acknowledgedAt) {
+      return NextResponse.json(
+        { message: "Dokumen belum ditandatangani lengkap atau tidak ditemukan." },
+        { status: 404 },
+      );
+    }
+    publicSignedDocument = true;
+  }
+
+  if (
+    previewOnly ||
+    ((kind === "INVOICE" || kind === "KO") && !publicSignedDocument)
+  ) {
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Silakan masuk untuk mencetak dokumen." }, { status: 401 });
@@ -837,9 +879,10 @@ export async function GET(request: NextRequest) {
     const verificationCode =
       kind === "PO" ? publicCode : document.verificationPublicCode;
     const verificationPath = verificationCode
-      ? kind === "DO"
-        ? `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(verificationCode)}&format=html`
-        : `/verify/${kind.toLowerCase()}/${encodeURIComponent(verificationCode)}`
+      ? documentVerificationPath(
+          kind.toLowerCase() as "po" | "do" | "invoice" | "ko",
+          verificationCode,
+        )
       : null;
     const publicAppUrl =
       resolvePublicAppUrl() ?? new URL(request.url).origin;
@@ -854,7 +897,7 @@ export async function GET(request: NextRequest) {
       kind === "DO" && document.approvalPublicCode
         ? createBrandedQrDataUrl(
             new URL(
-              `/verify/po/${encodeURIComponent(document.approvalPublicCode)}`,
+              documentVerificationPath("po", document.approvalPublicCode),
               publicAppUrl,
             ).toString(),
             240,

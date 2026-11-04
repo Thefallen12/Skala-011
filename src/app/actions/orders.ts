@@ -26,6 +26,7 @@ import {
 import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
 import { nextDocumentNumber } from "@/lib/documents/numbering";
 import { createBrandedQrDataUrl } from "@/lib/documents/qr-code";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 import { lockTicketDeliveryOrderCreation } from "@/lib/documents/lock-ticket-delivery-order";
 import {
   lockTicketFulfillment,
@@ -234,7 +235,7 @@ async function makePurchaseOrderQr(
     const baseUrl = resolvePublicAppUrl();
     if (!baseUrl) return null;
     const verification = new URL(
-      `/verify/po/${encodeURIComponent(publicCode)}`,
+      documentVerificationPath("po", publicCode),
       baseUrl,
     );
     const verificationUrl = verification.toString();
@@ -665,7 +666,7 @@ export async function approvePurchaseOrder(
   revalidatePath("/apps/documents/issued");
   revalidatePath("/apps/logistics");
   revalidatePath("/apps/finance");
-  revalidatePath(`/verify/po/${publicCode}`);
+  revalidatePath(documentVerificationPath("po", publicCode));
   return {
     success: true,
     message: "Purchase Order disetujui. QR verifikasi unik telah dibuat.",

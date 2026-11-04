@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { auth } from "../../../auth";
 import { generateAvailablePublicCode } from "@/lib/documents/random-code";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 import { prisma } from "@/lib/prisma";
 
 export type TransactionDocumentKind = "INVOICE" | "KO" | "DO";
@@ -192,7 +193,12 @@ export async function updateTransactionDocumentSignature(
   revalidatePath("/apps/finance");
   revalidatePath("/apps/logistics");
   if (publicCode) {
-    revalidatePath(`/verify/${kind.toLowerCase()}/${publicCode}`);
+    revalidatePath(
+      documentVerificationPath(
+        kind.toLowerCase() as "invoice" | "ko" | "do",
+        publicCode,
+      ),
+    );
   }
   return {
     success: true,

@@ -11,7 +11,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "predev": "npm run prisma:generate",
-    "prebuild": "npm run prisma:generate",
+    "prebuild": "npm run prisma:generate && node scripts/generate-deployment-id.mjs",
     "db:seed:po-template": "tsx prisma/seed-po-template.ts",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:inventory": "tsx prisma/seed-inventory.ts",

@@ -29,7 +29,22 @@ const globalForPrisma = globalThis as typeof globalThis & {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString: normalizedConnectionString }),
+    adapter: new PrismaPg(
+      {
+        connectionString: normalizedConnectionString,
+        max: 10,
+        idleTimeoutMillis: 30_000,
+        connectionTimeoutMillis: 10_000,
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 10_000,
+        maxLifetimeSeconds: 1_800,
+      },
+      {
+        onPoolError: (error) => {
+          console.error("PostgreSQL connection pool error:", error);
+        },
+      },
+    ),
   });
 
 if (process.env.NODE_ENV !== "production") {

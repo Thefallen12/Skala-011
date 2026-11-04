@@ -10,6 +10,7 @@ import { createBrandedQrDataUrl } from "@/lib/documents/qr-code";
 import { projectSiteName } from "@/lib/documents/project-site-name";
 import { isValidPublicCode } from "@/lib/documents/random-code";
 import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
+import { documentVerificationPath } from "@/lib/documents/verification-url";
 
 export const metadata: Metadata = {
   title: "Dokumen Operasional Skala Prioritas",
@@ -272,7 +273,7 @@ export default async function OrderEditPage({
             purchaseOrder.status === "APPROVED"
               ? await makeQrDataUrl(
                   code,
-                  `/verify/po/${encodeURIComponent(code)}`,
+                  documentVerificationPath("po", code),
                 )
               : null
           }
@@ -372,7 +373,7 @@ export default async function OrderEditPage({
           }))}
           qrDataUrl={await makeQrDataUrl(
             code,
-            `/api/documents/transactions?kind=DO&publicCode=${encodeURIComponent(code)}&format=html`,
+            documentVerificationPath("do", code),
           )}
         />
       </main>

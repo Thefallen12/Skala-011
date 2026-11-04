@@ -2311,6 +2311,182 @@ export async function createTicket(
   };
 }
 
+const ticketManagementRoles: UserRole[] = [
+  UserRole.LOGISTICS,
+  UserRole.FINANCE,
+  UserRole.ADMINISTRATIONS,
+  UserRole.DIRECTOR,
+];
+
+export async function updateTicketDetails(
+  ticketId: string,
+  input: { title: string; description: string; priority: TicketPriority },
+): Promise<TicketActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return actionFailure("Anda tidak memiliki izin untuk mengedit tiket.");
+  }
+  if (
+    typeof ticketId !== "string" ||
+    !ticketId ||
+    !input ||
+    typeof input.title !== "string" ||
+    input.title.trim().length < 3 ||
+    input.title.trim().length > 160 ||
+    typeof input.description !== "string" ||
+    input.description.length > 5000 ||
+    !isTicketPriority(input.priority)
+  ) {
+    return actionFailure("Data tiket tidak valid.");
+  }
+
+  try {
+    const updated = await prisma.$transaction(async (transaction) => {
+      const ticket = await transaction.ticket.findUnique({
+        where: { id: ticketId },
+        select: {
+          requesterId: true,
+          status: true,
+          purchaseOrders: { select: { id: true }, take: 1 },
+          directStockPurchases: { select: { id: true }, take: 1 },
+          paymentTransactions: { select: { id: true }, take: 1 },
+          deliveryOrders: { select: { id: true }, take: 1 },
+          operationalDocuments: { select: { id: true }, take: 1 },
+          items: {
+            where: { OR: [{ poItemId: { not: null } }, { doItemId: { not: null } }] },
+            select: { id: true },
+            take: 1,
+          },
+        },
+      });
+      if (!ticket) return "NOT_FOUND" as const;
+      if (
+        !ticketManagementRoles.includes(session.user.role) &&
+        ticket.requesterId !== session.user.id
+      ) {
+        return "FORBIDDEN" as const;
+      }
+      if (ticket.status !== TicketStatus.DRAFT) return "LOCKED" as const;
+      if (
+        ticket.purchaseOrders.length > 0 ||
+        ticket.directStockPurchases.length > 0 ||
+        ticket.paymentTransactions.length > 0 ||
+        ticket.deliveryOrders.length > 0 ||
+        ticket.operationalDocuments.length > 0 ||
+        ticket.items.length > 0
+      ) {
+        return "LOCKED" as const;
+      }
+
+      const result = await transaction.ticket.updateMany({
+        where: { id: ticketId, status: TicketStatus.DRAFT },
+        data: {
+          title: input.title.trim(),
+          description: input.description.trim() || null,
+          priority: input.priority,
+        },
+      });
+      if (result.count !== 1) return "LOCKED" as const;
+
+      await transaction.ticketAuditLog.create({
+        data: {
+          ticketId,
+          userId: session.user.id,
+          action: "UPDATED",
+          notes: "Judul, deskripsi, atau prioritas tiket diperbarui.",
+        },
+      });
+      return "UPDATED" as const;
+    });
+
+    if (updated === "NOT_FOUND") {
+      return actionFailure("Tiket tidak ditemukan.");
+    }
+    if (updated === "FORBIDDEN") {
+      return actionFailure("Anda tidak memiliki izin untuk mengedit tiket ini.");
+    }
+    if (updated === "LOCKED") {
+      return actionFailure("Tiket hanya dapat diedit selama masih berstatus Draft.");
+    }
+  } catch (error) {
+    console.error("Ticket update failed:", error);
+    return actionFailure("Tiket gagal diperbarui. Silakan coba kembali.");
+  }
+
+  revalidatePath("/apps/tickets");
+  revalidatePath("/apps/project");
+  return { success: true, message: "Tiket berhasil diperbarui." };
+}
+
+export async function deleteTicket(
+  ticketId: string,
+): Promise<TicketActionResult> {
+  const session = await auth();
+  if (!session?.user?.id || !ticketManagementRoles.includes(session.user.role)) {
+    return actionFailure("Anda tidak memiliki izin untuk menghapus tiket.");
+  }
+  if (typeof ticketId !== "string" || !ticketId) {
+    return actionFailure("Nomor tiket tidak valid.");
+  }
+
+  try {
+    const deleted = await prisma.$transaction(async (transaction) => {
+      const ticket = await transaction.ticket.findUnique({
+        where: { id: ticketId },
+        select: {
+          status: true,
+          purchaseOrders: { select: { id: true }, take: 1 },
+          directStockPurchases: { select: { id: true }, take: 1 },
+          paymentTransactions: { select: { id: true }, take: 1 },
+          deliveryOrders: { select: { id: true }, take: 1 },
+          operationalDocuments: { select: { id: true }, take: 1 },
+          items: {
+            where: { OR: [{ poItemId: { not: null } }, { doItemId: { not: null } }] },
+            select: { id: true },
+            take: 1,
+          },
+        },
+      });
+      if (!ticket) return "NOT_FOUND" as const;
+      if (ticket.status !== TicketStatus.DRAFT) return "LOCKED" as const;
+      if (
+        ticket.purchaseOrders.length > 0 ||
+        ticket.directStockPurchases.length > 0 ||
+        ticket.paymentTransactions.length > 0 ||
+        ticket.deliveryOrders.length > 0 ||
+        ticket.operationalDocuments.length > 0 ||
+        ticket.items.length > 0
+      ) {
+        return "HAS_ACTIVITY" as const;
+      }
+
+      const result = await transaction.ticket.deleteMany({
+        where: { id: ticketId, status: TicketStatus.DRAFT },
+      });
+      return result.count === 1 ? ("DELETED" as const) : ("LOCKED" as const);
+    });
+
+    if (deleted === "NOT_FOUND") {
+      return actionFailure("Tiket tidak ditemukan.");
+    }
+    if (deleted === "LOCKED") {
+      return actionFailure("Tiket hanya dapat dihapus selama masih berstatus Draft.");
+    }
+    if (deleted === "HAS_ACTIVITY") {
+      return actionFailure(
+        "Tiket tidak dapat dihapus karena sudah memiliki dokumen atau transaksi terkait.",
+      );
+    }
+  } catch (error) {
+    console.error("Ticket deletion failed:", error);
+    return actionFailure("Tiket gagal dihapus. Silakan coba kembali.");
+  }
+
+  revalidatePath("/apps/tickets");
+  revalidatePath("/apps/project");
+  return { success: true, message: "Tiket berhasil dihapus." };
+}
+
 export async function submitTicket(
   ticketId: string,
 ): Promise<TicketActionResult> {
@@ -2438,6 +2614,92 @@ export async function approveByDirector(
     notes: `Disetujui ${session.user.role === UserRole.DEPUTY_DIRECTOR ? "Wakil Direktur" : "Direktur"}; diteruskan ke ${nextStatus === TicketStatus.PROCESSED_LOGISTIC ? "Logistik" : "Keuangan"}.`,
     directorApproval: true,
   });
+}
+
+async function decideTicketByDirector(
+  ticketId: string,
+  type: TicketType,
+  reason: string,
+  decision: "REJECT" | "REVISION",
+): Promise<TicketActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return actionFailure("Silakan masuk untuk meninjau tiket.");
+  }
+  if (
+    session.user.role !== UserRole.DIRECTOR &&
+    session.user.role !== UserRole.DEPUTY_DIRECTOR
+  ) {
+    return actionFailure(
+      "Hanya Direktur atau Wakil Direktur yang dapat meninjau tiket.",
+    );
+  }
+  if (
+    typeof ticketId !== "string" ||
+    !ticketId ||
+    !isTicketType(type) ||
+    typeof reason !== "string" ||
+    reason.trim().length < 3 ||
+    reason.trim().length > 2000
+  ) {
+    return actionFailure("Alasan wajib diisi (3–2.000 karakter).");
+  }
+
+  const ticket = await prisma.ticket.findUnique({
+    where: { id: ticketId },
+    select: {
+      type: true,
+      requestCategory: true,
+      ticketNumber: true,
+      title: true,
+      requesterId: true,
+    },
+  });
+  if (!ticket) return actionFailure("Tiket tidak ditemukan.");
+  if (ticket.type !== type) {
+    return actionFailure("Jenis tiket tidak sesuai dengan data tiket.");
+  }
+  if (ticket.requestCategory === TicketRequestCategory.APH) {
+    return actionFailure(
+      "Permintaan APH diteruskan langsung ke Keuangan dan tidak memerlukan persetujuan Direktur.",
+    );
+  }
+
+  const rejected = decision === "REJECT";
+  const decisionLabel = rejected ? "ditolak" : "memerlukan revisi";
+  return transitionTicket({
+    ticketId,
+    expectedStatus: TicketStatus.PENDING_DIRECTOR,
+    nextStatus: rejected ? TicketStatus.REJECTED : TicketStatus.DRAFT,
+    allowedRoles: [UserRole.DIRECTOR, UserRole.DEPUTY_DIRECTOR],
+    action: rejected ? "REJECTED_BY_DIR" : "REVISION_REQUESTED_BY_DIR",
+    notes: `${decisionLabel} oleh ${session.user.role === UserRole.DEPUTY_DIRECTOR ? "Wakil Direktur" : "Direktur"}: ${reason.trim()}`,
+    notifications: [
+      {
+        userId: ticket.requesterId,
+        title: rejected ? "Tiket Ditolak Direktur" : "Tiket Memerlukan Revisi",
+        message: `${ticket.ticketNumber} · ${ticket.title} ${decisionLabel}. Catatan: ${reason.trim()}`,
+        actionUrl: `/apps/tickets?openSheet=${encodeURIComponent(ticketId)}`,
+        type: rejected ? NotificationType.WARNING : NotificationType.INFO,
+      },
+    ],
+  });
+}
+
+export async function rejectTicketByDirector(
+  ticketId: string,
+  type: TicketType,
+  reason: string,
+): Promise<TicketActionResult> {
+  return decideTicketByDirector(ticketId, type, reason, "REJECT");
+}
+
+export async function requestTicketRevisionByDirector(
+  ticketId: string,
+  type: TicketType,
+  reason: string,
+): Promise<TicketActionResult> {
+  return decideTicketByDirector(ticketId, type, reason, "REVISION");
 }
 
 export async function processLogisticsMaterial(
@@ -4739,7 +5001,8 @@ async function transitionTicket({
   requesterOnly?: boolean;
   directorApproval?: boolean;
   notifications?: {
-    roleTarget: UserRole | UserRole[];
+    roleTarget?: UserRole | UserRole[];
+    userId?: string;
     title: string;
     message: string;
     actionUrl: string;

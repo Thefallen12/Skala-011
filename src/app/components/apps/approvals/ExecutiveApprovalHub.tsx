@@ -15,6 +15,8 @@ import { approveProjectWorkPointWage } from "@/app/actions/project";
 import {
   approveDirectStockPurchaseByDirector,
   approveByDirector,
+  rejectTicketByDirector,
+  requestTicketRevisionByDirector,
 } from "@/app/actions/tickets";
 import ErpHubBrand from "@/app/components/apps/erp/ErpHubBrand";
 import UniversalDocumentPreview from "@/components/documents/UniversalDocumentPreview";
@@ -22,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GlobalModal } from "@/components/ui/global-modal";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tabs,
   TabsContent,
@@ -84,6 +87,16 @@ type ApprovalTicket = {
   requesterName: string;
   projectName: string | null;
   items: { itemName: string; quantity: number; unit: string }[];
+};
+
+type ApprovalTicketHistoryItem = {
+  id: string;
+  action: string;
+  notes: string | null;
+  createdAt: string;
+  actorName: string;
+  ticketNumber: string;
+  ticketTitle: string;
 };
 
 type ApprovalDirectPurchase = {
@@ -240,6 +253,7 @@ function QueueTable({
 export default function ExecutiveApprovalHub({
   purchaseOrders,
   tickets,
+  ticketHistory,
   directPurchases,
   wages,
   termyns,
@@ -253,6 +267,7 @@ export default function ExecutiveApprovalHub({
 }: {
   purchaseOrders: ApprovalPurchaseOrder[];
   tickets: ApprovalTicket[];
+  ticketHistory: ApprovalTicketHistoryItem[];
   directPurchases: ApprovalDirectPurchase[];
   wages: ApprovalWage[];
   termyns: ApprovalTermyn[];
@@ -317,6 +332,10 @@ export default function ExecutiveApprovalHub({
     wages.find((item) => item.id === initialOpenSheet)?.proposedTotalWage ?? "",
   );
   const [wageReason, setWageReason] = useState("");
+  const [ticketDecision, setTicketDecision] = useState<
+    "REJECT" | "REVISION" | null
+  >(null);
+  const [ticketDecisionReason, setTicketDecisionReason] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const selectedPo =
@@ -383,6 +402,8 @@ export default function ExecutiveApprovalHub({
             }
           }
           setSelection(null);
+          setTicketDecision(null);
+          setTicketDecisionReason("");
           router.refresh();
         }
       } catch (error) {
@@ -390,6 +411,30 @@ export default function ExecutiveApprovalHub({
         setMessage("Persetujuan gagal diproses. Silakan coba kembali.");
       }
     });
+  };
+
+  const runTicketDecision = () => {
+    if (!selectedTicket || !ticketDecision) return;
+    const decision = ticketDecision;
+    const reason = ticketDecisionReason.trim();
+    if (reason.length < 3 || reason.length > 2000) {
+      setMessage("Alasan wajib diisi (3–2.000 karakter).");
+      return;
+    }
+
+    runApproval(() =>
+      decision === "REJECT"
+        ? rejectTicketByDirector(
+            selectedTicket.id,
+            selectedTicket.type,
+            reason,
+          )
+        : requestTicketRevisionByDirector(
+            selectedTicket.id,
+            selectedTicket.type,
+            reason,
+          ),
+    );
   };
 
   const poRows = purchaseOrders.map((order) => ({
@@ -415,6 +460,11 @@ export default function ExecutiveApprovalHub({
       amount: currency(ticket.totalAmount),
     })),
   ];
+  const ticketHistoryLabels: Record<string, string> = {
+    APPROVED_BY_DIR: "Disetujui",
+    REJECTED_BY_DIR: "Ditolak",
+    REVISION_REQUESTED_BY_DIR: "Minta Revisi",
+  };
   const wageRows = [
     ...wages.map((wage) => ({
       id: `wage:${wage.id}`,
@@ -451,6 +501,8 @@ export default function ExecutiveApprovalHub({
   const selectRow = (kind: Exclude<Selection, null>["kind"]) => (key: string) => {
     setMessage("");
     setSignedPo(null);
+    setTicketDecision(null);
+    setTicketDecisionReason("");
     if (kind === "po") setSelection({ kind, id: key });
     else if (kind === "ticket") setSelection({ kind, id: key });
     else if (kind === "direct-purchase") setSelection({ kind, id: key });
@@ -465,6 +517,8 @@ export default function ExecutiveApprovalHub({
     const [kind, id] = key.split(":", 2);
     setMessage("");
     setSignedPo(null);
+    setTicketDecision(null);
+    setTicketDecisionReason("");
     if (kind === "purchase") {
       setSelection({ kind: "direct-purchase", id });
     } else if (kind === "ticket") {
@@ -545,6 +599,64 @@ export default function ExecutiveApprovalHub({
                 emptyText="Tidak ada pembelian langsung atau tiket yang menunggu persetujuan."
                 onSelect={chooseFinancialRow}
               />
+              <div className="mt-6 space-y-3">
+                <div>
+                  <h3 className="text-sm font-semibold">Riwayat Keputusan Tiket</h3>
+                  <p className="text-xs text-muted-foreground">
+                    Persetujuan, penolakan, dan permintaan revisi terbaru.
+                  </p>
+                </div>
+                <div className="overflow-x-auto rounded-lg border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Tiket</TableHead>
+                        <TableHead>Keputusan</TableHead>
+                        <TableHead>Oleh / Waktu</TableHead>
+                        <TableHead>Catatan</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {ticketHistory.map((entry) => (
+                        <TableRow key={entry.id}>
+                          <TableCell className="min-w-48">
+                            <p className="font-medium">{entry.ticketNumber}</p>
+                            <p className="max-w-64 truncate text-xs text-muted-foreground">
+                              {entry.ticketTitle}
+                            </p>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            {ticketHistoryLabels[entry.action] ?? entry.action}
+                          </TableCell>
+                          <TableCell className="min-w-36 text-xs">
+                            <p>{entry.actorName}</p>
+                            <p className="text-muted-foreground">
+                              {new Intl.DateTimeFormat("id-ID", {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                                timeZone: "Asia/Jakarta",
+                              }).format(new Date(entry.createdAt))}
+                            </p>
+                          </TableCell>
+                          <TableCell className="min-w-56 max-w-md whitespace-pre-wrap text-xs text-muted-foreground">
+                            {entry.notes || "—"}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {ticketHistory.length === 0 && (
+                        <TableRow>
+                          <TableCell
+                            colSpan={4}
+                            className="py-6 text-center text-sm text-muted-foreground"
+                          >
+                            Belum ada riwayat keputusan tiket.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -683,20 +795,109 @@ export default function ExecutiveApprovalHub({
                 </ul>
                 <p className="font-semibold">{currency(selectedTicket.totalAmount)}</p>
                 {isExecutive(role) && (
-                  <Button
-                    disabled={isPending}
-                    onClick={() =>
-                      runApproval(() =>
-                        approveByDirector(selectedTicket.id, selectedTicket.type),
-                      )
-                    }
-                  >
-                    {isPending
-                      ? "Memproses..."
-                      : selectedTicket.type === TicketType.MATERIAL
-                        ? "Setujui & Teruskan ke Logistik"
-                        : "Setujui Pencairan Dana"}
-                  </Button>
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        disabled={isPending}
+                        onClick={() =>
+                          runApproval(() =>
+                            approveByDirector(
+                              selectedTicket.id,
+                              selectedTicket.type,
+                            ),
+                          )
+                        }
+                      >
+                        {isPending
+                          ? "Memproses..."
+                          : selectedTicket.type === TicketType.MATERIAL
+                            ? "Setujui & Teruskan ke Logistik"
+                            : "Setujui Pencairan Dana"}
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        disabled={isPending}
+                        onClick={() => {
+                          setMessage("");
+                          setTicketDecision("REJECT");
+                          setTicketDecisionReason("");
+                        }}
+                      >
+                        Tolak
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={isPending}
+                        onClick={() => {
+                          setMessage("");
+                          setTicketDecision("REVISION");
+                          setTicketDecisionReason("");
+                        }}
+                      >
+                        Minta Revisi
+                      </Button>
+                    </div>
+                    {ticketDecision && (
+                      <div className="space-y-2 rounded-md border bg-muted/30 p-3">
+                        <label className="block space-y-1 text-sm font-medium">
+                          {ticketDecision === "REJECT"
+                            ? "Alasan penolakan"
+                            : "Catatan revisi"}
+                          <Textarea
+                            value={ticketDecisionReason}
+                            maxLength={2000}
+                            onChange={(event) =>
+                              setTicketDecisionReason(event.target.value)
+                            }
+                            placeholder={
+                              ticketDecision === "REJECT"
+                                ? "Tuliskan alasan penolakan."
+                                : "Jelaskan bagian yang harus diperbaiki."
+                            }
+                            className="min-h-20 font-normal"
+                          />
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant={
+                              ticketDecision === "REJECT"
+                                ? "destructive"
+                                : "default"
+                            }
+                            disabled={
+                              isPending ||
+                              ticketDecisionReason.trim().length < 3
+                            }
+                            onClick={runTicketDecision}
+                          >
+                            {isPending
+                              ? "Memproses..."
+                              : ticketDecision === "REJECT"
+                                ? "Konfirmasi Tolak"
+                                : "Kirim Revisi"}
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            disabled={isPending}
+                            onClick={() => {
+                              setTicketDecision(null);
+                              setTicketDecisionReason("");
+                            }}
+                          >
+                            Batal
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             )}

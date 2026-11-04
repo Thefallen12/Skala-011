@@ -35,6 +35,7 @@ export default async function ApprovalsPage({
   const [
     orders,
     tickets,
+    ticketHistory,
     directPurchases,
     workPoints,
     termyns,
@@ -122,6 +123,32 @@ export default async function ApprovalsPage({
           },
         })
       : Promise.resolve([]),
+    prisma.ticketAuditLog.findMany({
+      where: {
+        action: {
+          in: [
+            "APPROVED_BY_DIR",
+            "REJECTED_BY_DIR",
+            "REVISION_REQUESTED_BY_DIR",
+          ],
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        action: true,
+        notes: true,
+        createdAt: true,
+        user: { select: { name: true } },
+        ticket: {
+          select: {
+            ticketNumber: true,
+            title: true,
+          },
+        },
+      },
+    }),
     (session.user.role === UserRole.DIRECTOR ||
       session.user.role === UserRole.DEPUTY_DIRECTOR)
       ? prisma.directStockPurchase.findMany({
@@ -351,6 +378,15 @@ export default async function ApprovalsPage({
             ? `${ticket.project.kelompokTani} · ${ticket.project.title}`
             : null,
           items: ticket.items,
+        }))}
+        ticketHistory={ticketHistory.map((entry) => ({
+          id: entry.id,
+          action: entry.action,
+          notes: entry.notes,
+          createdAt: entry.createdAt.toISOString(),
+          actorName: entry.user.name,
+          ticketNumber: entry.ticket.ticketNumber,
+          ticketTitle: entry.ticket.title,
         }))}
         wages={workPoints.map((workPoint) => ({
           id: workPoint.id,
