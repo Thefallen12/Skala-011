@@ -4,11 +4,17 @@ const deploymentIdPath = new URL("./.deployment-id", import.meta.url);
 const generatedDeploymentId = existsSync(deploymentIdPath)
     ? readFileSync(deploymentIdPath, "utf8").trim()
     : undefined;
+const deploymentIdSource =
+    generatedDeploymentId || process.env.NEXT_DEPLOYMENT_ID || process.env.DEPLOYMENT_VERSION;
+const deploymentId = deploymentIdSource
+    ?.trim()
+    .replace(/[^A-Za-z0-9_-]+/g, "-")
+    .replace(/^[-_]+|[-_]+$/g, "");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "standalone",
-    deploymentId: generatedDeploymentId || process.env.NEXT_DEPLOYMENT_ID || process.env.DEPLOYMENT_VERSION,
+    deploymentId: deploymentId || undefined,
     reactStrictMode: false,
     serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
     images: {
