@@ -17,7 +17,6 @@ RUN apt-get update \
 RUN export DATABASE_URL="postgresql://localhost:5432/skala_build" \
     AUTH_SECRET="build-only-placeholder" \
     DEPLOYMENT_VERSION="${DEPLOYMENT_VERSION:-$(date -u +%Y%m%d%H%M%S)}" \
-    && npx prisma generate \
     && npm run build
 
 FROM node:22-bookworm-slim AS runner

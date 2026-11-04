@@ -1,22 +1,15 @@
 "use client";
 
-import Image from "next/image";
-
-const brandLogoUrl =
-  process.env.NEXT_PUBLIC_LOGO_URL ||
-  process.env.logo_url ||
-  "https://res.cloudinary.com/vmoos7dn/image/upload/v1792700587/skala_prioritas/daily_reports/g5egrrh0vpgidlivcpgb.png";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const FullLogo = () => {
   return (
     <div className="flex items-center gap-2.5 overflow-hidden">
-      <Image
-        src={brandLogoUrl}
+      <BrandLogo
         alt="Skala Prioritas Engineering"
         width={45}
         height={40}
-        priority
-        className="h-10 w-[45px] shrink-0 rounded-md object-cover dark:bg-white dark:p-1"
+        className="h-10 w-[45px] shrink-0 rounded-md object-contain dark:bg-white dark:p-1"
       />
       <span className="flex min-w-0 flex-col leading-tight max-[390px]:hidden">
         <span className="truncate text-sm font-bold text-primary dark:text-foreground">

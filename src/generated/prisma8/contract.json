@@ -2362,6 +2362,30 @@
                   "kind": "scalar"
                 }
               },
+              "vendorInvoiceUploadedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamp-string@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 3
+                  }
+                }
+              },
+              "vendorInvoiceUploadedById": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "vendorInvoiceUrl": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "vendorName": {
                 "nullable": false,
                 "type": {
@@ -2480,6 +2504,22 @@
                   "model": "Vendor",
                   "namespace": "public"
                 }
+              },
+              "vendorInvoiceUploadedBy": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "vendorInvoiceUploadedById"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -2558,6 +2598,15 @@
                 },
                 "vendorId": {
                   "column": "vendorId"
+                },
+                "vendorInvoiceUploadedAt": {
+                  "column": "vendorInvoiceUploadedAt"
+                },
+                "vendorInvoiceUploadedById": {
+                  "column": "vendorInvoiceUploadedById"
+                },
+                "vendorInvoiceUrl": {
+                  "column": "vendorInvoiceUrl"
                 },
                 "vendorName": {
                   "column": "vendorName"
@@ -12599,6 +12648,21 @@
                   "namespace": "public"
                 }
               },
+              "uploadedDirectStockPurchaseInvoices": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "vendorInvoiceUploadedById"
+                  ]
+                },
+                "to": {
+                  "model": "DirectStockPurchase",
+                  "namespace": "public"
+                }
+              },
               "uploadedDrawingDocuments": {
                 "cardinality": "1:N",
                 "on": {
@@ -16707,6 +16771,24 @@
                   "dataType": "pg/text",
                   "nullable": true
                 },
+                "vendorInvoiceUploadedAt": {
+                  "codecId": "pg/timestamp-string@1",
+                  "dataType": "pg/timestamp",
+                  "nullable": true,
+                  "typeParams": {
+                    "precision": 3
+                  }
+                },
+                "vendorInvoiceUploadedById": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
+                "vendorInvoiceUrl": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
                 "vendorName": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
@@ -16762,6 +16844,24 @@
                   "source": {
                     "columns": [
                       "approvedById"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "DirectStockPurchase"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "User"
+                  }
+                },
+                {
+                  "onDelete": "setNull",
+                  "onUpdate": "cascade",
+                  "source": {
+                    "columns": [
+                      "vendorInvoiceUploadedById"
                     ],
                     "namespaceId": "public",
                     "tableName": "DirectStockPurchase"
@@ -26121,7 +26221,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "984a7903439313fbe0f0a8c48069544ded99c8e40fa6a4b28fbc342283a97f15"
+    "storageHash": "db0b9b78f87f238059d080594669e9b7f22deb03f76a8aa51ef85727d5f0e6d5"
   },
   "execution": {
     "executionHash": "e0aab8554c6695a3d195f3120675c5905ff17a7ab90583917440794f3765195e",

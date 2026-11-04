@@ -6,10 +6,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { getSession, signIn } from 'next-auth/react'
 import { z } from 'zod'
-import { loginWithCredentials } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { getRoleHomePath } from '@/lib/role-home'
 
 const loginSchema = z.object({
   identifier: z.email('Masukkan alamat email yang valid.').trim(),
@@ -30,16 +31,30 @@ export const Login = () => {
   const handleCredentialsSubmit = form.handleSubmit(async ({ identifier, password }) => {
     setError('')
     try {
-      const result = await loginWithCredentials(identifier.trim().toLowerCase(), password)
-      if (!result.success || !result.redirectTo) {
-        setError(result.error ?? 'Email atau kata sandi tidak sesuai.')
+      const result = await signIn('credentials', {
+        identifier: identifier.trim().toLowerCase(),
+        password,
+        redirect: false,
+        redirectTo: '/',
+      })
+      if (!result?.ok || result.error) {
+        setError('Email atau kata sandi tidak sesuai.')
         return
       }
 
-      router.replace(result.redirectTo)
+      const session = await getSession()
+      if (!session?.user?.role) {
+        setError('Login berhasil, tetapi sesi belum dapat diverifikasi. Muat ulang halaman.')
+        return
+      }
+
+      router.replace(getRoleHomePath(session.user.role))
       router.refresh()
     } catch (error) {
-      console.error('Password login request failed:', error)
+      console.error(
+        'Password sign-in request failed:',
+        error instanceof Error ? error.message : 'Unknown error',
+      )
       setError('Server login tidak merespons. Muat ulang halaman atau hubungi administrator.')
     }
   })

@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'984a7903439313fbe0f0a8c48069544ded99c8e40fa6a4b28fbc342283a97f15'>;
+  StorageHashBase<'db0b9b78f87f238059d080594669e9b7f22deb03f76a8aa51ef85727d5f0e6d5'>;
 export type ExecutionHash =
   ExecutionHashBase<'e0aab8554c6695a3d195f3120675c5905ff17a7ab90583917440794f3765195e'>;
 export type ProfileHash =
@@ -1208,6 +1208,9 @@ export namespace Models {
     totalAmount: FieldOutputTypes['public']['DirectStockPurchase']['totalAmount'];
     updatedAt: FieldOutputTypes['public']['DirectStockPurchase']['updatedAt'];
     vendorId: FieldOutputTypes['public']['DirectStockPurchase']['vendorId'];
+    vendorInvoiceUploadedAt: FieldOutputTypes['public']['DirectStockPurchase']['vendorInvoiceUploadedAt'];
+    vendorInvoiceUploadedById: FieldOutputTypes['public']['DirectStockPurchase']['vendorInvoiceUploadedById'];
+    vendorInvoiceUrl: FieldOutputTypes['public']['DirectStockPurchase']['vendorInvoiceUrl'];
     vendorName: FieldOutputTypes['public']['DirectStockPurchase']['vendorName'];
     approvedBy: public_User | null;
     createdBy: public_User;
@@ -1216,6 +1219,7 @@ export namespace Models {
     receivedBy: public_User | null;
     ticket: public_Ticket | null;
     vendor: public_Vendor | null;
+    vendorInvoiceUploadedBy: public_User | null;
     readonly [RelationKeys]?:
       | 'approvedBy'
       | 'createdBy'
@@ -1223,7 +1227,8 @@ export namespace Models {
       | 'paymentTransactions'
       | 'receivedBy'
       | 'ticket'
-      | 'vendor';
+      | 'vendor'
+      | 'vendorInvoiceUploadedBy';
   };
   export type public_DirectStockPurchaseItem = {
     id: FieldOutputTypes['public']['DirectStockPurchaseItem']['id'];
@@ -2211,6 +2216,7 @@ export namespace Models {
     ticketAuditLogs: public_TicketAuditLog[];
     tickets: public_Ticket[];
     timesheetEntries: public_TimesheetEntry[];
+    uploadedDirectStockPurchaseInvoices: public_DirectStockPurchase[];
     uploadedDrawingDocuments: public_DrawingDocument[];
     uploadedPurchaseOrderInvoices: public_PurchaseOrder[];
     vehicleFuelRequests: public_VehicleFuelRequest[];
@@ -2282,6 +2288,7 @@ export namespace Models {
       | 'ticketAuditLogs'
       | 'tickets'
       | 'timesheetEntries'
+      | 'uploadedDirectStockPurchaseInvoices'
       | 'uploadedDrawingDocuments'
       | 'uploadedPurchaseOrderInvoices'
       | 'vehicleFuelRequests'
@@ -3969,6 +3976,25 @@ type ContractBase = Omit<
                   readonly nullable: true;
                   readonly many: false;
                 };
+                readonly vendorInvoiceUploadedAt: {
+                  readonly dataType: 'pg/timestamp';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly precision: 3 };
+                  readonly many: false;
+                };
+                readonly vendorInvoiceUploadedById: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly vendorInvoiceUrl: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
                 readonly vendorName: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
@@ -4045,6 +4071,18 @@ type ContractBase = Omit<
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'DirectStockPurchase';
                     readonly columns: readonly ['approvedById'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'DirectStockPurchase';
+                    readonly columns: readonly ['vendorInvoiceUploadedById'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
@@ -13007,6 +13045,22 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly vendorInvoiceUploadedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-string@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly vendorInvoiceUploadedById: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly vendorInvoiceUrl: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly vendorName: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -13086,6 +13140,15 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly vendorInvoiceUploadedBy: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['vendorInvoiceUploadedById'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'DirectStockPurchase';
@@ -13116,6 +13179,11 @@ type ContractBase = Omit<
                 readonly totalAmount: { readonly column: 'totalAmount' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
                 readonly vendorId: { readonly column: 'vendorId' };
+                readonly vendorInvoiceUploadedAt: { readonly column: 'vendorInvoiceUploadedAt' };
+                readonly vendorInvoiceUploadedById: {
+                  readonly column: 'vendorInvoiceUploadedById';
+                };
+                readonly vendorInvoiceUrl: { readonly column: 'vendorInvoiceUrl' };
                 readonly vendorName: { readonly column: 'vendorName' };
               };
             };
@@ -19575,6 +19643,17 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly uploadedDirectStockPurchaseInvoices: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'DirectStockPurchase';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['vendorInvoiceUploadedById'];
                 };
               };
               readonly uploadedDrawingDocuments: {

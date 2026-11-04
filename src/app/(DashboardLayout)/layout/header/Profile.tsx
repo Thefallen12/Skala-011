@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import * as profileData from './data'
 import SimpleBar from 'simplebar-react'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { logout } from '@/app/actions/auth'
 import { UserRole } from '@/generated/prisma/enums'
 import { SETTINGS_MENU_ROLES } from '@/lib/config/menus'
@@ -45,14 +45,18 @@ const Profile = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <span className='flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1 text-foreground transition hover:bg-accent'>
-            <Image
-              src={profilePhotoUrl ?? '/images/profile/user-1.jpg'}
-              alt='Foto profil'
-              height={35}
-              width={35}
-              style={{ height: 35, width: 35 }}
-              className='rounded-full border border-border'
-            />
+            <Avatar className='size-[35px] border border-border'>
+              <AvatarImage src={profilePhotoUrl ?? undefined} alt='' />
+              <AvatarFallback className='text-xs font-semibold'>
+                {userName
+                  .trim()
+                  .split(/\s+/)
+                  .slice(0, 2)
+                  .map((part) => part[0])
+                  .join('')
+                  .toUpperCase() || '?'}
+              </AvatarFallback>
+            </Avatar>
             <span className='hidden min-w-0 flex-col text-left xl:flex'>
               <span className='max-w-40 truncate text-sm font-medium text-foreground'>
                 {userName}

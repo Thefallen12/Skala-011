@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
 import { area } from "@turf/turf";
 import { prisma } from "@/lib/prisma";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { createBrandedQrDataUrl } from "@/lib/documents/qr-code";
 import { resolvePublicAppUrl } from "@/lib/documents/public-app-url";
 import ReportStaticMapLoader from "./ReportStaticMapLoader";
-
-const DEFAULT_REPORT_LOGO_URL =
-  "https://res.cloudinary.com/vmoos7dn/image/upload/v1792700587/skala_prioritas/daily_reports/g5egrrh0vpgidlivcpgb.png";
 
 type Coordinate = [number, number];
 type GeometryData = {
@@ -176,8 +174,7 @@ export default async function SurveyReportPage({
   const projectName = survey.project?.title || survey.project?.name || survey.projectName;
   const cloudinaryLogoUrl =
     process.env.NEXT_PUBLIC_CLOUDINARY_REPORT_LOGO_URL?.trim() ||
-    DEFAULT_REPORT_LOGO_URL;
-  const reportLogoUrl = cloudinaryLogoUrl || "/images/logos/logo-icon.svg";
+    undefined;
   const reportBaseUrl = resolvePublicAppUrl() ?? "http://localhost:3000";
   const reportVerificationUrl = new URL(
     `/report/${encodeURIComponent(survey.id)}`,
@@ -205,7 +202,13 @@ export default async function SurveyReportPage({
       <header className="report-header flex items-start justify-between border-b-2 border-[#0F2C59] pb-3">
         <div>
           <div className="flex items-center gap-3">
-            <img src={reportLogoUrl} alt="Skala Prioritas Engineering" className="h-[58px] w-[250px] object-contain object-left" />
+            <BrandLogo
+              src={cloudinaryLogoUrl}
+              alt="Skala Prioritas Engineering"
+              width={250}
+              height={58}
+              className="h-[58px] w-[250px] object-contain object-left"
+            />
           </div>
         </div>
         <div className="text-right">

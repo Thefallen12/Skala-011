@@ -1,10 +1,6 @@
 "use client";
 
-import Image from "next/image";
-
-const logoUrl =
-  process.env.NEXT_PUBLIC_LOGO_URL ??
-  "https://res.cloudinary.com/vmoos7dn/image/upload/v1792700587/skala_prioritas/daily_reports/g5egrrh0vpgidlivcpgb.png";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function UnderProductionState({
   className = "",
@@ -31,8 +27,7 @@ export function UnderProductionState({
         <div className="mb-6 flex items-center justify-between gap-3 rounded-xl border-[3px] border-secondary bg-card px-3 py-3 text-card-foreground shadow-[0_0_0_3px_rgba(249,115,22,0.15)] dark:border-orange-500 sm:px-4">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-white sm:h-16 sm:w-16">
-              <Image
-                src={logoUrl}
+              <BrandLogo
                 alt="Skala Prioritas logo"
                 width={52}
                 height={52}
