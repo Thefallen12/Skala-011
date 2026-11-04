@@ -89,14 +89,14 @@ type ApprovalTicket = {
   items: { itemName: string; quantity: number; unit: string }[];
 };
 
-type ApprovalTicketHistoryItem = {
+type ApprovalHistoryItem = {
   id: string;
+  category: string;
+  reference: string;
   action: string;
-  notes: string | null;
   createdAt: string;
   actorName: string;
-  ticketNumber: string;
-  ticketTitle: string;
+  notes: string | null;
 };
 
 type ApprovalDirectPurchase = {
@@ -253,7 +253,7 @@ function QueueTable({
 export default function ExecutiveApprovalHub({
   purchaseOrders,
   tickets,
-  ticketHistory,
+  approvalHistory,
   directPurchases,
   wages,
   termyns,
@@ -267,7 +267,7 @@ export default function ExecutiveApprovalHub({
 }: {
   purchaseOrders: ApprovalPurchaseOrder[];
   tickets: ApprovalTicket[];
-  ticketHistory: ApprovalTicketHistoryItem[];
+  approvalHistory: ApprovalHistoryItem[];
   directPurchases: ApprovalDirectPurchase[];
   wages: ApprovalWage[];
   termyns: ApprovalTermyn[];
@@ -460,7 +460,8 @@ export default function ExecutiveApprovalHub({
       amount: currency(ticket.totalAmount),
     })),
   ];
-  const ticketHistoryLabels: Record<string, string> = {
+  const approvalHistoryLabels: Record<string, string> = {
+    APPROVED: "Disetujui",
     APPROVED_BY_DIR: "Disetujui",
     REJECTED_BY_DIR: "Ditolak",
     REVISION_REQUESTED_BY_DIR: "Minta Revisi",
@@ -599,64 +600,6 @@ export default function ExecutiveApprovalHub({
                 emptyText="Tidak ada pembelian langsung atau tiket yang menunggu persetujuan."
                 onSelect={chooseFinancialRow}
               />
-              <div className="mt-6 space-y-3">
-                <div>
-                  <h3 className="text-sm font-semibold">Riwayat Keputusan Tiket</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Persetujuan, penolakan, dan permintaan revisi terbaru.
-                  </p>
-                </div>
-                <div className="overflow-x-auto rounded-lg border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Tiket</TableHead>
-                        <TableHead>Keputusan</TableHead>
-                        <TableHead>Oleh / Waktu</TableHead>
-                        <TableHead>Catatan</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {ticketHistory.map((entry) => (
-                        <TableRow key={entry.id}>
-                          <TableCell className="min-w-48">
-                            <p className="font-medium">{entry.ticketNumber}</p>
-                            <p className="max-w-64 truncate text-xs text-muted-foreground">
-                              {entry.ticketTitle}
-                            </p>
-                          </TableCell>
-                          <TableCell className="whitespace-nowrap">
-                            {ticketHistoryLabels[entry.action] ?? entry.action}
-                          </TableCell>
-                          <TableCell className="min-w-36 text-xs">
-                            <p>{entry.actorName}</p>
-                            <p className="text-muted-foreground">
-                              {new Intl.DateTimeFormat("id-ID", {
-                                dateStyle: "medium",
-                                timeStyle: "short",
-                                timeZone: "Asia/Jakarta",
-                              }).format(new Date(entry.createdAt))}
-                            </p>
-                          </TableCell>
-                          <TableCell className="min-w-56 max-w-md whitespace-pre-wrap text-xs text-muted-foreground">
-                            {entry.notes || "—"}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      {ticketHistory.length === 0 && (
-                        <TableRow>
-                          <TableCell
-                            colSpan={4}
-                            className="py-6 text-center text-sm text-muted-foreground"
-                          >
-                            Belum ada riwayat keputusan tiket.
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -676,6 +619,64 @@ export default function ExecutiveApprovalHub({
           </Card>
         </TabsContent>
       </Tabs>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Laporan Riwayat Persetujuan</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Riwayat terbaru persetujuan dokumen, pembelian, tiket, upah, termin, dan proyek.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Jenis</TableHead>
+                  <TableHead>Dokumen / Referensi</TableHead>
+                  <TableHead>Keputusan</TableHead>
+                  <TableHead>Oleh / Waktu</TableHead>
+                  <TableHead>Catatan</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {approvalHistory.map((entry) => (
+                  <TableRow key={entry.id}>
+                    <TableCell className="whitespace-nowrap">{entry.category}</TableCell>
+                    <TableCell className="min-w-56 font-medium">{entry.reference}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {approvalHistoryLabels[entry.action] ?? entry.action}
+                    </TableCell>
+                    <TableCell className="min-w-40 text-xs">
+                      <p>{entry.actorName}</p>
+                      <p className="text-muted-foreground">
+                        {new Intl.DateTimeFormat("id-ID", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                          timeZone: "Asia/Jakarta",
+                        }).format(new Date(entry.createdAt))}
+                      </p>
+                    </TableCell>
+                    <TableCell className="min-w-48 max-w-md whitespace-pre-wrap text-xs text-muted-foreground">
+                      {entry.notes || "—"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {approvalHistory.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      className="py-8 text-center text-sm text-muted-foreground"
+                    >
+                      Belum ada riwayat persetujuan.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {message && (
         <p

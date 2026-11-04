@@ -1,14 +1,11 @@
 "use client";
 
-import { CldUploadWidget } from "next-cloudinary";
 import {
   Check,
   FileText,
   FolderOpen,
-  Paperclip,
   Send,
   Trash2,
-  Upload,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,7 +21,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { GlobalModal } from "@/components/ui/global-modal";
-import { REQUEST_DOCUMENT_CLOUDINARY_FOLDER } from "@/lib/request-document-config";
 
 type RequestKind = "MATERIAL" | "OPERATIONAL";
 
@@ -50,11 +46,11 @@ export type RequestFormValues = {
   estimatedCost: number;
   picId: string;
   description: string;
-  documentUrls: string[];
+  documentFiles: File[];
 };
 
 type UploadedDocument = {
-  url: string;
+  file: File;
   name: string;
 };
 
@@ -76,8 +72,6 @@ export default function RequestFormModal({
   onClose,
   projects,
   assignees,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   onSubmit,
   isSubmitting = false,
 }: {
@@ -85,8 +79,6 @@ export default function RequestFormModal({
   onClose: () => void;
   projects: RequestProjectOption[];
   assignees: RequestAssigneeOption[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   onSubmit: (values: RequestFormValues) => Promise<void>;
   isSubmitting?: boolean;
 }) {
@@ -147,7 +139,7 @@ export default function RequestFormModal({
         estimatedCost: parsedCost,
         picId,
         description: description.trim(),
-        documentUrls: documents.map((document) => document.url),
+        documentFiles: documents.map((document) => document.file),
       });
       handleClose();
     } catch (submitError) {
@@ -384,89 +376,38 @@ export default function RequestFormModal({
               Unggah Bukti / Dokumen{" "}
               <span className="text-orange-400">*</span>
             </Label>
-            {cloudinaryCloudName && cloudinaryApiKey ? (
-              <CldUploadWidget
-                config={{
-                  cloud: {
-                    cloudName: cloudinaryCloudName,
-                    apiKey: cloudinaryApiKey,
-                  },
-                }}
-                signatureEndpoint="/api/cloudinary/request-document-signature"
-                options={{
-                  folder: REQUEST_DOCUMENT_CLOUDINARY_FOLDER,
-                  resourceType: "auto",
-                  sources: ["local", "camera"],
-                  multiple: true,
-                  maxFiles: 5,
-                  maxFileSize: 10 * 1024 * 1024,
-                  clientAllowedFormats: [
-                    "pdf",
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "webp",
-                    "doc",
-                    "docx",
-                    "xls",
-                    "xlsx",
-                  ],
-                  showPoweredBy: false,
-                }}
-                onSuccess={(result) => {
-                  if (
-                    result.event === "success" &&
-                    typeof result.info === "object" &&
-                    result.info !== null &&
-                    "secure_url" in result.info &&
-                    typeof result.info.secure_url === "string"
-                  ) {
-                    const info = result.info;
-                    const name =
-                      "original_filename" in info &&
-                      typeof info.original_filename === "string"
-                        ? info.original_filename
-                        : "Dokumen pendukung";
-                    setDocuments((current) =>
-                      current.some((document) => document.url === info.secure_url)
-                        ? current
-                        : [...current, { url: info.secure_url, name }],
-                    );
-                    setUploadError("");
-                  }
-                }}
-                onError={(error) => {
-                  console.error("Request supporting document upload failed:", error);
-                  setUploadError(
-                    "Dokumen gagal diunggah. Silakan coba kembali.",
+            <Input
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx"
+              multiple
+              disabled={isSubmitting || documents.length >= 5}
+              onChange={(event) => {
+                const selected = Array.from(event.currentTarget.files ?? []);
+                const invalid = selected.find(
+                  (file) =>
+                    file.size < 1 ||
+                    file.size > 10 * 1024 * 1024 ||
+                    !/\.(pdf|jpe?g|png|webp|docx?|xlsx?)$/i.test(file.name),
+                );
+                if (invalid) {
+                  setUploadError("Pilih dokumen PDF, JPG, PNG, WEBP, DOC, DOCX, XLS, atau XLSX maksimal 10 MB.");
+                } else {
+                  setDocuments((current) =>
+                    [...current, ...selected.map((file) => ({ file, name: file.name }))].slice(0, 5),
                   );
-                }}
-              >
-                {({ open }) => (
-                  <button
-                    type="button"
-                    onClick={() => open()}
-                    className="flex min-h-28 w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-600 bg-slate-800/60 px-4 py-3 text-center text-sm text-slate-400 transition hover:border-orange-400/70 hover:bg-slate-800 hover:text-slate-200"
-                  >
-                    <span className="flex gap-3 text-slate-300">
-                      <Paperclip className="size-5" aria-hidden="true" />
-                      <Upload className="size-5" aria-hidden="true" />
-                    </span>
-                    <span>Unggah dokumen pendukung / estimasi vendor</span>
-                    <span className="text-xs">PDF, JPG, PNG, DOCX, XLSX · maks. 10 MB/file</span>
-                  </button>
-                )}
-              </CldUploadWidget>
-            ) : (
-              <p className="rounded-md border border-destructive/40 p-3 text-sm text-destructive" role="alert">
-                Upload dokumen tidak tersedia. Periksa konfigurasi Cloudinary.
-              </p>
-            )}
+                  setUploadError("");
+                }
+                event.currentTarget.value = "";
+              }}
+            />
+            <p className="text-xs text-slate-400">
+              File tetap lokal sampai Kirim Pengajuan ditekan; maksimal 5 file.
+            </p>
             {documents.length > 0 ? (
               <ul className="space-y-1">
                 {documents.map((document) => (
                   <li
-                    key={document.url}
+                    key={`${document.file.name}-${document.file.lastModified}-${document.file.size}`}
                     className="flex items-center justify-between gap-2 rounded border border-slate-700 px-2 py-1.5 text-xs text-slate-300"
                   >
                     <span className="flex min-w-0 items-center gap-2">
@@ -481,7 +422,7 @@ export default function RequestFormModal({
                       aria-label={`Hapus ${document.name}`}
                       onClick={() =>
                         setDocuments((current) =>
-                          current.filter((entry) => entry.url !== document.url),
+                          current.filter((entry) => entry !== document),
                         )
                       }
                     >

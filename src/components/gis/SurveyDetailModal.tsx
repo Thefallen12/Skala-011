@@ -95,8 +95,6 @@ export default function SurveyDetailModal({
   onAddInformation,
   onAddPhoto: _onAddPhoto,
   savePhotoToDatabase,
-  cloudinaryCloudName: _cloudinaryCloudName = "",
-  cloudinaryApiKey: _cloudinaryApiKey = "",
 }: {
   open: boolean;
   survey: FieldSurveySummary | null;
@@ -105,9 +103,14 @@ export default function SurveyDetailModal({
   onEditData?: () => void;
   onAddInformation?: () => void;
   onAddPhoto?: () => void;
-  savePhotoToDatabase?: (surveyId: string, url: string, label?: string) => void | Promise<void>;
-  cloudinaryCloudName?: string;
-  cloudinaryApiKey?: string;
+  savePhotoToDatabase?: (
+    surveyId: string,
+    photos: Array<{ url?: string; file?: File; label: string }>,
+  ) => Promise<{
+    success: boolean;
+    message: string;
+    photos?: Array<{ url: string; label: string }>;
+  }>;
 }) {
   const projectCode = useMemo(
     () => project?.code ?? survey?.projectCode ?? getSurveyProjectId(survey),
@@ -125,18 +128,32 @@ export default function SurveyDetailModal({
       return existing ?? { url: "", label: `Foto ${index + 1}` };
     });
 
-  const [photos, setPhotos] = useState<{ url: string; label: string }[]>(() =>
+  const [photos, setPhotos] = useState<
+    { url: string; label: string; file?: File }[]
+  >(() =>
     buildPhotoSlots(getPhotoEntries(survey)),
   );
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const [showPhotoNameDialog, setShowPhotoNameDialog] = useState(false);
   const [pendingPhoto, setPendingPhoto] = useState<{
     index: number;
     url: string;
+    file: File;
   } | null>(null);
   const [photoNameDraft, setPhotoNameDraft] = useState("");
   const fileInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const localPhotoUrlsRef = useRef(new Set<string>());
+
+  useEffect(() => {
+    const localPhotoUrls = localPhotoUrlsRef.current;
+    return () => {
+      localPhotoUrls.forEach((url) => URL.revokeObjectURL(url));
+      localPhotoUrls.clear();
+    };
+  }, []);
 
   const PhotoSlotCard = ({
     index,
@@ -224,19 +241,16 @@ export default function SurveyDetailModal({
     );
   };
 
-  useEffect(() => {
-    return () => {
-      photos.forEach((photo) => {
-        if (photo.url.startsWith("blob:")) {
-          URL.revokeObjectURL(photo.url);
-        }
-      });
-    };
-  }, [photos]);
-
   const resetPhotosFromSurvey = () => {
+    localPhotoUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    localPhotoUrlsRef.current.clear();
+    if (pendingPhoto?.url.startsWith("blob:")) {
+      URL.revokeObjectURL(pendingPhoto.url);
+    }
     setPhotos(buildPhotoSlots(getPhotoEntries(survey)));
+    setPendingPhoto(null);
     setHasUnsavedChanges(false);
+    setSaveError("");
   };
 
   const getDefaultPhotoLabel = (index: number) => `Foto ${index + 1}`;
@@ -265,7 +279,8 @@ export default function SurveyDetailModal({
     if (!file) return;
 
     const nextUrl = URL.createObjectURL(file);
-    setPendingPhoto({ index, url: nextUrl });
+    localPhotoUrlsRef.current.add(nextUrl);
+    setPendingPhoto({ index, url: nextUrl, file });
     setPhotoNameDraft("");
     setShowPhotoNameDialog(true);
   };
@@ -277,12 +292,14 @@ export default function SurveyDetailModal({
     setPhotos((previous) => {
       const next = [...previous];
       const existingUrl = next[pendingPhoto.index]?.url;
-      if (existingUrl?.startsWith("blob:")) {
+      if (existingUrl?.startsWith("blob:") && existingUrl !== pendingPhoto.url) {
         URL.revokeObjectURL(existingUrl);
+        localPhotoUrlsRef.current.delete(existingUrl);
       }
       next[pendingPhoto.index] = {
         url: pendingPhoto.url,
         label: finalLabel,
+        file: pendingPhoto.file,
       };
       return next;
     });
@@ -296,6 +313,7 @@ export default function SurveyDetailModal({
   const cancelPendingPhoto = () => {
     if (pendingPhoto?.url.startsWith("blob:")) {
       URL.revokeObjectURL(pendingPhoto.url);
+      localPhotoUrlsRef.current.delete(pendingPhoto.url);
     }
     setPendingPhoto(null);
     setPhotoNameDraft("");
@@ -308,6 +326,7 @@ export default function SurveyDetailModal({
       const currentUrl = next[index]?.url;
       if (currentUrl?.startsWith("blob:")) {
         URL.revokeObjectURL(currentUrl);
+        localPhotoUrlsRef.current.delete(currentUrl);
       }
       next[index] = { url: "", label: `Foto ${index + 1}` };
       return next;
@@ -325,81 +344,40 @@ export default function SurveyDetailModal({
   };
 
   const handleSaveData = async () => {
-    let uploadFailed = false;
-
+    setSaveError("");
+    setIsSaving(true);
     try {
-      const processedPhotos: Array<{ url: string; label: string }> = [];
-
-      for (const photo of photos) {
-        const label = photo.label?.trim() || `Foto ${processedPhotos.length + 1}`;
-
-        if (!photo.url) continue;
-
-        if (!photo.url.startsWith("blob:")) {
-          processedPhotos.push({ url: photo.url, label });
-          continue;
-        }
-
-        const response = await fetch(photo.url);
-        const blob = await response.blob();
-        if (!blob.type.startsWith("image/")) continue;
-
-        const file = new File([blob], `field-survey-photo-${Date.now()}.jpg`, {
-          type: blob.type || "image/jpeg",
-        });
-
-        const formData = new FormData();
-        formData.append("file", file);
-        if (survey?.id) formData.append("surveyId", survey.id);
-
-        const uploadResponse = await fetch("/api/cloudinary/field-survey-photo", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-          const errorText = await uploadResponse.text();
-          throw new Error(errorText || "Upload foto survei gagal.");
-        }
-
-        const result = (await uploadResponse.json()) as {
-          secureUrl?: string;
-          success?: boolean;
-        };
-
-        if (!result?.secureUrl) {
-          throw new Error("Cloudinary tidak mengembalikan URL foto yang valid.");
-        }
-
-        const uploadedUrl = result.secureUrl;
-        processedPhotos.push({ url: uploadedUrl, label });
-
-        setPhotos((previous) =>
-          previous.map((item) =>
-            item.url === photo.url
-              ? { ...item, url: uploadedUrl }
-              : item,
-          ),
-        );
+      if (!survey?.id || !savePhotoToDatabase) {
+        throw new Error("Survei atau aksi penyimpanan foto tidak tersedia.");
       }
 
-      for (const item of processedPhotos) {
-        if (survey?.id && savePhotoToDatabase) {
-          await savePhotoToDatabase(survey.id, item.url, item.label);
-        }
-      }
+      const selectedPhotos = photos
+        .filter((photo) => photo.url)
+        .map((photo, index) => ({
+          ...(photo.file ? { file: photo.file } : { url: photo.url }),
+          label: sanitizePhotoLabel(index, photo.label),
+        }));
+      const result = await savePhotoToDatabase(survey.id, selectedPhotos);
+      if (!result.success) throw new Error(result.message);
+
+      const savedPhotos = result.photos ?? [];
+      localPhotoUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      localPhotoUrlsRef.current.clear();
+      setPhotos(buildPhotoSlots(savedPhotos));
+
+      setShowWarning(false);
+      setHasUnsavedChanges(false);
+      onClose();
     } catch (error) {
-      uploadFailed = true;
       console.error("Failed to persist survey photo uploads:", error);
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "Foto survei gagal disimpan. Silakan coba kembali.",
+      );
+    } finally {
+      setIsSaving(false);
     }
-
-    if (uploadFailed) {
-      return;
-    }
-
-    setShowWarning(false);
-    setHasUnsavedChanges(false);
-    onClose();
   };
 
   const openReport = () => {
@@ -694,19 +672,31 @@ export default function SurveyDetailModal({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
+            {saveError && (
+              <p className="w-full text-sm text-red-400" role="alert">
+                {saveError}
+              </p>
+            )}
             <AlertDialogCancel
               className="border-slate-700 text-slate-300 hover:bg-slate-800"
-              onClick={() => setShowWarning(false)}
+              disabled={isSaving}
+              onClick={() => {
+                setSaveError("");
+                setShowWarning(false);
+              }}
             >
               Kembali ke Form
             </AlertDialogCancel>
             <Button
+              type="button"
+              disabled={isSaving}
               className="bg-blue-600 text-white hover:bg-blue-700"
               onClick={handleSaveData}
             >
-              Simpan Data
+              {isSaving ? "Menyimpan..." : "Simpan Data"}
             </Button>
             <AlertDialogAction
+              disabled={isSaving}
               className="bg-red-600 text-white hover:bg-red-700"
               onClick={() => {
                 setShowWarning(false);

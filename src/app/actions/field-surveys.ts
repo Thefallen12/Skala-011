@@ -12,6 +12,12 @@ import {
 } from "@/lib/field-survey-geojson";
 import { auth } from "../../../auth";
 import { z } from "zod";
+import {
+  CloudinaryPhotoValidationError,
+  removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import { FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER } from "@/lib/field-survey-photo-config";
 
 const surveyRoles: UserRole[] = [
   UserRole.ADMINISTRATIONS,
@@ -65,6 +71,13 @@ const saveSurveySchema = z.object({
     longitude: z.number().finite().min(-180).max(180),
     capturedAt: z.string().datetime().optional(),
   })).max(10).optional(),
+  documentationPhotoFiles: z.array(z.object({
+    file: z.instanceof(File),
+    caption: z.string().trim().min(2).max(500),
+    latitude: z.number().finite().min(-90).max(90),
+    longitude: z.number().finite().min(-180).max(180),
+    capturedAt: z.string().datetime().optional(),
+  })).max(10).optional(),
   geoJsonData: z.unknown(),
   features: z.array(z.object({
     featureCategory: z.string().trim().min(2).max(120),
@@ -106,6 +119,13 @@ export type SaveFieldSurveyInput = {
     longitude: number;
     capturedAt?: string;
   }>;
+  documentationPhotoFiles?: Array<{
+    file: File;
+    caption: string;
+    latitude: number;
+    longitude: number;
+    capturedAt?: string;
+  }>;
   geoJsonData: SurveyGeoJSON;
   surveyType?: string;
   features?: Array<{
@@ -120,90 +140,203 @@ export type SaveFieldSurveyInput = {
 
 export async function saveFieldSurveyPhotoUrls(input: {
   surveyId: string;
-  photos: Array<{ url: string; label?: string }>;
-}): Promise<{ success: boolean; message: string; urls?: string[] }> {
+  photos: Array<{ url?: string; file?: File; label?: string }>;
+}): Promise<{
+  success: boolean;
+  message: string;
+  urls?: string[];
+  photos?: Array<{ url: string; label: string }>;
+}> {
   const surveyor = await getActiveSurveyor();
   if (!surveyor) {
     return { success: false, message: "Sesi atau akses pengguna tidak valid." };
   }
 
   const surveyId = input?.surveyId?.trim();
-  const photos = (input?.photos ?? []).filter(
-    (photo) => typeof photo?.url === "string" && photo.url.trim().length > 0,
-  );
-
-  if (!surveyId || surveyId.length > 200 || photos.length === 0) {
+  const photos = input?.photos;
+  if (
+    !surveyId ||
+    surveyId.length > 200 ||
+    !Array.isArray(photos) ||
+    photos.length < 1 ||
+    photos.length > 5
+  ) {
     return { success: false, message: "Data foto survei tidak valid." };
   }
 
+  const uploadedPhotoUrls: string[] = [];
+  let photosPersisted = false;
+  let persistedPhotoUrls: string[] = [];
+  let persistedPhotos: Array<{ url: string; label: string }> = [];
   try {
     const survey = await prisma.fieldSurvey.findUnique({
       where: { id: surveyId },
-      select: { id: true, surveyorId: true, project: { select: { fieldPicId: true } } },
+      select: {
+        id: true,
+        surveyorId: true,
+        documentationUrls: true,
+        photos: { select: { url: true } },
+        project: { select: { fieldPicId: true } },
+      },
     });
 
     if (!survey) {
       return { success: false, message: "Survei tidak ditemukan." };
     }
 
-    if (survey.surveyorId !== surveyor.id) {
-      const projectFieldPicId = survey.project?.fieldPicId;
-      if (projectFieldPicId !== surveyor.id && surveyor.role !== UserRole.ADMINISTRATIONS && surveyor.role !== UserRole.DIRECTOR && surveyor.role !== UserRole.DEPUTY_DIRECTOR) {
-        return { success: false, message: "Anda tidak memiliki akses untuk mengubah foto survei ini." };
-      }
+    const canEditSurvey =
+      survey.surveyorId === surveyor.id ||
+      survey.project?.fieldPicId === surveyor.id ||
+      surveyor.role === UserRole.ADMINISTRATIONS ||
+      surveyor.role === UserRole.DIRECTOR ||
+      surveyor.role === UserRole.DEPUTY_DIRECTOR;
+    if (!canEditSurvey) {
+      return { success: false, message: "Anda tidak memiliki akses untuk mengubah foto survei ini." };
     }
 
-    const urls = Array.from(new Set(photos.map((photo) => photo.url.trim()))).slice(0, 10);
-    const existingByUrl = await prisma.surveyPhoto.findMany({
-      where: { surveyId, url: { in: urls } },
-      select: { id: true, url: true, caption: true },
-    });
-    const existingUrlSet = new Set(existingByUrl.map((photo) => photo.url));
-
+    const existingUrls = new Set([
+      ...survey.documentationUrls,
+      ...survey.photos.map((photo) => photo.url),
+    ]);
+    const preparedPhotos: Array<{ url: string; label: string }> = [];
     for (const photo of photos) {
-      const safeUrl = photo.url.trim();
-      const label = (photo.label ?? "").trim() || "Foto";
-      const existing = existingByUrl.find((item) => item.url === safeUrl);
+      if (!photo || typeof photo !== "object") {
+        throw new CloudinaryPhotoValidationError("Data foto survei tidak valid.");
+      }
+      const label = typeof photo.label === "string" ? photo.label.trim() : "";
+      if (label.length > 160) {
+        throw new CloudinaryPhotoValidationError("Nama foto survei maksimal 160 karakter.");
+      }
 
-      if (existing) {
-        await prisma.surveyPhoto.update({
-          where: { id: existing.id },
-          data: { caption: label },
-        });
+      if (photo.file instanceof File && !photo.url) {
+        const uploaded = await uploadCloudinaryPhoto(
+          photo.file,
+          FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
+          8 * 1024 * 1024,
+        );
+        uploadedPhotoUrls.push(uploaded.secureUrl);
+        preparedPhotos.push({ url: uploaded.secureUrl, label });
         continue;
       }
 
-      await prisma.surveyPhoto.create({
-        data: {
-          surveyId,
-          url: safeUrl,
-          caption: label,
-          latitude: 0,
-          longitude: 0,
-        },
-      });
+      const url = typeof photo.url === "string" ? photo.url.trim() : "";
+      if (photo.file || !url || !existingUrls.has(url)) {
+        throw new CloudinaryPhotoValidationError(
+          "Foto survei tidak dikenali. Muat ulang data lalu coba kembali.",
+        );
+      }
+      preparedPhotos.push({ url, label: label || "Foto" });
     }
 
-    const savedPhotos = await prisma.surveyPhoto.findMany({
-      where: { surveyId },
-      orderBy: { createdAt: "asc" },
-      select: { url: true },
-    });
+    const savedUrls = await prisma.$transaction(async (transaction) => {
+      const currentSurvey = await transaction.fieldSurvey.findUnique({
+        where: { id: surveyId },
+        select: {
+          surveyorId: true,
+          documentationUrls: true,
+          photos: { select: { url: true } },
+          project: { select: { fieldPicId: true } },
+        },
+      });
+      if (!currentSurvey) throw new Error("Survei tidak ditemukan saat menyimpan foto.");
 
-    await prisma.fieldSurvey.update({
-      where: { id: surveyId },
-      data: {
-        documentationUrls: Array.from(new Set(savedPhotos.map((photo) => photo.url))).slice(0, 10),
-      },
+      const stillCanEdit =
+        currentSurvey.surveyorId === surveyor.id ||
+        currentSurvey.project?.fieldPicId === surveyor.id ||
+        surveyor.role === UserRole.ADMINISTRATIONS ||
+        surveyor.role === UserRole.DIRECTOR ||
+        surveyor.role === UserRole.DEPUTY_DIRECTOR;
+      if (!stillCanEdit) {
+        throw new Error("Akses untuk mengubah foto survei telah berubah.");
+      }
+
+      const currentUrls = new Set([
+        ...currentSurvey.documentationUrls,
+        ...currentSurvey.photos.map((photo) => photo.url),
+      ]);
+      const uniquePhotos = Array.from(
+        new Map(preparedPhotos.map((photo) => [photo.url, photo])).values(),
+      );
+      if (
+        uniquePhotos.some(
+          (photo) => !uploadedPhotoUrls.includes(photo.url) && !currentUrls.has(photo.url),
+        )
+      ) {
+        throw new Error("Foto survei telah berubah. Muat ulang data lalu coba kembali.");
+      }
+
+      for (const photo of uniquePhotos) {
+        const existing = await transaction.surveyPhoto.findFirst({
+          where: { surveyId, url: photo.url },
+          select: { id: true },
+        });
+        if (existing) {
+          await transaction.surveyPhoto.update({
+            where: { id: existing.id },
+            data: { caption: photo.label },
+          });
+        } else {
+          await transaction.surveyPhoto.create({
+            data: {
+              surveyId,
+              url: photo.url,
+              caption: photo.label,
+              latitude: 0,
+              longitude: 0,
+            },
+          });
+        }
+      }
+
+      const savedPhotos = await transaction.surveyPhoto.findMany({
+        where: { surveyId },
+        orderBy: { createdAt: "asc" },
+        select: { url: true },
+      });
+      const urls = Array.from(
+        new Set([...currentSurvey.documentationUrls, ...savedPhotos.map((photo) => photo.url)]),
+      ).slice(0, 10);
+      await transaction.fieldSurvey.update({
+        where: { id: surveyId },
+        data: { documentationUrls: urls },
+      });
+      return urls;
     });
+    photosPersisted = true;
+    persistedPhotoUrls = savedUrls;
+    persistedPhotos = preparedPhotos;
 
     revalidatePath("/apps/projects");
     return {
       success: true,
       message: "Foto survei berhasil disimpan.",
-      urls: Array.from(new Set(savedPhotos.map((photo) => photo.url))).slice(0, 10),
+      urls: savedUrls,
+      photos: preparedPhotos,
     };
   } catch (error) {
+    if (!photosPersisted) {
+      await Promise.all(
+        uploadedPhotoUrls.map(async (url) => {
+          try {
+            await removeCloudinaryPhoto(url);
+          } catch (cleanupError) {
+            console.error("Removing unattached field survey photo failed:", cleanupError);
+          }
+        }),
+      );
+    }
+    if (photosPersisted) {
+      console.error("Survey photos saved, but route revalidation failed:", error);
+      return {
+        success: true,
+        message: "Foto tersimpan. Muat ulang halaman untuk melihat data terbaru.",
+        urls: persistedPhotoUrls,
+        photos: persistedPhotos,
+      };
+    }
+    if (error instanceof CloudinaryPhotoValidationError) {
+      return { success: false, message: error.message };
+    }
     console.error("Saving survey photo URLs failed:", error);
     return { success: false, message: "Foto survei gagal disimpan. Silakan coba kembali." };
   }
@@ -239,8 +372,15 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
     landOwnership,
     documentationUrls,
     documentationPhotos,
+    documentationPhotoFiles,
     features,
   } = parsed.data;
+  if ((documentationUrls?.length ?? 0) + (documentationPhotoFiles?.length ?? 0) > 10) {
+    return {
+      success: false,
+      message: "Maksimal 10 foto dokumentasi per survei.",
+    };
+  }
   if (!isSurveyGeoJSON(geoJsonData)) {
     return {
       success: false,
@@ -305,8 +445,35 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
     };
   }
 
+  const uploadedPhotoUrls: string[] = [];
   try {
-    const survey = await prisma.fieldSurvey.create({
+    for (const photo of documentationPhotoFiles ?? []) {
+      uploadedPhotoUrls.push(
+        (
+          await uploadCloudinaryPhoto(
+            photo.file,
+            FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
+            8 * 1024 * 1024,
+          )
+        ).secureUrl,
+      );
+    }
+    const savedDocumentationUrls = Array.from(
+      new Set([...(documentationUrls ?? []), ...uploadedPhotoUrls]),
+    ).slice(0, 10);
+    const savedDocumentationPhotos = [
+      ...(documentationPhotos ?? []),
+      ...(documentationPhotoFiles ?? []).map((photo, index) => ({
+        url: uploadedPhotoUrls[index],
+        caption: photo.caption,
+        latitude: photo.latitude,
+        longitude: photo.longitude,
+        capturedAt: photo.capturedAt,
+      })),
+    ];
+
+    const survey = await prisma.$transaction(async (transaction) => {
+      const createdSurvey = await transaction.fieldSurvey.create({
       data: {
         projectId: project?.id ?? null,
         projectName: project
@@ -322,7 +489,7 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
         vegetationType: vegetationType || null,
         topography: topography || null,
         landOwnership: landOwnership || null,
-        documentationUrls: documentationUrls ?? [],
+        documentationUrls: savedDocumentationUrls,
         geometryType: geometryTypes.join(", "),
         centerCoordinate: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`,
         geoJsonData: geoJsonData as object,
@@ -365,9 +532,9 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
               }),
             }
           : undefined,
-        photos: documentationPhotos?.length
+        photos: savedDocumentationPhotos.length
           ? {
-              create: documentationPhotos.map((photo) => ({
+              create: savedDocumentationPhotos.map((photo) => ({
                 url: photo.url,
                 caption: photo.caption,
                 latitude: photo.latitude,
@@ -377,31 +544,33 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
             }
           : undefined,
       },
-    });
-    if (project?.id) {
-      const polygonFeatures = geoJsonData.features.filter(
-        (feature) =>
-          feature.geometry?.type === "Polygon" ||
-          feature.geometry?.type === "MultiPolygon",
-      );
-      if (polygonFeatures.length > 0) {
-        await prisma.projectPolygon.createMany({
-          data: polygonFeatures.map((feature, index) => ({
-            projectId: project.id,
-            surveyId: survey.id,
-            type:
-              project.status === ProjectStatus.RUNNING ||
-              project.status === ProjectStatus.ON_PROGRESS ||
-              project.status === ProjectStatus.ACTIVE
-                ? ProjectPolygonType.PROJECT
-                : ProjectPolygonType.SURVEY,
-            name: `${locationName} · Polygon ${index + 1}`,
-            geometryType: feature.geometry?.type ?? "Polygon",
-            geoJsonData: feature as object,
-          })),
-        });
+      });
+      if (project?.id) {
+        const polygonFeatures = geoJsonData.features.filter(
+          (feature) =>
+            feature.geometry?.type === "Polygon" ||
+            feature.geometry?.type === "MultiPolygon",
+        );
+        if (polygonFeatures.length > 0) {
+          await transaction.projectPolygon.createMany({
+            data: polygonFeatures.map((feature, index) => ({
+              projectId: project.id,
+              surveyId: createdSurvey.id,
+              type:
+                project.status === ProjectStatus.RUNNING ||
+                project.status === ProjectStatus.ON_PROGRESS ||
+                project.status === ProjectStatus.ACTIVE
+                  ? ProjectPolygonType.PROJECT
+                  : ProjectPolygonType.SURVEY,
+              name: `${locationName} · Polygon ${index + 1}`,
+              geometryType: feature.geometry?.type ?? "Polygon",
+              geoJsonData: feature as object,
+            })),
+          });
+        }
       }
-    }
+      return createdSurvey;
+    });
 
     revalidatePath("/apps/projects");
     return {
@@ -410,6 +579,21 @@ export async function saveFieldSurvey(input: SaveFieldSurveyInput): Promise<{
       surveyId: survey.id,
     };
   } catch (error) {
+    await Promise.all(
+      uploadedPhotoUrls.map(async (url) => {
+        try {
+          await removeCloudinaryPhoto(url);
+        } catch (cleanupError) {
+          console.error("Removing unattached field survey photo failed:", cleanupError);
+        }
+      }),
+    );
+    if (error instanceof CloudinaryPhotoValidationError) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
     console.error("Saving field survey failed:", error);
     return {
       success: false,

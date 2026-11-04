@@ -236,8 +236,6 @@ export default function TicketListing({
   vendors = [],
   stockItems = [],
   vehicles = [],
-  cloudinaryCloudName = "",
-  cloudinaryApiKey = "",
   role,
   ticketSearch,
   searchTickets,
@@ -249,8 +247,6 @@ export default function TicketListing({
   vendors?: TicketVendorOption[];
   stockItems?: TicketStockItemOption[];
   vehicles?: VehicleSummary[];
-  cloudinaryCloudName?: string;
-  cloudinaryApiKey?: string;
   role: TicketPageRole;
   ticketSearch: string;
   searchTickets: (term: string) => void;
@@ -1537,8 +1533,6 @@ export default function TicketListing({
             vendors={vendors}
             stockItems={stockItems}
             vehicles={vehicles}
-            cloudinaryCloudName={cloudinaryCloudName}
-            cloudinaryApiKey={cloudinaryApiKey}
             onOpenChange={(open) => {
               if (!open) setWorkflowTicket(null);
             }}

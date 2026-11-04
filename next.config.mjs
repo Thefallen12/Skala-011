@@ -27,7 +27,7 @@ const nextConfig = {
         cpus: 2,
         turbopackPluginRuntimeStrategy: "workerThreads",
         serverActions: {
-            bodySizeLimit: "27mb"
+            bodySizeLimit: "110mb"
         }
     }
 };

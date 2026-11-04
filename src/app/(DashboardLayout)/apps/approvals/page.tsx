@@ -36,6 +36,13 @@ export default async function ApprovalsPage({
     orders,
     tickets,
     ticketHistory,
+    approvedOrders,
+    approvedDirectPurchases,
+    approvedWages,
+    approvedTermyns,
+    approvedContracts,
+    approvedAddendums,
+    approvedBastDocuments,
     directPurchases,
     workPoints,
     termyns,
@@ -147,6 +154,93 @@ export default async function ApprovalsPage({
             title: true,
           },
         },
+      },
+    }),
+    prisma.purchaseOrder.findMany({
+      where: { status: POStatus.APPROVED, approvedAt: { not: null } },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        poNumber: true,
+        vendorName: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
+      },
+    }),
+    prisma.directStockPurchase.findMany({
+      where: { isApprovedByDirector: true, approvedAt: { not: null } },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        purchaseNumber: true,
+        vendorName: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
+      },
+    }),
+    prisma.projectWorkPoint.findMany({
+      where: { approvedTotalWage: { not: null }, wageApprovedAt: { not: null } },
+      orderBy: { wageApprovedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        title: true,
+        wageApprovedAt: true,
+        wageApprovedBy: { select: { name: true } },
+      },
+    }),
+    prisma.subkonTermyn.findMany({
+      where: {
+        status: { in: [SubkonTermynStatus.APPROVED, SubkonTermynStatus.PAID] },
+        approvedAt: { not: null },
+      },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        termynNumber: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
+        subkonContract: { select: { contractNumber: true, subkonName: true } },
+      },
+    }),
+    prisma.subkonContract.findMany({
+      where: {
+        status: { in: [SPKStatus.ACTIVE, SPKStatus.COMPLETED] },
+        approvedAt: { not: null },
+      },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        contractNumber: true,
+        subkonName: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
+      },
+    }),
+    prisma.projectAddendum.findMany({
+      where: { status: ProjectAddendumStatus.APPROVED, approvedAt: { not: null } },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        addendumNumber: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
+      },
+    }),
+    prisma.bASTDocument.findMany({
+      where: { isApproved: true, approvedAt: { not: null } },
+      orderBy: { approvedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        bastNumber: true,
+        approvedAt: true,
+        approvedBy: { select: { name: true } },
       },
     }),
     (session.user.role === UserRole.DIRECTOR ||
@@ -272,6 +366,83 @@ export default async function ApprovalsPage({
     }),
   ]);
 
+  const approvalHistory = [
+    ...ticketHistory.map((entry) => ({
+      id: `ticket:${entry.id}`,
+      category: "Tiket",
+      reference: `${entry.ticket.ticketNumber} · ${entry.ticket.title}`,
+      action: entry.action,
+      actorName: entry.user.name,
+      createdAt: entry.createdAt.toISOString(),
+      notes: entry.notes,
+    })),
+    ...approvedOrders.map((entry) => ({
+      id: `po:${entry.id}`,
+      category: "Purchase Order",
+      reference: `${entry.poNumber} · ${entry.vendorName}`,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedDirectPurchases.map((entry) => ({
+      id: `purchase:${entry.id}`,
+      category: "Pembelian Langsung",
+      reference: `${entry.purchaseNumber} · ${entry.vendorName}`,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedWages.map((entry) => ({
+      id: `wage:${entry.id}`,
+      category: "Usulan Upah",
+      reference: entry.title,
+      action: "APPROVED",
+      actorName: entry.wageApprovedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.wageApprovedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedTermyns.map((entry) => ({
+      id: `termyn:${entry.id}`,
+      category: "Termin Subkon",
+      reference: `${entry.subkonContract.contractNumber} · Termin ${entry.termynNumber} · ${entry.subkonContract.subkonName}`,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedContracts.map((entry) => ({
+      id: `contract:${entry.id}`,
+      category: "SPK Subkon",
+      reference: `${entry.contractNumber} · ${entry.subkonName}`,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedAddendums.map((entry) => ({
+      id: `addendum:${entry.id}`,
+      category: "Addendum Proyek",
+      reference: entry.addendumNumber,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+    ...approvedBastDocuments.map((entry) => ({
+      id: `bast:${entry.id}`,
+      category: "BAST",
+      reference: entry.bastNumber,
+      action: "APPROVED",
+      actorName: entry.approvedBy?.name ?? "Pengguna tidak tersedia",
+      createdAt: entry.approvedAt!.toISOString(),
+      notes: null,
+    })),
+  ]
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+    .slice(0, 100);
+
   return (
     <>
       <ExecutiveApprovalHub
@@ -379,15 +550,7 @@ export default async function ApprovalsPage({
             : null,
           items: ticket.items,
         }))}
-        ticketHistory={ticketHistory.map((entry) => ({
-          id: entry.id,
-          action: entry.action,
-          notes: entry.notes,
-          createdAt: entry.createdAt.toISOString(),
-          actorName: entry.user.name,
-          ticketNumber: entry.ticket.ticketNumber,
-          ticketTitle: entry.ticket.title,
-        }))}
+        approvalHistory={approvalHistory}
         wages={workPoints.map((workPoint) => ({
           id: workPoint.id,
           title: workPoint.title,

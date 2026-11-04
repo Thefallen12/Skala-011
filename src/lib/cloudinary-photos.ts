@@ -1,5 +1,6 @@
 import { Readable } from "node:stream";
 import { v2 as cloudinary } from "cloudinary";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 
 const photoMimeTypes = ["image/jpeg", "image/png", "image/webp"] as const;
 type PhotoMimeType = (typeof photoMimeTypes)[number];
@@ -41,17 +42,16 @@ function hasValidSignature(bytes: Uint8Array, mimeType: PhotoMimeType): boolean 
 }
 
 function configureCloudinary(): void {
-  const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
-    process.env;
-  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+  const credentials = getCloudinaryCredentials();
+  if (!credentials) {
     throw new CloudinaryConfigurationError(
-      "Konfigurasi Cloudinary belum lengkap. Isi CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan CLOUDINARY_API_SECRET.",
+      "Konfigurasi Cloudinary belum lengkap. Isi CLOUDINARY_URL atau CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan CLOUDINARY_API_SECRET.",
     );
   }
   cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
+    cloud_name: credentials.cloudName,
+    api_key: credentials.apiKey,
+    api_secret: credentials.apiSecret,
     secure: true,
   });
 }

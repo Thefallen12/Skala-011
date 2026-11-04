@@ -356,8 +356,6 @@ const Tickets = async ({
             projects={projects}
             requesterRole={session.user.role}
             movers={movers}
-            cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-            cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
             stockItems={stockItems.map((item) => ({
               ...item,
               unitPrice: item.unitPrice.toString(),

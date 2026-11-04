@@ -2,19 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CldUploadWidget } from "next-cloudinary";
 import { ExternalLink, Send, Upload } from "lucide-react";
 import {
   markPurchaseOrderSentToVendor,
   submitPurchaseOrderInvoice,
 } from "@/app/actions/orders";
-import type { VendorInvoiceInput } from "@/lib/invoice-input";
-import { PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER } from "@/lib/purchase-order-invoice-config";
 import InvoiceDetailsFields, {
   type InvoiceDraft,
 } from "@/app/components/apps/logistics/InvoiceDetailsFields";
 import { Button } from "@/components/ui/button";
 import { GlobalModal } from "@/components/ui/global-modal";
+import { Input } from "@/components/ui/input";
 
 type InvoiceItemSeed = {
   itemCode: string | null;
@@ -50,8 +48,6 @@ export default function PurchaseOrderInvoiceUpload({
   ticketLinked,
   items,
   includeTax,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
 }: {
   publicCode: string;
   invoiceUrl: string | null;
@@ -60,15 +56,13 @@ export default function PurchaseOrderInvoiceUpload({
   ticketLinked: boolean;
   items: InvoiceItemSeed[];
   includeTax: boolean;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
 }) {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState("");
+  const [invoiceFile, setInvoiceFile] = useState<File | null>(null);
   const [draft, setDraft] = useState(() => {
     const seed = createInvoiceDraft(items);
     if (includeTax) {
@@ -101,16 +95,15 @@ export default function PurchaseOrderInvoiceUpload({
 
   const submitInvoice = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!uploadedUrl) {
-      setMessage("Unggah file invoice/bon terlebih dahulu.");
+    if (!invoiceFile) {
+      setMessage("Pilih file invoice/bon terlebih dahulu.");
       setIsError(true);
       return;
     }
     setIsPending(true);
     setMessage("");
-    const input: VendorInvoiceInput = { ...draft, documentUrl: uploadedUrl };
     try {
-      const response = await submitPurchaseOrderInvoice(publicCode, input);
+      const response = await submitPurchaseOrderInvoice(publicCode, draft, invoiceFile);
       setMessage(response.message);
       setIsError(!response.success);
       if (response.success) {
@@ -188,14 +181,6 @@ export default function PurchaseOrderInvoiceUpload({
     );
   }
 
-  if (!cloudinaryCloudName || !cloudinaryApiKey) {
-    return (
-      <p className="text-sm text-destructive" role="alert">
-        Upload invoice tidak tersedia. Periksa konfigurasi Cloudinary.
-      </p>
-    );
-  }
-
   return (
     <>
       <div className="space-y-2">
@@ -249,58 +234,22 @@ export default function PurchaseOrderInvoiceUpload({
           />
           <div className="space-y-2 rounded-md border p-3">
             <p className="text-sm font-medium">Dokumen Invoice / Bon</p>
-            <CldUploadWidget
-              config={{ cloud: { cloudName: cloudinaryCloudName, apiKey: cloudinaryApiKey } }}
-              signatureEndpoint="/api/cloudinary/purchase-order-invoice-signature"
-              options={{
-                folder: PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
-                resourceType: "auto",
-                sources: ["local", "camera"],
-                multiple: false,
-                maxFiles: 1,
-                maxFileSize: 5 * 1024 * 1024,
-                clientAllowedFormats: ["pdf", "jpg", "jpeg", "png", "webp"],
-                showPoweredBy: false,
+            <Input
+              type="file"
+              accept="application/pdf,image/jpeg,image/png,image/webp"
+              disabled={isPending}
+              onChange={(event) => {
+                setInvoiceFile(event.currentTarget.files?.[0] ?? null);
+                setMessage("");
               }}
-              onSuccess={(result) => {
-                if (
-                  result.event === "success" &&
-                  typeof result.info === "object" &&
-                  result.info !== null &&
-                  "secure_url" in result.info &&
-                  typeof result.info.secure_url === "string"
-                ) {
-                  setUploadedUrl(result.info.secure_url);
-                  setMessage("Dokumen berhasil diunggah. Simpan untuk mengirim invoice ke Keuangan.");
-                  setIsError(false);
-                }
-              }}
-              onError={(error) => {
-                console.error("Purchase order invoice upload failed:", error);
-                setMessage("Invoice gagal diunggah. Silakan coba kembali.");
-                setIsError(true);
-              }}
-            >
-              {({ open }) => (
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => open()}
-                  disabled={isPending}
-                >
-                  <Upload className="mr-2 size-4" aria-hidden="true" />
-                  {uploadedUrl ? "Ganti File Invoice" : "Unggah Invoice via Cloudinary"}
-                </Button>
-              )}
-            </CldUploadWidget>
-            {uploadedUrl && (
+            />
+            {invoiceFile && (
               <p className="text-sm text-muted-foreground">
-                Dokumen invoice sudah diunggah dan siap disimpan.
+                File lokal siap dikirim: {invoiceFile.name}
               </p>
             )}
             <p className="text-xs text-muted-foreground">
-              PDF, JPG, PNG, atau WEBP; maksimal 5 MB.
+              File baru diunggah saat tombol Simpan &amp; Kirim ditekan. PDF, JPG, PNG, atau WEBP; maksimal 5 MB.
             </p>
           </div>
           {message && (

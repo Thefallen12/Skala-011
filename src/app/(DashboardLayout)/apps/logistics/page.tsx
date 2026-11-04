@@ -771,8 +771,6 @@ export default async function LogisticsPage({
         projects={projects}
         role={session.user.role}
         vendors={vendors}
-        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         stockPurchases={directStockPurchases.map((purchase) => ({
           ...purchase,
           totalAmount: purchase.totalAmount.toString(),

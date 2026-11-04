@@ -43,6 +43,17 @@ import { removeTicketReceipt, saveTicketReceipt } from "@/lib/ticket-receipts";
 import { VEHICLE_FUEL_EFFICIENCY_KM_PER_LITER } from "@/lib/vehicle-fuel";
 import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
 import {
+  CloudinaryPhotoValidationError,
+  removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import {
+  CloudinaryRawFileValidationError,
+  removeCloudinaryRawFile,
+  uploadCloudinaryRawFile,
+} from "@/lib/cloudinary-raw-files";
+import { PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER } from "@/lib/purchase-order-invoice-config";
+import {
   vendorInvoiceInputSchema,
   type VendorInvoiceInput,
 } from "@/lib/invoice-input";
@@ -181,6 +192,17 @@ function isDeliveryOrderItem(value: unknown): value is DeliveryOrderItemInput {
 function isValidPurchaseOrderPayment(input: PurchaseOrderInput): boolean {
   const method = input.paymentMethod ?? POPaymentMethod.CASH;
   if (!Object.values(POPaymentMethod).includes(method)) return false;
+
+  if (input.vendorId) {
+    return (
+      (input.paymentBankName === undefined ||
+        isText(input.paymentBankName, 120, true)) &&
+      (input.paymentAccountNumber === undefined ||
+        isText(input.paymentAccountNumber, 80, true)) &&
+      (input.paymentAccountName === undefined ||
+        isText(input.paymentAccountName, 180, true))
+    );
+  }
 
   if (method === POPaymentMethod.CASH) {
     return (
@@ -680,21 +702,86 @@ export async function approvePurchaseOrder(
 
 export async function submitPurchaseOrderInvoice(
   publicCode: string,
-  input: VendorInvoiceInput,
+  input: Omit<VendorInvoiceInput, "documentUrl">,
+  file: File,
 ): Promise<OrderActionResult> {
   const session = await auth();
   if (!session?.user || !canEditPurchaseOrders(session.user.role)) {
     return fail("Hanya Logistik yang dapat mengirim invoice/bon PO.");
   }
-  const parsed = vendorInvoiceInputSchema.safeParse(input);
-  if (!validPublicCode(publicCode) || !parsed.success) {
-    return fail("Invoice/bon PO tidak valid. Unggah file melalui Cloudinary.");
+  if (!validPublicCode(publicCode) || !input || !(file instanceof File)) {
+    return fail("Invoice/bon PO tidak valid. Pilih file invoice/bon.");
   }
-  if (!isPurchaseOrderInvoiceUrl(parsed.data.documentUrl)) {
-    return fail("URL invoice/bon harus berasal dari folder Cloudinary invoice.");
+  const invoiceFields = vendorInvoiceInputSchema.safeParse({
+    ...input,
+    documentUrl: "https://res.cloudinary.com/validation/placeholder.pdf",
+  });
+  if (!invoiceFields.success) {
+    return fail(invoiceFields.error.issues[0]?.message ?? "Data invoice/bon PO tidak valid.");
+  }
+  const orderBeforeUpload = await prisma.purchaseOrder.findUnique({
+    where: { publicCode },
+    select: {
+      status: true,
+      ticketId: true,
+      vendorPoSentAt: true,
+      vendorInvoiceUrl: true,
+      invoices: { select: { id: true }, take: 1 },
+      paymentTransactions: {
+        where: { status: PaymentStatus.PAID },
+        select: { id: true },
+        take: 1,
+      },
+    },
+  });
+  if (!orderBeforeUpload || orderBeforeUpload.ticketId) {
+    return fail("PO mandiri tidak ditemukan.");
+  }
+  if (orderBeforeUpload.status !== POStatus.APPROVED) {
+    return fail("PO harus disetujui Direktur sebelum invoice dikirim.");
+  }
+  if (!orderBeforeUpload.vendorPoSentAt) {
+    return fail("Tandai PO telah dikirim ke vendor sebelum mengirim invoice.");
+  }
+  if (orderBeforeUpload.paymentTransactions.length > 0) {
+    return fail("Invoice PO tidak dapat diganti setelah pembayaran dimulai.");
+  }
+  if (orderBeforeUpload.vendorInvoiceUrl || orderBeforeUpload.invoices.length > 0) {
+    return fail("Invoice/bon untuk PO ini sudah pernah dikirim.");
   }
 
+  const extension = file.name.split(".").at(-1)?.toLowerCase();
+  let documentUrl = "";
   try {
+    if (extension === "pdf") {
+      documentUrl = await uploadCloudinaryRawFile(
+        file,
+        PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+        ["pdf"],
+        5 * 1024 * 1024,
+      );
+    } else if (["jpg", "jpeg", "png", "webp"].includes(extension ?? "")) {
+      documentUrl = (
+        await uploadCloudinaryPhoto(
+          file,
+          PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+          5 * 1024 * 1024,
+        )
+      ).secureUrl;
+    } else {
+      return fail("File invoice/bon harus PDF, JPG, PNG, atau WEBP maksimal 5 MB.");
+    }
+    if (!isPurchaseOrderInvoiceUrl(documentUrl)) {
+      throw new Error("URL invoice/bon yang diunggah tidak valid.");
+    }
+    const parsed = vendorInvoiceInputSchema.safeParse({
+      ...input,
+      documentUrl,
+    });
+    if (!parsed.success) {
+      throw new Error("Data invoice/bon PO tidak valid.");
+    }
+
     const updated = await prisma.$transaction(async (transaction) => {
       const order = await transaction.purchaseOrder.findUnique({
         where: { publicCode },
@@ -804,6 +891,23 @@ export async function submitPurchaseOrderInvoice(
       invoiceId: updated.invoiceId,
     };
   } catch (error) {
+    if (documentUrl) {
+      try {
+        if (documentUrl.includes("/raw/upload/")) {
+          await removeCloudinaryRawFile(documentUrl);
+        } else {
+          await removeCloudinaryPhoto(documentUrl);
+        }
+      } catch (cleanupError) {
+        console.error("Removing unattached PO invoice failed:", cleanupError);
+      }
+    }
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryRawFileValidationError
+    ) {
+      return fail(error.message);
+    }
     console.error("Purchase order invoice submission failed:", error);
     return fail(
       error instanceof Error

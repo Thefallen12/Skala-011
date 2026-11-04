@@ -10,6 +10,9 @@ import { prisma } from "@/lib/prisma";
 import {
   isManagedUserProfilePhotoUrl,
   removeUserProfilePhoto,
+  saveUserProfilePhoto,
+  ProfilePhotoValidationError,
+  type SavedUserProfilePhoto,
 } from "@/lib/user-profile-photos";
 
 export type AccountActionResult = {
@@ -118,6 +121,7 @@ export async function updateUserDetails(
     profilePhotoUrl: string;
     role: string;
     isActive: boolean;
+    profilePhotoFile?: File | null;
   },
 ): Promise<AccountActionResult> {
   const manager = await requireUserManager();
@@ -133,7 +137,9 @@ export async function updateUserDetails(
     typeof details.phone !== "string" ||
     typeof details.profilePhotoUrl !== "string" ||
     typeof details.role !== "string" ||
-    typeof details.isActive !== "boolean"
+    typeof details.isActive !== "boolean" ||
+    (details.profilePhotoFile != null &&
+      !(details.profilePhotoFile instanceof File))
   ) {
     return { success: false, message: "Data akun tidak valid." };
   }
@@ -173,14 +179,12 @@ export async function updateUserDetails(
   if (!target) {
     return { success: false, message: "Akun tidak ditemukan." };
   }
-  const profilePhotoChanged = profilePhotoUrl !== target.profilePhotoUrl;
-  if (
-    profilePhotoChanged &&
-    profilePhotoUrl &&
-    !isManagedUserProfilePhotoUrl(profilePhotoUrl)
-  ) {
-    return { success: false, message: "Foto profil Cloudinary tidak valid." };
-  }
+  const photoFile =
+    details.profilePhotoFile instanceof File && details.profilePhotoFile.size > 0
+      ? details.profilePhotoFile
+      : null;
+  let newPhoto: SavedUserProfilePhoto | null = null;
+  let savedProfilePhotoUrl = profilePhotoUrl;
   if (
     target.isActive &&
     canManageUsers(target.role) &&
@@ -201,6 +205,28 @@ export async function updateUserDetails(
     }
   }
 
+  if (photoFile) {
+    try {
+      newPhoto = await saveUserProfilePhoto(photoFile);
+      savedProfilePhotoUrl = newPhoto.url;
+    } catch (error) {
+      if (error instanceof ProfilePhotoValidationError) {
+        return { success: false, message: error.message };
+      }
+      console.error("Uploading managed user profile photo failed:", error);
+      return { success: false, message: "Foto profil gagal diunggah." };
+    }
+  }
+  const profilePhotoChanged = savedProfilePhotoUrl !== target.profilePhotoUrl;
+  if (
+    profilePhotoChanged &&
+    savedProfilePhotoUrl &&
+    !isManagedUserProfilePhotoUrl(savedProfilePhotoUrl)
+  ) {
+    if (newPhoto) await removeUserProfilePhoto(newPhoto.url);
+    return { success: false, message: "Foto profil Cloudinary tidak valid." };
+  }
+
   try {
     await prisma.user.update({
       where: { id: target.id },
@@ -210,10 +236,20 @@ export async function updateUserDetails(
         phone: phone || null,
         role: details.role,
         isActive: details.isActive,
-        profilePhotoUrl,
+        profilePhotoUrl: savedProfilePhotoUrl,
       },
     });
   } catch (error) {
+    if (newPhoto) {
+      try {
+        await removeUserProfilePhoto(newPhoto.url);
+      } catch (cleanupError) {
+        console.error("Removing unattached managed user photo failed:", cleanupError);
+      }
+    }
+    if (error instanceof ProfilePhotoValidationError) {
+      return { success: false, message: error.message };
+    }
     if (isUniqueConstraintError(error)) {
       return { success: false, message: "Email tersebut sudah digunakan akun lain." };
     }

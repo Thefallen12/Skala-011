@@ -178,8 +178,6 @@ export default function LogisticsHub({
   stockPurchases,
   purchaseOrderConfirmations,
   documentSignoffTasks,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   purchaseOrders,
   deliveryOrders,
   equipmentLogs,
@@ -197,8 +195,6 @@ export default function LogisticsHub({
   stockPurchases: DirectStockPurchaseRow[];
   purchaseOrderConfirmations: PurchaseOrderConfirmationRow[];
   documentSignoffTasks: DocumentSignoffTask[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   purchaseOrders: HubPurchaseOrder[];
   deliveryOrders: HubDeliveryOrder[];
   equipmentLogs: EquipmentLogRow[];
@@ -362,8 +358,6 @@ export default function LogisticsHub({
           vendors={vendors}
           vehicles={vehicles}
           stockItems={stockItems}
-          cloudinaryCloudName={cloudinaryCloudName}
-          cloudinaryApiKey={cloudinaryApiKey}
           initialOpenSheet={initialOpenSheet}
         />
       </TabsContent>
@@ -375,8 +369,6 @@ export default function LogisticsHub({
           role={role}
           vendors={vendors}
           vehicles={vehicles}
-          cloudinaryCloudName={cloudinaryCloudName}
-          cloudinaryApiKey={cloudinaryApiKey}
           mode="stock"
           stockItems={stockItems}
           stockPurchases={stockPurchases}
@@ -426,8 +418,6 @@ export default function LogisticsHub({
                           ticketLinked={Boolean(order.ticketId)}
                           items={order.items}
                           includeTax={order.includeTax}
-                          cloudinaryCloudName={cloudinaryCloudName}
-                          cloudinaryApiKey={cloudinaryApiKey}
                         />
                       ) : (
                         <Badge

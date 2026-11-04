@@ -5,6 +5,10 @@ import { auth } from "../../../auth";
 import { UserRole } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { isFinanceCashflowProofUrl } from "@/lib/finance-cashflow";
+import {
+  removeUploadedCashflowProof,
+  uploadCashflowProof,
+} from "@/app/actions/finance-cashflow";
 
 const expenseTypes = ["SALARY", "ADVANCE", "REIMBURSEMENT"] as const;
 const paymentMethods = ["CASH", "TRANSFER"] as const;
@@ -16,7 +20,7 @@ export type OfficeExpenseInput = {
   recipientId: string;
   accountId: string;
   paymentMethod: (typeof paymentMethods)[number];
-  proofUrls: string[];
+  proofFiles: File[];
 };
 
 export type OfficeExpenseActionResult = {
@@ -56,17 +60,22 @@ export async function recordOfficeExpense(
     Math.abs(input.amount * 100 - Math.round(input.amount * 100)) >= 1e-8 ||
     !isBoundedText(input.recipientId, 100) ||
     !isBoundedText(input.accountId, 100) ||
-    !Array.isArray(input.proofUrls) ||
-    input.proofUrls.length > 5 ||
-    input.proofUrls.length <
+    !Array.isArray(input.proofFiles) ||
+    input.proofFiles.length > 5 ||
+    input.proofFiles.length <
       (input.expenseType === "REIMBURSEMENT" ? 2 : 1) ||
-    input.proofUrls.some(
-      (url) =>
-        typeof url !== "string" ||
-        url.length > 2048 ||
-        !isFinanceCashflowProofUrl(url),
-    ) ||
-    new Set(input.proofUrls).size !== input.proofUrls.length
+    input.proofFiles.some(
+      (file) =>
+        !(file instanceof File) ||
+        file.size < 1 ||
+        file.size > 5 * 1024 * 1024 ||
+        ![
+          "application/pdf",
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+        ].includes(file.type),
+    )
   ) {
     return {
       success: false,
@@ -74,7 +83,35 @@ export async function recordOfficeExpense(
     };
   }
 
+  const [recipientBeforeUpload, accountBeforeUpload] = await Promise.all([
+    prisma.user.findFirst({
+      where: { id: input.recipientId, isActive: true },
+      select: { id: true },
+    }),
+    prisma.financeAccount.findUnique({
+      where: { id: input.accountId },
+      select: { id: true, balance: true },
+    }),
+  ]);
+  if (!recipientBeforeUpload) {
+    return { success: false, message: "Penerima tidak ditemukan atau tidak aktif." };
+  }
+  if (!accountBeforeUpload) {
+    return { success: false, message: "Akun kas/bank sumber dana tidak ditemukan." };
+  }
+  if (accountBeforeUpload.balance < input.amount) {
+    return { success: false, message: "Saldo di akun kas/bank ini tidak mencukupi!" };
+  }
+
+  const uploadedProofUrls: string[] = [];
   try {
+    for (const file of input.proofFiles) {
+      uploadedProofUrls.push(await uploadCashflowProof(file));
+    }
+    if (uploadedProofUrls.some((url) => !isFinanceCashflowProofUrl(url))) {
+      throw new OfficeExpenseError("URL bukti transaksi tidak valid.");
+    }
+
     await prisma.$transaction(async (transaction) => {
       const recipient = await transaction.user.findFirst({
         where: { id: input.recipientId, isActive: true },
@@ -109,7 +146,7 @@ export async function recordOfficeExpense(
           amount: input.amount,
           sourceDesc: `[${input.expenseType}] ${input.description.trim()}`,
           paymentMethod: input.paymentMethod,
-          proofUrl: input.proofUrls[0],
+          proofUrl: uploadedProofUrls[0],
           accountId: input.accountId,
           recordedBy: session.user.id,
         },
@@ -124,7 +161,7 @@ export async function recordOfficeExpense(
           recipientId: input.recipientId,
           accountId: input.accountId,
           paymentMethod: input.paymentMethod,
-          proofUrls: input.proofUrls,
+          proofUrls: uploadedProofUrls,
           recordedBy: session.user.id,
           cashflowId: cashflow.id,
         },
@@ -134,6 +171,11 @@ export async function recordOfficeExpense(
     revalidatePath("/apps/finance");
     return { success: true, message: "Pengeluaran internal berhasil dicatat." };
   } catch (error) {
+    await Promise.all(
+      uploadedProofUrls.map(async (url) => {
+        await removeUploadedCashflowProof(url);
+      }),
+    );
     if (error instanceof OfficeExpenseError) {
       return { success: false, message: error.message };
     }

@@ -329,8 +329,6 @@ export default function FinanceHub({
   role,
   initialTab,
   initialOpenSheet,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   dashboardMonths,
   financeAccounts,
   officeExpenses,
@@ -356,8 +354,6 @@ export default function FinanceHub({
   role: UserRole;
   initialTab?: string;
   initialOpenSheet?: string;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   dashboardMonths: FinanceDashboardMonth[];
   financeAccounts: FinanceAccountOption[];
   officeExpenses: FinanceOfficeExpense[];
@@ -2802,8 +2798,6 @@ export default function FinanceHub({
           onClose={() => setOfficeExpenseOpen(false)}
           accounts={financeAccounts}
           recipients={officeExpenseRecipients}
-          cloudinaryCloudName={cloudinaryCloudName}
-          cloudinaryApiKey={cloudinaryApiKey}
         />
       )}
     </div>

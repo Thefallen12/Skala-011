@@ -11,6 +11,7 @@ import {
   type PrivatePhotoMimeType,
 } from "@/lib/private-photos";
 import { USER_PROFILE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/user-profile-photo-config";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 const photoDirectory = process.env.USER_PROFILE_UPLOAD_DIR
@@ -42,7 +43,7 @@ async function uploadProfileSourceToCloudinary(
 }
 
 export function isManagedUserProfilePhotoUrl(value: string): boolean {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudName = getCloudinaryCredentials()?.cloudName;
   const publicId = getCloudinaryPublicId(value);
   if (!cloudName || !publicId) return false;
 

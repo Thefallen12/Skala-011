@@ -20,7 +20,6 @@ import {
 import { format, formatDistanceToNowStrict, isAfter, subDays } from "date-fns";
 import { id } from "date-fns/locale";
 import { UserRole } from "@/generated/prisma/enums";
-import { CldUploadWidget } from "next-cloudinary";
 import type { UserChartRecord } from "./UserManagementCharts";
 import CardBox from "@/app/components/shared/CardBox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -51,7 +50,6 @@ import {
   type AccountActionResult,
 } from "@/app/actions/users";
 import { createAccount, type RegisterState } from "@/app/auth/register/actions";
-import { USER_PROFILE_PHOTO_CLOUDINARY_FOLDER } from "@/lib/user-profile-photo-config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -172,15 +170,9 @@ function isRecentLogin(lastLoginAt: string | null): boolean {
 
 export default function UserManagementDashboard({
   currentUserId,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
-  cloudinaryConfigured,
   users,
 }: {
   currentUserId: string;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
-  cloudinaryConfigured: boolean;
   users: ManagedUser[];
 }) {
   const [query, setQuery] = useState("");
@@ -189,6 +181,7 @@ export default function UserManagementDashboard({
   const [accountDialogOpen, setAccountDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<ManagedUser | null>(null);
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null);
+  const [profilePhotoFile, setProfilePhotoFile] = useState<File | null>(null);
   const [photoUploadError, setPhotoUploadError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ManagedUser | null>(null);
   const [message, setMessage] = useState<AccountActionResult | null>(null);
@@ -202,6 +195,7 @@ export default function UserManagementDashboard({
     try {
       const firstName = String(formData.get("firstName") ?? "").trim();
       const lastName = String(formData.get("lastName") ?? "").trim();
+      const selectedPhoto = formData.get("profilePhotoFile");
       formData.set("name", [firstName, lastName].filter(Boolean).join(" "));
       const result = editingUser
         ? await updateUserDetails(editingUser.id, {
@@ -209,6 +203,8 @@ export default function UserManagementDashboard({
             email: String(formData.get("email")),
             phone: String(formData.get("phone") ?? ""),
             profilePhotoUrl: String(formData.get("profilePhotoUrl") ?? ""),
+            profilePhotoFile:
+              selectedPhoto instanceof File ? selectedPhoto : null,
             role: String(formData.get("role")),
             isActive: formData.get("isActive") === "true",
           })
@@ -221,6 +217,7 @@ export default function UserManagementDashboard({
         setAccountDialogOpen(false);
         setEditingUser(null);
         setProfilePhotoUrl(null);
+        setProfilePhotoFile(null);
       }
     } catch (error) {
       console.error("User account save request failed:", error);
@@ -236,6 +233,7 @@ export default function UserManagementDashboard({
   const openNewAccount = () => {
     setEditingUser(null);
     setProfilePhotoUrl(null);
+    setProfilePhotoFile(null);
     setPhotoUploadError(null);
     setAccountDialogOpen(true);
   };
@@ -243,6 +241,7 @@ export default function UserManagementDashboard({
   const openEditAccount = (user: ManagedUser) => {
     setEditingUser(user);
     setProfilePhotoUrl(user.profilePhotoUrl);
+    setProfilePhotoFile(null);
     setPhotoUploadError(null);
     setAccountDialogOpen(true);
   };
@@ -908,93 +907,57 @@ export default function UserManagementDashboard({
               value={profilePhotoUrl ?? ""}
             />
             <div className="flex flex-col items-center gap-3 rounded-lg border border-border p-4">
-              {cloudinaryConfigured ? (
-                <CldUploadWidget
-                  config={{
-                    cloud: {
-                      cloudName: cloudinaryCloudName,
-                      apiKey: cloudinaryApiKey,
-                    },
-                  }}
-                  signatureEndpoint="/api/cloudinary/profile-photo-signature"
-                  options={{
-                    folder: USER_PROFILE_PHOTO_CLOUDINARY_FOLDER,
-                    resourceType: "image",
-                    sources: ["local", "camera"],
-                    multiple: false,
-                    maxFiles: 1,
-                    maxFileSize: 5 * 1024 * 1024,
-                    clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
-                    cropping: true,
-                    croppingAspectRatio: 1,
-                    showPoweredBy: false,
-                  }}
-                  onSuccess={(results) => {
-                    if (
-                      results.event === "success" &&
-                      typeof results.info === "object" &&
-                      results.info !== null &&
-                      typeof results.info.secure_url === "string"
-                    ) {
-                      setProfilePhotoUrl(results.info.secure_url);
-                      setPhotoUploadError(null);
-                    }
-                  }}
-                  onError={(error) => {
-                    console.error("Profile photo upload failed:", error);
-                    const detail =
-                      typeof error === "string"
-                        ? error
-                        : error?.statusText || error?.status;
-                    setPhotoUploadError(
-                      detail
-                        ? `Foto gagal diunggah (${detail}). Periksa konfigurasi dan koneksi Cloudinary.`
-                        : "Foto gagal diunggah. Periksa konfigurasi dan koneksi Cloudinary.",
-                    );
-                  }}
-                >
-                  {({ open }) => (
-                    <>
-                      <button
-                        type="button"
-                        aria-label="Pilih foto profil"
-                        onClick={() => open()}
-                        className="rounded-full transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                      >
-                        <Avatar className="size-24 border border-border">
-                          <AvatarImage
-                            src={profilePhotoUrl ?? undefined}
-                            alt="Pratinjau foto profil"
-                            className="object-cover"
-                          />
-                          <AvatarFallback className="bg-[#102A4D] text-white">
-                            {profilePhotoUrl
-                              ? "Foto"
-                              : editingUser
-                                ? getInitials(editingUser.name)
-                                : "Upload"}
-                          </AvatarFallback>
-                        </Avatar>
-                      </button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={() => open()}
-                      >
-                        <Camera className="size-4" aria-hidden="true" />
-                        Ubah Foto Profil
-                      </Button>
-                    </>
-                  )}
-                </CldUploadWidget>
-              ) : (
-                <p role="alert" className="text-center text-sm text-destructive">
-                  Upload foto belum tersedia. Administrator perlu mengatur
-                  CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan
-                  CLOUDINARY_API_SECRET pada environment server.
+              <Avatar className="size-24 border border-border">
+                <AvatarImage
+                  src={profilePhotoUrl ?? undefined}
+                  alt="Foto profil saat ini"
+                  className="object-cover"
+                />
+                <AvatarFallback className="bg-[#102A4D] text-white">
+                  {profilePhotoUrl
+                    ? "Foto"
+                    : editingUser
+                      ? getInitials(editingUser.name)
+                      : "Upload"}
+                </AvatarFallback>
+              </Avatar>
+              <Label htmlFor="managed-user-photo" className="cursor-pointer">
+                <span className="inline-flex h-9 items-center gap-2 rounded-md border px-3 text-sm hover:bg-muted">
+                  <Camera className="size-4" aria-hidden="true" />
+                  Pilih Foto Profil
+                </span>
+              </Label>
+              <Input
+                id="managed-user-photo"
+                name="profilePhotoFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={isSavingAccount}
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0] ?? null;
+                  if (
+                    file &&
+                    (file.size < 1 ||
+                      file.size > 5 * 1024 * 1024 ||
+                      !["image/jpeg", "image/png", "image/webp"].includes(file.type))
+                  ) {
+                    setPhotoUploadError("Pilih foto JPG, PNG, atau WEBP maksimal 5 MB.");
+                    setProfilePhotoFile(null);
+                    event.currentTarget.value = "";
+                    return;
+                  }
+                  setProfilePhotoFile(file);
+                  setPhotoUploadError(null);
+                }}
+              />
+              {profilePhotoFile && (
+                <p className="text-xs text-muted-foreground">
+                  Foto lokal siap disimpan: {profilePhotoFile.name}
                 </p>
               )}
+              <p className="text-xs text-muted-foreground">
+                Foto diunggah ke Cloudinary saat Simpan Pengguna ditekan.
+              </p>
               {photoUploadError && (
                 <p role="alert" className="text-sm text-destructive">
                   {photoUploadError}

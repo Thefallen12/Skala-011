@@ -6,7 +6,13 @@ import { revalidatePath } from "next/cache";
 import { UserRole } from "@/generated/prisma/enums";
 import { canManageUsers } from "@/lib/user-access";
 import { prisma } from "@/lib/prisma";
-import { isManagedUserProfilePhotoUrl } from "@/lib/user-profile-photos";
+import {
+  isManagedUserProfilePhotoUrl,
+  ProfilePhotoValidationError,
+  removeUserProfilePhoto,
+  saveUserProfilePhoto,
+  type SavedUserProfilePhoto,
+} from "@/lib/user-profile-photos";
 import { auth } from "../../../../auth";
 
 export type RegisterState = {
@@ -45,13 +51,16 @@ export async function createAccount(
   const role = formData.get("role");
   const phoneValue = formData.get("phone");
   const profilePhotoValue = formData.get("profilePhotoUrl");
+  const profilePhotoFileValue = formData.get("profilePhotoFile");
 
   if (
     typeof name !== "string" ||
     typeof email !== "string" ||
     typeof password !== "string" ||
     typeof role !== "string" ||
-    (profilePhotoValue !== null && typeof profilePhotoValue !== "string")
+    (profilePhotoValue !== null && typeof profilePhotoValue !== "string") ||
+    (profilePhotoFileValue !== null &&
+      !(profilePhotoFileValue instanceof File))
   ) {
     return { status: "error", message: "Data formulir tidak valid." };
   }
@@ -93,6 +102,10 @@ export async function createAccount(
   }
   const profilePhotoUrl =
     typeof profilePhotoValue === "string" ? profilePhotoValue.trim() : "";
+  const profilePhotoFile =
+    profilePhotoFileValue instanceof File && profilePhotoFileValue.size > 0
+      ? profilePhotoFileValue
+      : null;
   if (
     profilePhotoUrl.length > 2048 ||
     (profilePhotoUrl && !isManagedUserProfilePhotoUrl(profilePhotoUrl))
@@ -100,14 +113,18 @@ export async function createAccount(
     return { status: "error", message: "Foto profil Cloudinary tidak valid." };
   }
 
+  let newPhoto: SavedUserProfilePhoto | null = null;
   try {
+    if (profilePhotoFile) {
+      newPhoto = await saveUserProfilePhoto(profilePhotoFile);
+    }
     await prisma.user.create({
       data: {
         id: randomUUID(),
         name: normalizedName,
         email: normalizedEmail,
         phone: phone || null,
-        profilePhotoUrl: profilePhotoUrl || null,
+        profilePhotoUrl: newPhoto?.url ?? (profilePhotoUrl || null),
         passwordHash: await hash(password, 12),
         role,
         isActive: formData.get("isActive") === "false" ? false : true,
@@ -115,6 +132,16 @@ export async function createAccount(
       },
     });
   } catch (error) {
+    if (newPhoto) {
+      try {
+        await removeUserProfilePhoto(newPhoto.url);
+      } catch (cleanupError) {
+        console.error("Removing unattached new account photo failed:", cleanupError);
+      }
+    }
+    if (error instanceof ProfilePhotoValidationError) {
+      return { status: "error", message: error.message };
+    }
     if (isUniqueConstraintError(error)) {
       return {
         status: "error",

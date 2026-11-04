@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { CldUploadWidget } from "next-cloudinary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -19,9 +17,8 @@ import { GlobalModal } from "@/components/ui/global-modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { FINANCE_CASHFLOW_CLOUDINARY_FOLDER } from "@/lib/finance-cashflow-config";
 import { parseRupiahInput } from "@/lib/indonesian-currency";
-import { FileText, ReceiptText, Trash2, Upload, Wallet } from "lucide-react";
+import { FileText, ReceiptText, Trash2, Wallet } from "lucide-react";
 
 const officeExpenseSchema = z.object({
   expenseType: z.enum(["SALARY", "ADVANCE", "REIMBURSEMENT"]),
@@ -37,7 +34,7 @@ const officeExpenseSchema = z.object({
 });
 
 type OfficeExpenseFormValues = z.infer<typeof officeExpenseSchema>;
-type OfficeExpenseProof = { url: string; name: string };
+type OfficeExpenseProof = { file: File; name: string };
 
 const expenseTypeLabels = {
   SALARY: "Gaji",
@@ -52,28 +49,16 @@ const currency = (amount: number) =>
     maximumFractionDigits: 0,
   }).format(amount);
 
-function isImageProof(url: string) {
-  return /\/image\/upload\//.test(url);
-}
-
-function isPdfProof(url: string) {
-  return /\.pdf(?:[?#]|$)/i.test(url);
-}
-
 export default function OfficeExpenseModal({
   open,
   onClose,
   accounts,
   recipients,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
 }: {
   open: boolean;
   onClose: () => void;
   accounts: FinanceAccountOption[];
   recipients: { id: string; name: string; role: string }[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
 }) {
   const router = useRouter();
   const [proofs, setProofs] = useState<OfficeExpenseProof[]>([]);
@@ -149,7 +134,7 @@ export default function OfficeExpenseModal({
     try {
       const result = await recordOfficeExpense({
         ...values,
-        proofUrls: proofs.map((proof) => proof.url),
+        proofFiles: proofs.map((proof) => proof.file),
       } satisfies OfficeExpenseInput);
       setMessage(result.message);
       setIsError(!result.success);
@@ -332,72 +317,43 @@ export default function OfficeExpenseModal({
           </div>
 
           <div className="space-y-2">
-            <Label>{proofLabel}</Label>
-            {cloudinaryCloudName && cloudinaryApiKey ? (
-              <CldUploadWidget
-                config={{
-                  cloud: {
-                    cloudName: cloudinaryCloudName,
-                    apiKey: cloudinaryApiKey,
-                  },
-                }}
-                signatureEndpoint="/api/cloudinary/finance-cashflow-signature"
-                options={{
-                  folder: FINANCE_CASHFLOW_CLOUDINARY_FOLDER,
-                  resourceType: "auto",
-                  sources: ["local", "camera"],
-                  multiple: true,
-                  maxFiles: Math.max(0, 5 - proofs.length),
-                  maxFileSize: 10 * 1024 * 1024,
-                  clientAllowedFormats: ["pdf", "jpg", "jpeg", "png", "webp"],
-                  showPoweredBy: false,
-                }}
-                onSuccess={(result) => {
-                  if (
-                    result.event === "success" &&
-                    typeof result.info === "object" &&
-                    result.info !== null &&
-                    "secure_url" in result.info &&
-                    typeof result.info.secure_url === "string"
-                  ) {
-                    const info = result.info;
-                    const name =
-                      "original_filename" in info &&
-                      typeof info.original_filename === "string"
-                        ? info.original_filename
-                        : "Bukti pengeluaran";
-                    setProofs((current) =>
-                      current.some((proof) => proof.url === info.secure_url) ||
-                      current.length >= 5
-                        ? current
-                        : [...current, { url: info.secure_url, name }],
-                    );
-                    setProofError("");
-                  }
-                }}
-                onError={(error) => {
-                  console.error("Office expense proof upload failed:", error);
-                  setProofError("Upload bukti gagal. Silakan coba kembali.");
-                }}
-              >
-                {({ open: openUpload }) => (
-                  <button
-                    type="button"
-                    disabled={proofs.length >= 5}
-                    onClick={() => openUpload()}
-                    className="flex min-h-24 w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-orange-500/50 bg-orange-500/5 px-4 py-3 text-center text-sm text-muted-foreground transition hover:bg-orange-500/10 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <Upload className="size-5 text-orange-600" aria-hidden="true" />
-                    <span>Unggah foto atau dokumen bukti</span>
-                    <span className="text-xs">PDF, JPG, PNG, WEBP · Maks. 10 MB/file · Maks. 5 file</span>
-                  </button>
-                )}
-              </CldUploadWidget>
-            ) : (
-              <p className="rounded-md border border-destructive/40 p-3 text-sm text-destructive" role="alert">
-                Upload bukti tidak tersedia. Periksa konfigurasi Cloudinary.
-              </p>
-            )}
+            <Label htmlFor={`${formId}-proofs`}>{proofLabel}</Label>
+            <Input
+              id={`${formId}-proofs`}
+              type="file"
+              accept="application/pdf,image/jpeg,image/png,image/webp"
+              multiple
+              disabled={isPending || proofs.length >= 5}
+              onChange={(event) => {
+                const selectedFiles = Array.from(event.currentTarget.files ?? []);
+                const validFiles = selectedFiles.filter(
+                  (file) =>
+                    file.size > 0 &&
+                    file.size <= 5 * 1024 * 1024 &&
+                    [
+                      "application/pdf",
+                      "image/jpeg",
+                      "image/png",
+                      "image/webp",
+                    ].includes(file.type),
+                );
+                setProofs((current) =>
+                  [
+                    ...current,
+                    ...validFiles.map((file) => ({ file, name: file.name })),
+                  ].slice(0, 5),
+                );
+                setProofError(
+                  validFiles.length !== selectedFiles.length
+                    ? "Pilih PDF, JPG, PNG, atau WEBP berukuran maksimal 5 MB."
+                    : "",
+                );
+                event.currentTarget.value = "";
+              }}
+            />
+            <p className="text-xs text-muted-foreground">
+              File tetap lokal sampai tombol Simpan Pengeluaran ditekan. PDF, JPG, PNG, WEBP · Maks. 5 MB/file · Maks. 5 file.
+            </p>
             <p className="text-xs text-muted-foreground">
               {expenseType === "REIMBURSEMENT"
                 ? "Untuk reimbursement, unggah minimal dua file: nota pembelian dan bukti pembayaran."
@@ -412,38 +368,21 @@ export default function OfficeExpenseModal({
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {proofs.map((proof) => (
                   <div
-                    key={proof.url}
+                    key={`${proof.file.name}-${proof.file.lastModified}-${proof.file.size}`}
                     className="overflow-hidden rounded-lg border bg-card"
                   >
-                    {isImageProof(proof.url) ? (
-                      <Image
-                        src={proof.url}
-                        alt={proof.name}
-                        width={320}
-                        height={200}
-                        unoptimized
-                        className="h-28 w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-28 flex-col items-center justify-center gap-2 bg-muted/50 text-muted-foreground">
-                        {isPdfProof(proof.url) ? (
-                          <FileText className="size-8" aria-hidden="true" />
-                        ) : (
-                          <ReceiptText className="size-8" aria-hidden="true" />
-                        )}
-                        <span className="text-xs">Dokumen bukti</span>
-                      </div>
-                    )}
+                    <div className="flex h-28 flex-col items-center justify-center gap-2 bg-muted/50 text-muted-foreground">
+                      {proof.file.type === "application/pdf" ? (
+                        <FileText className="size-8" aria-hidden="true" />
+                      ) : (
+                        <ReceiptText className="size-8" aria-hidden="true" />
+                      )}
+                      <span className="text-xs">File lokal siap disimpan</span>
+                    </div>
                     <div className="flex items-center justify-between gap-2 p-2">
-                      <a
-                        href={proof.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="min-w-0 truncate text-xs text-primary underline"
-                        title={proof.name}
-                      >
+                      <span className="min-w-0 truncate text-xs" title={proof.name}>
                         {proof.name}
-                      </a>
+                      </span>
                       <Button
                         type="button"
                         size="icon"
@@ -451,7 +390,7 @@ export default function OfficeExpenseModal({
                         aria-label={`Hapus ${proof.name}`}
                         onClick={() =>
                           setProofs((current) =>
-                            current.filter((item) => item.url !== proof.url),
+                            current.filter((item) => item !== proof),
                           )
                         }
                       >

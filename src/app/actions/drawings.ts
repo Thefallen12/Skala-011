@@ -10,6 +10,17 @@ import {
   DRAWING_FILE_EXTENSIONS,
 } from "@/lib/drawing-document-config";
 import {
+  CloudinaryPhotoValidationError,
+  removeCloudinaryPhoto,
+  uploadCloudinaryPhoto,
+} from "@/lib/cloudinary-photos";
+import {
+  CloudinaryRawFileValidationError,
+  removeCloudinaryRawFile,
+  uploadCloudinaryRawFile,
+} from "@/lib/cloudinary-raw-files";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
+import {
   drawingReviewRoles,
   drawingUploadRoles,
 } from "@/lib/user-access";
@@ -24,7 +35,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function isDrawingFileUrl(value: string): boolean {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudName = getCloudinaryCredentials()?.cloudName;
   if (!cloudName) return false;
 
   try {
@@ -55,9 +66,39 @@ function isDrawingImageUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
     const segments = parsed.pathname.split("/").filter(Boolean);
-    return segments[0] === process.env.CLOUDINARY_CLOUD_NAME && segments[1] === "image";
+    return segments[0] === getCloudinaryCredentials()?.cloudName && segments[1] === "image";
   } catch {
     return false;
+  }
+}
+
+async function uploadDrawingFile(file: File): Promise<string> {
+  const extension = file.name.split(".").at(-1)?.toLowerCase();
+  if (!extension || !DRAWING_FILE_EXTENSIONS.includes(extension as (typeof DRAWING_FILE_EXTENSIONS)[number])) {
+    throw new CloudinaryRawFileValidationError("Format file gambar kerja tidak didukung.");
+  }
+  if (["jpg", "jpeg", "png", "webp"].includes(extension)) {
+    return (
+      await uploadCloudinaryPhoto(
+        file,
+        DRAWING_DOCUMENT_CLOUDINARY_FOLDER,
+        50 * 1024 * 1024,
+      )
+    ).secureUrl;
+  }
+  return uploadCloudinaryRawFile(
+    file,
+    DRAWING_DOCUMENT_CLOUDINARY_FOLDER,
+    DRAWING_FILE_EXTENSIONS,
+    50 * 1024 * 1024,
+  );
+}
+
+async function removeDrawingFile(url: string): Promise<void> {
+  if (isDrawingImageUrl(url)) {
+    await removeCloudinaryPhoto(url);
+  } else {
+    await removeCloudinaryRawFile(url);
   }
 }
 
@@ -92,17 +133,14 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
     typeof input.projectId === "string" && input.projectId
       ? input.projectId
       : null;
-  const fileUrl = typeof input.fileUrl === "string" ? input.fileUrl.trim() : "";
-  const thumbnailUrl =
-    typeof input.thumbnailUrl === "string" ? input.thumbnailUrl.trim() : "";
+  const file = input.file;
 
   if (
     !/^[A-Z0-9][A-Z0-9._-]{3,49}$/.test(drawingCode) ||
     title.length < 3 ||
     title.length > 180 ||
     !DRAWING_CATEGORIES.some((item) => item === category) ||
-    !isDrawingFileUrl(fileUrl) ||
-    (thumbnailUrl && !isDrawingFileUrl(thumbnailUrl))
+    !(file instanceof File)
   ) {
     return { success: false, message: "Periksa kode, judul, kategori, dan file gambar." };
   }
@@ -117,7 +155,12 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
     }
   }
 
+  let fileUrl = "";
   try {
+    fileUrl = await uploadDrawingFile(file);
+    if (!isDrawingFileUrl(fileUrl)) {
+      throw new Error("Cloudinary mengembalikan URL gambar kerja yang tidak valid.");
+    }
     await prisma.drawingDocument.create({
       data: {
         drawingCode,
@@ -127,7 +170,7 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
         status: "REVIEW",
         version: 0,
         fileUrl,
-        thumbnailUrl: thumbnailUrl || null,
+        thumbnailUrl: isDrawingImageUrl(fileUrl) ? fileUrl : null,
         uploadedById: actor.id,
         logs: {
           create: {
@@ -141,6 +184,13 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
       },
     });
   } catch (error) {
+    if (fileUrl) {
+      try {
+        await removeDrawingFile(fileUrl);
+      } catch (cleanupError) {
+        console.error("Removing unattached drawing file failed:", cleanupError);
+      }
+    }
     if (
       typeof error === "object" &&
       error !== null &&
@@ -148,6 +198,12 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
       error.code === "P2002"
     ) {
       return { success: false, message: "ID gambar sudah digunakan." };
+    }
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryRawFileValidationError
+    ) {
+      return { success: false, message: error.message };
     }
     console.error("Creating drawing document failed:", error);
     return { success: false, message: "Gambar kerja gagal disimpan." };
@@ -159,7 +215,7 @@ export async function createDrawingDocument(input: unknown): Promise<DrawingActi
 
 export async function uploadDrawingRevision(
   drawingId: string,
-  fileUrl: string,
+  file: File,
   notes: string,
 ): Promise<DrawingActionResult> {
   const actor = await getActiveActor(drawingUploadRoles);
@@ -169,15 +225,19 @@ export async function uploadDrawingRevision(
   if (
     typeof drawingId !== "string" ||
     !drawingId ||
-    typeof fileUrl !== "string" ||
-    !isDrawingFileUrl(fileUrl) ||
+    !(file instanceof File) ||
     typeof notes !== "string" ||
     notes.trim().length > 2000
   ) {
     return { success: false, message: "Data revisi tidak valid." };
   }
 
+  let fileUrl = "";
   try {
+    fileUrl = await uploadDrawingFile(file);
+    if (!isDrawingFileUrl(fileUrl)) {
+      throw new Error("Cloudinary mengembalikan URL gambar kerja yang tidak valid.");
+    }
     await prisma.$transaction(async (transaction) => {
       const current = await transaction.drawingDocument.findUnique({
         where: { id: drawingId },
@@ -207,6 +267,13 @@ export async function uploadDrawingRevision(
       });
     });
   } catch (error) {
+    if (fileUrl) {
+      try {
+        await removeDrawingFile(fileUrl);
+      } catch (cleanupError) {
+        console.error("Removing unattached drawing revision failed:", cleanupError);
+      }
+    }
     if (error instanceof Error && error.message === "DRAWING_NOT_FOUND") {
       return { success: false, message: "Gambar kerja tidak ditemukan." };
     }
@@ -267,6 +334,12 @@ export async function reviewDrawingDocument(
     }
     if (error instanceof Error && error.message === "DRAWING_NOT_IN_REVIEW") {
       return { success: false, message: "Hanya gambar dalam antrean review yang dapat diproses." };
+    }
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryRawFileValidationError
+    ) {
+      return { success: false, message: error.message };
     }
     console.error("Reviewing drawing document failed:", error);
     return { success: false, message: "Review gambar kerja gagal disimpan." };

@@ -48,6 +48,11 @@ import {
   removeCloudinaryPhoto,
   uploadCloudinaryPhoto,
 } from "@/lib/cloudinary-photos";
+import {
+  CloudinaryRawFileValidationError,
+  removeCloudinaryRawFile,
+  uploadCloudinaryRawFile,
+} from "@/lib/cloudinary-raw-files";
 import { CloudinaryPrivatePdfValidationError } from "@/lib/cloudinary-private-pdfs";
 import {
   removeTicketReceipt,
@@ -63,6 +68,7 @@ import { isPurchaseOrderInvoiceUrl } from "@/lib/purchase-order-invoices";
 import { PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER } from "@/lib/purchase-order-invoice-config";
 import { recordFinanceCashflowOutflow } from "@/lib/finance-cashflow-ledger";
 import { isTicketRequestReceiptUrl } from "@/lib/ticket-request-receipts";
+import { REQUEST_DOCUMENT_CLOUDINARY_FOLDER } from "@/lib/request-document-config";
 
 async function storeFinancePaymentProof(proof: File | string): Promise<string> {
   if (typeof proof === "string") {
@@ -111,7 +117,7 @@ export type CreateTicketInput = {
   transferDestination?: string;
   requestPaymentDescription?: string;
   requestedAmount?: number;
-  receiptUrls?: string[];
+  receiptFiles?: File[];
   items: TicketItemInput[];
 };
 
@@ -1832,21 +1838,26 @@ export async function createTicket(
       "Kebutuhan lapangan hanya dapat diajukan oleh Tim Lapangan.",
     );
   }
-  const receiptUrls = input.receiptUrls ?? [];
+  const receiptFiles = input.receiptFiles ?? [];
   if (
-    !Array.isArray(receiptUrls) ||
-    receiptUrls.length > 5 ||
-    receiptUrls.some(
-      (url) =>
-        typeof url !== "string" ||
-        url.length > 2048 ||
-        !isTicketRequestReceiptUrl(url),
+    !Array.isArray(receiptFiles) ||
+    receiptFiles.length > 5 ||
+    receiptFiles.some(
+      (file) =>
+        !(file instanceof File) ||
+        file.size < 1 ||
+        file.size > 10 * 1024 * 1024 ||
+        ![
+          "application/pdf",
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+        ].includes(file.type),
     ) ||
-    new Set(receiptUrls).size !== receiptUrls.length ||
     (requestCategory !== TicketRequestCategory.REIMBURSEMENT &&
-      receiptUrls.length > 0) ||
+      receiptFiles.length > 0) ||
     (requestCategory === TicketRequestCategory.REIMBURSEMENT &&
-      receiptUrls.length === 0)
+      receiptFiles.length === 0)
   ) {
     return actionFailure(
       "Bukti struk/nota tidak valid; reimbursement wajib menyertakan minimal satu bukti.",
@@ -2212,7 +2223,33 @@ export async function createTicket(
     }
   }
 
+  const receiptUrls: string[] = [];
   try {
+    for (const file of receiptFiles) {
+      if (file.type === "application/pdf") {
+        receiptUrls.push(
+          await uploadCloudinaryRawFile(
+            file,
+            REQUEST_DOCUMENT_CLOUDINARY_FOLDER,
+            ["pdf"],
+            10 * 1024 * 1024,
+          ),
+        );
+      } else {
+        receiptUrls.push(
+          (
+            await uploadCloudinaryPhoto(
+              file,
+              REQUEST_DOCUMENT_CLOUDINARY_FOLDER,
+              10 * 1024 * 1024,
+            )
+          ).secureUrl,
+        );
+      }
+    }
+    if (receiptUrls.some((url) => !isTicketRequestReceiptUrl(url))) {
+      throw new Error("URL bukti reimbursement yang diunggah tidak valid.");
+    }
     await prisma.$transaction(async (transaction) => {
       const ticketNumber = await nextTicketNumber(transaction);
       await transaction.ticket.create({
@@ -2294,8 +2331,27 @@ export async function createTicket(
       }
     });
   } catch (error) {
+    await Promise.all(
+      receiptUrls.map(async (url) => {
+        try {
+          if (url.includes("/raw/upload/")) {
+            await removeCloudinaryRawFile(url);
+          } else {
+            await removeCloudinaryPhoto(url);
+          }
+        } catch (cleanupError) {
+          console.error("Removing unattached reimbursement receipt failed:", cleanupError);
+        }
+      }),
+    );
     if (isUniqueConstraintError(error)) {
       return actionFailure("Nomor tiket bentrok. Silakan coba kembali.");
+    }
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryRawFileValidationError
+    ) {
+      return actionFailure(error.message);
     }
     console.error("Ticket creation failed:", error);
     return actionFailure("Tiket gagal dibuat. Silakan coba kembali.");
@@ -2705,7 +2761,7 @@ export async function requestTicketRevisionByDirector(
 export async function processLogisticsMaterial(
   ticketId: string,
   actionType: "READY_WAREHOUSE" | "BUY_STORE",
-  file?: File,
+  invoiceFile?: File,
   externalDelivery?: {
     vehicleDocumentNumber: string;
     vehiclePlate: string;
@@ -2714,7 +2770,7 @@ export async function processLogisticsMaterial(
     driverPhone: string;
   },
   vehicleId?: string,
-  invoiceInput?: VendorInvoiceInput,
+  invoiceInput?: Omit<VendorInvoiceInput, "documentUrl">,
 ): Promise<TicketActionResult> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -2756,16 +2812,86 @@ export async function processLogisticsMaterial(
   if (!approvedPurchaseOrder.vendorPoSentAt) {
     return actionFailure("Logistik harus mengirim PO ke vendor sebelum mengunggah invoice.");
   }
-  if (!invoiceInput) {
-    return actionFailure("Lengkapi data invoice dan unggah dokumen melalui Cloudinary.");
+  if (!invoiceInput || !(invoiceFile instanceof File)) {
+    return actionFailure("Lengkapi data invoice dan pilih file invoice/bon.");
   }
 
-  const parsedInvoice = vendorInvoiceInputSchema.safeParse(invoiceInput);
+  const ticketBeforeUpload = await prisma.ticket.findUnique({
+    where: { id: ticketId },
+    select: { id: true, type: true, status: true, purchaseReceiptUrl: true },
+  });
   if (
-    !parsedInvoice.success ||
-    !isPurchaseOrderInvoiceUrl(parsedInvoice.data.documentUrl)
+    !ticketBeforeUpload ||
+    ticketBeforeUpload.type !== TicketType.MATERIAL ||
+    ticketBeforeUpload.status !== TicketStatus.PROCESSED_LOGISTIC ||
+    ticketBeforeUpload.purchaseReceiptUrl
   ) {
-    return actionFailure("Data invoice tidak valid atau file bukan dari Cloudinary.");
+    return actionFailure("Tiket tidak lagi berada di antrean Logistik untuk invoice.");
+  }
+  const invoiceFields = vendorInvoiceInputSchema.safeParse({
+    ...invoiceInput,
+    documentUrl: "https://res.cloudinary.com/validation/placeholder.pdf",
+  });
+  if (!invoiceFields.success) {
+    return actionFailure(
+      invoiceFields.error.issues[0]?.message ?? "Data invoice tidak valid.",
+    );
+  }
+
+  const extension = invoiceFile.name.split(".").at(-1)?.toLowerCase();
+  let documentUrl = "";
+  let parsedInvoice: ReturnType<typeof vendorInvoiceInputSchema.safeParse>;
+  try {
+    if (extension === "pdf") {
+      documentUrl = await uploadCloudinaryRawFile(
+        invoiceFile,
+        PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+        ["pdf"],
+        5 * 1024 * 1024,
+      );
+    } else if (["jpg", "jpeg", "png", "webp"].includes(extension ?? "")) {
+      documentUrl = (
+        await uploadCloudinaryPhoto(
+          invoiceFile,
+          PURCHASE_ORDER_INVOICE_CLOUDINARY_FOLDER,
+          5 * 1024 * 1024,
+        )
+      ).secureUrl;
+    } else {
+      return actionFailure("File invoice/bon harus PDF, JPG, PNG, atau WEBP maksimal 5 MB.");
+    }
+    if (!isPurchaseOrderInvoiceUrl(documentUrl)) {
+      throw new Error("URL invoice/bon yang diunggah tidak valid.");
+    }
+    parsedInvoice = vendorInvoiceInputSchema.safeParse({
+      ...invoiceInput,
+      documentUrl,
+    });
+    if (!parsedInvoice.success) {
+      throw new Error("Data invoice tidak valid.");
+    }
+  } catch (error) {
+    if (documentUrl) {
+      try {
+        if (documentUrl.includes("/raw/upload/")) {
+          await removeCloudinaryRawFile(documentUrl);
+        } else {
+          await removeCloudinaryPhoto(documentUrl);
+        }
+      } catch (cleanupError) {
+        console.error("Removing unattached ticket invoice failed:", cleanupError);
+      }
+    }
+    if (
+      error instanceof CloudinaryPhotoValidationError ||
+      error instanceof CloudinaryRawFileValidationError
+    ) {
+      return actionFailure(error.message);
+    }
+    console.error("Uploading ticket PO invoice failed:", error);
+    return actionFailure(
+      error instanceof Error ? error.message : "Invoice gagal diunggah.",
+    );
   }
 
   let invoiceId: string;
@@ -2896,6 +3022,15 @@ export async function processLogisticsMaterial(
     });
   } catch (error) {
     console.error("Ticket purchase order invoice submission failed:", error);
+    try {
+      if (documentUrl.includes("/raw/upload/")) {
+        await removeCloudinaryRawFile(documentUrl);
+      } else {
+        await removeCloudinaryPhoto(documentUrl);
+      }
+    } catch (cleanupError) {
+      console.error("Removing unattached ticket invoice failed:", cleanupError);
+    }
     return actionFailure(
       error instanceof Error
         ? error.message
@@ -3276,6 +3411,7 @@ export async function createLogisticsPurchaseOrderForTicket(
     accountNumber?: string;
     accountName?: string;
     includeTax?: boolean;
+    paymentTerms?: string;
   },
 ): Promise<TicketActionResult> {
   const session = await auth();
@@ -3292,6 +3428,8 @@ export async function createLogisticsPurchaseOrderForTicket(
     !Object.values(POPaymentMethod).includes(payment.method) ||
     (payment.includeTax !== undefined &&
       typeof payment.includeTax !== "boolean") ||
+    (payment.paymentTerms !== undefined &&
+      !isBoundedText(payment.paymentTerms, 1200)) ||
     (payment.method === POPaymentMethod.TRANSFER &&
       !payment.vendorBankAccountId &&
       (!isBoundedText(payment.bankName, 120) ||
@@ -3303,7 +3441,8 @@ export async function createLogisticsPurchaseOrderForTicket(
     items.some(
       (item) =>
         !item ||
-        !isBoundedText(item.ticketItemId ?? "", 64) ||
+        (item.ticketItemId !== undefined &&
+          !isBoundedText(item.ticketItemId, 64)) ||
         !isBoundedText(item.stockItemId, 64) ||
         !isBoundedText(item.itemName, 180) ||
         !isBoundedText(item.unit, 40) ||
@@ -3379,20 +3518,20 @@ export async function createLogisticsPurchaseOrderForTicket(
       if (payment.vendorBankAccountId && !vendorBankAccount) {
         throw new Error("Rekening yang dipilih tidak terdaftar pada vendor ini.");
       }
-      const selectedTicketItemIds = items.map((item) => item.ticketItemId);
+      const selectedTicketItemIds = items
+        .map((item) => item.ticketItemId)
+        .filter((id): id is string => Boolean(id));
       if (
-        selectedTicketItemIds.some(
-          (id): id is undefined => !id,
-        ) ||
         new Set(selectedTicketItemIds).size !== selectedTicketItemIds.length
       ) {
-        throw new Error("Rincian PO harus terhubung ke item tiket yang dipilih.");
+        throw new Error("Item tiket yang sama tidak boleh dimasukkan lebih dari sekali.");
       }
       const ticketItemsById = new Map(
         ticket.items.map((item) => [item.id, item]),
       );
       if (
         items.some((inputItem) => {
+          if (!inputItem.ticketItemId) return false;
           const ticketItem = ticketItemsById.get(inputItem.ticketItemId!);
           return (
             !ticketItem ||
@@ -3464,7 +3603,7 @@ export async function createLogisticsPurchaseOrderForTicket(
       const poNumber = await nextDocumentNumber(transaction, "PO");
       const poItems = items.map((item) => ({
         id: randomUUID(),
-        ticketItemId: item.ticketItemId!,
+        ticketItemId: item.ticketItemId,
         stockItemId: item.stockItemId,
         itemCode: selectedStockById.get(item.stockItemId)?.sku ?? null,
         itemName: item.itemName.trim(),
@@ -3493,7 +3632,12 @@ export async function createLogisticsPurchaseOrderForTicket(
           paymentAccountName: vendorHasTransferDetails
             ? vendorBankAccount?.bankHolder
             : null,
-          paymentTerms: `Pembelian untuk tiket ${ticket.ticketNumber}`,
+          paymentTerms: [
+            `Pembelian untuk tiket ${ticket.ticketNumber}`,
+            payment.paymentTerms?.trim(),
+          ]
+            .filter(Boolean)
+            .join(" - "),
           includeTax: payment.includeTax ?? false,
           createdById: session.user.id,
           ticketId,
@@ -3513,6 +3657,7 @@ export async function createLogisticsPurchaseOrderForTicket(
         select: { publicCode: true, poNumber: true },
       });
       for (const item of poItems) {
+        if (!item.ticketItemId) continue;
         await transaction.ticketItem.update({
           where: { id: item.ticketItemId },
           data: {

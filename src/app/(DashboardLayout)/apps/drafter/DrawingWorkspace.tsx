@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CldUploadWidget } from "next-cloudinary";
 import {
   AlertCircle,
   Check,
@@ -27,7 +26,6 @@ import {
 } from "@/app/actions/drawings";
 import {
   DRAWING_CATEGORIES,
-  DRAWING_DOCUMENT_CLOUDINARY_FOLDER,
   DRAWING_FILE_EXTENSIONS,
 } from "@/lib/drawing-document-config";
 import type {
@@ -106,32 +104,9 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-function getFileExtension(value: string | null) {
-  return value?.split(/[?#]/)[0].split(".").at(-1)?.toUpperCase() ?? "FILE";
-}
-
-function getUploadResult(results: {
-  event?: string;
-  info?: string | Record<string, unknown>;
-}) {
-  if (
-    results.event !== "success" ||
-    !results.info ||
-    typeof results.info !== "object" ||
-    typeof results.info.secure_url !== "string"
-  ) {
-    return null;
-  }
-  return {
-    fileUrl: results.info.secure_url,
-    thumbnailUrl:
-      results.info.resource_type === "image" &&
-      typeof results.info.thumbnail_url === "string"
-        ? results.info.thumbnail_url
-        : results.info.resource_type === "image"
-          ? results.info.secure_url
-          : "",
-  };
+function getFileExtension(value: File | string | null) {
+  const fileName = value instanceof File ? value.name : value;
+  return fileName?.split(/[?#]/)[0].split(".").at(-1)?.toUpperCase() ?? "FILE";
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -145,77 +120,6 @@ function StatusBadge({ status }: { status: string }) {
       <StatusIcon className="size-3" aria-hidden="true" />
       {detail.label}
     </Badge>
-  );
-}
-
-function DrawingUploadWidget({
-  cloudinaryCloudName,
-  cloudinaryApiKey,
-  onUploaded,
-  onError,
-  label,
-  disabled,
-}: {
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
-  onUploaded: (fileUrl: string, thumbnailUrl: string) => void;
-  onError: (message: string) => void;
-  label: string;
-  disabled?: boolean;
-}) {
-  return (
-    <CldUploadWidget
-      config={{
-        cloud: {
-          cloudName: cloudinaryCloudName,
-          apiKey: cloudinaryApiKey,
-        },
-      }}
-      signatureEndpoint="/api/cloudinary/drawing-signature"
-      options={{
-        folder: DRAWING_DOCUMENT_CLOUDINARY_FOLDER,
-        resourceType: "auto",
-        sources: ["local"],
-        multiple: false,
-        maxFiles: 1,
-        maxFileSize: 50 * 1024 * 1024,
-        maxRawFileSize: 50 * 1024 * 1024,
-        clientAllowedFormats: [...DRAWING_FILE_EXTENSIONS],
-        showPoweredBy: false,
-      }}
-      onSuccess={(results) => {
-        const uploaded = getUploadResult(results);
-        if (!uploaded) {
-          onError("Cloudinary tidak mengembalikan file gambar yang valid.");
-          return;
-        }
-        onUploaded(uploaded.fileUrl, uploaded.thumbnailUrl);
-      }}
-      onError={(error) => {
-        console.error("Drawing document upload failed:", error);
-        const detail =
-          typeof error === "string"
-            ? error
-            : error?.statusText || error?.status;
-        onError(
-          detail
-            ? `Upload gagal: ${detail}. Periksa konfigurasi dan koneksi Cloudinary.`
-            : "Upload gagal. Periksa konfigurasi dan koneksi Cloudinary.",
-        );
-      }}
-    >
-      {({ open }) => (
-        <Button
-          type="button"
-          variant="outline"
-          disabled={disabled}
-          onClick={() => open()}
-        >
-          <UploadCloud className="size-4" aria-hidden="true" />
-          {label}
-        </Button>
-      )}
-    </CldUploadWidget>
   );
 }
 
@@ -261,17 +165,11 @@ function StatCard({
 export default function DrawingWorkspace({
   initialDrawings,
   projects,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
-  cloudinaryConfigured,
   canUpload,
   canReview,
 }: {
   initialDrawings: DrawingWorkspaceItem[];
   projects: DrawingProjectOption[];
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
-  cloudinaryConfigured: boolean;
   canUpload: boolean;
   canReview: boolean;
 }) {
@@ -281,9 +179,8 @@ export default function DrawingWorkspace({
   const [projectFilter, setProjectFilter] = useState("ALL");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [createOpen, setCreateOpen] = useState(false);
-  const [newFile, setNewFile] = useState("");
-  const [newThumbnail, setNewThumbnail] = useState("");
-  const [revisionFile, setRevisionFile] = useState("");
+  const [newFile, setNewFile] = useState<File | null>(null);
+  const [revisionFile, setRevisionFile] = useState<File | null>(null);
   const [revisionNotes, setRevisionNotes] = useState("");
   const [reviewNotes, setReviewNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -313,9 +210,8 @@ export default function DrawingWorkspace({
     setActionMessage(result);
     if (result.success) {
       setCreateOpen(false);
-      setNewFile("");
-      setNewThumbnail("");
-      setRevisionFile("");
+      setNewFile(null);
+      setRevisionFile(null);
       setRevisionNotes("");
       setReviewNotes("");
       setUploadError("");
@@ -339,8 +235,7 @@ export default function DrawingWorkspace({
           String(formData.get("projectId") ?? "") === "NONE"
             ? ""
             : String(formData.get("projectId") ?? ""),
-        fileUrl: newFile,
-        thumbnailUrl: newThumbnail,
+        file: newFile,
       });
       refreshAfterAction(result);
     } catch (error) {
@@ -421,17 +316,6 @@ export default function DrawingWorkspace({
         </p>
       )}
 
-      {!cloudinaryConfigured && canUpload && (
-        <p
-          role="alert"
-          className="rounded-lg border border-warning/30 bg-lightwarning px-4 py-3 text-sm text-warning"
-        >
-          Upload belum tersedia. Administrator perlu mengatur
-          CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan
-          CLOUDINARY_API_SECRET pada environment server.
-        </p>
-      )}
-
       <section
         aria-label="Statistik gambar kerja"
         className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4"
@@ -508,7 +392,6 @@ export default function DrawingWorkspace({
         {canUpload && (
           <Button
             type="button"
-            disabled={!cloudinaryConfigured}
             className="shrink-0 bg-secondary text-secondary-foreground hover:bg-secondary/90"
             onClick={() => {
               setUploadError("");
@@ -747,7 +630,7 @@ export default function DrawingWorkspace({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => setRevisionFile("")}
+                          onClick={() => setRevisionFile(null)}
                         >
                           Ganti
                         </Button>
@@ -758,16 +641,14 @@ export default function DrawingWorkspace({
                         <p className="text-xs text-muted-foreground">
                           DWG, PDF, RVT, DXF, IFC, JPG, PNG atau WEBP · Maks 50 MB
                         </p>
-                        <DrawingUploadWidget
-                          cloudinaryCloudName={cloudinaryCloudName}
-                          cloudinaryApiKey={cloudinaryApiKey}
-                          disabled={!cloudinaryConfigured || isSaving}
-                          label="Pilih file revisi"
-                          onUploaded={(fileUrl) => {
-                            setRevisionFile(fileUrl);
+                        <Input
+                          type="file"
+                          accept={DRAWING_FILE_EXTENSIONS.map((extension) => `.${extension}`).join(",")}
+                          disabled={isSaving}
+                          onChange={(event) => {
+                            setRevisionFile(event.currentTarget.files?.[0] ?? null);
                             setUploadError("");
                           }}
-                          onError={setUploadError}
                         />
                       </div>
                     )}
@@ -1037,20 +918,12 @@ export default function DrawingWorkspace({
                 <div className="flex min-w-0 items-center gap-2 text-sm text-success">
                   <CheckCircle2 className="size-5 shrink-0" />
                   <span className="truncate">
-                    File berhasil diunggah · {getFileExtension(newFile)}
+                    File lokal siap disimpan · {newFile.name}
                   </span>
                 </div>
-                <DrawingUploadWidget
-                  cloudinaryCloudName={cloudinaryCloudName}
-                  cloudinaryApiKey={cloudinaryApiKey}
-                  disabled={isSaving}
-                  label="Ganti file"
-                  onUploaded={(fileUrl, thumbnailUrl) => {
-                    setNewFile(fileUrl);
-                    setNewThumbnail(thumbnailUrl);
-                  }}
-                  onError={setUploadError}
-                />
+                <Button type="button" variant="outline" disabled={isSaving} onClick={() => setNewFile(null)}>
+                  Ganti file
+                </Button>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2 text-center">
@@ -1058,24 +931,15 @@ export default function DrawingWorkspace({
                 <p className="text-xs text-muted-foreground">
                   DWG, PDF, RVT, DXF, IFC, JPG, PNG atau WEBP · Maks 50 MB
                 </p>
-                {cloudinaryConfigured ? (
-                  <DrawingUploadWidget
-                    cloudinaryCloudName={cloudinaryCloudName}
-                    cloudinaryApiKey={cloudinaryApiKey}
-                    disabled={isSaving}
-                    label="Pilih file gambar"
-                    onUploaded={(fileUrl, thumbnailUrl) => {
-                      setNewFile(fileUrl);
-                      setNewThumbnail(thumbnailUrl);
-                      setUploadError("");
-                    }}
-                    onError={setUploadError}
-                  />
-                ) : (
-                  <p role="alert" className="text-xs text-error">
-                    Konfigurasi Cloudinary belum lengkap. Hubungi administrator.
-                  </p>
-                )}
+                <Input
+                  type="file"
+                  accept={DRAWING_FILE_EXTENSIONS.map((extension) => `.${extension}`).join(",")}
+                  disabled={isSaving}
+                  onChange={(event) => {
+                    setNewFile(event.currentTarget.files?.[0] ?? null);
+                    setUploadError("");
+                  }}
+                />
               </div>
             )}
           </div>

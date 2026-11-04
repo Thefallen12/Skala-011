@@ -63,13 +63,6 @@ export default async function UsersDirectory() {
       />
       <UserManagementDashboard
         currentUserId={session.user.id}
-        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
-        cloudinaryConfigured={Boolean(
-          process.env.CLOUDINARY_CLOUD_NAME &&
-            process.env.CLOUDINARY_API_KEY &&
-            process.env.CLOUDINARY_API_SECRET,
-        )}
         users={users.map((user) => ({
           ...user,
           createdAt: user.createdAt.toISOString(),

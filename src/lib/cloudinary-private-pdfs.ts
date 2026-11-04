@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Readable } from "node:stream";
 import { v2 as cloudinary } from "cloudinary";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 import { TICKET_RECEIPT_PDF_CLOUDINARY_FOLDER } from "@/lib/ticket-receipt-pdf-config";
 
 const PDF_MIME_TYPE = "application/pdf";
@@ -18,23 +19,22 @@ export class CloudinaryPrivatePdfValidationError extends Error {
 }
 
 function configureCloudinary(): void {
-  const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
-    process.env;
-  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+  const credentials = getCloudinaryCredentials();
+  if (!credentials) {
     throw new Error(
-      "Konfigurasi Cloudinary belum lengkap. Isi CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan CLOUDINARY_API_SECRET.",
+      "Konfigurasi Cloudinary belum lengkap. Isi CLOUDINARY_URL atau CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, dan CLOUDINARY_API_SECRET.",
     );
   }
   cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
+    cloud_name: credentials.cloudName,
+    api_key: credentials.apiKey,
+    api_secret: credentials.apiSecret,
     secure: true,
   });
 }
 
 function parsePrivatePdfUrl(url: string): CloudinaryPrivatePdf | null {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudName = getCloudinaryCredentials()?.cloudName;
   if (!cloudName || url.length > 2048) return null;
 
   try {

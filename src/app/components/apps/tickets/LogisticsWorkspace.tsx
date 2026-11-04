@@ -310,8 +310,6 @@ export default function LogisticsWorkspace({
   stockItems = [],
   stockPurchases = [],
   purchaseTickets = [],
-  cloudinaryCloudName = "",
-  cloudinaryApiKey = "",
   initialAction,
   initialOpenSheet,
 }: {
@@ -324,8 +322,6 @@ export default function LogisticsWorkspace({
   stockItems?: LogisticsStockItem[];
   stockPurchases?: DirectStockPurchaseRow[];
   purchaseTickets?: PurchaseTicketOption[];
-  cloudinaryCloudName?: string;
-  cloudinaryApiKey?: string;
   initialAction?: "ticket" | "stock-purchase";
   initialOpenSheet?: string;
 }) {
@@ -2177,8 +2173,6 @@ export default function LogisticsWorkspace({
             projects={projects}
             vendors={vendors}
             stockItems={stockItems}
-            cloudinaryCloudName={cloudinaryCloudName}
-            cloudinaryApiKey={cloudinaryApiKey}
             role={role}
             ticketSearch={search}
             searchTickets={setSearch}

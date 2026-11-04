@@ -99,7 +99,7 @@ function isValidFinanceProofFile(file: unknown): file is File {
   );
 }
 
-async function uploadCashflowProof(file: File): Promise<string> {
+export async function uploadCashflowProof(file: File): Promise<string> {
   if (file.type === "application/pdf") {
     const url = await saveTicketReceipt(file);
     if (!isFinanceCashflowProofUrl(url)) {
@@ -120,7 +120,7 @@ async function uploadCashflowProof(file: File): Promise<string> {
   return uploaded.secureUrl;
 }
 
-async function removeUploadedCashflowProof(url: string): Promise<void> {
+export async function removeUploadedCashflowProof(url: string): Promise<void> {
   try {
     if (isCloudinaryPrivateTicketReceiptPdf(url)) {
       await removeTicketReceipt(url);

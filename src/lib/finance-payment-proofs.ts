@@ -1,6 +1,7 @@
 import { getCloudinaryPublicId } from "@/lib/cloudinary-photos";
 import { isCloudinaryPrivateTicketReceiptPdf } from "@/lib/cloudinary-private-pdfs";
 import { FINANCE_PAYMENT_PROOF_CLOUDINARY_FOLDER } from "@/lib/finance-payment-proof-config";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 
 export function isFinancePaymentProofUrl(url: string): boolean {
   if (isCloudinaryPrivateTicketReceiptPdf(url)) return true;
@@ -8,7 +9,7 @@ export function isFinancePaymentProofUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
     const publicId = getCloudinaryPublicId(url);
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const cloudName = getCloudinaryCredentials()?.cloudName;
     const pathSegments = parsed.pathname.split("/").filter(Boolean);
     const uploadIndex = pathSegments.indexOf("upload");
     return (

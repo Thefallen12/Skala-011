@@ -418,8 +418,6 @@ export default async function ProjectsWorkstationPage({
           timeStyle: "short",
         }) + " WIB"
       }
-      cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-      cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
       initialSurveyProjectId={
         requestedProjectId === "none"
           ? ""

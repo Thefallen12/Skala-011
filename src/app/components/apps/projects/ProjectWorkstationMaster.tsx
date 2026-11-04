@@ -432,8 +432,6 @@ export default function ProjectWorkstationMaster({
   surveys,
   surveyorName,
   captureTime,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   initialSurveyProjectId,
 }: {
   projects: ProjectWorkstationMasterData[];
@@ -444,8 +442,6 @@ export default function ProjectWorkstationMaster({
   surveys: FieldSurveySummary[];
   surveyorName: string;
   captureTime: string;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   initialSurveyProjectId: string | null;
 }) {
   const router = useRouter();
@@ -1122,8 +1118,6 @@ export default function ProjectWorkstationMaster({
             surveys={surveys}
             surveyorName={surveyorName}
             captureTime={captureTime}
-            cloudinaryCloudName={cloudinaryCloudName}
-            cloudinaryApiKey={cloudinaryApiKey}
             initialProjectId={surveyProjectId}
             initialView={surveyView}
             onViewChange={(view) => {

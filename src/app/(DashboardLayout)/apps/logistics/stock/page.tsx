@@ -130,8 +130,6 @@ export default async function LogisticsStockPage({
         projects={projects}
         role={session.user.role}
         mode="stock"
-        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         initialAction={initialAction}
         purchaseTickets={purchaseTickets}
         vendors={vendors}

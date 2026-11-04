@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { CldUploadWidget } from "next-cloudinary";
 import { format, startOfDay } from "date-fns";
 import { id } from "date-fns/locale";
 import { CalendarDays, Plus, Trash2 } from "lucide-react";
@@ -43,7 +41,6 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { formatRupiahNumber, parseRupiahInput } from "@/lib/indonesian-currency";
-import { REQUEST_DOCUMENT_CLOUDINARY_FOLDER } from "@/lib/request-document-config";
 
 const requestCategories = Object.values(TicketRequestCategory);
 const fieldCategories = Object.values(TicketFieldCategory).filter(
@@ -89,6 +86,8 @@ const ticketFormSchema = z
     fieldCategory: z.enum(fieldCategories).optional(),
     priority: z.enum(priorities),
     neededDate: z.date().optional(),
+    itemSource: z.enum(itemCategoryHints),
+    itemsExpectedDeliveryDate: z.string().optional(),
     items: z
       .array(
         z.object({
@@ -108,7 +107,7 @@ const ticketFormSchema = z
     requestPaymentMethod: z.enum(Object.values(POPaymentMethod)).optional(),
     transferDestination: z.string().optional(),
     requestPaymentDescription: z.string().optional(),
-    receiptUrls: z.array(z.string().url()).max(5),
+    receiptFiles: z.array(z.instanceof(File)).max(5),
     operationalRequestType: z.enum(["GENERAL", "SURVEY"]),
     operationalAmount: z
       .number()
@@ -153,11 +152,11 @@ const ticketFormSchema = z
         message: "Pilih proyek agar biaya dan pengiriman material dapat dilacak.",
       });
     }
-    const hasPerItemDeliveryDates =
+    const usesItemDeliveryDates =
       values.requestCategory === TicketRequestCategory.MATERIAL ||
       values.requestCategory === TicketRequestCategory.WAREHOUSE;
     if (
-      !hasPerItemDeliveryDates &&
+      !usesItemDeliveryDates &&
       !isAPHRequest &&
       !isInternalFunding &&
       (!values.neededDate || Number.isNaN(values.neededDate.getTime()))
@@ -168,30 +167,36 @@ const ticketFormSchema = z
         message: "Tanggal perlu dibayarkan/disediakan wajib dipilih.",
       });
     }
-    if (hasPerItemDeliveryDates) {
+    if (usesItemDeliveryDates) {
+      if (
+        values.itemSource === TicketCategoryHint.WAREHOUSE &&
+        (!values.itemsExpectedDeliveryDate ||
+          !/^\d{4}-\d{2}-\d{2}$/.test(values.itemsExpectedDeliveryDate) ||
+          (() => {
+            const parsedDate = new Date(
+              `${values.itemsExpectedDeliveryDate}T00:00:00.000Z`,
+            );
+            return (
+              Number.isNaN(parsedDate.getTime()) ||
+              parsedDate.toISOString().slice(0, 10) !==
+                values.itemsExpectedDeliveryDate
+            );
+          })())
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["itemsExpectedDeliveryDate"],
+          message: "Tanggal diperlukan wajib diisi untuk permintaan barang gudang.",
+        });
+      }
       values.items.forEach((item, index) => {
         if (
-          item.categoryHint === TicketCategoryHint.WAREHOUSE &&
           !item.stockItemId
         ) {
           context.addIssue({
             code: "custom",
             path: ["items", index, "stockItemId"],
-            message:
-              "Pilih material dari stok gudang atau ubah sumber barang ke Pembelian Baru.",
-          });
-        }
-        if (
-          item.categoryHint === TicketCategoryHint.WAREHOUSE &&
-          (!item.expectedDeliveryDate ||
-            Number.isNaN(
-              new Date(`${item.expectedDeliveryDate}T12:00:00`).getTime(),
-            ))
-        ) {
-          context.addIssue({
-            code: "custom",
-            path: ["items", index, "expectedDeliveryDate"],
-            message: "Tanggal diperlukan wajib diisi untuk barang gudang.",
+            message: "Pilih barang dari katalog gudang.",
           });
         }
       });
@@ -259,11 +264,11 @@ const ticketFormSchema = z
       }
       if (
         values.requestCategory === TicketRequestCategory.REIMBURSEMENT &&
-        values.receiptUrls.length === 0
+        values.receiptFiles.length === 0
       ) {
         context.addIssue({
           code: "custom",
-          path: ["receiptUrls"],
+          path: ["receiptFiles"],
           message: "Unggah minimal satu struk atau nota asli untuk reimbursement.",
         });
       }
@@ -468,8 +473,6 @@ export default function CreateTicketModal({
   movers = [],
   triggerLabel = "Tambah Tiket Baru",
   initialWageRequest,
-  cloudinaryCloudName = "",
-  cloudinaryApiKey = "",
 }: {
   projects: TicketProjectOption[];
   stockItems?: Array<{
@@ -486,17 +489,13 @@ export default function CreateTicketModal({
     projectTitle: string;
     workPointTitle: string;
   };
-  cloudinaryCloudName?: string;
-  cloudinaryApiKey?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const [priceEditIndex, setPriceEditIndex] = useState<number | null>(null);
-  const [priceEditValue, setPriceEditValue] = useState("");
   const [requestedAmountEdit, setRequestedAmountEdit] = useState<string | null>(
     null,
   );
-  const [receiptUrls, setReceiptUrls] = useState<string[]>([]);
+  const [receiptFiles, setReceiptFiles] = useState<File[]>([]);
   const [receiptUploadError, setReceiptUploadError] = useState("");
   const router = useRouter();
   const form = useForm<TicketFormValues>({
@@ -512,6 +511,8 @@ export default function CreateTicketModal({
         : undefined,
       priority: "NON_URGENT",
       neededDate: undefined,
+      itemSource: TicketCategoryHint.WAREHOUSE,
+      itemsExpectedDeliveryDate: "",
       items: [{
         itemName: "",
         unit: "pcs",
@@ -526,7 +527,7 @@ export default function CreateTicketModal({
       requestPaymentMethod: POPaymentMethod.CASH,
       transferDestination: "",
       requestPaymentDescription: "",
-      receiptUrls: [],
+      receiptFiles: [],
       operationalRequestType: "GENERAL",
       operationalAmount: undefined,
       surveyConsumptionAmount: 0,
@@ -534,7 +535,7 @@ export default function CreateTicketModal({
       requestedAmount: undefined,
     },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
     name: "items",
   });
@@ -614,6 +615,13 @@ export default function CreateTicketModal({
         ],
         { shouldValidate: true },
       );
+      form.setValue(
+        "itemSource",
+        nextRequestCategory === TicketRequestCategory.WAREHOUSE
+          ? TicketCategoryHint.WAREHOUSE
+          : TicketCategoryHint.PURCHASE,
+      );
+      form.setValue("itemsExpectedDeliveryDate", "");
     } else {
       form.setValue("items", [], { shouldValidate: true });
     }
@@ -639,28 +647,14 @@ export default function CreateTicketModal({
     operationalRequestType === "SURVEY"
       ? (watchedSurveyConsumptionAmount ?? 0) + (watchedSurveyFuelAmount ?? 0)
       : watchedOperationalAmount ?? 0;
-  const watchedItems = useWatch({ control: form.control, name: "items" });
+  const itemSource = useWatch({ control: form.control, name: "itemSource" });
+  const itemsExpectedDeliveryDate = useWatch({
+    control: form.control,
+    name: "itemsExpectedDeliveryDate",
+  });
   const usesItemDeliveryDates =
     requestCategory === TicketRequestCategory.MATERIAL ||
     requestCategory === TicketRequestCategory.WAREHOUSE;
-  const totalAmount = useMemo(
-    () =>
-      (watchedItems ?? []).reduce(
-        (total, item) =>
-          total +
-            Math.round(
-              (Number.isFinite(item.quantity) ? item.quantity ?? 0 : 0) *
-                (Number.isFinite(item.estimatedCost)
-                  ? item.estimatedCost ?? 0
-                  : 0) *
-                100,
-            ) /
-              100,
-          0,
-        ),
-    [watchedItems],
-  );
-
   const submit = form.handleSubmit(async (values) => {
     setError("");
     if (
@@ -740,14 +734,10 @@ export default function CreateTicketModal({
       values.neededDate
         ? `Tanggal perlu dibayarkan/disediakan: ${format(values.neededDate, "yyyy-MM-dd")}`
         : null,
-      ...values.items.flatMap((item) =>
-        item.categoryHint === TicketCategoryHint.WAREHOUSE &&
-        item.expectedDeliveryDate
-          ? [
-              `Tanggal diperlukan ${item.itemName?.trim() || "barang"}: ${item.expectedDeliveryDate}`,
-            ]
-          : [],
-      ),
+      values.itemSource === TicketCategoryHint.WAREHOUSE &&
+      values.itemsExpectedDeliveryDate
+        ? `Tanggal diperlukan untuk seluruh barang gudang: ${values.itemsExpectedDeliveryDate}`
+        : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -803,7 +793,7 @@ export default function CreateTicketModal({
             : isAPHRequest || isInternalFunding
               ? values.requestedAmount
               : undefined,
-        receiptUrls: isInternalFunding ? receiptUrls : [],
+        receiptFiles: isInternalFunding ? values.receiptFiles : [],
         items: requiresFundingRequest
           ? []
           : values.items.map((item) => ({
@@ -813,11 +803,11 @@ export default function CreateTicketModal({
               itemName: item.itemName ?? "",
               quantity: item.quantity ?? 0,
               unit: item.unit ?? "",
-              estimatedCost: item.estimatedCost,
-              categoryHint: item.categoryHint,
+              estimatedCost: undefined,
+              categoryHint: values.itemSource,
               expectedDeliveryDate:
-                item.categoryHint === TicketCategoryHint.WAREHOUSE
-                  ? item.expectedDeliveryDate
+                values.itemSource === TicketCategoryHint.WAREHOUSE
+                  ? values.itemsExpectedDeliveryDate
                   : undefined,
           })),
       });
@@ -827,7 +817,7 @@ export default function CreateTicketModal({
       }
       setOpen(false);
       form.reset();
-      setReceiptUrls([]);
+      setReceiptFiles([]);
       setReceiptUploadError("");
       setRequestedAmountEdit(null);
       router.refresh();
@@ -845,6 +835,7 @@ export default function CreateTicketModal({
       invalidFields.bankName?.message,
       invalidFields.accountNumber?.message,
       invalidFields.requestedAmount?.message,
+      invalidFields.itemsExpectedDeliveryDate?.message,
       invalidFields.items?.root?.message,
       invalidFields.items?.message,
       ...(Array.isArray(invalidFields.items)
@@ -968,9 +959,9 @@ export default function CreateTicketModal({
                     onValueChange={(value) => {
                       field.onChange(value);
                       if (value !== TicketRequestCategory.REIMBURSEMENT) {
-                        setReceiptUrls([]);
                         setReceiptUploadError("");
-                        form.setValue("receiptUrls", [], {
+                        setReceiptFiles([]);
+                        form.setValue("receiptFiles", [], {
                           shouldValidate: true,
                         });
                       }
@@ -979,6 +970,11 @@ export default function CreateTicketModal({
                         form.clearErrors("fieldCategory");
                       }
                       if (value === TicketRequestCategory.WAREHOUSE) {
+                        form.setValue(
+                          "itemSource",
+                          TicketCategoryHint.WAREHOUSE,
+                        );
+                        form.setValue("itemsExpectedDeliveryDate", "");
                         form.setValue(
                           "items",
                           [{
@@ -1009,6 +1005,11 @@ export default function CreateTicketModal({
                         requestCategory === TicketRequestCategory.APH ||
                         isInternalFundingCategory(requestCategory)
                       ) {
+                        form.setValue(
+                          "itemSource",
+                          TicketCategoryHint.PURCHASE,
+                        );
+                        form.setValue("itemsExpectedDeliveryDate", "");
                         form.setValue(
                           "items",
                           [{
@@ -1108,132 +1109,69 @@ export default function CreateTicketModal({
                 {requestCategory === TicketRequestCategory.REIMBURSEMENT && (
                   <div className="space-y-2">
                     <Label>Unggah Struk / Nota Asli (wajib)</Label>
-                    {cloudinaryCloudName && cloudinaryApiKey ? (
-                      <CldUploadWidget
-                        config={{
-                          cloud: {
-                            cloudName: cloudinaryCloudName,
-                            apiKey: cloudinaryApiKey,
-                          },
-                        }}
-                        signatureEndpoint="/api/cloudinary/request-document-signature"
-                        options={{
-                          folder: REQUEST_DOCUMENT_CLOUDINARY_FOLDER,
-                          resourceType: "auto",
-                          sources: ["local", "camera"],
-                          multiple: true,
-                          maxFiles: Math.max(0, 5 - receiptUrls.length),
-                          maxFileSize: 10 * 1024 * 1024,
-                          clientAllowedFormats: [
-                            "pdf",
-                            "jpg",
-                            "jpeg",
-                            "png",
-                            "webp",
-                          ],
-                          showPoweredBy: false,
-                        }}
-                        onSuccess={(result) => {
-                          if (
-                            result.event === "success" &&
-                            typeof result.info === "object" &&
-                            result.info !== null &&
-                            "secure_url" in result.info &&
-                            typeof result.info.secure_url === "string"
-                          ) {
-                            const url = result.info.secure_url;
-                            const current = form.getValues("receiptUrls");
-                            if (
-                              current.includes(url) ||
-                              current.length >= 5
-                            ) {
-                              return;
-                            }
-                            const next = [...current, url];
-                            setReceiptUrls(next);
-                            form.setValue("receiptUrls", next, {
-                              shouldValidate: true,
-                            });
-                            setReceiptUploadError("");
-                          }
-                        }}
-                        onError={(uploadError) => {
-                          console.error(
-                            "Ticket reimbursement receipt upload failed:",
-                            uploadError,
-                          );
+                    <Input
+                      type="file"
+                      accept="application/pdf,image/jpeg,image/png,image/webp"
+                      multiple
+                      disabled={receiptFiles.length >= 5}
+                      onChange={(event) => {
+                        const selected = Array.from(event.currentTarget.files ?? []);
+                        const invalid = selected.find(
+                          (file) =>
+                            file.size < 1 ||
+                            file.size > 10 * 1024 * 1024 ||
+                            ![
+                              "application/pdf",
+                              "image/jpeg",
+                              "image/png",
+                              "image/webp",
+                            ].includes(file.type),
+                        );
+                        if (invalid) {
                           setReceiptUploadError(
-                            "Struk/nota gagal diunggah. Silakan coba kembali.",
+                            "Pilih file PDF, JPG, PNG, atau WEBP maksimal 10 MB.",
                           );
-                        }}
-                      >
-                        {({ open: openUpload }) => (
-                          <button
-                            type="button"
-                            disabled={receiptUrls.length >= 5}
-                            onClick={() => openUpload()}
-                            className="flex min-h-24 w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-orange-500/50 px-4 py-3 text-center text-sm text-muted-foreground hover:bg-orange-500/10 disabled:opacity-50"
-                          >
-                            <span className="text-orange-600">
-                              <Plus className="inline size-5" aria-hidden="true" />
-                            </span>
-                            <span>Unggah struk/nota asli</span>
-                            <span className="text-xs">
-                              PDF, JPG, PNG, WEBP · maks. 10 MB/file · maks. 5 file
-                            </span>
-                          </button>
-                        )}
-                      </CldUploadWidget>
-                    ) : (
-                      <p className="text-sm text-destructive" role="alert">
-                        Upload bukti tidak tersedia. Periksa konfigurasi Cloudinary.
-                      </p>
-                    )}
+                        } else {
+                          const next = [...receiptFiles, ...selected].slice(0, 5);
+                          setReceiptFiles(next);
+                          form.setValue("receiptFiles", next, {
+                            shouldValidate: true,
+                          });
+                          setReceiptUploadError("");
+                        }
+                        event.currentTarget.value = "";
+                      }}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      File tetap lokal sampai Kirim Pengajuan ditekan; maksimal 5 file.
+                    </p>
                     {receiptUploadError && (
                       <p className="text-sm text-destructive" role="alert">
                         {receiptUploadError}
                       </p>
                     )}
-                    {form.formState.errors.receiptUrls && (
+                    {form.formState.errors.receiptFiles && (
                       <p className="text-sm text-destructive" role="alert">
-                        {form.formState.errors.receiptUrls.message}
+                        {form.formState.errors.receiptFiles.message}
                       </p>
                     )}
-                    {receiptUrls.length > 0 && (
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                        {receiptUrls.map((url, index) => (
+                    {receiptFiles.length > 0 && (
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {receiptFiles.map((file, index) => (
                           <div
-                            key={url}
-                            className="overflow-hidden rounded-md border bg-background"
+                            key={`${file.name}-${file.lastModified}-${file.size}`}
+                            className="flex items-center justify-between gap-2 rounded-md border bg-background p-2 text-xs"
                           >
-                            {/\/image\/upload\//.test(url) ? (
-                              <Image
-                                src={url}
-                                alt={`Struk reimbursement ${index + 1}`}
-                                width={240}
-                                height={160}
-                                unoptimized
-                                className="h-24 w-full object-cover"
-                              />
-                            ) : (
-                              <a
-                                href={url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex h-24 items-center justify-center text-sm text-primary underline"
-                              >
-                                Lihat dokumen {index + 1}
-                              </a>
-                            )}
+                            <span className="min-w-0 truncate">{file.name}</span>
                             <button
                               type="button"
-                              className="w-full border-t py-1 text-xs text-destructive"
+                              className="shrink-0 py-1 text-destructive"
                               onClick={() => {
-                                const next = receiptUrls.filter(
-                                  (item) => item !== url,
+                                const next = receiptFiles.filter(
+                                  (_, fileIndex) => fileIndex !== index,
                                 );
-                                setReceiptUrls(next);
-                                form.setValue("receiptUrls", next, {
+                                setReceiptFiles(next);
+                                form.setValue("receiptFiles", next, {
                                   shouldValidate: true,
                                 });
                               }}
@@ -1244,7 +1182,7 @@ export default function CreateTicketModal({
                         ))}
                       </div>
                     )}
-                    {receiptUrls.length === 0 && (
+                    {receiptFiles.length === 0 && (
                       <p className="text-xs text-muted-foreground">
                         Reimbursement wajib memiliki minimal satu struk atau nota.
                       </p>
@@ -1674,6 +1612,84 @@ export default function CreateTicketModal({
               </div>
             ) : (
               <>
+            {usesItemDeliveryDates && (
+              <div className="grid gap-3 rounded-md border p-3 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="ticket-item-source">Sumber Barang</Label>
+                  <Controller
+                    control={form.control}
+                    name="itemSource"
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={(value: TicketCategoryHint) => {
+                          field.onChange(value);
+                          replace(
+                            (form.getValues("items") ?? []).map((item) => ({
+                              ...item,
+                              stockItemId: "",
+                              itemName: "",
+                              unit: "",
+                              estimatedCost: undefined,
+                              categoryHint: value,
+                              expectedDeliveryDate: "",
+                            })),
+                          );
+                          if (value !== TicketCategoryHint.WAREHOUSE) {
+                            form.setValue("itemsExpectedDeliveryDate", "");
+                          }
+                          form.clearErrors([
+                            "items",
+                            "itemsExpectedDeliveryDate",
+                          ]);
+                        }}
+                      >
+                        <SelectTrigger id="ticket-item-source" className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={TicketCategoryHint.WAREHOUSE}>
+                            Gudang (Stok)
+                          </SelectItem>
+                          <SelectItem value={TicketCategoryHint.PURCHASE}>
+                            Pembelian Baru
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+                {itemSource === TicketCategoryHint.WAREHOUSE && (
+                  <div className="space-y-2">
+                    <Label htmlFor="ticket-items-delivery-date">
+                      Tanggal Diperlukan
+                    </Label>
+                    <Input
+                      id="ticket-items-delivery-date"
+                      type="date"
+                      required
+                      value={itemsExpectedDeliveryDate ?? ""}
+                      min={format(new Date(), "yyyy-MM-dd")}
+                      onChange={(event) =>
+                        form.setValue(
+                          "itemsExpectedDeliveryDate",
+                          event.target.value,
+                          { shouldDirty: true, shouldValidate: true },
+                        )
+                      }
+                      aria-invalid={
+                        !!form.formState.errors.itemsExpectedDeliveryDate
+                      }
+                    />
+                    {form.formState.errors.itemsExpectedDeliveryDate && (
+                      <p className="text-sm text-destructive" role="alert">
+                        {form.formState.errors.itemsExpectedDeliveryDate.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h3 className="font-semibold">Rincian Item</h3>
@@ -1685,10 +1701,10 @@ export default function CreateTicketModal({
                 onClick={() =>
                   append({
                     itemName: "",
-                    unit: "pcs",
+                    unit: "",
                     quantity: 1,
                     estimatedCost: undefined,
-                    categoryHint: TicketCategoryHint.WAREHOUSE,
+                    categoryHint: itemSource ?? TicketCategoryHint.WAREHOUSE,
                     expectedDeliveryDate: "",
                   })
                 }
@@ -1703,171 +1719,83 @@ export default function CreateTicketModal({
               {fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="grid items-start gap-3 rounded-md border p-3 md:grid-cols-2 xl:grid-cols-4"
+                  className="grid items-start gap-3 rounded-md border p-3 sm:grid-cols-3"
                 >
-                  {usesItemDeliveryDates && (
+                  {usesItemDeliveryDates ? (
                     <div className="space-y-2">
-                      <Label htmlFor={`ticket-source-${index}`}>
-                        Sumber Barang
-                      </Label>
+                      <Label htmlFor={`ticket-stock-item-${index}`}>Barang</Label>
                       <Controller
                         control={form.control}
-                        name={`items.${index}.categoryHint`}
-                        render={({ field }) => (
+                        name={`items.${index}.stockItemId`}
+                        render={({ field: stockField }) => (
                           <Select
-                            value={field.value}
-                            onValueChange={(value: TicketCategoryHint) => {
-                              field.onChange(value);
-                              form.setValue(`items.${index}.expectedDeliveryDate`, "");
-                              form.setValue(`items.${index}.stockItemId`, "");
-                              form.setValue(`items.${index}.itemName`, "");
-                              form.setValue(`items.${index}.unit`, "");
-                              form.setValue(`items.${index}.estimatedCost`, undefined);
-                              form.clearErrors([
-                                `items.${index}.stockItemId`,
+                            value={stockField.value || "none"}
+                            onValueChange={(value) => {
+                              const stockItem = stockItems.find(
+                                (item) => item.id === value,
+                              );
+                              stockField.onChange(value === "none" ? "" : value);
+                              form.setValue(
                                 `items.${index}.itemName`,
+                                stockItem?.name ?? "",
+                              );
+                              form.setValue(
                                 `items.${index}.unit`,
-                                `items.${index}.expectedDeliveryDate`,
-                              ]);
+                                stockItem?.unit ?? "",
+                              );
+                              form.setValue(
+                                `items.${index}.estimatedCost`,
+                                undefined,
+                              );
                             }}
                           >
                             <SelectTrigger
-                              id={`ticket-source-${index}`}
+                              id={`ticket-stock-item-${index}`}
                               className="w-full"
+                              aria-invalid={
+                                !!form.formState.errors.items?.[index]?.stockItemId
+                              }
                             >
-                              <SelectValue />
+                              <SelectValue placeholder="Pilih barang" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value={TicketCategoryHint.WAREHOUSE}>
-                                Gudang (Stok)
-                              </SelectItem>
-                              <SelectItem value={TicketCategoryHint.PURCHASE}>
-                                Pembelian Baru
-                              </SelectItem>
+                              <SelectItem value="none">Pilih barang</SelectItem>
+                              {stockItems.map((item) => (
+                                <SelectItem key={item.id} value={item.id}>
+                                  {item.name} · {item.unit}
+                                  {itemSource === TicketCategoryHint.WAREHOUSE
+                                    ? ` · tersedia ${item.stockQuantity}`
+                                    : ""}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         )}
                       />
+                      {form.formState.errors.items?.[index]?.stockItemId && (
+                        <p
+                          className="text-sm text-destructive"
+                          role="alert"
+                        >
+                          {form.formState.errors.items[index]?.stockItemId?.message}
+                        </p>
+                      )}
                     </div>
-                  )}
-                  {usesItemDeliveryDates &&
-                  watchedItems?.[index]?.categoryHint ===
-                    TicketCategoryHint.WAREHOUSE ? (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor={`ticket-stock-item-${index}`}>
-                          Barang dari stok gudang
-                        </Label>
-                        <Controller
-                          control={form.control}
-                          name={`items.${index}.stockItemId`}
-                          render={({ field: stockField }) => (
-                            <Select
-                              value={stockField.value || "none"}
-                              onValueChange={(value) => {
-                                const stockItem = stockItems.find(
-                                  (item) => item.id === value,
-                                );
-                                stockField.onChange(
-                                  value === "none" ? "" : value,
-                                );
-                                form.setValue(
-                                  `items.${index}.itemName`,
-                                  stockItem?.name ?? "",
-                                );
-                                form.setValue(
-                                  `items.${index}.unit`,
-                                  stockItem?.unit ?? "",
-                                );
-                                form.setValue(
-                                  `items.${index}.estimatedCost`,
-                                  undefined,
-                                );
-                              }}
-                            >
-                              <SelectTrigger
-                                id={`ticket-stock-item-${index}`}
-                                className="w-full"
-                                aria-invalid={
-                                  !!form.formState.errors.items?.[index]?.stockItemId
-                                }
-                              >
-                                <SelectValue placeholder="Pilih material gudang" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="none">
-                                  Pilih material gudang
-                                </SelectItem>
-                                {stockItems.map((item) => (
-                                  <SelectItem key={item.id} value={item.id}>
-                                    {item.name} · {item.unit} · tersedia{" "}
-                                    {item.stockQuantity}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          )}
-                        />
-                        {form.formState.errors.items?.[index]?.stockItemId && (
-                          <p
-                            className="text-sm text-destructive"
-                            role="alert"
-                            id={`ticket-stock-item-error-${index}`}
-                          >
-                            {form.formState.errors.items[index]?.stockItemId?.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor={`ticket-unit-${index}`}>Satuan</Label>
-                        <Controller
-                          control={form.control}
-                          name={`items.${index}.unit`}
-                          render={({ field }) => (
-                            <Input
-                              id={`ticket-unit-${index}`}
-                              value={field.value ?? ""}
-                              readOnly
-                            />
-                          )}
-                        />
-                      </div>
-                    </>
                   ) : (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor={`ticket-item-${index}`}>
-                          Nama Material/Item
-                        </Label>
-                        <Input
-                          id={`ticket-item-${index}`}
-                          placeholder="Nama item"
-                          aria-invalid={!!form.formState.errors.items?.[index]?.itemName}
-                          {...form.register(`items.${index}.itemName`)}
-                        />
-                        {form.formState.errors.items?.[index]?.itemName && (
-                          <p className="text-sm text-destructive" role="alert">
-                            {form.formState.errors.items[index]?.itemName?.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor={`ticket-unit-${index}`}>Satuan</Label>
-                        <Input
-                          id={`ticket-unit-${index}`}
-                          placeholder="Masukkan satuan (contoh: ikat)"
-                          maxLength={32}
-                          aria-invalid={!!form.formState.errors.items?.[index]?.unit}
-                          {...form.register(`items.${index}.unit`)}
-                        />
-                        {form.formState.errors.items?.[index]?.unit && (
-                          <p className="text-sm text-destructive" role="alert">
-                            {form.formState.errors.items[index]?.unit?.message}
-                          </p>
-                        )}
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      <Label htmlFor={`ticket-item-${index}`}>Barang</Label>
+                      <Input
+                        id={`ticket-item-${index}`}
+                        placeholder="Nama item"
+                        aria-invalid={!!form.formState.errors.items?.[index]?.itemName}
+                        {...form.register(`items.${index}.itemName`)}
+                      />
+                      {form.formState.errors.items?.[index]?.itemName && (
+                        <p className="text-sm text-destructive" role="alert">
+                          {form.formState.errors.items[index]?.itemName?.message}
+                        </p>
+                      )}
+                    </div>
                   )}
 
                   <div className="space-y-2">
@@ -1891,109 +1819,35 @@ export default function CreateTicketModal({
                     )}
                   </div>
 
-                  {usesItemDeliveryDates &&
-                    watchedItems?.[index]?.categoryHint ===
-                      TicketCategoryHint.WAREHOUSE && (
-                      <div className="space-y-2">
-                        <Label htmlFor={`ticket-delivery-date-${index}`}>
-                          Tanggal Diperlukan
-                        </Label>
-                        <Input
-                          id={`ticket-delivery-date-${index}`}
-                          type="date"
-                          required
-                          value={watchedItems[index]?.expectedDeliveryDate ?? ""}
-                          min={format(new Date(), "yyyy-MM-dd")}
-                          onChange={(event) =>
-                            form.setValue(
-                              `items.${index}.expectedDeliveryDate`,
-                              event.target.value,
-                              { shouldDirty: true, shouldValidate: true },
-                            )
-                          }
-                          aria-invalid={
-                            !!form.formState.errors.items?.[index]
-                              ?.expectedDeliveryDate
-                          }
-                        />
-                        {form.formState.errors.items?.[index]
-                          ?.expectedDeliveryDate && (
-                          <p className="text-sm text-destructive" role="alert">
-                            {
-                              form.formState.errors.items[index]
-                                ?.expectedDeliveryDate?.message
-                            }
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                  {(requestCategory !== TicketRequestCategory.WAREHOUSE ||
-                    watchedItems?.[index]?.categoryHint ===
-                      TicketCategoryHint.PURCHASE) && (
                   <div className="space-y-2">
-                    <Label htmlFor={`ticket-price-${index}`}>Harga Satuan</Label>
-                    <Controller
-                      control={form.control}
-                      name={`items.${index}.estimatedCost`}
-                      render={({ field: priceField }) => (
-                        <div className="flex h-10 items-center rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring/50">
-                          <span className="pl-3 text-sm text-muted-foreground">
-                            Rp
-                          </span>
+                    <Label htmlFor={`ticket-unit-${index}`}>Satuan</Label>
+                    {usesItemDeliveryDates ? (
+                      <Controller
+                        control={form.control}
+                        name={`items.${index}.unit`}
+                        render={({ field: unitField }) => (
                           <Input
-                            id={`ticket-price-${index}`}
-                            type="text"
-                            inputMode="numeric"
-                            className="h-full border-0 shadow-none focus-visible:ring-0"
-                            placeholder="0"
-                            value={
-                              priceEditIndex === index
-                                ? priceEditValue
-                                : priceField.value === undefined
-                                  ? ""
-                                  : new Intl.NumberFormat("id-ID", {
-                                      maximumFractionDigits: 0,
-                                    }).format(priceField.value)
-                            }
-                            onFocus={() => {
-                              setPriceEditIndex(index);
-                              setPriceEditValue(
-                                priceField.value === undefined
-                                  ? ""
-                                  : String(priceField.value),
-                              );
-                            }}
-                            onChange={(event) => {
-                              const digits = event.target.value.replace(/\D/g, "");
-                              setPriceEditValue(digits);
-                              priceField.onChange(
-                                digits === "" ? undefined : Number(digits),
-                              );
-                            }}
-                            onBlur={() => {
-                              priceField.onBlur();
-                              setPriceEditIndex(null);
-                              setPriceEditValue("");
-                            }}
-                            aria-invalid={
-                              !!form.formState.errors.items?.[index]
-                                ?.estimatedCost
-                            }
+                            id={`ticket-unit-${index}`}
+                            value={unitField.value ?? ""}
+                            readOnly
                           />
-                        </div>
-                      )}
-                    />
-                    {form.formState.errors.items?.[index]?.estimatedCost && (
+                        )}
+                      />
+                    ) : (
+                      <Input
+                        id={`ticket-unit-${index}`}
+                        placeholder="Masukkan satuan"
+                        maxLength={32}
+                        aria-invalid={!!form.formState.errors.items?.[index]?.unit}
+                        {...form.register(`items.${index}.unit`)}
+                      />
+                    )}
+                    {form.formState.errors.items?.[index]?.unit && (
                       <p className="text-sm text-destructive" role="alert">
-                        {
-                          form.formState.errors.items[index]?.estimatedCost
-                            ?.message
-                        }
+                        {form.formState.errors.items[index]?.unit?.message}
                       </p>
                     )}
                   </div>
-                  )}
 
                   {index > 0 && (
                     <Button
@@ -2018,14 +1872,6 @@ export default function CreateTicketModal({
               </p>
             )}
 
-            {(requestCategory !== TicketRequestCategory.WAREHOUSE ||
-              watchedItems?.some(
-                (item) => item.categoryHint === TicketCategoryHint.PURCHASE,
-              )) && (
-              <p className="text-right font-semibold">
-                Total estimasi: {formatCurrency(totalAmount)}
-              </p>
-            )}
               </>
             )}
           </section>}

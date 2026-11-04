@@ -971,8 +971,6 @@ export default async function FinancePage({
       <FinanceHub
         key={`${tab ?? ""}:${openSheet ?? ""}`}
         role={session.user.role}
-        cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-        cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
         dashboardMonths={dashboardMonths}
         financeAccounts={financeAccounts}
         officeExpenses={officeExpenses.map((expense) => ({

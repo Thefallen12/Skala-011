@@ -1,9 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -34,7 +33,6 @@ import {
   measureSurveyGeoJSON,
   type SurveyGeoJSON,
 } from "@/lib/field-survey-geojson";
-import { FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER } from "@/lib/field-survey-photo-config";
 import type { FieldSurveySummary, SurveyProjectOption } from "./SurveySidebar";
 
 const formSchema = z.object({
@@ -58,7 +56,7 @@ const formSchema = z.object({
 
 export type SurveyFormValues = z.infer<typeof formSchema>;
 type DocumentationPhotoDraft = {
-  url: string;
+  file: File;
   caption: string;
   latitude: number;
   longitude: number;
@@ -108,8 +106,6 @@ export default function SurveyForm({
   centerCoordinate,
   perimeterM,
   captureTime,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   onProjectChange,
   onCancel,
   onLoadSurvey,
@@ -124,8 +120,6 @@ export default function SurveyForm({
   centerCoordinate: string;
   perimeterM: number;
   captureTime: string;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   onProjectChange: (projectId: string) => void;
   onCancel: () => void;
   onLoadSurvey: (survey: FieldSurveySummary) => Promise<void>;
@@ -159,7 +153,8 @@ export default function SurveyForm({
   const documentationUrls =
     useWatch({ control: form.control, name: "documentationUrls" }) ?? [];
   const [documentationPhotos, setDocumentationPhotos] = useState<DocumentationPhotoDraft[]>([]);
-  const [uploadLocation, setUploadLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const [isCapturingPhotoLocation, setIsCapturingPhotoLocation] = useState(false);
   const selectedProjectId = useWatch({
     control: form.control,
     name: "projectId",
@@ -193,12 +188,12 @@ export default function SurveyForm({
         return;
       }
       if (
-        documentationPhotos.length !== values.documentationUrls.length ||
-        documentationPhotos.some((photo) => photo.caption.trim().length < 2)
+        documentationPhotos.some((photo) => photo.caption.trim().length < 2) ||
+        documentationPhotos.length + values.documentationUrls.length > 10
       ) {
         setStatus({
           type: "error",
-          message: "Setiap foto wajib memiliki keterangan sebelum survei disimpan.",
+          message: "Setiap foto baru wajib memiliki keterangan dan maksimal 10 foto dapat disimpan.",
         });
 
         return;
@@ -215,7 +210,7 @@ export default function SurveyForm({
         landOwnership: values.landOwnership,
         notes: values.notes,
         documentationUrls: values.documentationUrls,
-        documentationPhotos,
+        documentationPhotoFiles: documentationPhotos,
         geoJsonData,
         surveyType: "REHAB_SAWAH",
         features: geoJsonData.features
@@ -267,29 +262,6 @@ export default function SurveyForm({
       }
     });
   });
-
-  const requestPhotoLocation = (open: () => void) => {
-    if (!navigator.geolocation) {
-      setUploadError("Perangkat ini tidak mendukung geotag lokasi.");
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUploadLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setUploadError("");
-        open();
-      },
-      () => {
-        setUploadError(
-          "Izin lokasi wajib diberikan sebelum foto geotag dapat diunggah.",
-        );
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
-    );
-  };
 
   const handleLoadSurvey = async (survey: FieldSurveySummary) => {
     setLoadingSurveyId(survey.id);
@@ -590,23 +562,46 @@ export default function SurveyForm({
                               documentationUrls.filter((item) => item !== url),
                               { shouldDirty: true },
                             );
-                            setDocumentationPhotos((photos) =>
-                              photos.filter((photo) => photo.url !== url),
-                            );
                           }}
                           className="absolute right-1 top-1 rounded bg-slate-950/80 p-1 text-white opacity-0 transition group-hover:opacity-100 focus:opacity-100"
                         >
                           <Trash2 className="size-3" aria-hidden="true" />
                         </button>
                       </div>
+                      <p className="mt-2 text-xs text-slate-400">
+                        Foto dokumentasi yang sudah tersimpan
+                      </p>
+                    </div>
+                  ))}
+                  {documentationPhotos.map((photo, index) => (
+                    <div
+                      key={`${photo.file.name}-${photo.file.lastModified}-${photo.file.size}`}
+                      className="w-full rounded-md border border-slate-700 bg-slate-900/60 p-2 sm:w-[calc(50%-0.25rem)]"
+                    >
+                      <div className="flex items-center justify-between gap-2 text-xs text-slate-300">
+                        <span className="min-w-0 truncate">{photo.file.name}</span>
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="ghost"
+                          aria-label={`Hapus ${photo.file.name}`}
+                          onClick={() =>
+                            setDocumentationPhotos((photos) =>
+                              photos.filter((_, photoIndex) => photoIndex !== index),
+                            )
+                          }
+                        >
+                          <Trash2 className="size-3" aria-hidden="true" />
+                        </Button>
+                      </div>
                       <Input
-                        value={documentationPhotos[index]?.caption ?? ""}
+                        value={photo.caption}
                         onChange={(event) =>
                           setDocumentationPhotos((photos) =>
-                            photos.map((photo) =>
-                              photo.url === url
-                                ? { ...photo, caption: event.target.value }
-                                : photo,
+                            photos.map((item, photoIndex) =>
+                              photoIndex === index
+                                ? { ...item, caption: event.target.value }
+                                : item,
                             ),
                           )
                         }
@@ -615,99 +610,85 @@ export default function SurveyForm({
                         required
                       />
                       <p className="mt-1 text-[10px] text-slate-500">
-                        GPS: {documentationPhotos[index]?.latitude.toFixed(6)}, {documentationPhotos[index]?.longitude.toFixed(6)}
+                        GPS: {photo.latitude.toFixed(6)}, {photo.longitude.toFixed(6)}
                       </p>
                     </div>
                   ))}
-                  {cloudinaryCloudName && cloudinaryApiKey ? (
-                    <CldUploadWidget
-                      config={{
-                        cloud: {
-                          cloudName: cloudinaryCloudName,
-                          apiKey: cloudinaryApiKey,
-                        },
-                      }}
-                      signatureEndpoint="/api/cloudinary/field-survey-signature"
-                      options={{
-                        folder: FIELD_SURVEY_PHOTO_CLOUDINARY_FOLDER,
-                        resourceType: "image",
-                        sources: ["local", "camera"],
-                        multiple: true,
-                        maxFiles: 10,
-                        maxFileSize: 8 * 1024 * 1024,
-                        clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
-                        showPoweredBy: false,
-                      }}
-                      onSuccess={(result) => {
-                        if (
-                          result.event === "success" &&
-                          typeof result.info === "object" &&
-                          result.info !== null &&
-                          "secure_url" in result.info &&
-                          typeof result.info.secure_url === "string"
-                        ) {
-                          const secureUrl = result.info.secure_url;
-                          const current =
-                            form.getValues("documentationUrls");
-                          if (current.length >= 10) {
-                            setUploadError(
-                              "Maksimal 10 foto dokumentasi per survei.",
-                            );
-                            return;
-                          }
-                          if (!uploadLocation) {
-                            setUploadError(
-                              "Lokasi foto tidak ditemukan. Aktifkan izin lokasi lalu unggah kembali.",
-                            );
-                            return;
-                          }
-                          form.setValue(
-                            "documentationUrls",
-                            [...current, secureUrl],
-                            { shouldDirty: true, shouldValidate: true },
-                          );
+                  <input
+                    ref={photoInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    hidden
+                    onChange={(event) => {
+                      const selected = Array.from(event.currentTarget.files ?? []);
+                      event.currentTarget.value = "";
+                      if (selected.length === 0) return;
+                      if (
+                        documentationUrls.length + documentationPhotos.length + selected.length > 10
+                      ) {
+                        setUploadError("Maksimal 10 foto dokumentasi per survei.");
+                        return;
+                      }
+                      if (
+                        selected.some(
+                          (file) =>
+                            file.size < 1 ||
+                            file.size > 8 * 1024 * 1024 ||
+                            !["image/jpeg", "image/png", "image/webp"].includes(file.type),
+                        )
+                      ) {
+                        setUploadError("Pilih foto JPG, PNG, atau WEBP maksimal 8 MB.");
+                        return;
+                      }
+                      if (!navigator.geolocation) {
+                        setUploadError("Perangkat ini tidak mendukung geotag lokasi.");
+                        return;
+                      }
+
+                      setIsCapturingPhotoLocation(true);
+                      navigator.geolocation.getCurrentPosition(
+                        (position) => {
                           setDocumentationPhotos((photos) => [
                             ...photos,
-                            {
-                              url: secureUrl,
+                            ...selected.map((file) => ({
+                              file,
                               caption: "",
-                              latitude: uploadLocation.latitude,
-                              longitude: uploadLocation.longitude,
+                              latitude: position.coords.latitude,
+                              longitude: position.coords.longitude,
                               capturedAt: new Date().toISOString(),
-                            },
+                            })),
                           ]);
                           setUploadError("");
-                        }
-                      }}
-                      onError={(error) => {
-                        console.error("Field survey photo upload failed:", error);
-                        setUploadError(
-                          "Foto dokumentasi gagal diunggah. Silakan coba kembali.",
-                        );
-                      }}
-                    >
-                      {({ open }) => (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          disabled={documentationUrls.length >= 10}
-                          onClick={() => requestPhotoLocation(open)}
-                          className="size-16 border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700"
-                          aria-label="Unggah foto dokumentasi"
-                        >
-                          <ImagePlus className="size-5" aria-hidden="true" />
-                        </Button>
-                      )}
-                    </CldUploadWidget>
-                  ) : (
-                    <p role="alert" className="text-xs text-rose-300">
-                      Upload tidak tersedia. Periksa konfigurasi Cloudinary.
-                    </p>
-                  )}
-                  {documentationUrls.length === 0 && (
+                          setIsCapturingPhotoLocation(false);
+                        },
+                        () => {
+                          setUploadError(
+                            "Izin lokasi wajib diberikan untuk menambahkan foto geotag.",
+                          );
+                          setIsCapturingPhotoLocation(false);
+                        },
+                        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+                      );
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={
+                      isCapturingPhotoLocation ||
+                      documentationUrls.length + documentationPhotos.length >= 10
+                    }
+                    onClick={() => photoInputRef.current?.click()}
+                    className="size-16 border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    aria-label="Pilih foto dokumentasi"
+                  >
+                    <ImagePlus className="size-5" aria-hidden="true" />
+                  </Button>
+                  {documentationUrls.length + documentationPhotos.length === 0 && (
                     <div className="flex items-center gap-2 text-xs text-slate-500">
                       <Camera className="size-4" aria-hidden="true" />
-                      JPG, PNG, atau WEBP · maksimal 8 MB/foto
+                      Pilih foto lokal; upload ke Cloudinary saat survei disimpan · maks 8 MB/foto
                     </div>
                   )}
                 </div>
@@ -717,7 +698,7 @@ export default function SurveyForm({
                   </p>
                 )}
                 <p className="text-[11px] text-slate-500">
-                  {documentationUrls.length}/10 foto terunggah.
+                  {documentationUrls.length + documentationPhotos.length}/10 foto
                 </p>
               </div>
             </div>

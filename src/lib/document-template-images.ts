@@ -9,6 +9,7 @@ import {
   readPrivatePhoto,
 } from "@/lib/private-photos";
 import { DOCUMENT_TEMPLATE_IMAGE_CLOUDINARY_FOLDER } from "@/lib/document-template-image-config";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 const imageDirectory = process.env.DOCUMENT_TEMPLATE_IMAGE_UPLOAD_DIR
@@ -36,7 +37,7 @@ export async function readDocumentTemplateImage(fileName: string) {
 }
 
 export function isDocumentTemplateCloudinaryImageUrl(value: string): boolean {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudName = getCloudinaryCredentials()?.cloudName;
   const publicId = getCloudinaryPublicId(value);
   if (!cloudName || !publicId) return false;
 

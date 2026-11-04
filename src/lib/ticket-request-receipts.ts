@@ -1,10 +1,11 @@
 import { getCloudinaryPublicId } from "@/lib/cloudinary-photos";
 import { REQUEST_DOCUMENT_CLOUDINARY_FOLDER } from "@/lib/request-document-config";
+import { getCloudinaryCredentials } from "@/lib/cloudinary-config";
 
 export function isTicketRequestReceiptUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const cloudName = getCloudinaryCredentials()?.cloudName;
     const pathSegments = parsed.pathname.split("/").filter(Boolean);
     const uploadIndex = pathSegments.indexOf("upload");
     const publicId = getCloudinaryPublicId(url);

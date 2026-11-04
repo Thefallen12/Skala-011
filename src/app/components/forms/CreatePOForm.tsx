@@ -29,6 +29,12 @@ import {
 import {
   getVendorBankAccounts,
 } from "@/lib/vendor-bank-accounts";
+import {
+  formatRupiahInput,
+  formatRupiahNumber,
+  parseRupiahInput,
+  terbilangRupiah,
+} from "@/lib/indonesian-currency";
 import { Switch } from "@/components/ui/switch";
 import {
   DialogFooter,
@@ -67,6 +73,8 @@ type CreatePOStockItem = {
   unit: string;
   unitPrice: string;
 };
+
+type PurchasePaymentPlan = "CASH_FULL" | "DOWN_PAYMENT" | "INSTALLMENT";
 
 const normalizeCatalogValue = (value: string) =>
   value.trim().replace(/\s+/g, " ").toLocaleLowerCase("id-ID");
@@ -112,13 +120,17 @@ export default function CreatePOForm({
             unit: item.unit,
             unitPrice:
               item.unitPrice == null
-                ? stockItem?.unitPrice ?? ""
-                : String(item.unitPrice),
+                ? formatRupiahInput(stockItem?.unitPrice ?? "")
+                : formatRupiahInput(String(item.unitPrice)),
           };
         })
       : [{ stockItemId: "", itemName: "", quantity: "", unit: "", unitPrice: "" }],
   );
   const [includeTax, setIncludeTax] = useState(false);
+  const [paymentPlan, setPaymentPlan] =
+    useState<PurchasePaymentPlan>("CASH_FULL");
+  const [paymentPlanDetails, setPaymentPlanDetails] = useState("");
+  const [downPaymentPercent, setDownPaymentPercent] = useState("");
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
   const [isSavingNewItem, startSavingNewItem] = useTransition();
@@ -150,6 +162,20 @@ export default function CreatePOForm({
   const siteName = ticketId
     ? projectSiteName || "Proyek dari tiket"
     : "Gudang (tanpa proyek)";
+  const subtotal = items.reduce((total, item) => {
+    const quantity = Number(item.quantity);
+    const unitPrice = parseRupiahInput(item.unitPrice);
+    return total + (Number.isFinite(quantity) && quantity > 0 ? quantity : 0) *
+      (Number.isFinite(unitPrice) && unitPrice > 0 ? unitPrice : 0);
+  }, 0);
+  const taxAmount = includeTax ? subtotal * 0.11 : 0;
+  const grandTotal = subtotal + taxAmount;
+  const parsedDownPaymentPercent = Number(downPaymentPercent);
+  const downPaymentAmount =
+    Number.isFinite(parsedDownPaymentPercent) && parsedDownPaymentPercent > 0
+      ? Math.round(grandTotal * (parsedDownPaymentPercent / 100) * 100) / 100
+      : 0;
+  const remainingPaymentAmount = Math.max(0, grandTotal - downPaymentAmount);
 
   const updateItem = (index: number, patch: Partial<FormItem>) => {
     setItems((current) =>
@@ -157,6 +183,19 @@ export default function CreatePOForm({
         itemIndex === index ? { ...item, ...patch } : item,
       ),
     );
+  };
+
+  const addPurchaseOrderItem = () => {
+    setItems((current) => [
+      ...current,
+      {
+        stockItemId: "",
+        itemName: "",
+        quantity: "",
+        unit: "",
+        unitPrice: "",
+      },
+    ]);
   };
 
   const openNewItemDialog = () => {
@@ -214,14 +253,14 @@ export default function CreatePOForm({
           const newFormItem: FormItem = {
             ticketItemId: current[targetIndex]?.ticketItemId,
             stockItemId: stockItem.id,
-            itemName: ticketId
-              ? current[targetIndex]?.itemName ?? stockItem.name
+            itemName: current[targetIndex]?.ticketItemId
+              ? current[targetIndex].itemName
               : stockItem.name,
-            quantity: ticketId
+            quantity: current[targetIndex]?.ticketItemId
               ? current[targetIndex]?.quantity ?? ""
               : "",
-            unit: ticketId
-              ? current[targetIndex]?.unit ?? stockItem.unit
+            unit: current[targetIndex]?.ticketItemId
+              ? current[targetIndex].unit
               : stockItem.unit,
             unitPrice:
               current[targetIndex]?.unitPrice || stockItem.unitPrice || "",
@@ -249,10 +288,20 @@ export default function CreatePOForm({
       itemName: item.itemName.trim(),
       quantity: Number(item.quantity),
       unit: item.unit.trim(),
-      unitPrice: Number(item.unitPrice),
+      unitPrice: parseRupiahInput(item.unitPrice),
     }));
     if (!selectedVendor) {
       setMessage("Pilih vendor dari katalog sebelum membuat PO.");
+      return;
+    }
+    if (paymentPlan === "INSTALLMENT" && !paymentPlanDetails.trim()) {
+      setMessage(
+        "Isi rincian termin, misalnya tahapan dan persentase pembayarannya.",
+      );
+      return;
+    }
+    if (paymentPlanDetails.trim().length > 1000) {
+      setMessage("Rincian pembayaran maksimal 1.000 karakter.");
       return;
     }
     if (
@@ -273,8 +322,32 @@ export default function CreatePOForm({
       );
       return;
     }
+    if (
+      paymentPlan === "DOWN_PAYMENT" &&
+      (!Number.isFinite(parsedDownPaymentPercent) ||
+        parsedDownPaymentPercent <= 0 ||
+        parsedDownPaymentPercent >= 100 ||
+        grandTotal <= 0)
+    ) {
+      setMessage("Masukkan persentase DP lebih dari 0% dan kurang dari 100%.");
+      return;
+    }
 
     setMessage("");
+    const paymentPlanLabel =
+      paymentPlan === "CASH_FULL"
+        ? "CASH (LUNAS)"
+        : paymentPlan === "DOWN_PAYMENT"
+          ? "DP (DOWN PAYMENT)"
+          : "TERMIN (CICIL)";
+    const paymentTerms = [
+      paymentPlanLabel,
+      paymentPlan === "DOWN_PAYMENT"
+        ? `DP ${parsedDownPaymentPercent}% (Rp ${formatRupiahNumber(downPaymentAmount)}), sisa pembayaran Rp ${formatRupiahNumber(remainingPaymentAmount)}`
+        : paymentPlanDetails.trim(),
+    ]
+      .filter(Boolean)
+      .join(" - ");
     startTransition(async () => {
       try {
         const result: OrderActionResult | TicketActionResult = ticketId
@@ -287,6 +360,7 @@ export default function CreatePOForm({
                 method: paymentMethod,
                 vendorBankAccountId: selectedBankAccount?.id,
                 includeTax,
+                paymentTerms,
               },
             )
           : await createPurchaseOrder({
@@ -295,6 +369,7 @@ export default function CreatePOForm({
               vendorBankAccountId: selectedBankAccount?.id,
               paymentMethod,
               includeTax,
+              paymentTerms,
               items: parsedItems,
             });
         setMessage(result.message);
@@ -320,13 +395,101 @@ export default function CreatePOForm({
           <p className="text-sm font-medium">{siteName}</p>
         </div>
         <div className="space-y-1">
-          <Label>Metode pembayaran</Label>
+          <Label>Cara pembayaran</Label>
           <div>
             <Badge variant="outline">
               {paymentMethod === POPaymentMethod.TRANSFER ? "Transfer" : "Cash"}
             </Badge>
           </div>
         </div>
+      </div>
+      <div className="space-y-3 rounded-md border p-3">
+        <div className="space-y-1.5">
+          <Label htmlFor="create-po-payment-plan">Skema pembayaran</Label>
+          <Select
+            value={paymentPlan}
+            onValueChange={(value) => {
+              if (
+                value === "CASH_FULL" ||
+                value === "DOWN_PAYMENT" ||
+                value === "INSTALLMENT"
+              ) {
+                setPaymentPlan(value);
+                setMessage("");
+              }
+            }}
+            disabled={isPending}
+          >
+            <SelectTrigger id="create-po-payment-plan">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CASH_FULL">CASH (LUNAS)</SelectItem>
+              <SelectItem value="DOWN_PAYMENT">DP (DOWN PAYMENT)</SelectItem>
+              <SelectItem value="INSTALLMENT">TERMIN (CICIL)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {paymentPlan === "DOWN_PAYMENT" && (
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="create-po-down-payment-percent">
+                Pembayaran awal (DP)
+              </Label>
+              <div className="relative">
+                <Input
+                  id="create-po-down-payment-percent"
+                  type="number"
+                  inputMode="decimal"
+                  min="0.01"
+                  max="99.99"
+                  step="0.01"
+                  value={downPaymentPercent}
+                  onChange={(event) => {
+                    setDownPaymentPercent(event.target.value);
+                    setMessage("");
+                  }}
+                  placeholder="Contoh: 50"
+                  className="pr-8"
+                  disabled={isPending}
+                />
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                  %
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Nilai DP: Rp {formatRupiahNumber(downPaymentAmount) || "0"}
+              </p>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Sisa pembayaran</Label>
+              <div
+                className="flex h-10 items-center rounded-lg border bg-muted/30 px-3 text-sm font-semibold"
+                aria-live="polite"
+              >
+                Rp {formatRupiahNumber(remainingPaymentAmount) || "0"}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Dihitung dari total harga setelah PPN.
+              </p>
+            </div>
+          </div>
+        )}
+        {paymentPlan === "INSTALLMENT" && (
+          <div className="space-y-1.5">
+            <Label htmlFor="create-po-payment-plan-details">
+              Rincian termin pembayaran
+            </Label>
+            <Input
+              id="create-po-payment-plan-details"
+              value={paymentPlanDetails}
+              onChange={(event) => setPaymentPlanDetails(event.target.value)}
+              placeholder="Contoh: 30% saat PO, 40% saat pengiriman, 30% setelah diterima"
+              maxLength={1000}
+              disabled={isPending}
+            />
+          </div>
+        )}
       </div>
       {ticketId && (
         <p className="rounded-md border border-blue-500/30 bg-blue-500/5 p-3 text-sm text-muted-foreground">
@@ -423,35 +586,44 @@ export default function CreatePOForm({
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3">
           <Label>Barang dan harga PO</Label>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={
-              isPending ||
-              isSavingNewItem ||
-              (Boolean(ticketId) && !items.some((item) => !item.stockItemId))
-            }
-            onClick={openNewItemDialog}
-          >
-            Tambah Jenis Barang
-          </Button>
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={
+                isPending || isSavingNewItem || items.length >= 200
+              }
+              onClick={addPurchaseOrderItem}
+            >
+              Tambah Barang
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={isPending || isSavingNewItem}
+              onClick={openNewItemDialog}
+            >
+              Barang Baru di Katalog
+            </Button>
+          </div>
         </div>
         <div className="overflow-x-auto rounded-md border">
-          <Table pagination={false}>
+          <Table pagination={false} className="table-fixed">
             <TableHeader>
               <TableRow>
-                <TableHead>Barang / SKU</TableHead>
-                <TableHead className="w-28">Jumlah</TableHead>
-                <TableHead className="w-28">Satuan</TableHead>
-                <TableHead className="w-40">Harga satuan (Rp)</TableHead>
-                {!ticketId && <TableHead className="w-20">Aksi</TableHead>}
+                <TableHead className="w-auto">Barang / SKU</TableHead>
+                <TableHead className="w-[90px]">Jumlah</TableHead>
+                <TableHead className="w-[75px]">Satuan</TableHead>
+                <TableHead className="w-[145px]">Harga satuan (Rp)</TableHead>
+                <TableHead className="w-[76px]">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {items.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell>
+                  <TableCell className="min-w-0 overflow-hidden">
                     <Select
                       value={item.stockItemId}
                       onValueChange={(stockItemId) => {
@@ -459,22 +631,35 @@ export default function CreatePOForm({
                           (catalogItem) => catalogItem.id === stockItemId,
                         );
                         if (!selectedItem) return;
+                        const linkedTicketItem = Boolean(item.ticketItemId);
                         updateItem(index, {
                           stockItemId,
-                          itemName: ticketId ? item.itemName : selectedItem.name,
-                          unit: ticketId ? item.unit : selectedItem.unit,
-                          unitPrice: ticketId
-                            ? item.unitPrice || selectedItem.unitPrice || ""
-                            : selectedItem.unitPrice || "",
+                          itemName: linkedTicketItem
+                            ? item.itemName
+                            : selectedItem.name,
+                          unit: linkedTicketItem ? item.unit : selectedItem.unit,
+                          unitPrice: formatRupiahInput(
+                            linkedTicketItem
+                              ? item.unitPrice || selectedItem.unitPrice || ""
+                              : selectedItem.unitPrice || "",
+                          ),
                         });
                       }}
                       disabled={isPending || isSavingNewItem}
                     >
                       <SelectTrigger
                         aria-label={`Barang katalog ${index + 1}`}
-                        className="min-w-48"
+                        title={
+                          catalogItems.find(
+                            (catalogItem) => catalogItem.id === item.stockItemId,
+                          )?.name
+                        }
+                        className="w-full min-w-0 max-w-full"
                       >
-                        <SelectValue placeholder="Pilih barang dan SKU" />
+                        <SelectValue
+                          placeholder="Pilih barang"
+                          className="min-w-0 flex-1 truncate text-left"
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {catalogItems.map((stockItem) => (
@@ -491,52 +676,61 @@ export default function CreatePOForm({
                       </p>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="overflow-hidden">
                     <Input
                       aria-label={`Jumlah barang ${index + 1}`}
                       type="number"
                       min="0.001"
                       step="any"
                       value={item.quantity}
-                      disabled={isPending || Boolean(ticketId)}
+                      disabled={isPending || Boolean(ticketId && item.ticketItemId)}
                       onChange={(event) =>
                         updateItem(index, { quantity: event.target.value })
                       }
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="overflow-hidden">
                     <span className="text-sm">{item.unit || "—"}</span>
                   </TableCell>
-                  <TableCell>
-                    <Input
-                      aria-label={`Harga satuan barang ${index + 1}`}
-                      type="number"
-                      min="0.01"
-                      step="any"
-                      value={item.unitPrice}
-                      disabled={isPending}
-                      onChange={(event) =>
-                        updateItem(index, { unitPrice: event.target.value })
-                      }
-                    />
-                  </TableCell>
-                  {!ticketId && (
-                    <TableCell>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        disabled={isPending || items.length === 1}
-                        onClick={() =>
-                          setItems((current) =>
-                            current.filter((_, itemIndex) => itemIndex !== index),
-                          )
+                  <TableCell className="overflow-hidden">
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                        Rp
+                      </span>
+                      <Input
+                        aria-label={`Harga satuan barang ${index + 1}`}
+                        type="text"
+                        inputMode="decimal"
+                        value={formatRupiahInput(item.unitPrice)}
+                        className="pl-9"
+                        disabled={isPending}
+                        onChange={(event) =>
+                          updateItem(index, {
+                            unitPrice: formatRupiahInput(event.target.value),
+                          })
                         }
-                      >
-                        Hapus
-                      </Button>
-                    </TableCell>
-                  )}
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell className="overflow-hidden">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={
+                        isPending ||
+                        items.length === 1 ||
+                        Boolean(ticketId && item.ticketItemId)
+                      }
+                      onClick={() =>
+                        setItems((current) =>
+                          current.filter((_, itemIndex) => itemIndex !== index),
+                        )
+                      }
+                    >
+                      Hapus
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -552,6 +746,46 @@ export default function CreatePOForm({
           onCheckedChange={setIncludeTax}
           disabled={isPending}
         />
+      </div>
+
+      <div className="space-y-2 rounded-md border p-3">
+        <div className="flex items-center justify-between gap-4 text-sm">
+          <span className="text-muted-foreground">Subtotal</span>
+          <span className="font-medium">Rp {formatRupiahNumber(subtotal)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4 text-sm">
+          <span className="text-muted-foreground">PPN 11%</span>
+          <span className="font-medium">
+            {includeTax ? `Rp ${formatRupiahNumber(taxAmount)}` : "Rp 0"}
+          </span>
+        </div>
+        <div className="flex items-center justify-between gap-4 border-t pt-2">
+          <span className="font-semibold">Total Harga</span>
+          <span className="font-semibold text-primary">
+            Rp {formatRupiahNumber(grandTotal)}
+          </span>
+        </div>
+        {paymentPlan === "DOWN_PAYMENT" && downPaymentAmount > 0 && (
+          <>
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <span className="text-muted-foreground">
+                DP ({formatRupiahNumber(parsedDownPaymentPercent)}%)
+              </span>
+              <span className="font-medium">
+                Rp {formatRupiahNumber(downPaymentAmount)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <span className="text-muted-foreground">Sisa + PPN</span>
+              <span className="font-medium">
+                Rp {formatRupiahNumber(remainingPaymentAmount)}
+              </span>
+            </div>
+          </>
+        )}
+        <p className="text-xs italic text-muted-foreground">
+          Terbilang: {grandTotal > 0 ? `${terbilangRupiah(grandTotal)}.` : "—"}
+        </p>
       </div>
 
       {message && (

@@ -87,13 +87,6 @@ export default async function DrafterPage() {
       key={drawingSnapshotKey}
       initialDrawings={drawings}
       projects={projectOptions}
-      cloudinaryCloudName={process.env.CLOUDINARY_CLOUD_NAME ?? ""}
-      cloudinaryApiKey={process.env.CLOUDINARY_API_KEY ?? ""}
-      cloudinaryConfigured={Boolean(
-        process.env.CLOUDINARY_CLOUD_NAME &&
-          process.env.CLOUDINARY_API_KEY &&
-          process.env.CLOUDINARY_API_SECRET,
-      )}
       canUpload={drawingUploadRoles.includes(session.user.role)}
       canReview={drawingReviewRoles.includes(session.user.role)}
     />

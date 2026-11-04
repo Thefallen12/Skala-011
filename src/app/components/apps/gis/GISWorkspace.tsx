@@ -85,8 +85,6 @@ export default function GISWorkspace({
   surveys,
   surveyorName,
   captureTime,
-  cloudinaryCloudName,
-  cloudinaryApiKey,
   initialProjectId,
   initialView = "map",
   onViewChange,
@@ -97,8 +95,6 @@ export default function GISWorkspace({
   surveys: FieldSurveySummary[];
   surveyorName: string;
   captureTime: string;
-  cloudinaryCloudName: string;
-  cloudinaryApiKey: string;
   initialProjectId?: string | null;
   initialView?: "map" | "details";
   onViewChange?: (view: "map" | "details") => void;
@@ -755,8 +751,6 @@ export default function GISWorkspace({
             }
             perimeterM={measurements.perimeterM}
             captureTime={captureTime}
-            cloudinaryCloudName={cloudinaryCloudName}
-            cloudinaryApiKey={cloudinaryApiKey}
             onProjectChange={changeProject}
             onCancel={startNewSurvey}
             onLoadSurvey={loadSavedSurvey}
@@ -823,17 +817,9 @@ export default function GISWorkspace({
         onClose={() => setDetailSurveyId(null)}
         survey={detailSurvey}
         project={detailProject}
-        cloudinaryCloudName={cloudinaryCloudName}
-        cloudinaryApiKey={cloudinaryApiKey}
-        savePhotoToDatabase={async (surveyId, url, label) => {
-          const result = await saveFieldSurveyPhotoUrls({
-            surveyId,
-            photos: [{ url, label }],
-          });
-          if (!result.success) {
-            throw new Error(result.message);
-          }
-        }}
+        savePhotoToDatabase={(surveyId, photos) =>
+          saveFieldSurveyPhotoUrls({ surveyId, photos })
+        }
         onEditData={() => {
           setDetailSurveyId(null);
         }}
