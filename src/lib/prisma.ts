@@ -32,12 +32,12 @@ export const prisma =
     adapter: new PrismaPg(
       {
         connectionString: normalizedConnectionString,
-        max: 10,
-        idleTimeoutMillis: 30_000,
+        max: 3,
+        idleTimeoutMillis: 10_000,
         connectionTimeoutMillis: 10_000,
         keepAlive: true,
-        keepAliveInitialDelayMillis: 10_000,
-        maxLifetimeSeconds: 1_800,
+        keepAliveInitialDelayMillis: 5_000,
+        maxLifetimeSeconds: 300,
       },
       {
         onPoolError: (error) => {
@@ -47,6 +47,4 @@ export const prisma =
     ),
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+globalForPrisma.prisma = prisma;
